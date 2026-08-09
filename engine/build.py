@@ -68,6 +68,11 @@ GD_CSS = """
 @media(max-width:900px){.svc-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.svc-grid{grid-template-columns:1fr}.svc-card{min-height:250px}}
 
+/* "View all areas" pill — inline arrow icon instead of literal text */
+.areas__all{display:inline-flex;align-items:center;gap:7px}
+.areas__all svg{width:16px;height:16px}
+.areas__all:hover svg{transform:translateX(3px);transition:transform .2s}
+
 /* Footer — CTA strip + columns + trust row + legal */
 .gfooter{background:#0e141b;color:#aeb9c5;margin-top:0}
 .gf-cta{background:linear-gradient(135deg,var(--p),var(--pd))}
@@ -442,7 +447,7 @@ def areas_band(t, pages):
     return (f'<section class="sec"><div class="wrap"><div class="sec-head">'
             f'<p class="eyebrow">Where We Work</p><h2>Serving {esc(t["city"])} &amp; nearby communities</h2>'
             f'<p>Neighborhoods across the city and suburbs around the metro. Not sure if we reach you? Just ask.</p></div>'
-            f'<div class="areas">{chips}<a href="/service-areas/">View all areas →</a></div></div></section>')
+            f'<div class="areas">{chips}<a class="areas__all" href="/service-areas/">View all areas {icon("arrow")}</a></div></div></section>')
 
 def cta_band(t, heading=None):
     heading = heading or f"Need a garage door fixed in {t['city']}?"
