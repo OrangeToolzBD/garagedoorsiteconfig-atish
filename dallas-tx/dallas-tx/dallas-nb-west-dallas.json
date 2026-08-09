@@ -1,0 +1,52 @@
+{
+ "title": "West Dallas Garage Door Repair — Dallas, TX Homes",
+ "meta": "Garage door repair and inspection for West Dallas, Dallas TX — built mostly 1973-2007. We know the doors and openers that came with this housing stock.",
+ "h1": "Garage Doors in West Dallas",
+ "sections": [
+  {
+   "h2": "the_housing_here",
+   "body": "Houses in this part of Dallas mostly went up between 1973 and 2007, with the median build landing around 1993. That's a long build-out window, but the bulk of it falls in the 1980s and '90s, which shows up in the doors and openers still hanging around — steel sectional doors on torsion springs, chain-drive openers that are original or one replacement deep.\n\nThe climate band here runs moderate heat, which matters more than people think for garage doors. Steel expands and contracts with the swings, weatherstripping dries out faster than in milder zones, and springs that sit exposed to heat cycle harder over the years than the same spring would somewhere cooler. None of that is dramatic, but it adds up over a 30-plus-year-old door.\n\nAcross the wider Dallas service area we work, there are about 165,955 households and roughly 80,920 owner-occupied houses, with median household income around $83,256. That's the broader picture — West Dallas is one slice of it, not called out separately in the data, so treat those numbers as context for the area rather than a count of this neighborhood alone."
+  },
+  {
+   "h2": "getting_a_look_at_it",
+   "body": "On a house built in the 1980s or '90s, the door itself has usually outlasted at least one opener and one set of springs already. What we're checking on a look is whether the track is still square, whether the springs match the door's weight and haven't already been swapped for something too light or too heavy, and whether the panels have taken enough sun and heat cycling to warp or crack at the seams.\n\nA lot of these original setups used hardware that's fine mechanically but is no longer made — certain spring winds, certain drum sizes. When we find that, we say so up front. If a part is discontinued, the honest move is usually a full spring or opener swap rather than chasing down an obsolete piece, and we'll tell you that instead of stringing out a repair that won't hold.\n\nWe don't guess at what's behind the door from a photo or a phone description. A five-minute look tells us more than any of that, and it's the only way to give you a straight answer on repair versus replace."
+  },
+  {
+   "h2": "where_this_is",
+   "body": "West Dallas sits about 6 miles west of downtown Dallas. Old East Dallas is roughly a mile to the northwest, South Dallas about a mile south, and Lower Greenville around 2 miles north. Downtown's West End and the Dallas Downtown Historic District both sit about 2 miles to the WSW, with Oak Lawn 2 miles WNW.\n\nFurther out, Kessler runs about 5 miles WSW and Cedar Crest about 6 miles SSW. We work the whole stretch of the Dallas service area, not just this one pocket, so if you're closer to Highland Park, Lakewood, or out toward Grand Prairie, that's still inside the territory we run trucks through."
+  }
+ ],
+ "faq": [
+  {
+   "q": "How old are most garage doors in West Dallas going to be?",
+   "a": "Housing in this part of Dallas mostly dates 1973 to 2007, median year 1993, so most original doors and openers are 1980s-90s stock. A lot of homeowners are on their second opener by now, but the door itself is often still the original steel sectional."
+  },
+  {
+   "q": "Does the Texas heat actually shorten garage door life here?",
+   "a": "Yes, some. The moderate-heat band this area sits in means more expansion-and-contraction cycling on steel panels and faster dry-out on weatherstripping and lubricant than you'd see in a cooler climate. It's gradual wear, not sudden failure, but it's real."
+  },
+  {
+   "q": "Is it worth repairing a door this old or should I just replace it?",
+   "a": "Depends what's failing. A spring or roller swap on a sound door is usually worth it. If the hardware is discontinued or the opener is original to a 1970s-80s build, replacement often costs less over time than chasing obsolete parts — we'll tell you which situation you're in after a look."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "West Dallas, Dallas, TX"
+ },
+ "swap_test": [
+  "Houses in this part of Dallas mostly went up between 1973 and 2007, with the median build landing around 1993.",
+  "West Dallas sits about 6 miles west of downtown Dallas.",
+  "Old East Dallas is roughly a mile to the northwest, South Dallas about a mile south.",
+  "Downtown's West End and the Dallas Downtown Historic District both sit about 2 miles to the WSW, with Oak Lawn 2 miles WNW.",
+  "Kessler runs about 5 miles WSW and Cedar Crest about 6 miles SSW.",
+  "Across the wider Dallas service area, there are about 165,955 households and roughly 80,920 owner-occupied houses, with median household income around $83,256."
+ ],
+ "facts_used": [
+  "F1",
+  "F2",
+  "F3",
+  "F6",
+  "F7",
+  "F10"
+ ]
+}

@@ -1,0 +1,55 @@
+{
+ "title": "Garage Door Noises That Mean Something: Dallas, TX Guide",
+ "meta": "What grinding, popping, and rattling from your garage door actually mean in Dallas homes built 1973 to 2007, and why summer heat makes it worse each year.",
+ "h1": "What That Sound Means: Reading Garage Door Noise in Dallas",
+ "sections": [
+  {
+   "h2": "what_local_conditions_do",
+   "body": "Most houses in this part of Dallas went up between 1973 and 2007, with the median build year sitting at 1993. Across the neighborhoods we work in — Lakewood, Lower Greenville, Cedar Crest, Piedmont Addition, Kessler, Old East Dallas, and the rest of that ring — the bulk of the stock is 1980s and 90s construction. That matters more than people think when it comes to noise. A garage door installed in 1988 has a torsion spring, opener, and roller set that's now three-plus decades old, running on hardware that was standard for that era but doesn't match what's stocked new today. The sounds you're hearing aren't random. They're the specific complaints of a mechanical system that's outlived the spec it was built to, in a market where a large share of the houses share that exact timeline."
+  },
+  {
+   "h2": "the_seasonal_bit",
+   "body": "Dallas sits in a climate band we'd call moderate heat — not the extreme swings you get further west, but hot enough, for long enough stretches, to work on steel and grease every single summer. Track lubricant that was fine in March turns thin and drips off by July, leaving bare metal contact between roller and track. That's the squeal you hear pulling in after the door's been baking on a west-facing wall all afternoon. Nylon rollers go brittle at the edges under sustained heat, and that shows up as a rattling clack instead of a smooth roll. None of this is one bad weather event — it's what steady heat does to a mechanical system across years, and on houses in this area that's 20 to 40 years of summers doing the same slow damage to the same original parts."
+  },
+  {
+   "h2": "the_situation",
+   "body": "A grinding sound when the door starts to lift is usually a spring under strain. On doors from the 1980s-90s construction wave common here, that spring has likely never been replaced — steel fatigues whether the door gets used once a day or ten times. A sharp bang followed by the door refusing to move at all is a spring that's given out completely, which on hardware from a 1993-median build is age, not abuse. A rhythmic thump every few feet as the door travels is almost always a bent track section or a roller worn oval instead of round; track spacing from that era runs narrower than current builds, so a replacement part sometimes needs fitting rather than a straight swap. A high-pitched whine from the unit above the door points to a worn gear inside the opener, not the door itself. With median household income in this area at $83,256, most owners we talk to would rather pay for the right fix once than keep calling back for the same noise."
+  },
+  {
+   "h2": "what_most_people_get_wrong",
+   "body": "The mistake we hear most: assuming any noise means a new opener. Openers rarely make the sound people blame them for — most of what gets pinned on the motor is actually the spring, the track, or a roller, and swapping the opener changes nothing about it. The reverse mistake matters too. If you've got a torsion spring pushing 30-plus years old inside a door built to 1980s-90s spec, no amount of lubricant fixes a grinding noise — that spring is done and needs replacing before it snaps under tension. Here's the honest part: we can't tell you which one it is over the phone. A grinding sound can be a worn roller or it can be a full spring job, and guessing wrong wastes a visit. We also won't tell you to replace a door that's noisy but structurally sound — plenty of the 1990s-era doors in this area have another decade left in them once the worn parts are swapped out."
+  }
+ ],
+ "faq": [
+  {
+   "q": "Why does my garage door only squeal in the summer?",
+   "a": "Heat thins out track lubricant and dries it up faster, which leaves bare metal-on-metal contact between the roller and track. In this climate that shows up every summer once the door's been sitting in the heat for a few hours — it's not a sign something new broke, just lubricant that needs redoing."
+  },
+  {
+   "q": "My house was built in the 90s and the door is grinding — is that the spring?",
+   "a": "Very likely. A torsion spring on a door from that era is now 25 to 35 years old, and steel fatigues on a timeline whether or not you notice. Grinding on start-up is the classic sign of a spring under strain. We'd want to look at it before it lets go on its own."
+  },
+  {
+   "q": "Do I need a new opener if it's making a grinding noise?",
+   "a": "Probably not. Most grinding comes from the spring, the track, or a worn roller — not the opener motor. Replacing the opener won't fix a mechanical noise coming from somewhere else on the door, so it's worth having someone look before you spend on a new unit."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "Dallas, TX"
+ },
+ "swap_test": [
+  "Most houses in this part of Dallas went up between 1973 and 2007, with the median build year sitting at 1993.",
+  "Across the neighborhoods we work in — Lakewood, Lower Greenville, Cedar Crest, Piedmont Addition, Kessler, Old East Dallas — the bulk of the stock is 1980s and 90s construction.",
+  "Dallas sits in a climate band we'd call moderate heat, hot enough for long stretches to work on steel and grease every summer.",
+  "On doors from the 1980s-90s construction wave common here, that spring has likely never been replaced.",
+  "A sharp bang followed by the door refusing to move at all is a spring that's given out completely, which on hardware from a 1993-median build is age, not abuse.",
+  "With median household income in this area at $83,256, most owners we talk to would rather pay for the right fix once than keep calling back for the same noise."
+ ],
+ "facts_used": [
+  "F1",
+  "F2",
+  "F3",
+  "F7",
+  "F10"
+ ]
+}

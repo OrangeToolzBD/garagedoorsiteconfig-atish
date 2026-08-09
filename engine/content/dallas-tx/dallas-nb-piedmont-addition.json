@@ -1,0 +1,52 @@
+{
+ "title": "Garage Door Repair & Install in Piedmont Addition, Dallas TX",
+ "meta": "Garage door repair, spring replacement, and opener service for Piedmont Addition homes built 1973-2007, about five miles southeast of downtown Dallas, TX.",
+ "h1": "Garage Door Work for Piedmont Addition Homes",
+ "sections": [
+  {
+   "h2": "the_housing_here",
+   "body": "Piedmont Addition sits inside the stretch of Dallas where building permits run from 1973 through 2007, with the typical house here going up around 1993. That's a specific window, and it matters for garage doors. A door and opener installed when a house here was built is now somewhere between roughly seventeen and fifty years old, and for most houses on these streets that puts the original hardware well past the point where parts are easy to find.\n\nDoors from the 1980s and '90s bracket tend to run steel panels on torsion springs, often with a chain-drive opener bolted to a bracket that's seen three decades of Texas summers. This part of Dallas sits in a moderate heat band rather than the extreme end of the state, but moderate still means repeated expansion and contraction on steel tracks and springs, year after year. That kind of cycling is what shortens spring life and loosens hardware, not one bad week of weather.\n\nIf your house here was built anywhere near the middle of that 1973-2007 range, the door gear inside the garage is original or close to it more often than not. Worth knowing before a spring lets go on a Saturday."
+  },
+  {
+   "h2": "getting_a_look_at_it",
+   "body": "We don't quote a repair over the phone based on a age guess. Send a photo of the spring or the opener's model label and we can usually tell you whether it's a good candidate for a fix or headed for a full swap.\n\nFor houses built in the 1980s and '90s window that makes up most of this pocket of Dallas, the honest answer is often \"it depends on the opener.\" Some chain-drive units from that era are still solid and just need a new logic board or capacitor. Others have worn gears that make the repair cost close to what a new unit runs, and at that point patching the old one doesn't make sense.\n\nOne limitation worth saying plainly: if your opener is old enough that the manufacturer no longer makes the circuit board, we can't always source an exact replacement part on short notice. That's the real tradeoff with hardware this age — sometimes the right call is a new opener rather than waiting on a part that may not come.\n\nA look at the door in person tells us more in five minutes than any phone description will. That's true here as much as anywhere, and more so on doors nobody's serviced since the house was built."
+  },
+  {
+   "h2": "where_this_is",
+   "body": "Piedmont Addition sits about five miles southeast of downtown Dallas. On a map that puts it past South Dallas, which sits roughly a mile south of the center, and out toward the corridor that runs near Buckner Terrace / Everglade Park, about four miles east of downtown.\n\nThe wider service area runs from Highland Park and University Park, both a few miles north of downtown, out to towns eighteen and nineteen miles south like Ovilla and Oak Leaf. Piedmont Addition falls on the inner side of that range, closer to the center than most of the named areas we cover.\n\nAcross the broader Dallas service area, the median household income runs $83,256, with roughly 165,955 households and about 80,920 owner-occupied houses counted in total. Piedmont Addition is one small piece of that larger footprint, five miles out and southeast of the middle of it."
+  }
+ ],
+ "faq": [
+  {
+   "q": "How old is the garage door opener likely to be in Piedmont Addition?",
+   "a": "Most houses here were built between 1973 and 2007, with the typical one dating to around 1993. If your opener hasn't been replaced, it's likely original to the house, which puts a lot of them somewhere past the two-decade mark and into territory where parts get harder to find."
+  },
+  {
+   "q": "Does the Dallas heat wear out garage door springs faster?",
+   "a": "This part of Dallas sits in a moderate heat band, not the extreme end of the state, but moderate still means the door goes through daily expansion and contraction cycles. Over years, that cycling is what fatigues torsion springs and loosens hardware, more than any single hot week."
+  },
+  {
+   "q": "Should I repair or replace an old opener in this neighborhood?",
+   "a": "It depends on the unit. Some chain-drive openers from the 1980s-90s window still run fine with a new board or capacitor. Others have worn gears where repair costs approach the price of a new opener, and if the old circuit board is discontinued, replacement usually makes more sense than waiting on a part."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "Piedmont Addition, Dallas, TX"
+ },
+ "swap_test": [
+  "Piedmont Addition sits about five miles southeast of downtown Dallas.",
+  "Piedmont Addition's houses mostly went up between 1973 and 2007, with the typical house here dating to around 1993.",
+  "This part of Dallas sits in a moderate heat band rather than the extreme end of the state.",
+  "The median household income across the service area runs $83,256, with roughly 165,955 households and about 80,920 owner-occupied houses.",
+  "That puts it past South Dallas, which sits roughly a mile south of the center.",
+  "Out toward the corridor that runs near Buckner Terrace / Everglade Park, about four miles east of downtown."
+ ],
+ "facts_used": [
+  "F1",
+  "F2",
+  "F3",
+  "F6",
+  "F7",
+  "F10"
+ ]
+}

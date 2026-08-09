@@ -1,0 +1,16 @@
+{
+  "title": "Farmers Branch, TX Garage Door Repair by Dallas Garage Door",
+  "meta": "Garage door repair for Farmers Branch, TX — median home built 1993, 11 miles from our Dallas base. See how build year and Texas heat affect local garage doors",
+  "h1": "Garage Door Repair for Farmers Branch Homes, Built 1973 to 2007",
+  "sections": [
+    {
+      "h2": "This Area's Housing",
+      "body": "Farmers Branch sits inside our Dallas-based service area, 11 miles out, and the housing stock here runs newer than a lot of the pockets we cover closer in. The median home in Farmers Branch went up in 1993, and that fits inside the service area's broader build range of 1973 to 2007 (F1). Fourteen thousand, nine hundred and fourteen households call this area home, with a median income of $87,702 — a notch above the $83,256 median across the full territory we run trucks through (F7). That income and build-year combination matters for garage doors: newer homes came with garage door openers already wired in, not bolted on as an afterthought, and many still have their original torsion spring setup because the house itself isn't old enough yet for a second failure cycle. Compare that to the 1970s pockets closer to Dallas proper, where springs, drums, and even the doors themselves have usually been swapped once or twice already. Farmers Branch homeowners tend to be dealing with the first generation of hardware wearing out, not the third."
+    },
+    {
+      "h2": "Older vs Newer Streets",
+      "body": "Not every street in Farmers Branch was built the same year, even with a median of 1993. The service area's overall stock skews 1980s and 90s (F2), and Farmers Branch fits that pattern — older sections trace back toward the early 1970s edge of that range, newer sections push out toward 2007. The difference shows up at the garage. Houses from the early end were built before lighter-gauge steel doors and modern extension-cable safety systems became standard, so those garages are more likely to still have heavier original panels riding on hardware that's outlived its intended cycle count. Streets built closer to 2007 are more likely to have factory-installed openers with rolling-code remotes and steel roller doors that hold up better, but they're old enough now that the first torsion spring on many of them is due, or overdue, for replacement. There's no single fix that covers 'Farmers Branch' as one block. A tech has to look at what decade a specific street actually went up before guessing what's behind the header above the door."
+    },
+    {
+      "h2": "When We Can Get There",
+      "body": "We run out of Dallas, and Farmers Branch sits 11 miles from where the truck starts its day. That's closer than several of the towns on the far edge of our service area, but it's still real drive time, not a five-minute hop. We don't post a guaranteed arrival window on this page, because traffic on any given weekday changes what 11 miles actually means in minutes, and we'd rather say that straight than print a number we can't back up every time. What we can tell you is that Farmers Branch falls inside the normal radius we schedule from Dallas — it's not an outlier trip that needs special planning. If a spring lets go on a Tuesday morning, call and we'll give you a real window based on where the truck already is that day, not a

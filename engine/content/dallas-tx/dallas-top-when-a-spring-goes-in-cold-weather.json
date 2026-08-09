@@ -1,0 +1,54 @@
+{
+ "title": "Garage Door Springs & Cold Snaps in Dallas, TX Homes",
+ "meta": "Why torsion springs in Dallas garage doors, mostly installed in 1980s-90s houses, tend to snap on the one cold night rather than in July heat.",
+ "h1": "What Happens to a Garage Door Spring on a Cold Night in Dallas",
+ "sections": [
+  {
+   "h2": "what_local_conditions_do",
+   "body": "Most of the housing this company works on went up between 1973 and 2007, with the median build year sitting around 1993. That puts a lot of torsion springs and openers into the same age bracket — original hardware from the 1980s and 90s, still hanging on in neighborhoods close in like Old East Dallas, Lakewood, and Oak Lawn, and out through the farther towns on this list. Dallas doesn't carry a cold climate rating; the region's climate band here is heat-moderate, not freeze-heavy. That matters for a spring, because the wear on a torsion spring in this area comes mostly from months of heat expansion and long stretches of steel cycling under a hot garage roof, not from months of hard freeze the way it would in a northern state. The spring doesn't fail because of one bad night. It fails because a hot summer already used up most of what it had left, and a cold snap is just the final push."
+  },
+  {
+   "h2": "the_seasonal_bit",
+   "body": "In a place rated heat-moderate rather than a genuine cold climate, a garage door spring spends the bulk of the year contracting and expanding under heat stress, not cold stress. That's the opposite of what a lot of homeowners assume when they hear the word 'winter.' The steel doesn't get a season of rest in a mild climate band — it's working through heat cycling nearly year-round, and the occasional cold night just tightens the coil enough to expose a spring that was already down to its last few winds. So when a spring goes in January here, it's rarely a surprise failure. It's a spring that's been fatiguing since roughly the last time the door saw a 100-degree afternoon, and the cold is what finally lets go."
+  },
+  {
+   "h2": "the_situation",
+   "body": "A broken torsion spring on a cold morning looks the same whether the cause is a hard freeze or a decade of Dallas summers: the door won't lift, or it lifts a few inches and stops, or the opener strains and clicks without moving the door at all. On a double door, one spring can go while the other holds, which is worse than it sounds — the door tries to open unevenly and can bind in the track or twist a panel if someone forces it. Given that most of the housing stock here is 1980s-90s vintage, the second spring on that same door is usually the same age as the one that just broke. It hasn't failed yet, but it's carried the same heat-cycling load for the same number of years. That's the call we get a lot from houses across this stretch of Dallas — not a door that's broken from cold, but a door where cold was the last straw on hardware that was already near the end of its working life."
+  },
+  {
+   "h2": "what_most_people_get_wrong",
+   "body": "The mistake is treating a Dallas garage door like it lives somewhere with real winters. It doesn't need a heated garage or a cold-weather lubricant swap the way a house in a freeze-heavy state does — the climate here is rated heat-moderate, and that's the load the hardware is actually built to handle. What gets missed is the age of the spring itself. In a service area where the median house was built in 1993, a lot of original torsion springs are well past the point where age matters more than the weather. We won't just swap the one spring that snapped and send you on your way if the matching spring on that same door is the same vintage — replacing one and leaving an equally worn one in place just means a second call later, and we'd rather tell you that up front than let you find out the hard way. That's the one limit worth knowing before you book anything: matched-age hardware gets looked at as a pair, not a single part.'"
+  }
+ ],
+ "faq": [
+  {
+   "q": "Why did my garage door spring break on a cold night if Dallas doesn't get that cold?",
+   "a": "It's usually not the cold doing the damage — it's the finish. Dallas is rated heat-moderate, so the spring has already been fatigued by months of heat cycling. A cold night just tightens the coil enough to expose a spring that was already close to its limit."
+  },
+  {
+   "q": "If one spring on my double door broke, does the other one need replacing too?",
+   "a": "If your house was built anywhere near the 1980s-90s range common across this area, the second spring is likely the same age as the one that failed. We'll look at both before recommending a fix, since replacing only one that's matched in age often means a second failure down the line."
+  },
+  {
+   "q": "Does the age of my house matter for what kind of spring is on my door?",
+   "a": "Yes. Most houses in this service area date from 1973 to 2007, with a lot of 1980s-90s stock. That range covers several generations of torsion spring hardware, so knowing roughly when your house was built helps us know what we're likely dealing with before we even open the door."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "Dallas, TX"
+ },
+ "swap_test": [
+  "Most of the housing this company works on went up between 1973 and 2007, with the median build year sitting around 1993.",
+  "Dallas doesn't carry a cold climate rating; the region's climate band here is heat-moderate, not freeze-heavy.",
+  "In a place rated heat-moderate rather than a genuine cold climate, a garage door spring spends the bulk of the year contracting and expanding under heat stress, not cold stress.",
+  "Given that most of the housing stock here is 1980s-90s vintage, the second spring on that same door is usually the same age as the one that just broke.",
+  "What gets missed is the age of the spring itself. In a service area where the median house was built in 1993, a lot of original torsion springs are well past the point where age matters more than the weather.",
+  "It doesn't need a heated garage or a cold-weather lubricant swap the way a house in a freeze-heavy state does — the climate here is rated heat-moderate."
+ ],
+ "facts_used": [
+  "F1",
+  "F2",
+  "F3",
+  "F10"
+ ]
+}

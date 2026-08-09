@@ -1,0 +1,50 @@
+{
+ "title": "Garage Door Repair & Service in Vickery Meadow, Dallas, TX",
+ "meta": "Garage door spring, opener, and panel work for Vickery Meadow homes built mostly between the 1980s and 2000s, 6 miles north of downtown Dallas.",
+ "h1": "Garage Doors in Vickery Meadow",
+ "sections": [
+  {
+   "h2": "the_housing_here",
+   "body": "Vickery Meadow's houses mostly went up between 1973 and 2007, with the typical build year landing around 1993. That puts most of the stock in its thirties to fifties now — old enough that the original torsion spring is probably not the one still holding the door up, and old enough that the first opener bolted to the ceiling has usually been swapped out at least once.\n\nAcross this part of Dallas, the housing leans 1980s and 90s. That era means steel sectional doors on steel tracks rather than the older one-piece tilt style, and openers that started out chain-drive before belt-drive became common. If a door still runs on the opener it shipped with, that unit is deep into its working life and parts for it are getting harder to source.\n\nDallas sits in a moderate heat band, not the extreme end of the Texas climate map. That's easier on rubber seals, lubricant, and opener circuit boards than conditions further south or west — but thirty-plus summers in a hot garage still dries out grease and fatigues springs, and the age of the housing stock here means a lot of doors are simply due for that work, whether or not anything's failed yet."
+  },
+  {
+   "h2": "getting_a_look_at_it",
+   "body": "With houses this age, a good look at the door starts with the spring, not the opener. A torsion spring rated for a set number of cycles doesn't send a warning before it lets go — it just gets slow, then it doesn't lift at all. On a house built in the 80s or 90s, if nobody's replaced the spring yet, it's overdue.\n\nAfter that: track alignment, roller wear, and whether the opener has a working photo-eye safety sensor — a feature that wasn't standard on the earliest units from this build era. Panels get checked at the bottom corners for rust and along the edges for the kind of denting that comes from a car clipping the door backing out.\n\nHere's the honest part. On doors from this era, we sometimes can't match a single damaged panel. Manufacturers change panel profiles over the years and stop stocking the old ones, so a door that's otherwise fine except for one dented section may need a full replacement instead of a patch. That's not the answer anyone wants, but matching thirty-year-old steel isn't something we can promise, and we'll tell you straight when that's the case instead of guessing."
+  },
+  {
+   "h2": "where_this_is",
+   "body": "Vickery Meadow sits about 6 miles north of downtown Dallas. Closer in, on that same north side of the city, Old East Dallas is about a mile northwest of downtown and Lower Greenville about two miles north — both fall between Vickery Meadow and the center. Lakewood, three miles northeast of downtown, and Northeast Dallas, four miles northeast, sit closer to Vickery Meadow than to downtown itself.\n\nHighland Park and University Park, the two small incorporated cities inside Dallas, sit 3 and 4 miles north of downtown — roughly the same distance out as Vickery Meadow, but over on the west side of that northern stretch rather than directly along it.\n\nThat puts Vickery Meadow in the inner ring of Dallas neighborhoods: not downtown, not a far suburb, just north of the center along one of the city's older built-up corridors."
+  }
+ ],
+ "faq": [
+  {
+   "q": "How old are most of the garage doors in Vickery Meadow?",
+   "a": "Most houses here were built between 1973 and 2007, with the typical build year around 1993. That means most garage doors, springs, and openers are somewhere between 15 and 50 years old, and a fair number are still running on original hardware."
+  },
+  {
+   "q": "How far is Vickery Meadow from downtown Dallas?",
+   "a": "About 6 miles north of the center of Dallas, in the same general corridor as Lower Greenville and Lakewood, which sit a bit closer in."
+  },
+  {
+   "q": "Does Dallas heat cause garage door problems?",
+   "a": "Dallas falls in a moderate heat band rather than the most extreme part of the state, which is easier on seals and opener electronics — but decades of hot summers still dry out lubricant and add stress to older springs, especially on doors from this neighborhood's build era."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "Vickery Meadow, Dallas, TX"
+ },
+ "swap_test": [
+  "Vickery Meadow's houses mostly went up between 1973 and 2007, with the typical build year landing around 1993.",
+  "Across this part of Dallas, the housing leans 1980s and 90s.",
+  "Dallas sits in a moderate heat band, not the extreme end of the Texas climate map.",
+  "Vickery Meadow sits about 6 miles north of downtown Dallas.",
+  "Old East Dallas is about a mile northwest of downtown and Lower Greenville about two miles north, both falling between Vickery Meadow and the center.",
+  "Highland Park and University Park sit 3 and 4 miles north of downtown, roughly the same distance out as Vickery Meadow but on the west side of that corridor."
+ ],
+ "facts_used": [
+  "F1",
+  "F2",
+  "F3",
+  "F10"
+ ]
+}

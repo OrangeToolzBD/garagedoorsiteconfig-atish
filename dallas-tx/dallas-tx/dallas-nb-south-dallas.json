@@ -1,0 +1,52 @@
+{
+ "title": "Garage Door Repair Service in South Dallas, Dallas, TX Homes",
+ "meta": "Garage door repair for South Dallas homes built between 1973 and 2007 - torsion spring, opener, and track work suited to Dallas's 1980s-90s housing stock.",
+ "h1": "South Dallas: Garage Doors on 1980s and 90s Houses",
+ "sections": [
+  {
+   "h2": "the_housing_here",
+   "body": "Most of the houses in this part of South Dallas went up between 1973 and 2007, with the median build year landing at 1993. That two-decade run put almost every garage door here on torsion spring hardware — a shaft-mounted spring above the door, wound under tension — rather than the side-mounted extension springs you'd find on a house built before the 1970s. It also means most openers on these garages are chain or belt drive units installed sometime after the original build, since factory openers from that era rarely last thirty-plus years on their own.\n\nThe area sits in a moderate-heat climate band, and heat is hard on garage door parts in specific ways: nylon rollers dry out and crack, opener circuit boards run hotter and fail sooner, and rubber weatherstrip along the bottom panel loses its seal faster than it would somewhere cooler. On a house from the 1980s or 90s, that wear has usually had fifteen to forty years to show up.\n\nAcross the wider Dallas service area — 165,955 households, 80,920 of them owner-occupied, median income $83,256 — a large share of the garage doors were installed in that same 1980s-to-2000s window, mostly 1980s and 90s stock. A lot of them are due for the same repairs at close to the same time."
+  },
+  {
+   "h2": "getting_a_look_at_it",
+   "body": "When we come out to a house in this part of South Dallas, we're checking the same handful of things every time: spring tension, track alignment, roller condition, and whether the opener is original to some remodel or a newer add-on. On a torsion spring set from the 1980s or 90s, the spring itself is usually the first thing to go — you'll hear a loud bang from the garage, or the door will feel too heavy to lift by hand.\n\nWe look at the bottom panel and weatherstrip too, since Dallas heat dries out rubber faster than it wears out steel. If the seal's cracked and gapping, that's usually a cheap fix compared to a spring or opener board.\n\nOne limit worth saying plainly: if your opener runs an older circuit board and the manufacturer's stopped making replacement parts for it, we can't promise a same-day fix. Sometimes the honest call is a new opener rather than chasing parts for one that's twenty-five years old."
+  },
+  {
+   "h2": "where_this_is",
+   "body": "South Dallas sits about a mile south of downtown Dallas. Old East Dallas is a mile northwest, and Lower Greenville is two miles north. Downtown's historic district and the West End both sit about two miles to the southwest, with Oak Lawn two miles northwest as well. Lakewood is three miles northeast, and Highland Park and University Park — three and four miles out — sit on the far side of downtown from here.\n\nFarther out, the distances stretch quickly: Balch Springs and Hutchins sit around ten and eleven miles off, Grand Prairie and Seagoville are closer to sixteen, and towns like Ovilla and Oak Leaf are a full nineteen miles from this stretch of South Dallas. For a neighbourhood job — a spring, a panel, an opener — that inner ring close to downtown is what matters most; the truck isn't driving to the far edge of the service area for a torsion spring swap."
+  }
+ ],
+ "faq": [
+  {
+   "q": "What year were most South Dallas garages built?",
+   "a": "Housing in this part of South Dallas mostly went up between 1973 and 2007, with a median build year of 1993. That means most garage doors here run on torsion spring hardware installed or replaced sometime in that window, not the older extension-spring setups found on pre-1970s houses."
+  },
+  {
+   "q": "Does Dallas heat actually affect garage door parts?",
+   "a": "Yes. The area sits in a moderate-heat climate band, and that heat dries out rubber weatherstrip, cracks nylon rollers, and shortens the life of opener circuit boards faster than a cooler climate would. On a house from the 1980s or 90s, that wear has had decades to build up."
+  },
+  {
+   "q": "How close is South Dallas to downtown Dallas?",
+   "a": "South Dallas sits about a mile south of downtown. Old East Dallas is a mile northwest and Lower Greenville is two miles north, so this is one of the closer-in neighbourhoods on the service map, not out toward the far edge of town."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "South Dallas, Dallas, TX"
+ },
+ "swap_test": [
+  "Most of the houses in this part of South Dallas went up between 1973 and 2007, with the median build year landing at 1993.",
+  "Across the wider Dallas service area there are 165,955 households and 80,920 owner-occupied houses, with a median income of $83,256.",
+  "South Dallas sits about a mile south of downtown Dallas.",
+  "Old East Dallas is a mile northwest, and Lower Greenville is two miles north.",
+  "Lakewood is three miles northeast, and Highland Park and University Park sit three and four miles out.",
+  "Balch Springs and Hutchins sit around ten and eleven miles off, and towns like Ovilla and Oak Leaf are a full nineteen miles from this stretch of South Dallas."
+ ],
+ "facts_used": [
+  "F1",
+  "F2",
+  "F3",
+  "F6",
+  "F7",
+  "F10"
+ ]
+}

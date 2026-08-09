@@ -1,0 +1,13 @@
+```json
+{
+  "title": "Dallas Garage Door Repair for Older Homes in Dallas, TX",
+  "meta": "Local garage door repair in Dallas, TX for homes built 1973-2007. Springs, openers, and tracks fixed by a crew that knows the area's housing stock well.",
+  "h1": "Garage Door Repair Built Around Dallas Housing Stock",
+  "sections": [
+    {
+      "h2": "Areas We Cover",
+      "body": "We work throughout Dallas, from the older neighborhoods close to downtown out to the suburbs at the edge of the county. Inside the city, that means Old East Dallas, South Dallas, Lower Greenville, the Downtown Historic District, Oak Lawn, West End, Lakewood, Buckner Terrace and Everglade Park, Northeast Dallas, Kessler, the Piedmont Addition, Cedar Crest, Vickery Meadow, and West Dallas — all within a few miles of the center of town. We also cover Highland Park and University Park, the two incorporated towns that sit inside Dallas' own borders, three and four miles out.\n\nFarther out, we run trucks to Balch Springs, Hutchins, Farmers Branch, Sunnyvale, Lancaster, Wilmer, DeSoto, Seagoville, Grand Prairie, Glenn Heights, Murphy, Heath, Ferris, Ovilla, and Oak Leaf — a ring of towns between 10 and 19 miles out in every direction. If your address falls somewhere between one of these and downtown, you're in the service area."
+    },
+    {
+      "h2": "The Area and Its Housing",
+      "body": "Most of the houses we work on went up between 1973 and 2007, with the midpoint sitting around

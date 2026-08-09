@@ -1,0 +1,52 @@
+{
+ "title": "West End Dallas Garage Door Repair & Replacement",
+ "meta": "Garage door repair for West End, Dallas homes built 1973-2007. We know the torsion springs, steel panels, and openers that came with this era of construction.",
+ "h1": "Garage Door Work in West End, Dallas",
+ "sections": [
+  {
+   "h2": "the_housing_here",
+   "body": "West End's houses went up between 1973 and 2007, with the typical build landing around 1993. That puts most of what we see here squarely in the 1980s and 90s wave of construction that shaped a lot of this part of Dallas — 17 named areas share the same rough building window, so the hardware problems repeat block to block.\n\nA house built in that stretch almost always came with a steel sectional door on torsion spring hardware, not the older side-mounted extension springs you'd find on something from the 1950s. That's good news for parts — torsion springs and standard-width tracks from this era are still stocked, not special-order. What does wear out on schedule: the original opener motor (most from the 80s and 90s are long past their working life), nylon rollers gone brittle from Texas heat, and bottom brackets on doors that never had a hinge replaced.\n\nWe don't see much need for custom-width or oddball panel jobs here — the lot sizes and garage openings from this build era are fairly standard, which keeps repair costs predictable rather than a guessing game."
+  },
+  {
+   "h2": "getting_a_look_at_it",
+   "body": "When we come out to a house in this build range, we're checking the same handful of things every time: spring tension and wear, track alignment, the condition of the rollers, and whether the opener is original equipment or already a second replacement. On a house from the early 90s median build year, it's common to find an opener that's been swapped once already but a door and torsion spring that never has.\n\nWhat we won't do is tell you a door needs full replacement when a spring and a roller set would do the job — but we also won't spend an hour trying to save hardware that's cracked or rusted through. If the track is bent from a car backing into it, or the bottom panel is rotted from years of water sitting against it, replacement is usually the honest call, and we'll say so on the spot rather than stringing out a repair that won't hold.\n\nOne limitation worth knowing up front: we quote off what we see in person, not off a phone description. Torsion spring sizing especially needs an actual look at the door and drum, not a guess based on age alone."
+  },
+  {
+   "h2": "where_this_is",
+   "body": "West End sits about two miles west-southwest of downtown Dallas. Old East Dallas is roughly a mile to the northwest, South Dallas about a mile south, and Oak Lawn sits two miles to the west-northwest — this is inner-city Dallas, not a far-out suburb, so we're rarely more than a few minutes from a call here.\n\nClimate-wise, this stretch of Dallas falls in the moderate end of the heat band for the region, which matters more for openers than for the doors themselves — motors run harder and fail sooner under sustained summer heat than they would somewhere cooler, and that shows up in the number of opener calls we get relative to spring calls.\n\nAcross the wider Dallas service area we cover, 80,920 of 165,955 households own their homes, with a median household income around $83,256. That's the kind of area where people tend to fix a door rather than let it sit broken, which lines up with what we see on the truck day to day."
+  }
+ ],
+ "faq": [
+  {
+   "q": "How old are the garage doors in West End usually",
+   "a": "Most houses here were built between 1973 and 2007, with the median landing around 1993. That means the majority of original doors and openers are 20 to 45 years old — well past the working life of the opener motor even if the door itself is fine."
+  },
+  {
+   "q": "Do you carry parts for older torsion springs",
+   "a": "Yes. Torsion spring hardware from the 1980s and 90s build era is standard sizing, not a special order. What takes longer to source is a specific opener circuit board if it's an older model — we'll tell you upfront if that's the case on your job."
+  },
+  {
+   "q": "Is it better to repair or replace an opener from that era",
+   "a": "Depends on what's failed. A dead capacitor or a worn gear is a straightforward repair. A cracked circuit board on a motor that old usually costs more to fix than to replace outright — we'll look at it in person and tell you which side of that line you're on."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "West End, Dallas, TX"
+ },
+ "swap_test": [
+  "Houses here went up between 1973 and 2007, with the typical build landing around 1993.",
+  "17 named areas share the same rough building window as West End.",
+  "West End sits about two miles west-southwest of downtown Dallas.",
+  "Old East Dallas is roughly a mile to the northwest, South Dallas about a mile south, and Oak Lawn sits two miles to the west-northwest.",
+  "This stretch of Dallas falls in the moderate end of the heat band for the region.",
+  "Across the wider Dallas service area, 80,920 of 165,955 households own their homes, with a median household income around $83,256."
+ ],
+ "facts_used": [
+  "F1",
+  "F2",
+  "F3",
+  "F6",
+  "F7",
+  "F10"
+ ]
+}

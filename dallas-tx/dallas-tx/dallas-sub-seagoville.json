@@ -1,0 +1,58 @@
+{
+ "title": "Garage Door Repair in Seagoville, TX | Dallas Garage Door",
+ "meta": "Dallas Garage Door serves Seagoville homes 16 miles out. See how this area's newer housing stock changes which springs, openers, and panels fail first.",
+ "h1": "Garage Door Work for Seagoville, Run Out of Our Dallas Shop",
+ "sections": [
+  {
+   "h2": "This Area's Housing",
+   "body": "Seagoville's median home was built in 2001. That puts it toward the newer end of the wider service area, where the housing stock overall runs from 1973 to 2007 with a median of 1993. Roughly eight years separate the two medians, and eight years is enough to change what kind of spring and opener sit over a driveway.\n\nThe area has 5,401 households and a median income of $68,020 — lower than the $83,256 median across the full 165,955-household coverage area we run trucks through. That gap doesn't tell us anything about how well a house is kept up, but it does line up with a pattern we see: newer subdivisions built to a tighter budget tend to come with builder-grade doors and openers rather than upgraded ones, and those parts start showing wear on a fairly predictable schedule.\n\nWe don't have a count of how many Seagoville houses fall on either side of that 2001 line, so we're not going to guess a split. What we can say is that a home built right around the turn of the century is old enough now that the original opener motor and the original springs are past the point where most of that generation of hardware is still working."
+  },
+  {
+   "h2": "Older vs. Newer Streets",
+   "body": "A house built in the late 1990s or early 2000s in this area almost always shipped with a torsion spring mounted on a shaft above the door, not the older side-mounted extension springs you'd find on housing stock from the low end of the 1973 range. Torsion setups last longer and fail more predictably — you get a clean snap, not a slow stretch — which actually makes diagnosis simpler on this side of the service area than on some of the older streets closer to Dallas.\n\nOpeners are the other split. A door from right around 2001 likely came with a chain-drive opener and a wall button, no keypad, no smart-home tie-in. If nothing's been swapped since, the circuit board is old enough that replacement parts for that exact board are getting hard to source — at some point replacing the whole opener costs less than chasing down a matching board.\n\nWe can't tell you which side of that line your specific house falls on without seeing the door. But if your house is close to the 2001 median for this area and nothing's been touched, torsion spring plus aging chain-drive opener is the way to bet before the truck even shows up."
+  },
+  {
+   "h2": "When We Can Get There",
+   "body": "We run out of Dallas, and Seagoville sits about 16 miles out — one of the longer hauls in our coverage area, on par with Lancaster, Wilmer, and DeSoto rather than the closer-in stops like Balch Springs or Sunnyvale. There's no Seagoville depot and we're not going to pretend there is one.\n\nThat distance doesn't change what we can fix, but it does mean Seagoville isn't going to be the fastest add-on to a route that's already running through the closer parts of the service area. If a spring goes on a Tuesday morning, we're not the guys who happen to already have a truck three streets over. Call and we'll tell you straight where the day's route stands before you commit a morning to it.\n\nWe'd rather say that plainly than promise a same-day window we can't back up from 16 miles away."
+  },
+  {
+   "h2": "What That Means for Doors",
+   "body": "This part of Texas sits in a moderate heat climate band — not the extreme end some regions deal with, but still enough heat cycling over a year to dry out spring lubricant and stiffen nylon rollers faster than in a mild climate. On a torsion setup, that shows up as a spring that's noticeably noisier before it eventually gives out, not usually a sudden failure with no warning.\n\nFor a door built around 2001, that's roughly two decades of heat cycles on the original spring, whatever it was rated for. Springs are rated in cycles, not years, but years of Texas summers add up to a lot of open-close cycles even on a two-car garage that only sees a few uses a day.\n\nHere's the honest limit: if your opener board is old enough that the manufacturer's stopped making the matching replacement part, we're not going to spend an hour hunting for a part that doesn't exist anymore. At that point a new opener is the actual fix, and we'll say so instead of billing you for a search we already know won't land."
+  }
+ ],
+ "faq": [
+  {
+   "q": "Do you have a location in Seagoville?",
+   "a": "No. We run out of Dallas, about 16 miles away. We still take jobs in Seagoville, but we're not a local depot, so factor in some drive time when you call."
+  },
+  {
+   "q": "How old are most garage doors in Seagoville?",
+   "a": "The area's median home was built in 2001, which is newer than the 1993 median across the wider service area. Most doors here are original builder-grade doors from that era unless a homeowner's already replaced one."
+  },
+  {
+   "q": "Will an old opener board just get repaired?",
+   "a": "Not always. If the board is old enough that the manufacturer's stopped stocking the matching part, replacing the whole opener usually costs less than hunting for a discontinued board — we'll tell you which way it goes before we start."
+  },
+  {
+   "q": "Does the heat here affect garage door springs?",
+   "a": "This area sits in a moderate heat climate band, and repeated heat cycling over the years dries out spring lubricant and stiffens rollers faster than in a cooler climate. A noisier torsion spring is usually the first sign, well before it breaks."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "Seagoville, TX"
+ },
+ "swap_test": [
+  "Seagoville's median home was built in 2001, roughly eight years newer than the 1993 median across the wider service area.",
+  "Seagoville has 5,401 households and a median income of $68,020, versus an $83,256 median across the 165,955-household service area.",
+  "Seagoville sits about 16 miles from our Dallas shop, one of the longer hauls in the coverage area, on par with Lancaster, Wilmer, and DeSoto.",
+  "A house built around Seagoville's 2001 median almost always shipped with a torsion spring, not the older extension-spring setups from the earliest part of the 1973-2007 stock.",
+  "For a Seagoville door built around 2001, that's roughly two decades of heat cycles on the original spring.",
+  "There's no Seagoville depot, and Seagoville isn't going to be the fastest add-on to a route already running through closer-in stops like Balch Springs or Sunnyvale."
+ ],
+ "facts_used": [
+  "F1",
+  "F3",
+  "F7",
+  "F10"
+ ]
+}

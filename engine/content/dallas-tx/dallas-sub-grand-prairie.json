@@ -1,0 +1,59 @@
+{
+ "title": "Garage Door Repair for Grand Prairie, TX | Dallas Garage Door",
+ "meta": "Garage door repair and install for Grand Prairie, TX, built out mainly in the early 1990s. We run the 16-mile call from our Dallas shop, gear matched to this housing stock.",
+ "h1": "Garage Door Service for Grand Prairie Homes",
+ "sections": [
+  {
+   "h2": "What's Actually on Grand Prairie Streets",
+   "body": "Grand Prairie's median home was built in 1991, which puts it almost dead center in the 1973-2007 window that describes most of the houses we work on across the service area, where the overall median lands at 1993. That two-year gap doesn't sound like much, but it means Grand Prairie's stock skews slightly ahead of the pack — more of these garages went up in the run of construction right before the mid-90s wave hit the rest of the metro.\n\nWith 66,943 households here and a median income of $78,889, this is a place with a lot of original owners and a lot of original garages, not a fresh subdivision still under builder warranty. We're 16 miles out from our Dallas shop to reach you, which is the same haul as Seagoville, another stop on our route. That distance doesn't change what we bring to the job, but it does mean we schedule the drive rather than roll up from around the corner.\n\nA door installed in 1991 is old enough to have been through one or two hardware swaps already, or old enough that it hasn't and is due."
+  },
+  {
+   "h2": "Older Doors, Newer Doors",
+   "body": "Across the wider area we cover, construction spans from 1973 up through 2007, and most of it — 17 named areas' worth — clusters in the 1980s and 90s. Grand Prairie sits right in that cluster, tight around 1991, rather than spread across the full range the way some parts of the service area are.\n\nWhat that means on the ground: you're less likely to find the true late-70s originals with their oddball track widths, and less likely to find post-2000 builder-grade doors with lighter gauge steel and factory openers barely a decade old. Most of what we see here is squarely early-90s — a door and opener that were solid for their time, now old enough that springs have been through a full duty cycle or two and openers are hitting the end of a normal service life.\n\nHere's the limitation worth saying out loud: if your house is one of the newer builds mixed into an older Grand Prairie block, we don't automatically know your door's spec from the address alone. Panel style and opener brand still vary house to house even within a tight build year, so a phone estimate on parts is a guess until we're standing in front of it."
+  },
+  {
+   "h2": "The Drive From Dallas",
+   "body": "We don't have a shop in Grand Prairie. The truck comes from Dallas, 16 miles away, and that's the honest shape of it — we're not going to pretend there's a depot around the corner or promise a response time we can't back up. What we can tell you is that Grand Prairie sits in the same distance band as a few other stops on our route, so it's a normal part of how the day gets planned, not a special trip.\n\nIf you're calling about a door that won't open at all — car trapped inside, spring snapped, opener dead — say so when you call. That's the kind of job that gets bumped up the list regardless of how far it is from Dallas. A cosmetic issue, a slow roller, a dent that isn't affecting function, that's the kind of job that fits in around the schedule instead.\n\nWe'd rather tell you up front that you're not our next-door neighbor than let you assume a truck is sitting five minutes away waiting for your call."
+  },
+  {
+   "h2": "What This Means for Your Door",
+   "body": "This area sits in a moderate heat band, not the kind of extreme swing that cracks panels or cooks openers on its own. That's actually good news for a house built in 1991 — the failures we expect here come from age and use, not from the climate beating the door apart. Torsion springs that have done three decades of cycles, rollers worn oval instead of round, opener circuit boards from an era before today's safety-sensor standards.\n\nWith 66,943 households in Grand Prairie and a build pattern this consistent, a lot of these garages are working through the same short list of problems around the same time: original spring never replaced, chain-drive opener original to the house, weatherstripping gone brittle at the bottom panel. None of that is dramatic, but it adds up to doors that fail without much warning once a spring finally lets go.\n\nOne limitation here too — if the failure turns out to be structural, a bent track from years of a misaligned door, or a jamb that's shifted with the house, that's a repair we'll price on-site, not over the phone. Some of it is a quick fix. Some of it means talking about replacement instead of chasing a repair that won't hold."
+  }
+ ],
+ "faq": [
+  {
+   "q": "Do you have a location in Grand Prairie?",
+   "a": "No. We run out of our Dallas shop, about 16 miles from Grand Prairie. We still take jobs here regularly, but we're driving in rather than working out of a local depot."
+  },
+  {
+   "q": "My house in Grand Prairie was built in the early 90s — is that going to affect repair costs?",
+   "a": "It can affect what parts we're dealing with. A door and opener from around 1991 are old enough that original hardware is often past its normal service life, which sometimes means a full spring or opener swap instead of a small fix."
+  },
+  {
+   "q": "How fast can you get to Grand Prairie for a broken spring?",
+   "a": "We don't quote a fixed response time since we're traveling from Dallas. A dead door with a car trapped inside gets priority scheduling over cosmetic issues, but we won't promise an arrival window we can't guarantee."
+  },
+  {
+   "q": "Is heat a big factor in garage door problems in Grand Prairie?",
+   "a": "Not really. This area sits in a moderate heat band, so it's not the main driver of failures the way it can be in hotter climates. Age and use wear these doors out more than temperature does."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "Grand Prairie, TX"
+ },
+ "swap_test": [
+  "Grand Prairie's median home was built in 1991, two years ahead of the area-wide median of 1993.",
+  "Grand Prairie has 66,943 households and a median income of $78,889.",
+  "We're 16 miles out from our Dallas shop to reach Grand Prairie, the same distance as Seagoville.",
+  "Most of Grand Prairie's housing clusters tightly around 1991 rather than spreading across the full 1973-2007 range seen elsewhere in the service area.",
+  "This area sits in a moderate heat band, not the kind of extreme swing that cracks panels or cooks openers on its own."
+ ],
+ "facts_used": [
+  "F1",
+  "F2",
+  "F3",
+  "F6",
+  "F7",
+  "F10"
+ ]
+}

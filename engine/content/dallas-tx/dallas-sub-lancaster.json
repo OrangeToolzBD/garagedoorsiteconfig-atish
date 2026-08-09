@@ -1,0 +1,54 @@
+{
+ "title": "Garage Door Repair in Lancaster, TX | Dallas Garage Door",
+ "meta": "Dallas Garage Door serves Lancaster, TX, 14 miles from our Dallas base. We know the 1990s-era doors and openers common on this side of the service area.",
+ "h1": "Garage Door Service for Lancaster, TX Homeowners",
+ "sections": [
+  {
+   "h2": "This Area's Housing",
+   "body": "Lancaster's median home was built around 1990, which puts it near the middle of the 1973-2007 range we see across the whole service area. With 14,648 households and a median income of $67,584, this side of things runs below the wider service-area median of $83,256. That gap matters more than people think. A homeowner replacing a door here is often weighing a straight repair against a full swap, and budget shapes which one makes sense. We're not guessing at your street specifically — we don't have block-by-block data — but a home built in 1990 tells us a lot about what's likely bolted to the header above your car right now. It's probably not the original door if the house has changed hands a few times, but the opener and track hardware often outlast a couple of owners without anyone thinking about it."
+  },
+  {
+   "h2": "Older vs. Newer Streets",
+   "body": "Not every house in Lancaster went up in the same year, even with 1990 as the midpoint. Pockets built earlier in that stretch carry hardware a decade or more older than pockets built toward the late 1990s or 2000s, which is common across the broader 1973-2007 build window we work in. Earlier torsion setups tend to run lighter springs and simpler drive units. Homes built closer to 2000 usually have heavier doors, insulated panels, and openers with more electronics to fail. If your house sits on one of the older streets, the spring winding down after decades of cycles is a normal wear item, not a sign anything was done wrong. If it's newer stock, the failure point is more often a circuit board or a sensor going out of alignment than the spring itself."
+  },
+  {
+   "h2": "When We Can Get There",
+   "body": "We run out of Dallas, and Lancaster sits about 14 miles out. We don't have a shop or truck stationed in town, so every job starts with a drive down from Dallas. We're upfront about that because it's a fair question before you book — we'd rather you know the setup than assume we're around the corner. We don't quote a fixed response window here since traffic and the job ahead of yours both affect it, but distance alone hasn't stopped us from covering this part of the map."
+  },
+  {
+   "h2": "What That Means for Doors",
+   "body": "On a door built near 1990, the parts most likely to give out first are the torsion spring, the roller bearings, and an aging chain-drive opener that's due for a capacitor or a full swap. None of that is unusual for a house pushing three decades old — it's just what wears. Where we run into trouble is sourcing an exact panel match for a door that old if only part of it is damaged; sometimes the honest answer is a new door section that won't quite match the sun-faded rest, or a full replacement instead of a patch. We'll tell you which one makes sense for your situation rather than sell you a repair that won't hold. If your opener is original to a 1990-built house, it's worth having someone look at the whole unit, not just the part that quit."
+  }
+ ],
+ "faq": [
+  {
+   "q": "Does Dallas Garage Door have a location in Lancaster?",
+   "a": "No. We work out of Dallas and drive to Lancaster for jobs, about 14 miles each way. There's no local depot here, just a truck coming from our base."
+  },
+  {
+   "q": "My house in Lancaster was built in the early 1990s — is my door original?",
+   "a": "Possibly, but most doors get replaced at least once over 30+ years. What's more often original is the opener or the track hardware, which tend to get ignored until something breaks."
+  },
+  {
+   "q": "Is it worth repairing an older garage door or should I replace it?",
+   "a": "Depends on what's failing. A spring or roller on an otherwise solid door is usually worth fixing. If the panels are bent or the opener is failing alongside the spring, replacement often costs less over time than patching piece by piece."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "Lancaster, TX"
+ },
+ "swap_test": [
+  "Lancaster's median home was built around 1990, which puts it near the middle of the 1973-2007 range we see across the whole service area.",
+  "With 14,648 households and a median income of $67,584, this side of things runs below the wider service-area median of $83,256.",
+  "We run out of Dallas, and Lancaster sits about 14 miles out.",
+  "Not every house in Lancaster went up in the same year, even with 1990 as the midpoint.",
+  "On a door built near 1990, the parts most likely to give out first are the torsion spring, the roller bearings, and an aging chain-drive opener that's due for a capacitor or a full swap.",
+  "If your house sits on one of the older streets, the spring winding down after decades of cycles is a normal wear item, not a sign anything was done wrong."
+ ],
+ "facts_used": [
+  "F1",
+  "F2",
+  "F7",
+  "F10"
+ ]
+}

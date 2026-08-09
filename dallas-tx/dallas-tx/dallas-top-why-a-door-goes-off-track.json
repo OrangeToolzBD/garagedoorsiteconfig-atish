@@ -1,0 +1,58 @@
+{
+ "title": "Why a Garage Door Goes Off Track in Older Dallas, TX Homes",
+ "meta": "Most Dallas garage doors run on track hardware from 1973-2007 construction. Here's why doors jump the track in this heat, and what really fixes it.",
+ "h1": "Why Garage Doors in Dallas Jump the Track",
+ "sections": [
+  {
+   "h2": "What Dallas conditions do to a garage door track",
+   "body": "Most houses inside our service area went up between 1973 and 2007, with the median build year sitting at 1993. That's the era of steel track bolted straight into a wood door jamb — no shims, no separate mounting plate, just lag screws into framing that's now three decades old. In neighborhoods like Lakewood, Kessler, and Vickery Meadow, and the closer-in stretches around Old East Dallas and Oak Lawn, that original track is often still hanging on the same jamb it shipped with. Wood moves. Screws back out a sixteenth of an inch a year and nobody notices until the track bracket has enough play that a roller can walk right out of the channel on a hard stop. Farther out — toward Highland Park, University Park, and the mixed 1980s-90s stock that makes up most of this area — you'll find the same setup on a longer timeline. The door isn't broken. The thing holding the track to the house has quietly loosened for twenty or thirty years, and one hard open finally lets it show."
+  },
+  {
+   "h2": "The seasonal bit",
+   "body": "This area sits in a moderate-heat climate band, which matters more for a garage door track than most people think. It's not ice pulling brackets loose here — it's decades of steel track heating up in the afternoon and contracting back down every night. Every cycle works the mounting screws a fraction looser. Do that for years on a house built in the 1980s or 90s, which is most of the housing stock in this service area, and the bracket that held tight the day it was installed is now riding on worn wood fiber. Add a slab that's shifted slightly under Texas heat over the years, and the vertical track can go a few degrees out of plumb without anyone noticing from the driveway. That's usually enough. A door that's run fine for decades doesn't need a dramatic event to come off track — it just needs the next hot day and someone opening it a little too fast."
+  },
+  {
+   "h2": "The situation",
+   "body": "Here's what actually happens: a roller stub, a wheel about an inch across, rides inside a U-shaped steel channel. When the bracket holding that channel loosens — from age, from a slab that's moved, from decades of heat cycling — the channel tips just enough that the roller has room to jump the lip on a rise or a hard stop. On houses from this build era, the original track was set up for the original roller and the original spring tension. If any one of those three has been swapped — a roller replaced years back, a spring adjusted last summer, but the track never re-checked — the geometry can be just off enough to let a roller ride the edge instead of the channel. Sometimes it's simpler: something backs into the door, or a bottom bracket cable frays and lets one side of the door drop while the other stays up, twisting the whole panel sideways out of both tracks at once. That one's obvious from the driveway. The slow bracket failure isn't — it looks fine right up until it doesn't."
+  },
+  {
+   "h2": "What most people get wrong",
+   "body": "The instinct is to grab the door and shove it back into the channel. Don't. If a spring is still under tension, that's how people lose fingers, not headlines. And pushing a roller back into a track that's tipped from a loose bracket doesn't fix anything — it just sets the door up to jump again the next time it's opened. The actual fix is almost always re-anchoring the bracket into solid framing, not bending the track back into shape. On a jamb that's thirty or forty years old, the original screw holes are often stripped, so the repair means moving the bracket to fresh wood, not re-driving the same screws. Here's the honest limit: if the track itself is bent — not just loose, but bowed or kinked from an impact — straightening it rarely holds. A bent track that's been hammered back into shape will look right for a week and then start binding again. At that point replacing the track section costs less in the long run than a second call for the same door."
+  }
+ ],
+ "faq": [
+  {
+   "q": "Why does my garage door keep coming off the track?",
+   "a": "On a lot of Dallas houses built between 1973 and 2007, the track bracket is still bolted into the original jamb. Decades of heat cycling and small shifts in the framing loosen those screws over time, and the door finally jumps the channel on a hard stop."
+  },
+  {
+   "q": "Does the Dallas heat actually affect the garage door track?",
+   "a": "Yes. This area sits in a moderate-heat band, and steel track expands and contracts with it every day. Over years that cycle works mounting screws loose, which is a slower cause than an impact but just as common in older houses here."
+  },
+  {
+   "q": "Can I push my garage door back onto the track myself?",
+   "a": "Not if the spring is still under tension — that's a real injury risk, not a minor one. Even without tension, pushing a roller into a tipped track doesn't fix the loose bracket underneath it, so the door will likely jump again."
+  },
+  {
+   "q": "Is a bent track worth fixing, or should it be replaced?",
+   "a": "A track that's loose but straight can usually be re-anchored. A track that's actually bent or kinked from an impact rarely stays straight after being hammered back into shape — replacing that section holds up better and costs less over time."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "Dallas, TX"
+ },
+ "swap_test": [
+  "Most houses inside our service area went up between 1973 and 2007, with the median build year sitting at 1993.",
+  "In neighborhoods like Lakewood, Kessler, and Vickery Meadow, and the closer-in stretches around Old East Dallas and Oak Lawn, that original track is often still hanging on the same jamb it shipped with.",
+  "Farther out — toward Highland Park, University Park, and the mixed 1980s-90s stock that makes up most of this area — you'll find the same setup on a longer timeline.",
+  "This area sits in a moderate-heat climate band, which matters more for a garage door track than most people think.",
+  "Do that for years on a house built in the 1980s or 90s, which is most of the housing stock in this service area, and the bracket that held tight the day it was installed is now riding on worn wood fiber.",
+  "On houses from this build era, the original track was set up for the original roller and the original spring tension."
+ ],
+ "facts_used": [
+  "F1",
+  "F2",
+  "F3",
+  "F10"
+ ]
+}

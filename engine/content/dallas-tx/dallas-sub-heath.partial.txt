@@ -1,0 +1,12 @@
+{
+  "title": "Garage Door Repair & Service in Heath, TX | Dallas Garage Door",
+  "meta": "Dallas Garage Door services Heath, TX garage doors and openers built mostly after 2001, with repair and install jobs run from our Dallas base, 18 miles away.",
+  "h1": "Garage Door Service for Heath, TX Homes",
+  "sections": [
+    {
+      "h2": "This Area's Housing",
+      "body": "Heath's homes are newer than what we see across most of the rest of the service area. The median build year here is 2001, about eight years past the 1993 median for the wider Dallas coverage area, where houses typically went up somewhere between 1973 and 2007. That later start matters for garage doors: fewer surviving original 1970s-80s doors, more factory-installed steel sectional doors with torsion springs built in from day one.\n\nHeath is a small slice of what we cover — about 3,414 households, compared to roughly 165,955 households across the full service area we run trucks to from Dallas. Median household income in Heath runs $216,160, well above the $83,256 median for the wider area. Higher-value builds in this range tend to arrive with insulated doors and belt-drive openers already in place, rather than retrofit jobs added later.\n\nNone of that means nothing breaks. It just changes what breaks. A door built in 2001 is 20-plus years old regardless of the neighborhood's income bracket, and springs, cables, and openers all have working lifespans measured in cycles, not dollars."
+    },
+    {
+      "h2": "Older vs Newer Streets",
+      "body": "Some of the towns we run trucks to have a real split between older sections built decades ago and newer additions going up more recently. Heath doesn't show that pattern in the numbers we have — the housing here clusters tightly around a 2001 median, without the older 1970s-80s pockets you'd find closer into Dallas.\n\nThat's simpler for diagnosis in one way. We're not guessing whether a house has a decades-old low-headroom torsion setup or a modern factory install. What we don't have is a street-by-street breakdown inside Heath itself, so if your particular section of town went up notably earlier

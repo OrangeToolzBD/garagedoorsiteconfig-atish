@@ -1,0 +1,56 @@
+{
+ "title": "Garage Door Repair in Glenn Heights, TX | Dallas Garage Door",
+ "meta": "Dallas Garage Door travels to Glenn Heights, 18 miles from our shop, to repair torsion springs, openers, and tracks on the area's newer 2000-era homes.",
+ "h1": "Garage Door Service for Glenn Heights Homes",
+ "sections": [
+  {
+   "h2": "This Area's Housing",
+   "body": "Glenn Heights homes run newer than most of what we work on out of Dallas. The median year built here is 2000, while the wider service area we cover skews older, with a median build year of 1993 and most of the stock going up in the 1980s and 90s (F1, F2). That ten-to-twenty-year gap matters more than it sounds like it should, because garage doors and openers changed a lot in that stretch.\n\nThere are 5,734 households in Glenn Heights, a small slice of the 165,955 households across the territory we run trucks into from Dallas (F6). Median household income here sits at $79,739, a bit under the $83,256 median for the service area as a whole (F7). None of that changes how we fix a door, but it does mean the housing stock, and the doors on it, look different from what we see closer to the older neighborhoods near downtown."
+  },
+  {
+   "h2": "Older vs Newer Streets",
+   "body": "Because Glenn Heights homes cluster right around 2000, you don't get the same mix of old and new hardware you'd find in a place with a wider spread. Housing across the full service area runs from 1973 up through 2007 (F1), so a truck working the older end of that range is dealing with extension springs bolted to the sides of the track, worn-out chain-drive openers from before rolling-code remotes were standard, and doors sized for hardware nobody makes anymore.\n\nGlenn Heights sits on the newer side of that range. Doors here are more likely to be factory steel sectional units on torsion springs mounted on a shaft above the opening, with openers built after photo-eye safety sensors became standard equipment. The failures we see tend to be wear and fatigue on parts installed correctly the first time, not the mismatched replacement parts and improvised fixes that turn up on 1970s and 80s garages."
+  },
+  {
+   "h2": "When We Can Get There",
+   "body": "Glenn Heights sits 18 miles from our shop in Dallas, on the far edge of the territory we cover (F10). We don't have a crew stationed in Glenn Heights, and we're not going to pretend otherwise. Every job here starts with a truck leaving Dallas.\n\nThat distance is one of the reasons we ask what's wrong with the door before we load the truck. A broken spring or a door stuck on its track is worth the drive on its own. A five-minute adjustment usually gets bundled with other calls in the area that day, because it doesn't make sense to send a truck 18 miles for a task that takes less time than the drive itself. If you're not sure which one you've got, tell us what the door's doing and we'll figure out where it fits in the day."
+  },
+  {
+   "h2": "What That Means for Doors",
+   "body": "A door installed when a Glenn Heights house was built in 2000 is now old enough that original parts are wearing out on schedule, not failing early. Torsion springs are rated in cycles, and twenty-plus years of daily use puts a lot of these springs near the end of their working life. Openers from that era are old enough that circuit boards and capacitors are common failure points, more than the motor itself.\n\nHeat is a factor too. The service area sits in a moderate-heat climate band (F3), and long summers work on rubber seals, nylon rollers, and lubricant the same way they work on the rest of the house. On a 2000-era door, that shows up as brittle weatherstripping, dry or worn rollers, and openers that start acting up as the temperature climbs.\n\nOne limit worth saying plainly: if a torsion spring lets go on an original system this old, we'll tell you if it makes more sense to replace both springs and the cable drums together rather than patch one side. Matching a new spring to a twenty-year-old one rarely holds up."
+  }
+ ],
+ "faq": [
+  {
+   "q": "How far is Glenn Heights from your shop?",
+   "a": "About 18 miles from our Dallas shop. We don't keep a crew or depot in Glenn Heights, so every call here starts with a truck making that drive."
+  },
+  {
+   "q": "Are garage doors in Glenn Heights different from older Dallas neighborhoods?",
+   "a": "Generally, yes. Glenn Heights homes have a median build year of 2000, newer than the service area's overall 1993 median, so torsion-spring setups and modern openers are more common than the extension-spring hardware found on older houses."
+  },
+  {
+   "q": "How old are most garage door openers in Glenn Heights likely to be?",
+   "a": "With a median build year of 2000, a lot of original openers are now over two decades old, right in the range where circuit boards and capacitors, not motors, tend to cause the trouble."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "Glenn Heights, TX"
+ },
+ "swap_test": [
+  "The median year built here is 2000, while the wider service area skews older with a median build year of 1993.",
+  "There are 5,734 households in Glenn Heights.",
+  "Median household income here sits at $79,739, a bit under the $83,256 median for the service area.",
+  "Glenn Heights sits 18 miles from our shop in Dallas.",
+  "Housing across the full service area runs from 1973 up through 2007.",
+  "Glenn Heights sits on the newer side of that range."
+ ],
+ "facts_used": [
+  "F1",
+  "F2",
+  "F3",
+  "F6",
+  "F7",
+  "F10"
+ ]
+}

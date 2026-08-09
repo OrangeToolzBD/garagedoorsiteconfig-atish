@@ -1,0 +1,55 @@
+{
+ "title": "DeSoto, TX Garage Door Repair — Dallas Garage Door",
+ "meta": "Garage door spring, opener, and track repair for DeSoto homes built 1973-2007. Dallas Garage Door serves DeSoto, 14 miles out, with parts matched to local housing stock.",
+ "h1": "Garage Door Repair for DeSoto Homes",
+ "sections": [
+  {
+   "h2": "This Area's Housing",
+   "body": "DeSoto sits 14 miles south of Dallas, and the housing here reflects a build-out that mostly happened after the city's oldest neighborhoods were already established. Across the wider service area, homes were built between 1973 and 2007, with the median landing in 1993 — and DeSoto's own numbers track right at that median. That puts a lot of these garages solidly in the late-70s-through-90s window, not the older single-panel stock you'd find closer into Dallas proper. With roughly 20,975 households in DeSoto and a median income of $83,256, this is a market of original construction, additions, and the occasional full remodel — not a lot of pre-war garages needing hardware nobody makes anymore. That matters because the doors, tracks, and openers installed in a 1993-era garage are a different animal from what you'd find in a house built in 1955, and the common failure points aren't the same either."
+  },
+  {
+   "h2": "Older vs. Newer Streets",
+   "body": "Even within a median year of 1993, there's real spread — the service area's stock runs from 1973 up through 2007, and DeSoto has pockets on both ends. The older streets, closer to that 1973 mark, are more likely to still have their original steel doors on extension-spring hardware mounted along the horizontal track, with openers that have been swapped once or twice since. The newer construction, pushing toward 2007, usually came with torsion springs over the header and insulated doors from the factory, which changes what a repair actually involves. Neither is better or worse — they just call for different parts on the truck. A tech who shows up expecting one and finds the other loses time, which is part of why guessing the age of a door before rolling out matters more than it sounds like it should."
+  },
+  {
+   "h2": "When We Can Get There",
+   "body": "DeSoto is about 14 miles from our shop in Dallas. We don't run a crew stationed in DeSoto — every job here means a truck making that drive, so we're not going to promise a same-day slot or a fixed arrival window before we've actually scheduled the call. What we can tell you is that the distance is known and factored into routing, not a surprise sprung on you after you've booked. If a spring lets go on a Tuesday morning, we'd rather give you an honest window than a number that sounds good on a website and falls apart in practice."
+  },
+  {
+   "h2": "What That Means for Doors",
+   "body": "Given the 1973-2007 build range and the moderate heat load this part of Texas carries, the failures we expect in DeSoto are mechanical fatigue, not weather damage — torsion and extension springs that have cycled past their rated life, rollers that have worn oblong, and openers from the 90s and early 2000s reaching the end of their gear-and-sprocket life. Steel doors from this era hold up fine structurally; it's almost always the moving hardware, not the panel, that fails. One honest limitation: if a door from the early end of that build window has an opener original to the house, replacement parts for that specific model may take longer to source than a same-week fix — sometimes swapping the opener outright is the faster and cheaper path, and we'll say so instead of chasing a part that's hard to find."
+  }
+ ],
+ "faq": [
+  {
+   "q": "Do you have a crew based in DeSoto?",
+   "a": "No — we run out of Dallas, about 14 miles north. Every DeSoto job is a scheduled truck run, not a local dispatch, so we plan around that distance rather than promise a fixed same-day window."
+  },
+  {
+   "q": "Are DeSoto garage doors mostly original to the house?",
+   "a": "A lot are. With the area's housing built mainly between 1973 and 2007 and a median around 1993, plenty of garages still have their original door, and some still have the original opener too, especially on the older end of that range."
+  },
+  {
+   "q": "Is a broken spring or a bad opener more common here?",
+   "a": "Both show up, but spring failure from normal cycle fatigue is the most frequent call in homes from this build era. Opener failure tends to follow a few years later once the gear-and-sprocket drive starts wearing out."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "DeSoto, TX"
+ },
+ "swap_test": [
+  "DeSoto sits 14 miles south of Dallas",
+  "DeSoto's own numbers track right at the service area's 1993 median build year",
+  "roughly 20,975 households in DeSoto and a median income of $83,256",
+  "the service area's stock runs from 1973 up through 2007, and DeSoto has pockets on both ends",
+  "DeSoto is about 14 miles from our shop in Dallas",
+  "we run out of Dallas, about 14 miles north"
+ ],
+ "facts_used": [
+  "F1",
+  "F2",
+  "F3",
+  "F7",
+  "F10"
+ ]
+}

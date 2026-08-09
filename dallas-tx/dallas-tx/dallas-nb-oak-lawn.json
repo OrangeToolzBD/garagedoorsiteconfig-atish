@@ -1,0 +1,51 @@
+{
+ "title": "Oak Lawn Dallas Garage Door Repair & Install",
+ "meta": "Garage door repair and install for Oak Lawn, Dallas homes built mostly between 1973 and 2007 — spring, opener, and track work suited to that housing stock.",
+ "h1": "Garage Door Work for Oak Lawn Houses",
+ "sections": [
+  {
+   "h2": "the_housing_here",
+   "body": "Oak Lawn sits inside a wider stretch of Dallas where the houses mostly went up between 1973 and 2007, with the typical build year landing around 1993. That's a specific window for garage doors. Houses from this run almost never have the old wood tilt-up doors — they came with steel sectional doors on torsion springs, paired with chain-drive or screw-drive openers that were standard through the 80s and 90s.\n\nWhat that means for you now: springs on a door from that era have likely been swapped at least once already, sometimes twice, and the openers — if original — are well past the point where you can still get matching parts. Circuit boards, remote frequencies, and drive gears from a 1990s opener don't always match what's on the shelf today. We can usually keep an older steel door running longer than the opener that lifts it.\n\nHeat is the other factor. This area runs on the moderate end of the heat band, which is less brutal on hardware than it could be, but plastic drive gears and old lubricant on a 20-plus-year-old opener still wear faster in a hot garage than in a conditioned space. If your opener is original to a house built in the early 90s, that's usually the first thing worth having a look at, not the door itself."
+  },
+  {
+   "h2": "getting_a_look_at_it",
+   "body": "We can't tell you over the phone whether a door needs a spring, a cable, or a whole new opener — not honestly. A door that won't open could be a snapped torsion spring, a broken cable, a misaligned track, or an opener logic board that's given out, and each of those needs eyes on it, not a guess.\n\nWhen we come look at a door in this kind of housing, we're checking the spring wind and wear, the roller condition, whether the track has pulled away from the frame, and whether the opener's drive and gears still match the door's weight — a lot of these houses have had at least one door replaced since the original build, and the opener doesn't always get swapped to match.\n\nHere's the honest limit: if a steel door from this era has rusted through at the bottom panel or the track brackets have pulled loose from the framing, patching it usually costs close to what a new door runs, and we'll tell you that instead of billing you for a repair that won't hold. Sometimes the right call is a new door on the existing opener, or the reverse. We'll say which, and why, before any work starts."
+  },
+  {
+   "h2": "where_this_is",
+   "body": "Oak Lawn is about 2 miles WNW of downtown Dallas — close enough that Old East Dallas sits roughly a mile to the northeast and the West End is about 2 miles to the southwest. Lower Greenville is a couple miles north, and Highland Park is about 3 miles out. We're describing the area this way because we don't have specific street names for this page, just the general location and the housing that fills it.\n\nAcross the broader Dallas service area we work in, there are around 165,955 households and about 80,920 owner-occupied houses, with median household income near $83,256. That context matters less for pinpointing a driveway and more for explaining why so much of the door and opener hardware out here is mid-market steel and mid-tier openers rather than higher-end custom doors — the housing stock built out fast in a fairly narrow window, and the garage hardware that went in with it followed the same pattern."
+  }
+ ],
+ "faq": [
+  {
+   "q": "How old does my garage door opener need to be before it's not worth fixing?",
+   "a": "It depends more on the model than the exact age. If parts like the logic board or drive gear aren't available anymore, replacement usually makes more sense than chasing parts. We'll check what you've got in person and tell you straight if it's fixable."
+  },
+  {
+   "q": "Do the original garage doors in this area usually need spring work by now?",
+   "a": "Houses in this area were mostly built between 1973 and 2007, so a lot of the original torsion springs have already been replaced once. If yours hasn't, and the door feels heavy or uneven to lift by hand, that's worth having checked."
+  },
+  {
+   "q": "Does the Dallas heat cause garage door problems?",
+   "a": "This area runs on the moderate end of the heat band, so it's less of a factor than in hotter parts of the state, but old lubricant and plastic opener gears still wear faster in a hot garage over the years."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "Oak Lawn, Dallas, TX"
+ },
+ "swap_test": [
+  "Most of the houses in Oak Lawn went up between 1973 and 2007, with the typical build year around 1993.",
+  "That build window means steel sectional doors on torsion springs paired with chain-drive or screw-drive openers, not older wood tilt-up styles.",
+  "Oak Lawn sits about 2 miles WNW of downtown Dallas, roughly a mile southeast of Old East Dallas and two miles northeast of the West End.",
+  "The wider service area runs heat-moderate, which matters more for opener lubricant and drive gears than for the door panels themselves.",
+  "Across the service area there are roughly 165,955 households and 80,920 owner-occupied houses, with a median household income near $83,256."
+ ],
+ "facts_used": [
+  "F1",
+  "F2",
+  "F3",
+  "F6",
+  "F7",
+  "F10"
+ ]
+}

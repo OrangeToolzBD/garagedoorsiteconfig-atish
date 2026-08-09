@@ -1,0 +1,52 @@
+{
+ "title": "Garage Door Repair in Lower Greenville, Dallas TX",
+ "meta": "Garage door repair and replacement for Lower Greenville, Dallas — a stretch built mostly 1973-2007, sitting about 2 miles north of downtown.",
+ "h1": "Garage Doors for Lower Greenville Houses",
+ "sections": [
+  {
+   "h2": "the_housing_here",
+   "body": "Most of what's standing in this part of Lower Greenville went up between 1973 and 2007, with the typical house on the ground landing around 1993. That puts a lot of doors and openers squarely in the torsion-spring, sectional-steel era — not the older one-piece slab doors, but not current hardware either. Chain-drive openers from the 80s and 90s are common, and a fair number are still running on their original spring set because nobody's ever had a reason to touch them.\n\nAcross the wider mix of nearby built-up areas, the pattern is the same: mostly 1980s and 90s stock, not much older, not much newer. That matters because a torsion spring rated for a door built in 1991 doesn't always match what's on the shelf today — sometimes it's a straight swap, sometimes the drum or shaft needs adapting.\n\nOne honest limitation: without a street address in front of us, we can't tell you what's actually on your garage from a general age range alone. A house from this build window could have had the door replaced twice already, or never. We look at the door, not the year the neighborhood went up."
+  },
+  {
+   "h2": "getting_a_look_at_it",
+   "body": "Dallas heat sits in the moderate band for this region, which is enough to bake out lubricant, dry up weatherstripping, and put extra strain on an opener motor that's already twenty-some years old. That's usually what shows up first — a door that groans, an opener that runs hot, a spring that finally lets go on a summer afternoon.\n\nWe come look at the door before we quote it. Torsion spring jobs on a double door aren't something we price over the phone, because the drum size, cable routing, and track condition all change what the job actually needs. If your opener is original to a house from this build era, parts can be a longer wait than on newer models — that's a real limitation, not a sales pitch, and we'll tell you upfront if a repair is going to cost more in parts and wait time than just replacing the unit.\n\nWe're not going to tell you a broken spring means a new door. Most of the time it doesn't. But if the track is bent, the panels are rusted through, or the opener's circuit board is the kind that's stopped being made, we'll say so plainly instead of stringing along a repair that won't hold."
+  },
+  {
+   "h2": "where_this_is",
+   "body": "Lower Greenville sits about 2 miles north of the Dallas center point, on the near-in side of the city rather than out toward the suburbs. Old East Dallas sits close by to the southwest, South Dallas is well south, and Lakewood is a short run to the northeast — all part of the same inner ring of neighborhoods that built out well before the far edges of the metro did.\n\nThis service area overall covers 165,955 households, with 80,920 of those owner-occupied, and a median household income of $83,256. That's the backdrop for the kind of work we see — owner-occupied houses where a garage door getting fixed right the first time matters more than finding the cheapest possible patch.\n\nWe don't cover every direction equally. Places well out toward the southern and eastern edges of the broader service area — the ones running ten, fifteen, even twenty miles out — are a different kind of call than something two miles up the road. If you're close in, like Lower Greenville is, that's the more straightforward job for us to get to."
+  }
+ ],
+ "faq": [
+  {
+   "q": "How old are most of the garage doors in Lower Greenville going to be?",
+   "a": "Houses in this stretch were mostly built between 1973 and 2007, with the typical one dating to around 1993. That means a lot of original torsion-spring setups and chain-drive openers from the 80s and 90s, though plenty have been swapped out since then."
+  },
+  {
+   "q": "Do you still carry parts for an older torsion spring setup?",
+   "a": "Often yes, but not always off the truck. Springs and drums from the 80s and 90s sometimes need a size match or a small adapter rather than a straight factory swap. We'll tell you at the door if a part needs ordering."
+  },
+  {
+   "q": "Does the Dallas heat actually shorten a garage door opener's life?",
+   "a": "It adds up. Moderate heat dries out lubricant and weatherstripping faster and makes an aging opener motor work harder. It's rarely the whole reason a unit fails, but it's usually part of why an older opener finally quits in summer."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "Lower Greenville, Dallas, TX"
+ },
+ "swap_test": [
+  "Lower Greenville sits about 2 miles north of the Dallas center point.",
+  "Most of what's standing in this part of Lower Greenville went up between 1973 and 2007, with the typical house landing around 1993.",
+  "Old East Dallas sits close by to the southwest, South Dallas is well south, and Lakewood is a short run to the northeast.",
+  "This service area overall covers 165,955 households, with 80,920 of those owner-occupied, and a median household income of $83,256.",
+  "Places well out toward the southern and eastern edges of the broader service area running ten, fifteen, even twenty miles out are a different kind of call than something two miles up the road.",
+  "Across the wider mix of nearby built-up areas, the pattern is mostly 1980s and 90s housing stock."
+ ],
+ "facts_used": [
+  "F1",
+  "F2",
+  "F3",
+  "F6",
+  "F7",
+  "F10"
+ ]
+}

@@ -1,0 +1,53 @@
+{
+ "title": "Lakewood, Dallas Garage Door Repair & Install",
+ "meta": "Garage door repair and replacement for Lakewood homes in Dallas, built mostly between 1973 and 2007 — springs, openers, and panels sized to that housing stock.",
+ "h1": "Garage Door Work for Lakewood Homes",
+ "sections": [
+  {
+   "h2": "The Housing Here",
+   "body": "Most of the houses on this side of Dallas went up between 1973 and 2007, with the typical build year landing around 1993. That puts a lot of garage doors and openers in this neighborhood at or past the point where springs fatigue and old chain-drive openers start grinding instead of running quiet. Across the wider service area there are roughly 80,920 owner-occupied houses and a median household income around $83,256, which tells you plainly: people here tend to fix a door rather than let it sit broken, and they can usually afford to do the job right the first time instead of patching it twice.\n\nThe climate band for Dallas runs moderate on heat, which is easier on steel doors and torsion springs than the extreme end of the scale, but summer heat still dries out lubrication and stiffens old rollers over a couple of decades. If your door is original to a house built in the 80s or 90s, the hardware is old enough to be due, even if it still opens fine most days.\n\nOne limit worth saying up front: on a door from that era, an exact color or panel match for a single damaged section isn't always possible. Manufacturers change their line-ups, and we won't pretend a replacement panel will look factory-identical when it won't."
+  },
+  {
+   "h2": "Getting A Look At It",
+   "body": "We start by looking at what's actually on the house — spring size and winding, track alignment, the age and mounting of the opener, whether the rollers are steel or the newer nylon kind. On houses built in the 1973-2007 window that's common through here, we're often dealing with torsion springs that were sized for a heavier door than what's currently hung, or an opener that's outlived the bracket it's mounted to.\n\nAfter that walk-through you get a written estimate before anything gets touched — no guessing after the fact. If the spring is the only problem, we say so. If the door itself is at the point where a new spring on an old track just buys you another six months, we say that too. Replacement makes more sense than repair on some of these older doors, and we'd rather tell you that up front than sell you a patch job.\n\nWe don't do cosmetic work unrelated to the door — no siding, no trim, no painting. If the opening itself needs framing repair, that's a call to a carpenter, not us."
+  },
+  {
+   "h2": "Where This Is",
+   "body": "Lakewood sits about three miles north-northeast of downtown Dallas. Lower Greenville is roughly two miles north, Old East Dallas is about a mile to the northwest, and Buckner Terrace and Everglade Park lie about four miles east. Northeast Dallas is close by as well, around four miles north-northeast. Highland Park is about three miles out and University Park about four, both in roughly the same direction from the center.\n\nWe work this pocket of Dallas as part of a wider service area that stretches well past it — out toward Balch Springs, Farmers Branch, Grand Prairie, and DeSoto, among other spots. That range matters less to you than the fact that a truck already working near Lower Greenville or Old East Dallas on a given day isn't far from a Lakewood address, so scheduling around here tends to be easier, not harder."
+  }
+ ],
+ "faq": [
+  {
+   "q": "How old does a garage door spring have to be before it's a real risk?",
+   "a": "There's no fixed age where a spring goes bad on a schedule — it depends on use and how it was would. On houses in this neighborhood built in the 80s and 90s, original springs are well past the age where we'd want to inspect rather than assume they're fine."
+  },
+  {
+   "q": "Can you match the panel color on an older door if just one section is damaged?",
+   "a": "Sometimes, but not always. Doors from the 1973-2007 range this neighborhood was mostly built in often used colors or finishes the current manufacturer lines don't carry anymore. We'll tell you honestly whether a close match exists before you pay for it."
+  },
+  {
+   "q": "Do you serve houses right in Lakewood or just the wider Dallas area?",
+   "a": "Yes, Lakewood is inside our service area, about three miles north-northeast of downtown Dallas. It's one of several neighborhoods we work in regularly on this side of town."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "Lakewood, Dallas, TX"
+ },
+ "swap_test": [
+  "Lakewood sits about three miles north-northeast of downtown Dallas.",
+  "Lower Greenville is roughly two miles north of Lakewood.",
+  "Old East Dallas is about a mile to the northwest.",
+  "Buckner Terrace and Everglade Park lie about four miles east.",
+  "Northeast Dallas is close by as well, around four miles north-northeast.",
+  "Most of the houses on this side of Dallas went up between 1973 and 2007, with the typical build year landing around 1993.",
+  "Across the wider service area there are roughly 80,920 owner-occupied houses and a median household income around $83,256."
+ ],
+ "facts_used": [
+  "F1",
+  "F2",
+  "F3",
+  "F6",
+  "F7",
+  "F10"
+ ]
+}

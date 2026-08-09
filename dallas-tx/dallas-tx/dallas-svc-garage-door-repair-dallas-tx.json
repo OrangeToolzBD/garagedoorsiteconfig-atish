@@ -1,0 +1,58 @@
+{
+ "title": "Garage Door Repair in Dallas, TX | Dallas Garage Door Co",
+ "meta": "Broken springs and stuck tracks are common in Dallas homes built 1973-2007. See what a repair call involves, what it costs, and when to skip DIY fixes.",
+ "h1": "Garage Door Repair for Dallas Homes Built 1973-2007",
+ "sections": [
+  {
+   "h2": "the_symptom",
+   "body": "When a garage door won't budge and you hear a loud bang from the ceiling area, that's almost always a broken torsion spring. In a city built mostly between 1973 and 2007 (median build year 1993), a huge share of the doors on that hardware are original — the springs have cycled tens of thousands of times through Dallas summers and are due to fail.\n\nYou'll see it on both ends of the age curve: the older single-family stock in Lakewood and Lower Greenville, and the somewhat newer builds further out near Buckner Terrace and Everglade Park. The door drops fast, sometimes with a cable slipping off the drum, and the opener alone can't lift the dead weight — it was never built to.\n\nOther common symptoms on this age of housing: a track pulled away from the jamb because the framing behind it has shifted over the decades, or a bottom panel rusted through from years of runoff pooling near the slab. None of these fix themselves, and running the opener against a stuck door usually turns a spring job into a spring-plus-opener-board job."
+  },
+  {
+   "h2": "what_it_costs",
+   "body": "We don't have a set price to give you over the phone, and we won't pretend otherwise. Spring cost depends on the size of the springs (single door versus double), the condition of the drum and cable, and whether the opener needs anything past a reset. A single torsion spring swap is a different job than a full torsion assembly on a double door with worn cables and rollers.\n\nWhat we can tell you: because most of this housing stock dates to the 1973-2007 era, the hardware is standard-size for that generation, not custom. That keeps parts predictable, which keeps most repairs from turning into surprise change orders. Where it gets more expensive is when a homeowner has kept running a stuck door on the opener — that's the difference between replacing a spring and replacing a spring, drum, and cable together.\n\nIf a door is old enough that the original track hardware is no longer stocked anywhere, replacement can cost less over time than repeated patch repairs. We'll say so on the spot instead of billing for a fix that won't hold."
+  },
+  {
+   "h2": "doing_it_yourself",
+   "body": "A garage door spring is under enough tension to break bones if it lets go wrong, whether it's a torsion spring over the header or an extension spring alongside the track. This isn't a Saturday project with a socket set, and we won't walk you through winding one over the phone.\n\nWhat you can safely check: the photo-eye sensors near the floor — a stuck door often just has a dirty or misaligned lens — the manual disconnect cord, and whether the track bolts have backed out. Those are visible with a flashlight and a ladder, no stored tension involved. Wiping a sensor or tightening a bolt is fair game.\n\nAnything involving the spring, the cable, or the drum: leave it. On the 1980s and 90s-era doors that make up most of the stock in this area, the torsion hardware has had three decades of use, and even the mounting brackets can be fatigued. A spring that looks fine can still let go under load. We'd rather take the call for a five-minute sensor fix than the call after a DIY spring job goes wrong."
+  },
+  {
+   "h2": "why_it_happens_here",
+   "body": "Two things line up in Dallas that don't line up everywhere: the age of the housing and the heat. Most of the service area's stock — 80,920 owner-occupied houses across roughly 165,955 households — went up between 1973 and 2007, with a median build year of 1993. That's a specific generation of torsion spring, a specific gauge of galvanized steel, and it's had decades of Texas heat cycles to fatigue it.\n\nSteel doesn't like the swing between a garage that tops 100 degrees in July and a cool overnight. It expands and contracts, and each cycle work-hardens the coil a little more until it snaps — often on the first cool morning after a hot stretch, when the metal is stiffest. Doors that face west and take a full afternoon of sun run hotter still, and the opener's plastic gears and drive belt take the same beating.\n\nAcross the named areas from Highland Park in close to Ovilla and Oak Leaf further out, the pattern holds: the closer a neighborhood's build era sits to that 1993 median, the more likely the spring on the door is still original. It isn't bad luck. It's one spring, thousands of cycles, and decades of summers."
+  }
+ ],
+ "faq": [
+  {
+   "q": "How do I know if it's the spring or the opener?",
+   "a": "If the door won't budge, feels heavy when you lift it by hand, or you heard a bang before it stopped working, that's the spring. If the door moves freely by hand but the opener won't engage or grinds, that points to the opener or the drive gear instead."
+  },
+  {
+   "q": "Can I replace a garage door spring myself?",
+   "a": "We don't recommend it. Torsion and extension springs hold enough stored tension to cause serious injury if released wrong, and on doors from the 1980s and 90s the mounting hardware is often fatigued too. It's one of the few jobs worth calling in for."
+  },
+  {
+   "q": "Why do garage door springs break more in summer here?",
+   "a": "Heat cycling. Steel expands in a hot garage and contracts overnight, and each cycle work-hardens the coil a bit more. Springs often fail on the first cooler morning after a heat stretch, when the metal is at its stiffest — not during the peak heat itself."
+  },
+  {
+   "q": "Do you handle repairs near Highland Park or University Park?",
+   "a": "Yes, both are within a few miles of the core service area. Housing stock in that stretch runs similar age to the rest of the area, so the same spring and track failures show up there."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "Dallas, TX"
+ },
+ "swap_test": [
+  "Most houses in this service area went up between 1973 and 2007, with a median build year of 1993.",
+  "80,920 owner-occupied houses across roughly 165,955 households make up the stock here.",
+  "Highland Park sits about 3 miles out and University Park about 4 miles out from the core service area.",
+  "Neighborhoods like Lakewood and Lower Greenville sit within the 1980s and 90s build era stock.",
+  "The pattern holds from Highland Park in close to Ovilla and Oak Leaf further out."
+ ],
+ "facts_used": [
+  "F1",
+  "F2",
+  "F3",
+  "F6",
+  "F10"
+ ]
+}

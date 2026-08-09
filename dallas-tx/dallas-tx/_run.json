@@ -1,0 +1,478 @@
+[
+ {
+  "custom_id": "dallas|home",
+  "out_tokens": 8000,
+  "in_tokens": 2425,
+  "chars": 1475,
+  "status": "truncated",
+  "file": "dallas-home.partial.txt",
+  "detail": "raise --max-tokens; page is cut off mid-sentence"
+ },
+ {
+  "custom_id": "dallas|svc|garage-door-repair-dallas-tx",
+  "out_tokens": 6752,
+  "in_tokens": 2439,
+  "chars": 6752,
+  "status": "ok_repaired",
+  "file": "dallas-svc-garage-door-repair-dallas-tx.json",
+  "defects": [
+   "fenced"
+  ],
+  "swap_test": 5,
+  "words": 755
+ },
+ {
+  "custom_id": "dallas|svc|garage-door-installation-dallas-tx",
+  "out_tokens": 4933,
+  "in_tokens": 2439,
+  "chars": 7128,
+  "status": "ok",
+  "file": "dallas-svc-garage-door-installation-dallas-tx.json",
+  "defects": [],
+  "swap_test": 6,
+  "words": 737
+ },
+ {
+  "custom_id": "dallas|svc|garage-door-service-dallas-tx",
+  "out_tokens": 5250,
+  "in_tokens": 2438,
+  "chars": 6936,
+  "status": "ok_repaired",
+  "file": "dallas-svc-garage-door-service-dallas-tx.json",
+  "defects": [
+   "fenced"
+  ],
+  "swap_test": 6,
+  "words": 791
+ },
+ {
+  "custom_id": "dallas|sub|grand-prairie",
+  "out_tokens": 5127,
+  "in_tokens": 2530,
+  "chars": 6831,
+  "status": "ok",
+  "file": "dallas-sub-grand-prairie.json",
+  "defects": [],
+  "swap_test": 5,
+  "words": 780
+ },
+ {
+  "custom_id": "dallas|sub|desoto",
+  "out_tokens": 3521,
+  "in_tokens": 2528,
+  "chars": 5117,
+  "status": "ok_repaired",
+  "file": "dallas-sub-desoto.json",
+  "defects": [
+   "fenced"
+  ],
+  "swap_test": 6,
+  "words": 532
+ },
+ {
+  "custom_id": "dallas|sub|murphy",
+  "out_tokens": 7887,
+  "in_tokens": 2527,
+  "chars": 6515,
+  "status": "ok_repaired",
+  "file": "dallas-sub-murphy.json",
+  "defects": [
+   "fenced"
+  ],
+  "swap_test": 5,
+  "words": 751
+ },
+ {
+  "custom_id": "dallas|sub|university-park",
+  "out_tokens": 4704,
+  "in_tokens": 2526,
+  "chars": 6394,
+  "status": "ok",
+  "file": "dallas-sub-university-park.json",
+  "defects": [],
+  "swap_test": 6,
+  "words": 672
+ },
+ {
+  "custom_id": "dallas|sub|lancaster",
+  "out_tokens": 3204,
+  "in_tokens": 2528,
+  "chars": 5201,
+  "status": "ok",
+  "file": "dallas-sub-lancaster.json",
+  "defects": [],
+  "swap_test": 6,
+  "words": 509
+ },
+ {
+  "custom_id": "dallas|sub|heath",
+  "out_tokens": 8000,
+  "in_tokens": 2526,
+  "chars": 2145,
+  "status": "truncated",
+  "file": "dallas-sub-heath.partial.txt",
+  "detail": "raise --max-tokens; page is cut off mid-sentence"
+ },
+ {
+  "custom_id": "dallas|sub|highland-park",
+  "out_tokens": 2941,
+  "in_tokens": 2528,
+  "chars": 5917,
+  "status": "ok",
+  "file": "dallas-sub-highland-park.json",
+  "defects": [],
+  "swap_test": 6,
+  "words": 667
+ },
+ {
+  "custom_id": "dallas|sub|farmers-branch",
+  "out_tokens": 8000,
+  "in_tokens": 2530,
+  "chars": 3352,
+  "status": "truncated",
+  "file": "dallas-sub-farmers-branch.partial.txt",
+  "detail": "raise --max-tokens; page is cut off mid-sentence"
+ },
+ {
+  "custom_id": "dallas|sub|balch-springs",
+  "out_tokens": 7602,
+  "in_tokens": 2529,
+  "chars": 6186,
+  "status": "ok",
+  "file": "dallas-sub-balch-springs.json",
+  "defects": [],
+  "swap_test": 6,
+  "words": 640
+ },
+ {
+  "custom_id": "dallas|sub|glenn-heights",
+  "out_tokens": 6838,
+  "in_tokens": 2530,
+  "chars": 5588,
+  "status": "ok",
+  "file": "dallas-sub-glenn-heights.json",
+  "defects": [],
+  "swap_test": 6,
+  "words": 632
+ },
+ {
+  "custom_id": "dallas|sub|seagoville",
+  "out_tokens": 4335,
+  "in_tokens": 2528,
+  "chars": 6881,
+  "status": "ok",
+  "file": "dallas-sub-seagoville.json",
+  "defects": [],
+  "swap_test": 6,
+  "words": 741
+ },
+ {
+  "custom_id": "dallas|sub|sunnyvale",
+  "out_tokens": 8000,
+  "in_tokens": 2530,
+  "chars": 0,
+  "status": "truncated",
+  "file": "dallas-sub-sunnyvale.partial.txt",
+  "detail": "raise --max-tokens; page is cut off mid-sentence"
+ },
+ {
+  "custom_id": "dallas|sub|ovilla",
+  "out_tokens": 3613,
+  "in_tokens": 2528,
+  "chars": 5616,
+  "status": "ok_repaired",
+  "file": "dallas-sub-ovilla.json",
+  "defects": [
+   "fenced"
+  ],
+  "swap_test": 6,
+  "words": 629
+ },
+ {
+  "custom_id": "dallas|sub|oak-leaf",
+  "out_tokens": 8000,
+  "in_tokens": 2528,
+  "chars": 1231,
+  "status": "truncated",
+  "file": "dallas-sub-oak-leaf.partial.txt",
+  "detail": "raise --max-tokens; page is cut off mid-sentence"
+ },
+ {
+  "custom_id": "dallas|sub|ferris",
+  "out_tokens": 7632,
+  "in_tokens": 2525,
+  "chars": 6489,
+  "status": "ok",
+  "file": "dallas-sub-ferris.json",
+  "defects": [],
+  "swap_test": 6,
+  "words": 763
+ },
+ {
+  "custom_id": "dallas|sub|wilmer",
+  "out_tokens": 8000,
+  "in_tokens": 2528,
+  "chars": 5229,
+  "status": "truncated",
+  "file": "dallas-sub-wilmer.partial.txt",
+  "detail": "raise --max-tokens; page is cut off mid-sentence"
+ },
+ {
+  "custom_id": "dallas|sub|hutchins",
+  "out_tokens": 6816,
+  "in_tokens": 2528,
+  "chars": 5403,
+  "status": "ok_repaired",
+  "file": "dallas-sub-hutchins.json",
+  "defects": [
+   "fenced"
+  ],
+  "swap_test": 6,
+  "words": 645
+ },
+ {
+  "custom_id": "dallas|nb|old-east-dallas",
+  "out_tokens": 6467,
+  "in_tokens": 2438,
+  "chars": 5301,
+  "status": "ok_repaired",
+  "file": "dallas-nb-old-east-dallas.json",
+  "defects": [
+   "fenced"
+  ],
+  "swap_test": 7,
+  "words": 508
+ },
+ {
+  "custom_id": "dallas|nb|south-dallas",
+  "out_tokens": 7330,
+  "in_tokens": 2433,
+  "chars": 5477,
+  "status": "ok_repaired",
+  "file": "dallas-nb-south-dallas.json",
+  "defects": [
+   "fenced"
+  ],
+  "swap_test": 6,
+  "words": 539
+ },
+ {
+  "custom_id": "dallas|nb|lower-greenville",
+  "out_tokens": 3854,
+  "in_tokens": 2437,
+  "chars": 5715,
+  "status": "ok_repaired",
+  "file": "dallas-nb-lower-greenville.json",
+  "defects": [
+   "fenced"
+  ],
+  "swap_test": 6,
+  "words": 584
+ },
+ {
+  "custom_id": "dallas|nb|dallas-downtown-historic-district",
+  "out_tokens": 6295,
+  "in_tokens": 2449,
+  "chars": 5478,
+  "status": "ok",
+  "file": "dallas-nb-dallas-downtown-historic-district.json",
+  "defects": [],
+  "swap_test": 7,
+  "words": 509
+ },
+ {
+  "custom_id": "dallas|nb|oak-lawn",
+  "out_tokens": 3290,
+  "in_tokens": 2439,
+  "chars": 5604,
+  "status": "ok",
+  "file": "dallas-nb-oak-lawn.json",
+  "defects": [],
+  "swap_test": 5,
+  "words": 589
+ },
+ {
+  "custom_id": "dallas|nb|west-end",
+  "out_tokens": 3008,
+  "in_tokens": 2429,
+  "chars": 5359,
+  "status": "ok",
+  "file": "dallas-nb-west-end.json",
+  "defects": [],
+  "swap_test": 6,
+  "words": 552
+ },
+ {
+  "custom_id": "dallas|nb|lakewood",
+  "out_tokens": 3587,
+  "in_tokens": 2435,
+  "chars": 5341,
+  "status": "ok",
+  "file": "dallas-nb-lakewood.json",
+  "defects": [],
+  "swap_test": 7,
+  "words": 545
+ },
+ {
+  "custom_id": "dallas|nb|buckner-terrace-everglade-park",
+  "out_tokens": 2475,
+  "in_tokens": 2453,
+  "chars": 5380,
+  "status": "ok",
+  "file": "dallas-nb-buckner-terrace-everglade-park.json",
+  "defects": [],
+  "swap_test": 6,
+  "words": 540
+ },
+ {
+  "custom_id": "dallas|nb|northeast-dallas",
+  "out_tokens": 6181,
+  "in_tokens": 2441,
+  "chars": 5578,
+  "status": "ok",
+  "file": "dallas-nb-northeast-dallas.json",
+  "defects": [],
+  "swap_test": 6,
+  "words": 523
+ },
+ {
+  "custom_id": "dallas|nb|kessler",
+  "out_tokens": 3178,
+  "in_tokens": 2433,
+  "chars": 6311,
+  "status": "ok_repaired",
+  "file": "dallas-nb-kessler.json",
+  "defects": [
+   "fenced"
+  ],
+  "swap_test": 6,
+  "words": 689
+ },
+ {
+  "custom_id": "dallas|nb|piedmont-addition",
+  "out_tokens": 7303,
+  "in_tokens": 2440,
+  "chars": 5622,
+  "status": "ok",
+  "file": "dallas-nb-piedmont-addition.json",
+  "defects": [],
+  "swap_test": 6,
+  "words": 557
+ },
+ {
+  "custom_id": "dallas|nb|cedar-crest",
+  "out_tokens": 6525,
+  "in_tokens": 2439,
+  "chars": 5810,
+  "status": "ok_repaired",
+  "file": "dallas-nb-cedar-crest.json",
+  "defects": [
+   "fenced"
+  ],
+  "swap_test": 6,
+  "words": 585
+ },
+ {
+  "custom_id": "dallas|nb|vickery-meadow",
+  "out_tokens": 5440,
+  "in_tokens": 2439,
+  "chars": 5321,
+  "status": "ok_repaired",
+  "file": "dallas-nb-vickery-meadow.json",
+  "defects": [
+   "fenced"
+  ],
+  "swap_test": 6,
+  "words": 543
+ },
+ {
+  "custom_id": "dallas|nb|west-dallas",
+  "out_tokens": 3315,
+  "in_tokens": 2433,
+  "chars": 5086,
+  "status": "ok",
+  "file": "dallas-nb-west-dallas.json",
+  "defects": [],
+  "swap_test": 6,
+  "words": 478
+ },
+ {
+  "custom_id": "dallas|top|when-a-spring-goes-in-cold-weather",
+  "out_tokens": 4117,
+  "in_tokens": 2461,
+  "chars": 6315,
+  "status": "ok_repaired",
+  "file": "dallas-top-when-a-spring-goes-in-cold-weather.json",
+  "defects": [
+   "fenced"
+  ],
+  "swap_test": 6,
+  "words": 643
+ },
+ {
+  "custom_id": "dallas|top|what-an-older-door-is-worth-fixing",
+  "out_tokens": 4153,
+  "in_tokens": 2460,
+  "chars": 6908,
+  "status": "ok",
+  "file": "dallas-top-what-an-older-door-is-worth-fixing.json",
+  "defects": [],
+  "swap_test": 6,
+  "words": 740
+ },
+ {
+  "custom_id": "dallas|top|openers-and-power-cuts",
+  "out_tokens": 8000,
+  "in_tokens": 2457,
+  "chars": 6070,
+  "status": "truncated",
+  "file": "dallas-top-openers-and-power-cuts.partial.txt",
+  "detail": "raise --max-tokens; page is cut off mid-sentence"
+ },
+ {
+  "custom_id": "dallas|top|doors-on-houses-built-before-insulation-rules",
+  "out_tokens": 4778,
+  "in_tokens": 2462,
+  "chars": 6351,
+  "status": "ok_repaired",
+  "file": "dallas-top-doors-on-houses-built-before-insulation-rules.json",
+  "defects": [
+   "fenced"
+  ],
+  "swap_test": 6,
+  "words": 699
+ },
+ {
+  "custom_id": "dallas|top|what-a-service-call-actually-covers",
+  "out_tokens": 8000,
+  "in_tokens": 2458,
+  "chars": 0,
+  "status": "truncated",
+  "file": "dallas-top-what-a-service-call-actually-covers.partial.txt",
+  "detail": "raise --max-tokens; page is cut off mid-sentence"
+ },
+ {
+  "custom_id": "dallas|top|noises-that-mean-something",
+  "out_tokens": 6264,
+  "in_tokens": 2456,
+  "chars": 6134,
+  "status": "ok_repaired",
+  "file": "dallas-top-noises-that-mean-something.json",
+  "defects": [
+   "fenced"
+  ],
+  "swap_test": 6,
+  "words": 615
+ },
+ {
+  "custom_id": "dallas|top|why-a-door-goes-off-track",
+  "out_tokens": 6672,
+  "in_tokens": 2457,
+  "chars": 6828,
+  "status": "ok",
+  "file": "dallas-top-why-a-door-goes-off-track.json",
+  "defects": [],
+  "swap_test": 6,
+  "words": 699
+ }
+]

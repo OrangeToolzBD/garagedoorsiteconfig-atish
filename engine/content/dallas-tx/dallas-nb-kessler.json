@@ -1,0 +1,52 @@
+{
+ "title": "Kessler Garage Door Repair & Install | Dallas, TX",
+ "meta": "Garage door repair and replacement for Kessler homes built 1973-2007, roughly 5 miles WSW of downtown Dallas. Springs, openers, panels, and honest quotes.",
+ "h1": "Garage Doors in Kessler",
+ "sections": [
+  {
+   "h2": "the_housing_here",
+   "body": "Kessler sits about 5 miles WSW of downtown, and like most of the named areas we work across, the houses here mostly went up between 1973 and 2007, with the typical build year landing around 1993. That puts a lot of doors and openers on original or first-replacement hardware from the 80s and 90s — steel sectional doors on torsion springs, garage door openers that have outlived their factory warranty by a couple of decades.\n\nA door from that era isn't a bad door. The springs wear out on a cycle count, not a calendar, so a 1988 door with light use can still be running fine, while a 1995 door on a family's daily-driver garage might be on its second or third spring already. What we look for is the mismatch: an opener that's been swapped once already but is bolted to an original track that's sagged out of level, or a panel section that's been dented and never matched because the manufacturer stopped making that profile years back.\n\nDallas sits in a moderate-heat climate band, which is easier on doors than true extreme-heat regions — you don't get the same rate of insulation and seal failure. But two-plus decades of Texas summers still dry out weatherstripping and bottom seals. If your door's from the original build, that rubber has likely never been replaced.\n\nOne limit worth saying plainly: if the header or opening was framed for a lighter door than what's now installed, we won't force a heavier replacement door onto that structure just to match a neighbor's upgrade. That's a carpentry job first, a door job second."
+  },
+  {
+   "h2": "getting_a_look_at_it",
+   "body": "We come out, open and close the door a few times by hand and by opener, and check where the noise or the drag is actually coming from — that's usually different from where the homeowner thinks it is. Springs, cables, rollers, track alignment, opener gearing: we go through it in that order because a spring problem left alone is what turns into a cable or opener problem later.\n\nOn a house built in the 80s or 90s, we're also checking whether the opener has been replaced since the original install. A lot of Kessler garages have a newer opener head bolted onto old rail, or an old opener still running on a door that's had two spring jobs since. Neither is wrong on its own, but it tells us what parts are worth matching and what's due for a full swap instead of a patch.\n\nWe'll tell you straight if a repair isn't worth doing — sometimes a door from this era has enough wrong with it (bent track, rusted-through bottom panel, an opener that's discontinued and unsupported) that putting more money into it doesn't make sense next to a new door and opener. We'd rather say that up front than sell you three separate repairs over a year.\n\nNo pricing promises here beyond what we quote in person — every door's condition is different enough that a phone estimate isn't honest."
+  },
+  {
+   "h2": "where_this_is",
+   "body": "Kessler is roughly 5 miles WSW of the center of Dallas. Heading back toward downtown you pass through the West End and the Downtown Historic District, both about 2 miles WSW of center — so Kessler is noticeably further out, past the density of the core. West Dallas sits about 6 miles west, and Cedar Crest is close by too, roughly 6 miles SSW.\n\nWe work across the wider Dallas service area, which covers 17 named areas and a mix of housing stock — mostly that same 1980s-90s build window, though it varies some by area. Across that service footprint there are about 165,955 households, with roughly 80,920 of them owner-occupied houses, and median household income sits around $83,256. None of that changes how we work a job in Kessler specifically, but it's the context: this is a settled, owner-heavy part of Dallas, not a fast-turnover rental strip, which usually means doors get maintained rather than ignored until they fail outright.\n\nWe don't cover every suburb in the metro — if you're well outside this footprint, ask and we'll tell you straight whether it's a fit."
+  }
+ ],
+ "faq": [
+  {
+   "q": "How old are most garage doors in Kessler likely to be?",
+   "a": "Most houses in this part of Dallas were built between 1973 and 2007, with 1993 as the typical year. So a lot of doors and openers are original to an 80s or 90s build, or a first-generation replacement from around then — which usually means torsion springs and hardware that's due for inspection even if it still looks fine."
+  },
+  {
+   "q": "Do you replace doors or just repair springs and openers?",
+   "a": "Both. We'll fix a broken spring, cable, or roller if the rest of the door is sound, and we'll tell you honestly when a door's condition or an unsupported opener means replacement makes more sense than another repair."
+  },
+  {
+   "q": "Does Dallas heat cause garage door problems?",
+   "a": "Dallas sits in a moderate-heat climate band, so it's milder on doors than true extreme-heat areas. That said, two decades of Texas summers still dry out bottom seals and weatherstripping, especially on doors that haven't had that rubber replaced since the original build."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "Kessler, Dallas, TX"
+ },
+ "swap_test": [
+  "Kessler sits about 5 miles WSW of downtown, and the houses here mostly went up between 1973 and 2007, with the typical build year landing around 1993.",
+  "Heading back toward downtown you pass through the West End and the Downtown Historic District, both about 2 miles WSW of center.",
+  "West Dallas sits about 6 miles west, and Cedar Crest is close by too, roughly 6 miles SSW.",
+  "Across that service footprint there are about 165,955 households, with roughly 80,920 of them owner-occupied houses.",
+  "Median household income sits around $83,256.",
+  "Dallas sits in a moderate-heat climate band, which is easier on doors than true extreme-heat regions."
+ ],
+ "facts_used": [
+  "F1",
+  "F2",
+  "F3",
+  "F6",
+  "F7",
+  "F10"
+ ]
+}

@@ -1,0 +1,55 @@
+{
+ "title": "Doors on Older Dallas Homes Built Before Insulation Rules",
+ "meta": "Most Dallas garage doors date to 1973-2007, before foam-core insulation was standard. Here's what that single-layer steel is actually doing to your garage.",
+ "h1": "What an Uninsulated Steel Door Means for a Dallas Garage",
+ "sections": [
+  {
+   "h2": "what_local_conditions_do",
+   "body": "Across the areas we cover — from Old East Dallas and Lower Greenville out through Lakewood, Kessler, and Vickery Meadow — most of the housing stock went up between 1973 and 2007, with a median build year of 1993. The bulk of that is 1980s and 90s construction. Houses from that stretch came with a steel garage door as the standard fit, and insulation almost never rode along with it. A basic door back then was one skin of steel over an air gap — no foam core, no thermal break, nothing between the outside and the inside of your garage but that one layer of metal.\n\nThat wasn't an oversight. The climate here runs heat-moderate, not the deep-freeze band that pushed insulated doors into standard practice in colder parts of the country. Builders spec'd what the code and the climate asked for at the time, and a bare steel panel met that bar. Forty years later, that same panel is still hanging on a lot of these houses, doing exactly what it was built to do — which is less than what a homeowner today probably assumes it's doing."
+  },
+  {
+   "h2": "the_seasonal_bit",
+   "body": "Heat-moderate doesn't mean mild. A west-facing steel door with no foam backing still takes the full afternoon sun for months at a stretch, and with nothing behind the skin to slow that heat down, it radiates straight through into whatever's on the other side — a laundry wall, an attic run, a bonus room over the garage. Owners notice this less as a comfort problem and more as a bill they can't explain.\n\nThe bigger issue on a door this old is the metal itself, not just the missing insulation. Decades of that heat-up, cool-down cycle work on thin steel the same way they work on anything else: panels start to bow slightly, seams loosen, and the fit between sections gets less clean than it was in 1993. None of that is dramatic on its own, but it adds up on hardware that's also thirty-plus years past its install date. We don't get hard freezes here that crack panels the way they do up north — the wear on these doors is a slow bake, not a shock."
+  },
+  {
+   "h2": "the_situation",
+   "body": "If your house sits in that 1973-2007 window — and odds are good it does, given how much of the stock across this area falls there — and the door has never been swapped, you're likely looking at a single-layer steel door with no foam, on hardware that's just as old. Rollers, cables, and springs sized for a lighter, simpler door than what's standard now.\n\nThe steel itself is usually the tell. On a door that old, the gauge is often thinner than what gets installed today, and years of sun exposure leave it more prone to surface rust at the seams and around the bottom panel. That matters when someone suggests bolting an insulation kit onto it, because thin, rust-softened steel doesn't hold self-tapping screws the way new steel does. The fasteners back out, the foam board sags, and you've spent money on a fix that doesn't last. On a door in that condition, insulation isn't really the first problem — structural fatigue is."
+  },
+  {
+   "h2": "what_most_people_get_wrong",
+   "body": "The common assumption is that an insulation retrofit kit turns an old bare-steel door into a modern one. On a door that's 20 to 45 years old, that's usually not true, and we tell people that straight — we don't install foam-board kits on steel that's already thin or rusting at the seams, because the fasteners won't hold and the job doesn't outlast the labor. That's a real limitation, not a sales pitch: past a certain age and condition, retrofit is a patch, not a fix.\n\nWith median household income across this area at $83,256, full replacement is within reach for a lot of owners once the door's actual age and condition are on the table, rather than treated as a maintenance line item. The other thing people miss: this isn't a story about extreme weather damage. It's thirty years of ordinary Dallas heat working on a panel that was never built to hold a thermal break in the first place. [See what we work on](/)."
+  }
+ ],
+ "faq": [
+  {
+   "q": "How do I know if my garage door has insulation or not?",
+   "a": "Open the door and look at the inside face of a panel. A bare steel door shows ribbed metal with nothing behind it. An insulated one has a foam or fiberboard backing panel covering that ribbing. If your house was built in the 1980s or 90s and the door is original, it's almost certainly the bare version."
+  },
+  {
+   "q": "Is it worth adding insulation to an original 1990s door?",
+   "a": "Depends on the steel's condition. If the panels are solid and the seams are tight, a kit can work. If there's surface rust or the panels have started to bow, the screws won't hold long-term and you're better off putting that money toward replacement instead."
+  },
+  {
+   "q": "Why does my garage get so hot in summer if the door looks fine?",
+   "a": "A bare steel door with no foam core doesn't block radiant heat — it's one layer of metal with nothing behind it. The door can look and operate fine while still passing most of the afternoon sun straight through into the garage."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "Dallas, TX and surrounding communities"
+ },
+ "swap_test": [
+  "Most of the housing stock went up between 1973 and 2007, with a median build year of 1993.",
+  "The bulk of that housing stock is 1980s and 90s construction.",
+  "The climate here runs heat-moderate, not the deep-freeze band that pushed insulated doors into standard practice elsewhere.",
+  "We don't get hard freezes here that crack panels the way they do up north.",
+  "With median household income across this area at $83,256, full replacement is within reach for a lot of owners.",
+  "From Old East Dallas and Lower Greenville out through Lakewood, Kessler, and Vickery Meadow, most houses date to that same 1973-2007 window."
+ ],
+ "facts_used": [
+  "F1",
+  "F2",
+  "F3",
+  "F7",
+  "F10"
+ ]
+}

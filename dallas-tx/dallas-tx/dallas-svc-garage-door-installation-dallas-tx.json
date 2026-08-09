@@ -1,0 +1,60 @@
+{
+ "title": "Garage Door Installation in Dallas, TX | Dallas Garage Door",
+ "meta": "New garage door installation in Dallas, TX, sized to the city's 1970s-2000s housing stock and heat load. What drives the cost, what to skip doing yourself.",
+ "h1": "New Garage Door Installation, Dallas TX",
+ "sections": [
+  {
+   "h2": "The Symptom",
+   "body": "You're not calling because the door won't open. You're calling because it's the third repair this year, the panels are dented past where a patch helps, or the opener strains for a second before it catches. That's the point where installation makes more sense than another fix.\n\nMost of the houses across this service area went up between 1973 and 2007, with the typical build year sitting around 1993. A door original to a house from that stretch is somewhere between twenty and fifty years old right now, running on hardware nobody designs for anymore — single-layer steel, non-insulated panels, openers with no rolling code security. In neighborhoods like Lakewood, Kessler, and Vickery Meadow, where the housing is mostly 1980s and 90s stock, that means a lot of original garage doors are aging out at roughly the same time.\n\nSigns worth acting on: the door sags visibly when it's halfway up, the bottom panel has separated from the track roller, or you can see daylight around the edges when it's shut. None of that is a spring adjustment. That's the door telling you it's done."
+  },
+  {
+   "h2": "What It Costs",
+   "body": "There's no single number here — a single door and a double door aren't the same job, and an insulated steel door isn't priced like a bare one. What actually moves the number: door width, insulation rating, whether the opener gets replaced at the same time, and whether the existing track and jambs are square enough to reuse or need rebuilding.\n\nThe service area carries a median household income of $83,256, and that shows up in what gets requested — a fair number of owners spec insulated or composite doors instead of the bare single-layer steel that shipped standard on houses built in the 80s and 90s. That's a choice, not a requirement; a basic steel door still does the job on a garage that isn't heated or cooled.\n\nWe walk the opening, check the header and track condition, and give you a number before anything gets ordered. If your existing track and springs are in good shape, reusing them on a new door costs less than replacing everything — worth asking about before you assume a full teardown is needed."
+  },
+  {
+   "h2": "Doing It Yourself",
+   "body": "Some of this is fine to do yourself. Swapping weatherstripping, replacing a bent roller, tightening loose hinge bolts — reasonable weekend jobs with a socket set and the right part.\n\nInstalling the door itself isn't in that category. A few reasons:\n\n- Torsion springs are wound under load. Getting one on or off wrong doesn't just fail — it can put you in the hospital.\n- A door that's out of square by even a little binds the opener and burns it out early.\n- Opener wiring and the safety reversal sensors have to be set correctly, every time, or the door doesn't stop on an obstruction the way it's supposed to.\n\nWe'll say plainly: we don't recommend homeowners do a full door swap themselves, and we won't talk you into thinking it's a two-hour job. If you want to handle the trim work and painting and leave the door itself, track, and spring set to us, that's a normal way to split the job and it keeps the cost down."
+  },
+  {
+   "h2": "Why It Happens Here",
+   "body": "Two things line up in this market that don't line up everywhere. First, the housing age: construction here runs 1973 to 2007, with 1993 as the midpoint, and seventeen of the areas we cover — from Oak Lawn and Cedar Crest in close to Highland Park and University Park a few miles out — are built out mostly in that 80s-and-90s window. A lot of original doors, springs, and openers are hitting end of service life around the same calendar years, which is why installation requests cluster the way they do.\n\nSecond, the climate. This area sits in a moderate heat band, and that matters more to a garage door than most owners expect. Steel expands and contracts through repeated heat cycles, and a non-insulated door from the 90s has been doing that for two or three decades. Panels bow, seams loosen, and the opener has to work harder to move a door that no longer travels as true in the track.\n\nAcross the roughly 80,920 owner-occupied houses and 165,955 households in this service area, that combination — housing age plus heat cycling — is the actual reason installation calls outnumber simple repairs once a door passes a certain age."
+  }
+ ],
+ "faq": [
+  {
+   "q": "How long does a garage door installation take in Dallas?",
+   "a": "It depends on whether the existing track and header are reusable or need rebuilding, and whether the opener is being replaced too. We'll give you a time estimate on site once we've checked the opening, not before."
+  },
+  {
+   "q": "Should I replace the opener when I replace the door?",
+   "a": "If the opener is original to a house built in the 80s or 90s, it's likely near the end of its life anyway, and pairing a new door with the old opener can strain it. Worth discussing at the walk-through rather than assuming either way."
+  },
+  {
+   "q": "Can I reuse my old springs and track on a new door?",
+   "a": "Sometimes. If they're in good shape and sized right for the new door's weight, reusing them lowers the job cost. If they're worn or the wrong size for the new door, we'll tell you and explain why they need to go too."
+  },
+  {
+   "q": "Do insulated doors matter much in Dallas heat?",
+   "a": "This area sits in a moderate heat band, and an insulated door holds up better against repeated expansion and contraction than a bare single-layer panel. It matters more if the garage is attached to conditioned living space."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "Dallas, TX"
+ },
+ "swap_test": [
+  "Most of the houses across this service area went up between 1973 and 2007, with the typical build year sitting around 1993.",
+  "In neighborhoods like Lakewood, Kessler, and Vickery Meadow, where the housing is mostly 1980s and 90s stock, that means a lot of original garage doors are aging out at roughly the same time.",
+  "The service area carries a median household income of $83,256, and that shows up in what gets requested.",
+  "This area sits in a moderate heat band, and that matters more to a garage door than most owners expect.",
+  "Across the roughly 80,920 owner-occupied houses and 165,955 households in this service area, that combination — housing age plus heat cycling — is the actual reason installation calls outnumber simple repairs once a door passes a certain age.",
+  "Seventeen of the areas we cover — from Oak Lawn and Cedar Crest in close to Highland Park and University Park a few miles out — are built out mostly in that 80s-and-90s window."
+ ],
+ "facts_used": [
+  "F1",
+  "F2",
+  "F3",
+  "F6",
+  "F7",
+  "F10"
+ ]
+}

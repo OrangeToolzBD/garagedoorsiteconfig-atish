@@ -1,0 +1,56 @@
+{
+ "title": "Garage Door Service in Dallas, TX | Dallas Garage Door",
+ "meta": "Garage door service in Dallas, TX for the stuck, slow, or noisy door on 1980s-90s stock. What breaks, what it takes to fix, and what to check yourself first.",
+ "h1": "Garage Door Won't Open Right? Here's What's Usually Going On",
+ "sections": [
+  {
+   "h2": "The Symptom",
+   "body": "The call usually starts the same way: the opener runs, the motor hums, but the door either doesn't move or only makes it partway before stalling. Sometimes it's a grinding or popping sound from up near the springs. Sometimes the door closes crooked, one side dropping faster than the other. Sometimes it just feels heavier than it used to, like the opener is straining to lift something it handled fine a year ago.\n\nMost of that points to the same root cause: a torsion spring losing its temper, a cable stretching unevenly, or rollers that have dried out and started binding in the track. None of this is dramatic on day one. It shows up as a slower door, then a louder door, then a door that won't move at all — usually on a morning when you're already late.\n\nIf your door is original to the house and the house went up any time from the 1970s through the early 2000s, this is close to expected wear, not bad luck. The hardware has a service life, and a lot of it in this area is closing in on the end of that life at the same time."
+  },
+  {
+   "h2": "What It Costs",
+   "body": "There's no single number here, because a spring job, a roller swap, and an opener board replacement are three different repairs with three different parts lists. What drives the cost is mostly what's actually failed and whether the parts are still a common size. Doors from the 1980s and 90s sometimes ran spring wire gauges or drum sizes that current stock doesn't match exactly, which can add labor time to get the balance right.\n\nWe don't quote a price without seeing the door — a spring replacement and a full opener swap aren't in the same category, and guessing over the phone does nobody any favors. What we can tell you is that most of what comes through here is a repair, not a replacement. With a median household income of $83,256 across the area, most owners treat a working door with one bad part as worth fixing, and save the full replacement for when the door itself — panels, track, frame — is actually failing, not just the hardware on it."
+  },
+  {
+   "h2": "Doing It Yourself",
+   "body": "Some of this is fair game for a homeowner with a ladder and twenty minutes. Some of it will put you in the hospital.\n\nSafe to do yourself:\n- Lubricate rollers and hinges (not the springs themselves) with a garage-door-specific lubricant, a couple times a year given how much this area's heat dries things out\n- Check and tighten loose bolts on the track brackets\n- Test the door's balance by disconnecting the opener and lifting it by hand — it should hold at waist height on its own\n- Clean track grooves so rollers aren't fighting debris\n\nNot safe to do yourself: torsion springs. They're wound under real tension, and a slipped winding bar has put people in the ER. If your door has one or two torsion springs above the header, and one has visibly separated or the door won't stay up on its own, that's a call, not a project.\n\nOne honest limitation: if your opener's circuit board is the problem rather than the motor or springs, diagnosing that usually takes a meter and knowing the fault codes for that specific unit — YouTube troubleshooting on a logic board often ends in a second problem, not a fix."
+  },
+  {
+   "h2": "Why It Happens Here",
+   "body": "Housing across this service area was mostly built between 1973 and 2007, with the typical year sitting around 1993, and that pattern holds from the older sections near Old East Dallas and Lakewood out through the 1980s-90s subdivisions further from the center. Across the 17 mapped neighborhoods here, the bulk of the stock — and the garage doors and openers that came with it — is now thirty to forty years old, which is right where torsion springs, drums, and first-generation opener boards start failing on schedule rather than by accident.\n\nHeat is the other half of it. This area sits in a moderate-heat band, which means summer temperature swings are real but not extreme — still enough to bake grease out of rollers and hinges twice a year and put repeated stress cycles on spring coils that a milder climate wouldn't. Add an uninsulated garage, common in construction from that era, and the swing between a 100-degree afternoon and a cool night is happening on the same hardware, day after day, for decades.\n\nWith 165,955 households and 80,920 owner-occupied houses in the area, a large share of doors are aging out at close to the same time — which is why this kind of call tends to cluster by neighborhood and by house age more than by bad luck."
+  }
+ ],
+ "faq": [
+  {
+   "q": "Why does my garage door struggle more in summer?",
+   "a": "Heat dries out the lubricant on rollers and hinges and puts extra stress on torsion springs through repeated hot-cold cycling. In an area with a moderate heat band like this one, that cycle repeats every summer, and it accelerates wear on hardware that's already twenty or thirty years old."
+  },
+  {
+   "q": "Can I replace a torsion spring myself?",
+   "a": "We don't recommend it. Torsion springs are wound under high tension, and the winding bars used to set them have caused serious injuries when they slip. Rollers, hinges, and track lubrication are fine to handle yourself; the spring itself is a call to make."
+  },
+  {
+   "q": "How do I know if it's the spring or the opener?",
+   "a": "Disconnect the opener and try lifting the door by hand. If it's heavy, uneven, or won't hold itself open, that's spring or cable wear. If it lifts easily by hand but the opener won't move it, the problem is in the motor or the circuit board, not the spring."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "Dallas, TX"
+ },
+ "swap_test": [
+  "Most houses in this area went up between 1973 and 2007, with the typical build year sitting around 1993.",
+  "Across the 17 mapped neighborhoods here, the bulk of the housing stock dates to the 1980s and 90s.",
+  "With 165,955 households and 80,920 owner-occupied houses in the service area, a large share of doors are aging out at close to the same time.",
+  "At a median household income of $83,256, most owners here treat a stuck door as a repair job, not a full swap.",
+  "This area sits in a moderate-heat band, which puts repeated stress cycles on spring coils through summer temperature swings.",
+  "That pattern holds from the older sections near Old East Dallas and Lakewood out through the 1980s-90s subdivisions further from the center."
+ ],
+ "facts_used": [
+  "F1",
+  "F2",
+  "F3",
+  "F6",
+  "F7",
+  "F10"
+ ]
+}

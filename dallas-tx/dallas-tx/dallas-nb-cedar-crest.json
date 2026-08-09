@@ -1,0 +1,51 @@
+{
+ "title": "Garage Door Repair & Service in Cedar Crest, Dallas, TX",
+ "meta": "Garage door repair for Cedar Crest homes built 1973-2007, six miles south-southwest of downtown Dallas. We check springs, panels, and openers of that era.",
+ "h1": "Garage Door Repair for Cedar Crest Homes",
+ "sections": [
+  {
+   "h2": "the_housing_here",
+   "body": "Most of the houses in Cedar Crest went up between 1973 and 2007, with the typical build year landing around 1993. That's a long enough window to cover a few different eras of garage door, but the middle of it — mid-80s through the mid-90s — is where most of the stock sits.\n\nHouses from that stretch almost always came with steel sectional doors on torsion spring hardware, sized for a single or double bay and a driveway that isn't oversized. Openers from the earlier end of the window were chain-drive; by the later end, belt-drive and screw-drive units start showing up more often. None of this is exotic. It's ordinary production-era hardware, which is good news when something breaks — parts are usually available, not custom.\n\nWhat does vary house to house is how well that original hardware has been kept up. A door and opener installed when the house was built in, say, 1988 is now well past the point where springs, cables, and rollers are working on borrowed time, even if nothing's failed yet. We don't guess at ages — we look at what's actually on the door and go from there."
+  },
+  {
+   "h2": "getting_a_look_at_it",
+   "body": "When we come out to a house in this part of Dallas, we're checking the same handful of things regardless of the exact address: spring balance, cable wear at the drum, roller and hinge condition, and whether the opener's force settings still match the door's actual weight. Steel panels from the 1973-2007 build window hold up fine structurally, but the weather-stripping and seals on them don't last forever, and in a moderate-heat climate band like this one, that wear tends to show up as brittle gaskets and dried-out grease on the tracks before it shows up as anything more obvious.\n\nHere's the honest limit: if your door is one of the original steel panels from early in that build era, we may not be able to match the exact panel profile. Some of the panel styles from that period aren't made anymore. When that's the case, the choice is usually a full panel swap on the section that's damaged, or replacing the door outright — patching isn't always on the table, and we'll tell you straight when it isn't.\n\nWe don't do cosmetic work — repainting, refacing — just the mechanical side: springs, cables, rollers, tracks, openers, and panel replacement when a panel's actually failed."
+  },
+  {
+   "h2": "where_this_is",
+   "body": "Cedar Crest sits six miles south-southwest of downtown Dallas. On the service map, that puts it well out past the neighborhoods that ring the center — places like South Dallas and Piedmont Addition sit only about a mile and five miles out, and Kessler comes in around five miles to the west-southwest — so Cedar Crest is one of the farther-out stops we run.\n\nAcross the wider area we cover, the numbers give a decent picture of who we're generally working for: roughly 165,955 households, about 80,920 of them owner-occupied houses, with a median household income around $83,256. That's not a Cedar Crest-specific figure — it's the broader service area — but it tracks with what we see on these calls: owner-occupied single-family homes, not rental turnover work.\n\nWe don't have named landmarks or cross streets to point to here, and we're not going to make any up. If you're calling about a specific address, tell us the cross streets when you book and we'll bring the right spring sizes and cable lengths for a door from this era rather than guessing on the truck."
+  }
+ ],
+ "faq": [
+  {
+   "q": "How old is a typical garage door in Cedar Crest?",
+   "a": "Houses in this part of Dallas were mostly built between 1973 and 2007, with the median landing around 1993. So a lot of original doors and openers are now well past 25 years old, even if they still open and close fine. Springs and cables that old are usually closer to failure than they look."
+  },
+  {
+   "q": "Can you match my original garage door panel?",
+   "a": "Sometimes. Panel profiles from the early part of that build era aren't always still made. If we can't match yours exactly, we'll tell you and lay out the real options — swap the damaged section for a close match, or replace the door — rather than promising a patch that won't hold up."
+  },
+  {
+   "q": "Does the Dallas heat actually affect garage door parts?",
+   "a": "Yes, gradually. In a moderate-heat climate like this one, weather-stripping and track grease dry out faster than they would somewhere cooler, and that shows up as noise and stiffness before anything actually breaks. It's part of what we check on every visit."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "Cedar Crest, Dallas, TX"
+ },
+ "swap_test": [
+  "Cedar Crest sits six miles south-southwest of downtown Dallas.",
+  "Most of the houses in Cedar Crest went up between 1973 and 2007, with the typical build year landing around 1993.",
+  "Kessler comes in around five miles to the west-southwest of downtown, and Piedmont Addition about five miles out, both closer to the center than Cedar Crest.",
+  "Across the wider service area, the median household income runs around $83,256.",
+  "The service area counts roughly 165,955 households and about 80,920 owner-occupied houses.",
+  "This part of Dallas falls in a moderate-heat climate band, which wears out door seals and track grease faster than a cooler climate would."
+ ],
+ "facts_used": [
+  "F1",
+  "F3",
+  "F6",
+  "F7",
+  "F10"
+ ]
+}

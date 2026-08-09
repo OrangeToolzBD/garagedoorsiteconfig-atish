@@ -1,0 +1,65 @@
+{
+ "title": "Dallas Garage Door Repair – Spring, Opener & Panel Service",
+ "meta": "Local garage door repair for Dallas, TX homes built mostly 1973-2007. Spring, opener, and panel service across Dallas neighborhoods and nearby suburbs.",
+ "h1": "Garage Door Repair for Dallas Homes Built Between 1973 and 2007",
+ "sections": [
+  {
+   "h2": "areas_we_cover",
+   "body": "We run out of Dallas and cover the neighborhoods close to the center first: Old East Dallas (1 mile NW), South Dallas (1 mile S), Lower Greenville (2 miles N), Oak Lawn (2 miles WNW), the West End and Downtown Historic District (2 miles WSW), Lakewood (3 miles NNE), Kessler (5 miles WSW), Piedmont Addition (5 miles SE), Cedar Crest (6 miles SSW), Vickery Meadow (6 miles N), and West Dallas (6 miles W).\n\nFrom there we work out to Highland Park (3 mi) and University Park (4 mi), then further to Farmers Branch (11 mi), Balch Springs (10 mi), Hutchins (11 mi), Sunnyvale (12 mi), Grand Prairie (16 mi), Lancaster (14 mi), Wilmer (14 mi), DeSoto (14 mi), Seagoville (16 mi), Glenn Heights (18 mi), Murphy (18 mi), Heath (18 mi), Ferris (18 mi), Ovilla (19 mi), and Oak Leaf (19 mi).\n\nIf your street falls anywhere in that ring, a truck can get to you. We don't cover ground past it, so if you're calling from outside this list, we'll tell you straight instead of sending a truck on a job we can't reasonably staff."
+  },
+  {
+   "h2": "the_area_and_its_housing",
+   "body": "Across the 17 named areas we work in, most houses went up between 1973 and 2007, with the middle of that range sitting around 1993. That's the era of double-car attached garages, steel roll-up doors on extension or torsion springs, and openers that have usually been swapped out once or twice by now.\n\nThe service area holds 165,955 households, and 80,920 of those are owner-occupied houses — the kind of stock where the original builder-grade door is either still hanging on or was replaced sometime in the last decade by whoever owned the place before. Median household income here is $83,256, which tracks with what we see on service calls: owners who want the door fixed right rather than patched, and who ask for the parts that will actually hold up rather than the cheapest thing on the shelf.\n\nThat 1973-2007 build window means we're rarely dealing with the oldest, hardest-to-source hardware, but we're also not dealing with brand-new builds either. It's a wide middle band, and it's the band we know best."
+  },
+  {
+   "h2": "what_we_fix_most_here",
+   "body": "Given the age of the stock, torsion springs are the most common call — a spring rated for the door's cycle count from twenty or thirty years ago is well past due, and it usually lets go without much warning. Behind that: worn rollers, cables that have started to fray at the drum, and openers from the '90s and 2000s that are still chugging along on original circuit boards until they aren't.\n\nDallas sits in a moderate heat band, and that matters more than people expect. Steel doors expand and contract enough over a Dallas summer that nylon rollers wear faster than they would somewhere cooler, and opener logic boards in an unconditioned garage take more heat cycling than the manufacturer's spec sheet assumes. We see a fair number of opener failures that trace back to heat stress on the board rather than a bad motor.\n\nOne honest limit: if a panel is cracked or dented on a door old enough that the manufacturer's run has been discontinued, we may not be able to match it exactly. In that case, replacing the full door is usually the better call than chasing a panel that doesn't quite match, and we'll say so rather than order something that won't line up right."
+  },
+  {
+   "h2": "how_a_call_goes",
+   "body": "You call, you describe what the door's doing — won't open, opens crooked, makes a bang and then stops, opener runs but the door doesn't move. That description usually tells us most of what we need before a truck ever leaves.\n\nOn site, we test the door under power and by hand, check spring tension and cable condition, look at the track alignment, and check the opener's force settings if it's involved. We tell you what's actually wrong before we touch anything else — not a list of everything that could theoretically fail down the road.\n\nIf it's a straightforward fix, we do it that visit. If a part needs to be ordered — an opener board for a discontinued model, or a spring size that isn't standard stock — we'll tell you that up front instead of after the fact. Not every job closes out in one trip, and we'd rather say that plainly than promise a same-visit fix we can't back up."
+  },
+  {
+   "h2": "what_it_costs_and_why",
+   "body": "We don't post a flat price list, because a torsion spring job on a single door is a different job from replacing both springs on a heavier double door, and an opener board swap on a 2005 unit is different from a full opener replacement. Door weight, spring size, cable condition, and whether the opener is original or already a replacement all move the number.\n\nWhat we can tell you is what drives cost on a typical Dallas job: the door's age and whether parts for it are still in normal supply, whether one spring is going or both, and whether the track needs adjustment along with whatever failed outright. Given how much of the stock here dates to the 1973-2007 window, most jobs use parts we carry on the truck — it's the occasional older or oddball door that needs something ordered in, and that's the case where the timeline stretches.\n\nWe'll give you a number after we've actually looked at the door, not before. A quote over the phone on a spring or opener job is a guess, and we don't think a guess is worth much to either of us."
+  }
+ ],
+ "faq": [
+  {
+   "q": "Do you work on houses in Highland Park and University Park, or just Dallas proper?",
+   "a": "Yes, both are inside our coverage area — Highland Park is about 3 miles out and University Park about 4. We treat them the same as any Dallas neighborhood on the list."
+  },
+  {
+   "q": "My garage door opener is from the late '90s. Is it even worth fixing?",
+   "a": "Often yes. A lot of the houses we work on have openers from that era, and if the motor's sound, a board or drive gear swap can keep it running. If the unit's discontinued and a part isn't available, replacement becomes the better option, and we'll tell you which situation you're in."
+  },
+  {
+   "q": "Why did my spring break with no warning?",
+   "a": "Torsion springs are rated for a set number of open-close cycles, not for a number of years. On a house built in the 1980s or 90s, that spring has likely been through more cycles than its rating, and it lets go at the end of that count rather than wearing down slowly."
+  },
+  {
+   "q": "Can you match the panel on my older door if just one section is damaged?",
+   "a": "Sometimes. If the manufacturer's run is still active, yes. If the door is old enough that the specific panel style has been discontinued, an exact match usually isn't possible, and full door replacement tends to make more sense than a mismatched patch."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "Dallas, TX and surrounding communities"
+ },
+ "swap_test": [
+  "Most houses across the service area went up between 1973 and 2007, with the median build year around 1993.",
+  "The service area holds 165,955 households, with 80,920 owner-occupied houses.",
+  "Median household income across the area is $83,256.",
+  "Highland Park sits about 3 miles from our base and University Park about 4 miles.",
+  "Old East Dallas is 1 mile NW and South Dallas is 1 mile S of where we're based.",
+  "Dallas sits in a moderate heat band, which drives faster roller wear and heat-stressed opener boards.",
+  "Coverage extends out to Glenn Heights, Murphy, Heath, Ferris, Ovilla, and Oak Leaf, all around 18-19 miles out."
+ ],
+ "facts_used": [
+  "F1",
+  "F2",
+  "F3",
+  "F6",
+  "F7",
+  "F10"
+ ]
+}

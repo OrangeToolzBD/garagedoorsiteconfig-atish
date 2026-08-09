@@ -1,0 +1,35 @@
+{
+  "title": "Wilmer, TX Garage Door Repair & Install | Dallas Garage Door",
+  "meta": "Dallas Garage Door travels to Wilmer, TX (14 miles out) to repair and install garage doors on the newer, 2000s-built homes common in this part of town.",
+  "h1": "Garage Doors for Wilmer's Newer-Built Homes",
+  "sections": [
+    {
+      "h2": "This Area's Housing",
+      "body": "Most of the houses we service across the wider Dallas area went up between 1973 and 2007, with the typical build year landing around 1993. Wilmer sits at the far edge of that range — the median home here was built in 2007, which puts it among the newest housing stock in the whole service area. With 2,039 households, Wilmer is one of the smaller communities we reach, and the median household income here, $58,837, runs well below the $83,256 median across the wider area we cover.\n\nThat combination — newer construction paired with tighter household budgets — shapes what we actually see on service calls out here. A door installed around 2007 is old enough now that torsion springs, cables, and rollers are wearing out or already worn out, but the door itself, the track, and the opener mounting are almost never the mismatched, retrofitted setups you find on older tract housing closer to the middle of the service area. Newer doesn't mean maintenance-free. It means a different failure pattern."
+    },
+    {
+      "h2": "Older vs. Newer Streets",
+      "body": "We don't have a house-by-house map of Wilmer, but the numbers point the same direction: most of the town went up later than the areas we cover closer to Dallas. Across the wider service footprint, the typical house dates to the 1980s or 90s. Wilmer's median build year of 2007 puts it a good fifteen to twenty years past that — which means fewer of the original light-gauge track and undersized-spring setups that show up constantly on older streets nearer the center of the service area.\n\nThat doesn't mean every door in Wilmer is new. A median is just the midpoint — roughly half the housing here was built before 2007, and some stretches will run older than the number suggests. But as a rule, when we get a call from Wilmer, we're more often replacing a spring or fixing an opener that's simply worn out on a door installed correctly the first time, not untangling a decades-old retrofit."
+    },
+    {
+      "h2": "When We Can Get There",
+      "body": "We run out of Dallas, and Wilmer is about 14 miles south of our base — on the outer edge of the towns we serve, roughly the same distance as Lancaster and DeSoto and farther than most of the neighborhoods closer to downtown. We don't quote a fixed arrival window for any address, because traffic on the route down and whatever job is already ahead of yours both matter more than the mileage on the map.\n\nWhat we can tell you is that a 14-mile run isn't a special trip out here — it's a normal part of the coverage area, the same distance as several other towns we work in on a regular basis. If you call, we'll give you a straight answer about where the truck is that day rather than a number pulled out of thin air."
+    },
+    {
+      "h2": "What That Means for Doors",
+      "body": "Given the age of the housing stock here, the most common Wilmer calls are for wear parts, not structural rebuilds. A torsion spring on a door installed in the mid-2000s is due or overdue for failure — steel fatigues on a predictable cycle no matter how well the door was built originally. Rollers and hinges from that era are usually the stamped-steel style that grinds and seizes well before the door panel itself gives out.\n\nOpeners are the other piece. A 2007-era opener is old enough that the circuit board, drive gear, or safety sensors can fail outright, and replacement parts for that generation aren't always something we carry on the truck — sometimes we have to order a part instead of fixing it in the same visit. That's a limitation worth knowing before you call: if the opener is original to the house, there's a real chance the fix is a new opener rather than a repair.\n\nGiven the income picture in Wilmer, we also get more calls asking whether a repair or a full door replacement makes more sense. That's a fair question, and it depends on the door in front of us, not a blanket answer we'd give the whole town."
+    }
+  ],
+  "faq": [
+    {
+      "q": "How far is Wilmer from your Dallas shop?",
+      "a": "About 14 miles south of Dallas — similar to the distance we drive for Lancaster and DeSoto. We don't run out of a location in Wilmer itself; every job here starts with a truck coming from Dallas."
+    },
+    {
+      "q": "Are Wilmer garage doors newer than the rest of the area?",
+      "a": "Generally, yes. The median home in Wilmer was built in 2007, compared with a median around 1993 for the wider service area, so there's less original 1980s hardware and more doors and openers from the 2000s."
+    },
+    {
+      "q": "Do you carry parts for a 2000s-era opener on the truck?",
+      "a": "Not always. Some circuit boards, drive gears, and sensor kits for that generation need to be ordered rather than pulled off the truck, so a repair on an original opener can sometimes take more than one visit."
+    },

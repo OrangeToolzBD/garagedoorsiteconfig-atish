@@ -1,0 +1,51 @@
+{
+ "title": "Garage Door Repair in the Dallas Downtown Historic District",
+ "meta": "Garage door repair and spring replacement for the 1973-2007 homes of Dallas Downtown Historic District, TX, about two miles west-southwest of downtown Dallas.",
+ "h1": "Garage Doors for the Dallas Downtown Historic District",
+ "sections": [
+  {
+   "h2": "the_housing_here",
+   "body": "Most of the housing stock in the Dallas Downtown Historic District went up between 1973 and 2007, with the typical house here dating to around 1993. That puts it squarely in the torsion-spring era — sectional steel doors on wound-spring hardware, with openers that were solid for their decade but nowhere near what ships today. Across this stretch of Dallas, that 1980s-and-90s-era stock means a lot of original springs are well past the wind-cycle count they were rated for, even if the door itself still looks fine from the driveway.\n\nPanels from this build window are usually 24-gauge steel, sometimes with thin foam-core insulation, since double-wall doors weren't standard yet. If your door dates to the original build, it's worth checking the spring size and drum style against what's actually still sold. Some of the older torsion setups used hardware that's been superseded twice over, and matching it exactly isn't always possible — sometimes the honest fix is a new spring pair sized to the door you have, not a part-for-part swap of what came with the house."
+  },
+  {
+   "h2": "getting_a_look_at_it",
+   "body": "A look at the door usually starts with the springs, not the opener, because springs are the part that fails without warning. In this heat band, springs run through more expansion and contraction over a Dallas summer than they would somewhere milder, which shortens the working life of anything already near the end of its wind count. On a house from the 1973-2007 window, we're also checking whether the opener has ever been swapped — a lot of them haven't, which means motor and drive hardware that's outlived its rated cycles even though it still runs.\n\nTrack alignment and roller wear matter too. Steel rollers from that era are noisier and wear the track faster than the nylon rollers used now, and it usually shows up as a grinding sound on the way up more than the way down.\n\nOne honest note: if the opener is original and the logic board has already failed, we'll usually tell you to replace the unit rather than chase parts for something that old. Sourcing boards for openers that far out of production isn't worth the wait or the price for most homeowners."
+  },
+  {
+   "h2": "where_this_is",
+   "body": "The district sits about 2 miles west-southwest of downtown Dallas. Old East Dallas is a mile to the northwest and South Dallas a mile south; Lower Greenville is 2 miles north. The West End is right alongside it, also about 2 miles west-southwest, with Oak Lawn 2 miles west-northwest. Kessler runs a little further out, roughly 5 miles down that same west-southwest line.\n\nWe work this pocket of the city as part of a wider service area that runs out past Highland Park and University Park to towns 15 to 20 miles further, places like DeSoto and Grand Prairie among them. That mix of close-in neighborhoods and a long service radius means the truck that answers a call here has usually just come from a job with the same era of door and hardware, not a newer subdivision with different parts entirely."
+  }
+ ],
+ "faq": [
+  {
+   "q": "How old are the garage doors in this part of Dallas?",
+   "a": "Most houses in the district were built between 1973 and 2007, with the typical build year around 1993. That means most original doors are on torsion-spring hardware from the 1980s and 90s, with openers that may or may not have been replaced since."
+  },
+  {
+   "q": "Do original springs from the 90s still work fine if the door still opens?",
+   "a": "A door opening smoothly doesn't tell you how many cycles are left on the spring. In this heat band, springs see more expansion and contraction over the summer, which uses up their rated life faster than in a milder climate — worth having checked rather than waiting for it to snap."
+  },
+  {
+   "q": "Is it worth fixing an opener this old or just replacing it?",
+   "a": "Depends on what's failed. If it's a belt, chain, or sensor, repair usually makes sense. If the logic board is gone on a unit this old, we'll generally say replace it — parts for openers that far out of production are hard to source and rarely worth the wait."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "Dallas Downtown Historic District, Dallas, TX"
+ },
+ "swap_test": [
+  "Most of the housing stock in the Dallas Downtown Historic District went up between 1973 and 2007, with the typical house here dating to around 1993.",
+  "That 1980s-and-90s-era stock means a lot of original springs are well past their rated wind-cycle count.",
+  "The district sits about 2 miles west-southwest of downtown Dallas.",
+  "Old East Dallas is a mile to the northwest and South Dallas a mile south of the district.",
+  "The West End sits about 2 miles west-southwest, with Oak Lawn 2 miles west-northwest.",
+  "Kessler runs roughly 5 miles further out along the same west-southwest line.",
+  "In this heat band, springs run through more expansion and contraction over a Dallas summer than they would somewhere milder."
+ ],
+ "facts_used": [
+  "F1",
+  "F2",
+  "F3",
+  "F10"
+ ]
+}

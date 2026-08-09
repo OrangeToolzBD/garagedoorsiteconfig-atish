@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.pyc
+
+# macOS junk
+.DS_Store
+._*
+__MACOSX/
+
+# Build output (regenerable: `python build.py`)
+dist/
+engine/dist/
+
+# Config backups
+*.bak

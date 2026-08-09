@@ -1,0 +1,52 @@
+{
+ "title": "Northeast Dallas Garage Door Repair & Spring Service, TX",
+ "meta": "Garage door repair for Northeast Dallas homes built 1973 to 2007, matched to the torsion springs, openers, and track this housing era actually carries.",
+ "h1": "Garage Door Work for Northeast Dallas Homes",
+ "sections": [
+  {
+   "h2": "the_housing_here",
+   "body": "Most of the houses standing in Northeast Dallas today went up between 1973 and 2007, with the typical build year landing around 1993. That puts the bulk of the stock squarely in the 1980s and '90s wave of construction that filled in this side of the city — brick veneer over wood frame, two-car garages built into the house rather than added on later.\n\nDoors from that era came in a narrow range: steel panel, non-insulated or lightly insulated, torsion springs sized for a lighter door than what's often hung on them now after an owner swaps in a heavier insulated replacement. If your garage still has the original opener, it's a chain-drive unit old enough that the circuit board and safety sensors are past what most manufacturers still support.\n\nHousehold income here runs around $83,256, and across the wider area we cover, roughly 81,000 of 166,000 households own rather than rent — meaning most of these garages are cared for by the people who actually park in them, not a property manager doing the bare minimum. Dallas summers push hard on anything with moving metal parts sitting in an attached garage that heats up all day."
+  },
+  {
+   "h2": "getting_a_look_at_it",
+   "body": "When we get a call out here, the first thing we check is whether the spring and opener actually match the door, or whether someone upgraded the door years back and left the original hardware in place. It happens a lot in houses built in the '80s and '90s — a heavier insulated door goes on, but the torsion spring underneath is still sized for the thin steel panel it replaced. That mismatch shows up as a door that's hard to lift by hand, or an opener straining and burning out early.\n\nRollers are another thing this age of house tells us about. Steel rollers running on 20 to 40-year-old track wear a groove into the track itself, so swapping the roller alone doesn't fix the noise — the track needs attention too.\n\nHere's the honest part: on doors at the older end of that 1973 build range, some original panel styles and hardware sizes aren't made anymore. We're not going to hunt down a discontinued panel to match a door that old. Past a certain point, replacing the section — or the whole door — costs less than chasing a part nobody stocks."
+  },
+  {
+   "h2": "where_this_is",
+   "body": "Northeast Dallas sits about four miles north-northeast of downtown. Lakewood is the closest named neighbourhood, about three miles north-northeast of the centre and just north of here. Vickery Meadow runs about six miles north, and Buckner Terrace and Everglade Park sit around four miles east — roughly the same distance out from downtown as this stretch, just on the other side of the map.\n\nCloser to downtown, Lower Greenville sits about two miles north and Old East Dallas about a mile northwest, both nearer the centre than Northeast Dallas is. Farther out on a more northerly line, Highland Park and University Park sit three and four miles from downtown.\n\nNone of that changes what's in anyone's garage, but it's useful for knowing who's actually local and who's just claiming the zip code."
+  }
+ ],
+ "faq": [
+  {
+   "q": "My garage door is original to a house built in the 90s — can it still be repaired?",
+   "a": "Often yes. Most of what fails on doors that age is the spring, rollers, or opener circuit board, all of which get replaced without touching the panel. Where it gets harder is if the panel itself is damaged and it's an early-90s or older style — those specific panels aren't always made anymore, and full door replacement can end up cheaper than chasing a match."
+  },
+  {
+   "q": "Why does my opener strain now when it used to run fine?",
+   "a": "Usually it's a spring-to-door mismatch. If the door was upgraded to a heavier insulated panel at some point but the torsion spring wasn't resized to match, the opener ends up doing work the spring should be doing. It'll run, but it wears out the motor and gears faster than it should."
+  },
+  {
+   "q": "Does the Dallas heat cause garage door problems here?",
+   "a": "The area sits in a moderate heat band, and an attached garage with a non-insulated door from the '80s or '90s heats up more than a newer insulated one. Over years, that heat cycling is hard on opener electronics and can dry out and crack older weatherstripping and seals faster than it would in a cooler spot."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "Northeast Dallas, Dallas, TX"
+ },
+ "swap_test": [
+  "Most of the houses standing in Northeast Dallas today went up between 1973 and 2007, with the typical build year landing around 1993.",
+  "Household income here runs around $83,256.",
+  "Northeast Dallas sits about four miles north-northeast of downtown.",
+  "Lakewood is the closest named neighbourhood, about three miles north-northeast of the centre and just north of here.",
+  "Vickery Meadow runs about six miles north, and Buckner Terrace and Everglade Park sit around four miles east.",
+  "Lower Greenville sits about two miles north and Old East Dallas about a mile northwest, both nearer the centre than Northeast Dallas is."
+ ],
+ "facts_used": [
+  "F1",
+  "F2",
+  "F3",
+  "F6",
+  "F7",
+  "F10"
+ ]
+}

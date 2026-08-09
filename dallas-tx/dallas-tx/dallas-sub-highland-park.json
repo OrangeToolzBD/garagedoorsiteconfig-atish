@@ -1,0 +1,56 @@
+{
+ "title": "Highland Park, TX Garage Door Repair | Dallas Garage Door",
+ "meta": "Garage door repair for Highland Park, TX homes built around 1973 — older hardware than most of the service area. Trucks run in from Dallas, 3 miles out.",
+ "h1": "Garage Door Service for Highland Park, TX",
+ "sections": [
+  {
+   "h2": "This Area's Housing",
+   "body": "Highland Park's median home was built in 1973. That's roughly twenty years older than the 1993 median across the rest of the area we run trucks to, where most of the stock dates to the 1980s and 90s. There are 3,249 households here, and the median household income sits at $250,001 — well above what you'll find in most of the towns on our route. That income level tends to show up in the doors themselves: more custom wood and composite panels, more doors that were upgraded once already, fewer builder-grade steel sectionals than you'd see in a newer subdivision. A door built or replaced for a house like this often isn't a stock size, and that matters when a panel cracks or a spring lets go and you're trying to match what's already hanging in the opening.\n\nWe're not guessing at this from a city-wide average — a 1973 median is a genuinely different starting point than the 1993 median that covers most of the areas we serve, and it changes what we expect to find when we open the truck up."
+  },
+  {
+   "h2": "Older vs. Newer Streets",
+   "body": "A median year of 1973 means something specific: half the homes here went up before that, half after. That's a wider spread than you get in a neighborhood built out in one or two building booms. It means we can pull up to two houses on the same block and find completely different setups — one with an original torsion system that's been re-cabled at some point, the next with a full opener and track replacement from a remodel.\n\nWe don't have a street-by-street map of which blocks lean older and which lean newer, so we're not going to pretend we do. What we will say is that a house on this side of the age spread is more likely to have a spring sized for a heavier original wood door, even if steel went in later — because whoever did that swap often reused the existing spring rather than re-rating it for the lighter door. That's a common mismatch on homes from this era, and it's worth a look if your door feels like it's fighting the opener on the way up."
+  },
+  {
+   "h2": "When We Can Get There",
+   "body": "Highland Park is about 3 miles from Dallas, which puts it close on our route — it's one of the shorter drives we make in a given day. We don't keep a depot or a crew stationed here; every truck comes out of Dallas, same as it does for the rest of the area. Being close doesn't mean we can promise a specific arrival window on this page, and we're not going to put a number here that isn't accurate for the day you call. What it does mean is that a short drive isn't the bottleneck — parts and scheduling usually are, especially if your door needs a part we don't carry stock of for an older setup like the ones common here."
+  },
+  {
+   "h2": "What That Means for Doors",
+   "body": "A 1973-median house has usually had at least one opener replaced by now, sometimes two, and the door itself may or may not be original. What we run into most on homes from this period: torsion springs that were never re-rated after a door swap, rollers and hinges that have outlasted three openers, and track that's been bent and straightened enough times that it's just tired. None of that is unique to this address — it's what happens to hardware over fifty years in Texas heat, which sits in the moderate band for this region and is hard on lubricant and rubber seals over that many summers.\n\nHere's the honest limitation: if your door is original to a 1973-era build, we may not be able to match the exact panel or hardware profile with something off the shelf. In that case, patching it isn't always the right call — replacing the section, or sometimes the whole door, ends up being the more solid fix. We'll tell you straight which one you're looking at before any work starts."
+  }
+ ],
+ "faq": [
+  {
+   "q": "Do you have a crew based in Highland Park?",
+   "a": "No. We run out of Dallas, about 3 miles away. It's one of the closer drives on our route, but every job here is dispatched from the Dallas truck, not a local depot."
+  },
+  {
+   "q": "Is my garage door too old to fix?",
+   "a": "Depends on the part. A worn spring or opener is almost always repairable regardless of age. A cracked original panel from a 1970s-built house is a different story — sometimes matching it isn't practical, and replacement makes more sense. We'll look and tell you which situation you're in."
+  },
+  {
+   "q": "Why would a newer opener still have the wrong spring?",
+   "a": "It happens a lot on homes from this era. Someone replaces the opener or even the door itself but reuses the old torsion spring, which was sized for whatever hung there originally. If the new door is lighter, the spring is now wrong for it, even though everything looks fine at a glance."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "Highland Park, TX"
+ },
+ "swap_test": [
+  "Highland Park's median home was built in 1973, roughly twenty years older than the 1993 median across the rest of the service area.",
+  "There are 3,249 households in Highland Park.",
+  "The median household income in Highland Park is $250,001, well above most towns on the route.",
+  "Highland Park is about 3 miles from Dallas, one of the shorter drives on the route.",
+  "A median year of 1973 means half the homes in Highland Park predate that year and half postdate it.",
+  "Homes here are more likely to have a spring sized for a heavier original wood door even where steel replaced it later."
+ ],
+ "facts_used": [
+  "F1",
+  "F2",
+  "F3",
+  "F6",
+  "F7",
+  "F10"
+ ]
+}

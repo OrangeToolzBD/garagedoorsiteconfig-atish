@@ -1,0 +1,54 @@
+{
+ "title": "Garage Door Service for Murphy, TX | Dallas Garage Door",
+ "meta": "Dallas Garage Door travels 18 miles to Murphy, TX for repairs on newer 2000s-built homes, with torsion springs and openers sized for insulated doors here.",
+ "h1": "Garage Doors in Murphy, TX: Newer Homes, Different Hardware",
+ "sections": [
+  {
+   "h2": "This Area's Housing",
+   "body": "Murphy's houses skew newer than most of what we see across the rest of the service area. The median home here went up in 2005, while the broader area we cover runs from 1973 to 2007 with a median around 1993 (F1). That fourteen-year gap matters more than it sounds: a house built in 2005 comes with a different garage door, different torsion spring sizing, and a different opener than one built in the 1970s or 80s.\n\nThere are 5,907 households in Murphy, and the median income here is $165,109 — more than double the $83,256 median across the wider service area (F7). Higher-value, newer-built homes tend to carry heavier insulated steel doors rather than the thin single-layer panels you'd find on an older tract house. That usually means torsion springs sized for the door's actual weight from day one, and an opener factory-matched to the door rather than swapped in later.\n\nWe don't have a street-level breakdown for Murphy specifically, so we're working from the build-year range for the area as a whole. What we can say is that a garage door call here is more likely to involve a fifteen-to-twenty-year-old opener board or a spring rated for an insulated door than a forty-year-old extension spring setup."
+  },
+  {
+   "h2": "Older vs. Newer Streets",
+   "body": "The area we serve overall runs from homes built in 1973 up through 2007, with most of that stock clustering in the 1980s and 90s (F2). Murphy sits toward the newer end of that span. If your house dates from the early-to-mid 2000s, you're likely on your first or second garage door opener, and your torsion spring system was probably installed to match a heavier insulated door from the start — not retrofitted the way a lot of older stock has been over the years.\n\nWe don't have a breakdown of exactly which Murphy streets landed earlier versus later inside that 1973-2007 range, so we're not going to guess at specific blocks or subdivisions. What matters more than the street is the house: if your place is older than the 2005 median, the hardware questions we ask are different — extension springs instead of torsion, a smaller opener motor, panel widths built to older standard sizes. Tell us the age of the house when you call and that shapes what we bring."
+  },
+  {
+   "h2": "When We Can Get There",
+   "body": "Murphy sits about 18 miles from our Dallas base — the same distance as Heath, Glenn Heights, and Ferris, three other communities at the outer edge of where we work (F10). It's not the closest call on our board, and it's not the farthest.\n\nWe don't run a depot in Murphy. Every truck comes out of Dallas, and every job here starts with that drive. We're not going to quote a response time we can't stand behind, because traffic on 18 miles of Dallas-area road on a Tuesday morning looks nothing like traffic on a Friday afternoon.\n\nWhat we can tell you: distance affects how fast we can get to you, not what we bring with us. A truck stocked for a Murphy call carries the same range of torsion springs, cables, and opener parts as one headed anywhere else in the service area. If your part is a less common size — which is more likely on a newer, higher-end door — that's the piece that adds time, not the miles."
+  },
+  {
+   "h2": "What That Means for Doors",
+   "body": "Heat is the main climate factor across this whole service area (F3), and it works on newer doors the same way it works on older ones — nylon rollers dry out, lubricant on the tracks gets sticky or disappears, and steel panels expand and contract enough over a Texas summer to loosen fasteners. None of that skips a house just because it was built in 2005 instead of 1985.\n\nWhere Murphy's newer stock helps: insulated doors that came standard on higher-value builds tend to hold up better against that heat swing than a bare single-layer panel, and torsion spring setups sized correctly at installation tend to fail more predictably — a slow door or one that won't stay put halfway, rather than a sudden snap common on mismatched older hardware.\n\nHere's the honest limit: if your door or opener is a less common size or brand that came with a custom-built home, we may not carry that exact part on the truck, which can mean a return trip once we've ordered it. That's more likely on the newer, higher-end end of the housing stock than on a standard older tract door, where parts are usually generic and in stock."
+  }
+ ],
+ "faq": [
+  {
+   "q": "How old are most garage doors in Murphy, TX?",
+   "a": "The median home in Murphy was built in 2005, so most original doors and openers here are running fifteen to twenty years old. That's newer than a lot of the wider service area, which has a median build year closer to 1993 (F1)."
+  },
+  {
+   "q": "Do you have a location in Murphy?",
+   "a": "No. We work out of Dallas, about 18 miles away, and every truck for a Murphy job starts that drive. We don't promise a response time we can't back up because of it."
+  },
+  {
+   "q": "Does the Texas heat affect a newer garage door as much as an older one?",
+   "a": "Yes. Heat is the main climate factor across the whole service area (F3), and it dries out rollers and stresses steel panels regardless of build year. Insulated doors common on newer, higher-value homes tend to handle it a bit better than thin single-layer panels."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "Murphy, TX"
+ },
+ "swap_test": [
+  "Murphy's median home build year is 2005, compared with a 1993 median across the wider service area.",
+  "There are 5,907 households in Murphy with a median income of $165,109, more than double the service area's $83,256 median.",
+  "Murphy sits about 18 miles from the Dallas base, the same distance as Heath, Glenn Heights, and Ferris.",
+  "The service area's housing stock runs from 1973 to 2007, clustering in the 1980s and 90s, with Murphy sitting toward the newer end of that range.",
+  "A truck for a Murphy call still starts every job with the 18-mile drive from Dallas since there's no local depot."
+ ],
+ "facts_used": [
+  "F1",
+  "F2",
+  "F3",
+  "F7",
+  "F10"
+ ]
+}

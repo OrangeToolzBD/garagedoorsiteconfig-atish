@@ -1,0 +1,55 @@
+{
+ "title": "Garage Door Repair & Replace in Ferris, TX | Dallas Garage",
+ "meta": "Dallas Garage Door serves Ferris, TX homes built mostly in the early 1980s, 18 miles from our Dallas shop, with repairs suited to original torsion hardware.",
+ "h1": "Garage Doors for Ferris, TX Homes Built Around 1983",
+ "sections": [
+  {
+   "h2": "This Area's Housing",
+   "body": "Ferris sits about 18 miles south of our shop in Dallas, and the housing here tells a different story than the newer subdivisions closer in. The median home in Ferris went up around 1983, a good ten years earlier than the 1993 median across the rest of the areas we cover. That gap matters on a garage door: doors and openers installed when a house is built tend to get replaced on the same rough cycle as the rest of the house, and a 1983 build has had a different repair history than a 1993 one.\n\nFerris is a small town by our numbers — about 935 households, with a median income of $71,583. That's lower than the $83,256 median across the wider service area, which is worth knowing because it shapes what kind of jobs we see out this way: more repair-and-keep-running calls, fewer full teardown-and-replace jobs on a whim. None of that is a knock on the town. It's just a different set of houses than what you'd find closer to downtown Dallas, where the housing stock skews newer."
+  },
+  {
+   "h2": "Older vs. Newer Streets",
+   "body": "Not every house in Ferris went up the same year. The broader service area we work spans homes built anywhere from 1973 to 2007, and even inside one town you'll find that spread — an earlier wave of construction from around 1983, and later infill built through the 90s and 2000s on lots developed after. The 1983 median tells you where the middle of that range sits, not that every house matches it exactly.\n\nWhat that means in practice: a house from Ferris's earlier building years is more likely to still have its original torsion spring setup and a first-generation chain-drive opener, if nobody's swapped them out yet. A house built later, closer to the tail end of that 1973-2007 range, is more likely to have a newer opener with photo-eye sensors and a door panel style that wasn't common yet when the older houses went up. Neither age is a problem by itself. It just means the parts we bring out for a service call in Ferris need to cover both eras, not just one, because we won't know which one we're walking into until we're standing in the driveway."
+  },
+  {
+   "h2": "When We Can Get There",
+   "body": "We run out of Dallas, not out of Ferris, and it's an honest 18 miles each way. We don't keep a truck stationed in town, so we're not going to tell you we can be at your door in fifteen minutes — that's not how the geography works, and we'd rather say that up front than have you find out on a busy afternoon.\n\nWhat we can tell you is that Ferris is a regular stop on the schedule, not an outlier we occasionally add on if it's convenient. Jobs out this way get grouped with other calls in the southern part of the service area when we can, which keeps the trip worth making and keeps our pricing sane. If your spring lets go early on a weekday and you need someone in the driveway in the next twenty minutes, we're not the right call for that. But for a broken spring, a stuck opener, or a door that's come off its track, we'll get a truck out to Ferris and do the job right once we're there, rather than rushing it to shave time off the drive."
+  },
+  {
+   "h2": "What That Means for Doors",
+   "body": "A door installed in the early 1980s in a moderate-heat climate has had four decades of hot Texas summers to work on its spring steel and its seals. Torsion springs lose tension gradually with heat cycling, and on an original 1983 setup, most homeowners in Ferris are well past the point where that spring is doing its job the way it did when the house was new. If yours is groaning, dropping unevenly, or the opener sounds like it's straining, that's usually the spring, not the motor.\n\nPanel sections from that era are also often a single design that doesn't match what's sold today, so a cracked or dented panel from a 1983-built garage sometimes can't be matched exactly. The honest fix in that case is a full door replacement rather than a patch job that'll look and seal differently than the rest of the door. We'll tell you straight if that's where you're at instead of trying to force an old panel to work.\n\nNone of this means an older door is a bad door. It means the failure points are predictable once you know the build year, and that's most of what a service call out this way turns into."
+  }
+ ],
+ "faq": [
+  {
+   "q": "How far is Ferris from your Dallas shop?",
+   "a": "About 18 miles. We don't have a location in Ferris itself, so every job out here starts with a drive from Dallas, and we schedule around that rather than promising a same-day arrival window."
+  },
+  {
+   "q": "Are garage doors in Ferris different from newer parts of the area?",
+   "a": "Often, yes. Ferris's median home was built around 1983, about a decade earlier than the 1993 median across the rest of our service area, so original torsion springs and older opener models show up more here than in newer subdivisions."
+  },
+  {
+   "q": "Can you match an old garage door panel in Ferris?",
+   "a": "Sometimes, but not always. A panel style from a 1983-built door isn't always still made, and forcing a mismatched replacement panel onto an original door usually looks and seals worse than just replacing the whole door."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "Ferris, TX"
+ },
+ "swap_test": [
+  "The median home in Ferris went up around 1983, a good ten years earlier than the 1993 median across the rest of the areas we cover.",
+  "Ferris is a small town by our numbers — about 935 households, with a median income of $71,583.",
+  "That's lower than the $83,256 median across the wider service area.",
+  "Ferris sits about 18 miles south of our shop in Dallas, and it's an honest 18 miles each way.",
+  "A house from Ferris's earlier building years is more likely to still have its original torsion spring setup and a first-generation chain-drive opener.",
+  "A door installed in the early 1980s in a moderate-heat climate has had four decades of hot Texas summers to work on its spring steel and its seals."
+ ],
+ "facts_used": [
+  "F1",
+  "F3",
+  "F6",
+  "F7",
+  "F10"
+ ]
+}

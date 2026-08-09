@@ -1,0 +1,44 @@
+```json
+{
+  "title": "Garage Door Openers and Power Outages in Dallas, TX Area",
+  "meta": "Local Dallas facts on garage door openers, battery backup, and power cuts—1970s-2000s housing, summer heat, and what actually fails when the power drops.",
+  "h1": "What Happens to Your Opener When Dallas Power Cuts Out",
+  "sections": [
+    {
+      "h2": "what_local_conditions_do",
+      "body": "Most of the openers we get called out on sit inside garages built between 1973 and 2007, with the bulk of that stock going up in the 1980s and 90s. That means the opener itself is often original equipment — the same chain-drive unit that came with the house, now pushing three decades of service. Add Dallas's moderate-heat climate band, and you've got a motor and control board that spend every summer working in triple-digit garage temperatures. Heat is the real driver of most opener failures we see: it degrades the capacitor on the circuit board, it cooks a battery backup faster than the box promises, and it makes chain-drive gears bind as lubricant thins. That's true across the roughly 80,920 owner-occupied houses in this part of Dallas, not just one pocket of it — from older lots near Old East Dallas and Lakewood to newer builds further out toward Balch Springs and Lancaster. The age and the heat are the two conditions doing the actual damage, not the brand of opener you own."
+    },
+    {
+      "h2": "the_seasonal_bit",
+      "body": "Summer is when openers and power cuts collide. A moderate-heat climate band doesn't mean Dallas skips the extremes — it means the heat load builds steadily across the season instead of spiking once and easing off, and that steady load wears down battery backup cells and control boards faster than the spec sheet accounts for. If your opener has a battery backup unit, summer is the season it gets tested for real, usually during a grid outage on the hottest week of the year, not on a mild spring afternoon. Backup batteries that read fine in March can fail by August. Chain and belt-drive units both lose a little smoothness in high heat, too, as lubricant thins and metal expands — one more reason the door feels rougher on a hundred-degree afternoon than it did in October. None of this shows up until the power actually drops, which is exactly the wrong time to find out a battery is dead."
+    },
+    {
+      "h2": "the_situation",
+      "body": "When the power drops, the opener stops — full stop, no override, unless a battery backup is wired in. Every opener has a manual release, usually a red pull cord off the trolley, and on houses built in this window that cord disconnects the carriage from the motor so you can lift the door by hand. On a door with good, properly sized springs, that's a two-hand lift, not a fight. The trouble comes when the springs are already worn or undersized — common on older stock that's had panels swapped or been re-covered over the years — and the manual lift turns into real weight right when you need the door up. If your opener predates battery backup as a standard feature, which covers a lot of the units original to houses in the 1973-2007 range, a power cut means manual operation until the power's back or a backup unit gets added. At a median household income of $83,256 across this service area, most owners here can plan for that upgrade as routine maintenance rather than an emergency expense."
+    },
+    {
+      "h2": "what_most_people_get_wrong",
+      "body": "The biggest mistake is treating a battery backup unit as a permanent fix once it's installed. It's a battery. In Dallas heat, expect it to lose real capacity over a few summers, not decades — check it before the season gets hot, not during an outage. Second mistake: people forget where the manual release cord is until the power's already out and they're standing in a dark garage looking for it. Third, and this one costs money: homeowners with openers original to a 1980s or 90s house assume the unit can be repaired indefinitely. At some point the control board or gear set isn't available anymore, and we'll tell you straight when a repair isn't worth it — replacing the opener is the honest answer, not a workaround. We don't carry every legacy part for every opener brand from that era, so if yours is old enough, expect the conversation to include replacement, not just a fix."
+    }
+  ],
+  "faq": [
+    {
+      "q": "Will my garage door opener work during a power outage?",
+      "a": "No, not without a battery backup wired into the unit. Every opener has a manual release cord, usually red, hanging from the trolley — pull it to disconnect the carriage and lift the door by hand. On a door with good springs that's a manageable two-hand lift."
+    },
+    {
+      "q": "How long does a battery backup actually hold up in Dallas summers?",
+      "a": "Shorter than the packaging suggests. Steady summer heat wears down backup cells faster than mild-season use does, so a battery that tests fine in spring can be weak by late summer. Check it before the hottest stretch of the year, not after the power's already out."
+    },
+    {
+      "q": "My opener is original to my house from the 90s — can it still be repaired?",
+      "a": "Sometimes, but not indefinitely. Control boards and gear sets for openers that old aren't always stocked anymore. If yours is original to a 1980s or 90s build, expect a straight answer about whether a repair is realistic or whether replacement is the better call."
+    }
+  ],
+  "schema_facts": {
+    "areaServed": "Dallas, TX"
+  },
+  "swap_test": [
+    "Most of the openers we get called out on sit inside garages built between 1973 and 2007, with the bulk of that stock going up in the 1980s and 90s.",
+    "Dallas's moderate-heat climate band pushes garage temperatures high enough in summer to shorten the life of opener circuit boards and backup batteries.",
+    "That's true across the roughly 80,920 owner-occupied houses in this part of Dallas, from older lots near Old East Dallas and Lakewood to newer builds further out toward Balch Springs and Lancaster

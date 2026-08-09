@@ -1,0 +1,56 @@
+{
+ "title": "Is Your Older Garage Door Worth Fixing? Dallas, TX Guide",
+ "meta": "Dallas houses mostly date 1973-2007. Here's how that build era and our summer heat decide whether an original garage door is worth repairing or replacing.",
+ "h1": "What an Older Dallas Garage Door Is Actually Worth Fixing",
+ "sections": [
+  {
+   "h2": "what_local_conditions_do",
+   "body": "Across the 17 areas we run trucks to - Lakewood, Kessler, Vickery Meadow, Oak Lawn, and the rest - the housing stock is mostly 1980s and 90s construction, with the broader service area built between 1973 and 2007 and a median year of 1993. That matters because it tells us what's actually on the wall of your garage. A house from that window almost always shipped with a steel panel door on a torsion or early extension spring setup, and that hardware has a working life measured in cycles, not years. By 2024 a lot of those original springs and rollers are past due, even if the panels themselves still look fine. Closer in, around Old East Dallas and Oak Lawn, you get smaller garages and shorter tracks - repairs there tend to be cheaper and quicker. Farther out toward Lancaster or Seagoville, doors run wider, and a failed part on a double door costs more to fix simply because there's more door to move. Age alone doesn't tell you whether to fix or replace. What year the house went up, and which system it came with, does."
+  },
+  {
+   "h2": "the_seasonal_bit",
+   "body": "Our climate band is moderate heat, not the extreme end, but it's still enough to wear on a door that's already 20 or 30 years old. Long stretches of high heat dry out the grease in rollers and hinges faster than a mild climate would, so an original door that hasn't been lubricated in years starts binding on the track sooner than the owner expects. Heat also affects the electronics - opener circuit boards and photo-eye sensors sitting in an unconditioned garage take a beating over repeated hot summers, and that's often the actual reason a door 'stopped working' when the springs and cables are fine. We don't get the kind of cold-snap spring-snap problems some regions deal with. Here it's slower: seals crack, lubricant gums up, and plastic housings on older openers get brittle. None of that means the door is done. It usually means a service call catches it before something breaks at a bad time, like a cable finally giving out under a spring that's been overworked for a decade."
+  },
+  {
+   "h2": "the_situation",
+   "body": "There are roughly 165,955 households across our service area, and 80,920 of those are owner-occupied houses - the group that actually owns the door and has to decide what to do with it, rather than calling a landlord. Median household income here is $83,256, which puts most of these decisions in a real middle ground: not everyone wants to drop the cost of full replacement on a door that's cosmetically tired but mechanically sound, and not everyone should. Given that most of the stock dates to the 1973-2007 window, a huge share of the doors we look at fall into the same range - old enough that the original spring system is due, young enough that the door itself, track, and frame are usually still straight and worth keeping. The math tends to favor repair when the panels are intact and the track is square. It tends to favor replacement when the door has already been rebuilt once and is failing again, or when the opener and hardware are both original and both failing at the same time."
+  },
+  {
+   "h2": "what_most_people_get_wrong",
+   "body": "The most common mistake is judging a door by its face. A steel panel door from the 1980s or 90s can look dented and faded and still have years left in it, because the panel, track, and frame are the expensive parts to replace, and those are usually the parts that survive. What actually fails first - torsion springs, rollers, cable, the opener's board - are comparatively cheap to swap out. So a door that looks like a replacement candidate is often a repair, and a door that looks fine can be hiding a spring that's one cycle from snapping. The other mistake runs the opposite direction: assuming every repair is worth doing. If a door has already had two or three spring or cable failures and the track has started to twist, patching it again just delays the same call. Here's the honest limit: on some of the oldest extension-spring setups from the early end of that 1973 build range, exact replacement parts aren't something we keep on the truck, and rebuilding the whole spring system sometimes costs close to what a new torsion setup runs. In that case we'll tell you straight rather than bill you for a patch."
+  }
+ ],
+ "faq": [
+  {
+   "q": "My garage door is from the 90s, is it worth fixing or should I just replace it?",
+   "a": "Depends on what's actually wrong. If the panels and track are straight and it's a spring, cable, or roller problem, that's a normal repair on a door of that age. If the opener and hardware are both original and both failing, or it's had multiple spring failures already, replacement usually makes more sense."
+  },
+  {
+   "q": "Does Dallas heat wear out garage door parts faster?",
+   "a": "It's a factor, mainly on lubrication and electronics rather than the springs themselves. Long hot stretches dry out grease in rollers and hinges and stress opener circuit boards sitting in an unconditioned garage. It's a slower wear pattern than areas with harsh winters, but it adds up over 20-plus years."
+  },
+  {
+   "q": "How do I know if my original garage door hardware is too old to fix?",
+   "a": "The clearest sign is repeat failures - a second or third spring or cable break on the same door, or a track that's started to twist. Most doors from the 1973-2007 build range still have good panels and frames even when the spring system needs full replacement."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "Dallas, TX"
+ },
+ "swap_test": [
+  "Most houses across the 17 areas we run trucks to are 1980s and 90s construction, with the broader service area built between 1973 and 2007 and a median year of 1993.",
+  "Closer in, around Old East Dallas and Oak Lawn, garages and tracks run smaller, while farther out toward Lancaster or Seagoville doors run wider and cost more to fix.",
+  "There are roughly 165,955 households across the service area, and 80,920 of those are owner-occupied houses.",
+  "Median household income across the service area is $83,256.",
+  "Our climate band is moderate heat, which wears on lubricant and electronics over repeated hot summers rather than causing cold-snap spring failures.",
+  "On the oldest extension-spring setups from the early end of the 1973-2007 build range, exact replacement parts aren't something kept on the truck."
+ ],
+ "facts_used": [
+  "F1",
+  "F2",
+  "F3",
+  "F6",
+  "F7",
+  "F10"
+ ]
+}

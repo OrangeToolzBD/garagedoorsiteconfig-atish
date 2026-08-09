@@ -1,0 +1,60 @@
+{
+ "title": "Garage Door Repair in University Park, TX | Dallas Garage Door",
+ "meta": "Dallas Garage Door serves University Park, 4 miles from our Dallas base. Springs, openers, and panels sized for this area's 1987-median housing stock.",
+ "h1": "Garage Door Service for University Park Homes",
+ "sections": [
+  {
+   "h2": "This Area's Housing",
+   "body": "University Park's houses carry a median build year of 1987, which puts this area on the older side of our whole coverage territory, where homes run 1973 to 2007 with a median of 1993 (F1, F2). That six-year gap matters. A door installed in the mid-to-late 1980s has been through more Texas summers than the typical door we see across the rest of the service area.\n\nThe other number that stands out is income. University Park's median household income is $250,001, against $83,256 across the full coverage area (F7). With 7,174 households here, out of 165,955 across the territory (F6), this is a small, high-income pocket. In practice that tends to mean more custom door work — oversized openings, heavier panel materials, opener upgrades that happened well before the hardware technically failed. It does not mean the springs or tracks are any newer than the house itself. A 1987 build with a 2015 opener can still be running 1987 torsion hardware behind it."
+  },
+  {
+   "h2": "Older vs. Newer Streets",
+   "body": "Not every block here was built in the same year, even though 1987 is the midpoint. A street finished early in this area's build-out is closer to the older end of the region's 1973-2007 range, and a street finished later sits closer to the 1990s stock that makes up most of the surrounding area (F2). The practical difference shows up in the springs and the drive.\n\nOlder torsion setups in this area were often sized for lighter steel doors than what a lot of homeowners have since installed — a heavier insulated panel on an old spring is a common mismatch we find on service calls. Newer streets from the tail end of this area's build-out are more likely to already have standardized torsion hardware and a belt or chain drive from a later replacement cycle.\n\nWe can't tell you which category your street falls into without seeing the door. What we can tell you is that a 1987-era house with an untouched opener and spring is not unusual here, and it's worth having someone actually look at the cycle count on that spring before it lets go on its own."
+  },
+  {
+   "h2": "When We Can Get There",
+   "body": "We run out of Dallas, and University Park is four miles out — closer than most of the territory we cover, and just a mile past Highland Park at three miles (F10). We don't keep a location in University Park itself; every job here means a truck coming from Dallas, same as it does for the rest of this service area.\n\nClimate-wise, this area sits in a moderate heat band (F3), which is kinder to hardware than the extreme end of the state but still enough heat cycling over a summer to dry out lubrication and shift torsion tension on an older spring. It's not a reason to panic. It's a reason a spring that's held fine for fifteen years can suddenly not hold on the sixteenth."
+  },
+  {
+   "h2": "What That Means for Doors",
+   "body": "Put the housing age and the income picture together and the pattern in University Park is usually one of two things: an original steel door on original hardware that's simply reached the end of its spring life, or a door that's been swapped out for something heavier or more custom while the opener and track underneath never got matched to it. Both show up as the same complaint — a door that's loud, uneven, or won't open — for different reasons.\n\nWe'll tell you straight if a repair isn't worth doing. A 1987 door with a rusted track and a dead spring is often cheaper to replace outright than to patch piece by piece, and we're not going to talk you into three separate repairs on a door that's on its way out anyway. On the other hand, if it's just the spring, there's no reason to replace a door that's otherwise sound.\n\nOne limitation worth saying plainly: if your door uses a custom or oversized panel that isn't something we carry on the truck, that part has to be special-ordered, and we won't pretend that happens on the same visit."
+  }
+ ],
+ "faq": [
+  {
+   "q": "Does Dallas Garage Door have a location in University Park?",
+   "a": "No. We run out of Dallas and drive to University Park, about four miles away. There's no separate shop or depot here — every service call comes from our Dallas base."
+  },
+  {
+   "q": "How old are most garage doors in University Park?",
+   "a": "The area's median build year is 1987, a bit older than the 1993 median across our wider coverage area. A lot of doors and their original torsion springs date back to that era, even where the opener has since been upgraded."
+  },
+  {
+   "q": "Why would my spring fail if my opener is newer?",
+   "a": "Openers get replaced far more often than springs and tracks. It's common in this area to find a modern opener bolted to hardware from the original 1980s build — the opener working fine doesn't tell you anything about the spring's condition."
+  },
+  {
+   "q": "Is it worth repairing an older door here or replacing it?",
+   "a": "Depends on what's failing. A dead spring on an otherwise sound door is a straightforward repair. A door with rusted track, a warped panel, and worn hardware all at once usually costs less to replace than to fix piece by piece — we'll tell you which situation you're in."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "University Park, TX"
+ },
+ "swap_test": [
+  "University Park's houses carry a median build year of 1987, older than the service area's overall median of 1993.",
+  "At 7,174 households, University Park is a small slice of the 165,955 households across the full coverage area.",
+  "Median household income here runs $250,001, well above the area-wide $83,256.",
+  "University Park sits four miles from our Dallas base, just beyond Highland Park at three miles.",
+  "This area sits in a moderate heat band, part of the region's overall climate classification.",
+  "A 1987 build with a 2015 opener can still be running original 1987 torsion hardware behind it."
+ ],
+ "facts_used": [
+  "F1",
+  "F2",
+  "F3",
+  "F6",
+  "F7",
+  "F10"
+ ]
+}

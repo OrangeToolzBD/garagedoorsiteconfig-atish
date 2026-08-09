@@ -1,0 +1,52 @@
+{
+ "title": "Garage Door Repair in Buckner Terrace / Everglade Park, Dallas",
+ "meta": "Garage door spring, opener, and panel work for the 1970s-2000s housing stock in Buckner Terrace / Everglade Park, about 4 miles east of downtown Dallas.",
+ "h1": "Garage Doors in Buckner Terrace / Everglade Park",
+ "sections": [
+  {
+   "h2": "the_housing_here",
+   "body": "Houses in this part of Dallas mostly went up between 1973 and 2007, with the typical build year landing around 1993. That puts almost everything here past the one-piece, side-mounted-hardware era and into standard sectional steel doors on torsion springs — the setup that's been the norm for decades. It also means a good number of these garages have openers and photo-eye sensors that were installed or replaced sometime in the 1990s, which is right when federal rules started requiring auto-reverse and sensor eyes on new units.\n\nWhat that means for a service call: springs sized for these doors are common stock, not special-order. Panels are usually standard steel sectional, so matching a damaged section is realistic more often than not. The failure points we see most on houses from this build window are worn rollers, stretched or frayed cables, and openers old enough that the circuit board or logic unit has simply worn out rather than broken outright.\n\nA smaller number of homes on the older end of that range (early-to-mid 1970s) may still have original torsion hardware that's outlived its rated cycle count, even if it looks fine from the driveway. Age on a spring doesn't always show until it lets go."
+  },
+  {
+   "h2": "getting_a_look_at_it",
+   "body": "Before we quote anything, we want eyes on the door — the spring size, the track condition, whether the opener is original or already a replacement. On houses from this build era that's usually a quick job, since the layout is standard and the parts are ones we carry.\n\nWhat we won't do is sell a full opener replacement when the fix is a $20 sensor or a logic board reset. If the unit is original to a mid-90s build and still running, plenty of life may be left in it — the motor is usually the last thing to go, not the first.\n\nHonest limit: if a spring has already failed and the door is down, that's same-visit work in almost every case. If what you've got is a slow degrade — noise, drift, a door that's starting to hang crooked — we still want to look at it in person rather than quote off a phone description, because two doors that look the same from the street can have very different wear underneath depending on how often they've been used."
+  },
+  {
+   "h2": "where_this_is",
+   "body": "Buckner Terrace / Everglade Park sits about 4 miles east of downtown Dallas. Old East Dallas is roughly a mile northwest, South Dallas about a mile south, and Lakewood sits around 3 miles to the north-northeast — all closer to the center than this neighborhood is.\n\nThe climate band here runs moderate on the heat side, which matters less for the door itself and more for the opener's electronics and the belt or chain drive — both of which age faster with repeated heat cycling than with cold. It's a slower kind of wear, not a sudden one.\n\nAcross the wider Dallas service area, median household income runs around $83,256, and the housing market includes roughly 165,955 households with about 80,920 owner-occupied houses. That's the backdrop for how we stock trucks and price common repairs — parts sized for the kind of 1980s-and-90s-era sectional doors that make up most of what's actually out there."
+  }
+ ],
+ "faq": [
+  {
+   "q": "Are garage door parts hard to find for houses this age around here?",
+   "a": "No. Most homes in this area were built between 1973 and 2007, with the typical build year around 1993, which puts them on standard sectional steel doors and torsion springs. Those parts are common stock, not special-order."
+  },
+  {
+   "q": "Is my opener too old to fix?",
+   "a": "Not necessarily. Openers installed in the 1990s often have the motor still in good shape even when the logic board or sensor eyes are what's failing. We check before we recommend a full replacement."
+  },
+  {
+   "q": "How far are you from Buckner Terrace / Everglade Park?",
+   "a": "The neighborhood sits about 4 miles east of downtown Dallas, with Old East Dallas roughly a mile northwest and South Dallas about a mile south."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "Buckner Terrace / Everglade Park, Dallas, TX"
+ },
+ "swap_test": [
+  "Houses in this part of Dallas mostly went up between 1973 and 2007, with the typical build year landing around 1993.",
+  "A smaller number of homes on the older end of that range (early-to-mid 1970s) may still have original torsion hardware that's outlived its rated cycle count.",
+  "Buckner Terrace / Everglade Park sits about 4 miles east of downtown Dallas.",
+  "Old East Dallas is roughly a mile northwest, South Dallas about a mile south, and Lakewood sits around 3 miles to the north-northeast.",
+  "Across the wider Dallas service area, median household income runs around $83,256, and the housing market includes roughly 165,955 households with about 80,920 owner-occupied houses.",
+  "The climate band here runs moderate on the heat side."
+ ],
+ "facts_used": [
+  "F1",
+  "F2",
+  "F3",
+  "F6",
+  "F7",
+  "F10"
+ ]
+}

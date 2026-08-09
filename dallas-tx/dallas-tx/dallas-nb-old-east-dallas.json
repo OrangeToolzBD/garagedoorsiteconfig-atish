@@ -1,0 +1,51 @@
+{
+ "title": "Garage Door Repair & Openers in Old East Dallas, Dallas",
+ "meta": "Garage door repair in Old East Dallas, Dallas TX — houses built 1973-2007, torsion springs and openers from that era, plus honest fix-or-replace advice.",
+ "h1": "Garage Doors in Old East Dallas Homes Built Since the 1970s",
+ "sections": [
+  {
+   "h2": "the_housing_here",
+   "body": "Houses in this stretch of Old East Dallas mostly went up between 1973 and 2007, with the typical build year landing around 1993. That's not a random spread — the bulk of the stock here dates to the 1980s and 90s building wave, same as a lot of the other pockets on this side of the city. What that means for a door: you're looking at steel sectional doors on torsion springs almost across the board, not the old side-mounted extension setups you'd find in older parts of town. Openers from the early end of that window predate the federal rule requiring photo-eye safety sensors, which took effect in 1993 — so if a house here still has its original opener, it may be running without one, and that's worth checking regardless of anything else going on with the door. Dallas sits in a moderate-heat climate band, which is easier on springs and steel than the extreme end of the Texas heat map, but 30-plus years of summer expansion and contraction still wears out cable and roller hardware on schedule. We won't tell you a door from this era is fine just because it still opens — plenty of them are, but the springs and the opener's safety gear are the two things we check first, every time."
+  },
+  {
+   "h2": "getting_a_look_at_it",
+   "body": "On a house from this era, the walk-through is short because the hardware is standard. We check the torsion spring for rust and stretch, look at the drums and cables for fraying, and run the opener's photo-eye and reverse function if it has one — if it doesn't, that's the first thing we flag. Track alignment matters more than owners think; a door that's been slamming or drifting off-center for a few years usually points to a bent track or worn rollers rather than the spring itself. We'll tell you straight if a panel's dented but structurally fine versus one that's compromised enough to weaken the whole door under wind load. Here's the limitation: if the torsion drum is rusted through or the shaft is bent, we don't try to save it with a patch job — that's a full hardware swap, and pretending otherwise just means a callback in six months. Same goes for openers old enough that the circuit board is discontinued; sometimes the honest number is a new opener, not a repair. We'd rather say that on the first visit than have you pay twice."
+  },
+  {
+   "h2": "where_this_is",
+   "body": "Old East Dallas sits about a mile northwest of the Dallas city centre. South Dallas is a mile south, and Lower Greenville is two miles north. The Downtown Historic District and the West End both sit roughly two miles to the west-southwest, with Oak Lawn two miles to the west-northwest. Lakewood is three miles north-northeast. That puts the neighborhood in the tighter ring of close-in Dallas areas rather than out toward the suburban edge — Highland Park and University Park, three and four miles out, are the nearest of the farther-flung names on the map, and the distances only stretch from there."
+  }
+ ],
+ "faq": [
+  {
+   "q": "How old are most garage doors in Old East Dallas?",
+   "a": "Most homes here were built between 1973 and 2007, with the typical house dating to around 1993. That puts most original doors and torsion spring setups at 20 to 45 years old, depending on the block — old enough that spring fatigue and worn rollers are common, even if the door still opens fine."
+  },
+  {
+   "q": "Does my garage door opener need a safety sensor?",
+   "a": "If your house or opener dates from before 1993, it may not have a photo-eye safety sensor, which became a federal requirement that year. It's worth having this checked regardless of the door's age — it's a quick thing to verify and matters for how the opener reverses if something's in the door's path."
+  },
+  {
+   "q": "Is Dallas heat hard on garage door springs?",
+   "a": "Dallas falls in a moderate-heat climate band, which is gentler on steel and springs than the more extreme parts of the state. Still, decades of summer heat cycling causes normal wear on cables, drums, and torsion springs — it's a slower process here, not one you can skip checking on entirely."
+  }
+ ],
+ "schema_facts": {
+  "areaServed": "Old East Dallas, Dallas, TX"
+ },
+ "swap_test": [
+  "Most houses in Old East Dallas went up between 1973 and 2007, with the typical build year landing around 1993.",
+  "The bulk of the stock here dates to the 1980s and 90s building wave.",
+  "Old East Dallas sits about a mile northwest of the Dallas city centre.",
+  "South Dallas is a mile south, and Lower Greenville is two miles north.",
+  "The Downtown Historic District and the West End both sit roughly two miles to the west-southwest, with Oak Lawn two miles to the west-northwest.",
+  "Lakewood is three miles north-northeast.",
+  "Highland Park and University Park sit three and four miles out from here."
+ ],
+ "facts_used": [
+  "F1",
+  "F2",
+  "F3",
+  "F10"
+ ]
+}
