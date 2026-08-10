@@ -165,6 +165,8 @@ def load_config():
             "content": s.get("content", s["city"].lower()),
             "ghl_form_id": s.get("ghl_form_id", ""),
             "port": s.get("port"),
+            # design template ("garage" default; ironclad/volt/nimbus are full alt designs)
+            "template": s.get("template", "garage"),
             # showcase homepage variant + its optional, business-supplied trust data
             "home": s.get("home", "classic"),
             "stats": s.get("stats", []), "hours": s.get("hours", ""),
@@ -665,6 +667,26 @@ def trust_page(t, pages, url, h1, blocks, is_quote=False):
     return (head_html(t, seo_title(f"{h1} | {t['brand']}"), f"{h1} — {t['brand']}, {t['city']}, {t['st']}.", url, schemas)
             + header(t, pages) + body + footer(t, pages) + "</body></html>")
 
+# ---------------------------------------------------------------- renderer dispatch
+# The default "garage" design is the module functions above. Alternate full designs
+# (ironclad / volt / nimbus) live in templates.py and expose the same interface.
+GARAGE = {"css": lambda t: css(t) + GD_CSS, "navjs": NAVJS,
+          "home": lambda t, pages: home_page(t, pages),
+          "inner": lambda t, p, pages: inner_page(t, p, pages),
+          "index": lambda t, pages, cat, url, h1, eb, bl: index_page(t, pages, cat, url, h1, eb, bl),
+          "trust": lambda t, pages, url, h1, blocks, q=False: trust_page(t, pages, url, h1, blocks, q)}
+
+def get_renderer(t):
+    name = t.get("template", "garage")
+    if name and name != "garage":
+        import sys, templates
+        templates.H = sys.modules[__name__]          # give templates access to shared helpers
+        r = templates.REGISTRY.get(name)
+        if r:
+            return r
+        print(f"  ! unknown template '{name}' -> using garage")
+    return GARAGE
+
 # ---------------------------------------------------------------- build
 def write(out, url, htmlstr):
     htmlstr = clean_text(htmlstr)  # sweep any hardcoded typographic chars from the assembled page
@@ -679,11 +701,13 @@ def build():
         if not os.path.isdir(os.path.join(CONTENT, t["content"])):
             print(f"  skip {domain}: content/{t['content']}/ not found (add content, then rebuild)")
             continue
+        R = get_renderer(t)
         out = os.path.join(DIST, domain)
         assets = os.path.join(out, "assets")
         os.makedirs(assets, exist_ok=True)
-        open(os.path.join(assets, "site.css"), "w", encoding="utf-8").write(css(t) + GD_CSS)
-        open(os.path.join(assets, "nav.js"), "w", encoding="utf-8").write(NAVJS)
+        open(os.path.join(assets, "site.css"), "w", encoding="utf-8").write(R["css"](t))
+        if R.get("navjs"):
+            open(os.path.join(assets, "nav.js"), "w", encoding="utf-8").write(R["navjs"])
         open(os.path.join(assets, "favicon.svg"), "w", encoding="utf-8").write(
             '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44">'
             f'<rect width="44" height="44" rx="10" fill="{t["p"]}"/>'
@@ -715,24 +739,24 @@ def build():
         for url, p in pages.items():
             if p["cat"] == "home":
                 continue
-            write(out, url, inner_page(t, p, pages))
+            write(out, url, R["inner"](t, p, pages))
         # homepage
-        write(out, "/", home_page(t, pages))
+        write(out, "/", R["home"](t, pages))
         # section index pages
         if any(p["cat"] == "service" for p in pages.values()):
-            write(out, "/services/", index_page(t, pages, "service", "/services/",
+            write(out, "/services/", R["index"](t, pages, "service", "/services/",
                   f"Garage Door Services in {t['city']}", "What We Do",
                   f"Repair, installation and service for garage doors across {t['city']} and nearby."))
         if any(p["cat"] == "area" for p in pages.values()):
-            write(out, "/service-areas/", index_page(t, pages, "area", "/service-areas/",
+            write(out, "/service-areas/", R["index"](t, pages, "area", "/service-areas/",
                   f"Service Areas Around {t['city']}", "Where We Work",
                   f"Neighborhoods and suburbs we cover across the {t['city']} metro."))
         if any(p["cat"] == "guide" for p in pages.values()):
-            write(out, "/guides/", index_page(t, pages, "guide", "/guides/",
+            write(out, "/guides/", R["index"](t, pages, "guide", "/guides/",
                   "Garage Door Guides", "Good to Know",
                   "Plain-English answers about springs, openers, older doors and what a repair really involves."))
         # trust pages
-        write(out, "/about/", trust_page(t, pages, "/about/", f"About {t['brand']}", [
+        write(out, "/about/", R["trust"](t, pages, "/about/", f"About {t['brand']}", [
             ("A local garage door crew",
              f"{t['brand']} is a {t['city']}-based team handling garage door repair, spring and opener service, and new-door installation across {t['city']} and the surrounding {t['st']} metro. We're not a national call center routing your job to whoever's cheapest that day - the person who answers the phone is part of the same crew that shows up in your driveway. We focus on the housing stock here and the specific problems that come with it, from decades-old single-layer steel doors to the springs and openers that wear out on them."),
             ("What we work on",
@@ -748,12 +772,12 @@ def build():
             ("Ready when you are",
              f"Whether it's a door that won't open this morning or a replacement you've been putting off, {t['brand']} is one call away. Reach us at {t['phone']} for same-day service on most repairs, or request a written quote and we'll tell you honestly what your door needs - nothing more."),
         ]))
-        write(out, "/contact/", trust_page(t, pages, "/contact/", f"Contact {t['brand']}", [
+        write(out, "/contact/", R["trust"](t, pages, "/contact/", f"Contact {t['brand']}", [
             ("Get in touch", f"Call {t['phone']} to reach {t['brand']} for garage door repair, service or a new-door quote in {t['city']}, {t['st']}."),
             ("Service area", f"We serve {t['city']} and the surrounding suburbs. Not sure if you're in range? Call and ask — we'll tell you straight.")]))
-        write(out, "/request-a-quote/", trust_page(t, pages, "/request-a-quote/", f"Request a Garage Door Quote in {t['city']}", [
+        write(out, "/request-a-quote/", R["trust"](t, pages, "/request-a-quote/", f"Request a Garage Door Quote in {t['city']}", [
             ("Tell us what the door is doing", f"Describe the problem — noise, off-track, a broken spring, or a door you want replaced — and we'll give you a written price. Call {t['phone']} or use the form."),
-            ("Fast, no-pressure quotes", "You get a real number, not a range, once we've seen the door. Same-day service is available on most repairs.")], is_quote=True))
+            ("Fast, no-pressure quotes", "You get a real number, not a range, once we've seen the door. Same-day service is available on most repairs.")], True))
 
         # sitemap / robots
         urls = sorted(set(["/"] + [p["url"] for p in pages.values() if p["cat"] != "home"]

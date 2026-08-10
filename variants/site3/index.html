@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nimbus Doors — Friendly Garage Door Care in Seattle</title>
+<meta name="description" content="Nimbus Doors, Seattle. Warm, no-pressure garage door repair, tune-ups and installs. The neighborly first call.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#2c3a49;--soft:#5b6b7b;--blue:#4c8dff;--sky:#e9f3ff;--mint:#e4f7ee;--peach:#ffeede;--lilac:#efe9ff;--white:#fff;--r:26px}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:Nunito,sans-serif;color:var(--ink);background:#fbfdff;line-height:1.65;-webkit-font-smoothing:antialiased}
+.round{font-family:"Baloo 2",cursive}
+h1,h2,h3{font-family:"Baloo 2",cursive;line-height:1.15;font-weight:800}
+.wrap{max-width:1140px;margin:0 auto;padding:0 26px}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+.eyebrow{font-family:"Baloo 2";font-weight:700;color:var(--blue);font-size:.95rem}
+/* pill buttons, soft, scale on hover */
+.btn{display:inline-flex;align-items:center;gap:9px;font-family:"Baloo 2";font-weight:700;border-radius:999px;padding:13px 28px;font-size:1rem;cursor:pointer;transition:transform .18s,box-shadow .18s;border:0}
+.btn--blue{background:var(--blue);color:#fff;box-shadow:0 10px 22px rgba(76,141,255,.35)}
+.btn--soft{background:#fff;color:var(--ink);box-shadow:0 6px 18px rgba(44,58,73,.10)}
+.btn:hover{transform:translateY(-3px) scale(1.02)}
+.btn--blue:hover{box-shadow:0 16px 30px rgba(76,141,255,.45)}
+
+/* floating pill nav */
+.navwrap{position:sticky;top:16px;z-index:50;padding:0 16px}
+.nav{max-width:1000px;margin:0 auto;background:rgba(255,255,255,.85);backdrop-filter:blur(12px);border:1px solid #e7eef7;border-radius:999px;box-shadow:0 12px 30px rgba(44,58,73,.10);display:flex;align-items:center;justify-content:space-between;padding:10px 12px 10px 22px}
+.logo{display:flex;align-items:center;gap:10px;font-family:"Baloo 2";font-weight:800;font-size:1.25rem}
+.logo__d{width:30px;height:30px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#9cc4ff,var(--blue));box-shadow:0 4px 10px rgba(76,141,255,.4)}
+.nav__links{display:flex;gap:8px;font-family:"Baloo 2";font-weight:600}
+.nav__links a{padding:8px 14px;border-radius:999px;transition:background .2s}
+.nav__links a:hover{background:var(--sky)}
+.nav .btn{padding:10px 20px;font-size:.95rem}
+.navtoggle{display:none;background:var(--sky);border:0;border-radius:50%;width:42px;height:42px;font-size:1.2rem;cursor:pointer}
+.mmenu{display:none}
+
+/* hero centered with blobs */
+.hero{position:relative;text-align:center;padding:80px 26px 100px;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(8px);opacity:.7;z-index:0}
+.b1{width:280px;height:280px;background:var(--peach);top:-40px;left:-60px}
+.b2{width:340px;height:340px;background:var(--mint);bottom:-80px;right:-70px}
+.b3{width:200px;height:200px;background:var(--lilac);top:120px;right:12%}
+.hero__in{position:relative;z-index:2;max-width:760px;margin:0 auto}
+.hero .chip{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid #e7eef7;border-radius:999px;padding:7px 16px;font-weight:700;font-size:.9rem;box-shadow:0 6px 16px rgba(44,58,73,.08)}
+.hero h1{font-size:clamp(2.6rem,6vw,4.4rem);margin:22px 0 16px}
+.hero h1 .hl{color:var(--blue);position:relative}
+.hero__lead{font-size:1.2rem;color:var(--soft);max-width:52ch;margin:0 auto 30px}
+.hero__btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.trust{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:34px;color:var(--soft);font-weight:700}
+.avatars{display:flex}
+.avatars span{width:38px;height:38px;border-radius:50%;border:3px solid #fff;margin-left:-12px;background:var(--sky)}
+.avatars span:nth-child(2){background:var(--mint)}.avatars span:nth-child(3){background:var(--peach)}.avatars span:nth-child(4){background:var(--lilac)}
+
+/* service tiles — pastel rounded */
+.sec{padding:80px 0}
+.sec__head{text-align:center;max-width:600px;margin:0 auto 50px}
+.sec__head h2{font-size:clamp(2rem,4.4vw,3rem)}
+.sec__head p{color:var(--soft);font-size:1.1rem;margin-top:8px}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.tile{border-radius:var(--r);padding:30px;transition:transform .2s}
+.tile:hover{transform:translateY(-6px)}
+.tile:nth-child(3n+1){background:var(--sky)}.tile:nth-child(3n+2){background:var(--mint)}.tile:nth-child(3n){background:var(--peach)}
+.tile__ic{width:56px;height:56px;border-radius:18px;background:#fff;display:grid;place-items:center;font-size:1.6rem;box-shadow:0 8px 16px rgba(44,58,73,.08);margin-bottom:16px}
+.tile h3{font-size:1.35rem;margin-bottom:8px}
+.tile p{color:var(--soft)}
+.tile a{display:inline-block;margin-top:14px;font-family:"Baloo 2";font-weight:700;color:var(--blue)}
+
+/* how it works — soft stepper with dashed line */
+.steps{background:linear-gradient(180deg,#fff,var(--sky));border-radius:40px;margin:0 26px}
+.steps .inner{max-width:1000px;margin:0 auto;padding:70px 26px}
+.stepgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;position:relative}
+.stepgrid::before{content:"";position:absolute;top:30px;left:16%;right:16%;border-top:3px dashed #bcd6f6;z-index:0}
+.step{position:relative;z-index:1;text-align:center}
+.step__n{width:62px;height:62px;border-radius:50%;background:var(--blue);color:#fff;font-family:"Baloo 2";font-weight:800;font-size:1.5rem;display:grid;place-items:center;margin:0 auto 18px;box-shadow:0 10px 20px rgba(76,141,255,.35);border:5px solid #fff}
+.step h3{font-size:1.25rem;margin-bottom:6px}.step p{color:var(--soft)}
+
+/* why panel — image + rounded checklist */
+.why{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
+.why__img{border-radius:34px;overflow:hidden;box-shadow:0 24px 50px rgba(44,58,73,.16);position:relative}
+.why__img img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/3}
+.why__badge{position:absolute;left:20px;bottom:20px;background:#fff;border-radius:20px;padding:12px 18px;font-family:"Baloo 2";font-weight:700;box-shadow:0 10px 22px rgba(44,58,73,.16)}
+.why h2{font-size:clamp(1.9rem,4vw,2.8rem);margin-bottom:16px}
+.checks{list-style:none;display:grid;gap:14px;margin-top:20px}
+.checks li{display:flex;gap:12px;align-items:center;font-weight:700}
+.checks .c{width:30px;height:30px;border-radius:50%;background:var(--mint);color:#1f9d63;display:grid;place-items:center;flex:0 0 auto}
+
+/* testimonials — speech bubbles */
+.bubbles{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.bubble{background:#fff;border-radius:24px;padding:26px;box-shadow:0 12px 30px rgba(44,58,73,.08);position:relative}
+.bubble::after{content:"";position:absolute;left:34px;bottom:-14px;border:14px solid transparent;border-top-color:#fff;border-bottom:0}
+.bubble p{color:var(--ink);font-size:1.02rem}
+.bubble .who{display:flex;align-items:center;gap:12px;margin-top:34px}
+.bubble .av{width:44px;height:44px;border-radius:50%;background:var(--peach)}
+.bubble:nth-child(2) .av{background:var(--lilac)}.bubble:nth-child(3) .av{background:var(--sky)}
+.bubble .who b{font-family:"Baloo 2"}.bubble .who span{display:block;color:var(--soft);font-size:.86rem}
+.stars{color:#ffb020;letter-spacing:2px;margin-bottom:10px}
+
+/* friendly pricing cards */
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.plan{background:#fff;border:2px solid #eef3f9;border-radius:28px;padding:30px;text-align:center;transition:transform .2s,border-color .2s}
+.plan:hover{transform:translateY(-6px);border-color:var(--blue)}
+.plan .tag{display:inline-block;background:var(--sky);color:var(--blue);border-radius:999px;padding:5px 14px;font-family:"Baloo 2";font-weight:700;font-size:.85rem}
+.plan .price{font-family:"Baloo 2";font-weight:800;font-size:2.6rem;margin:14px 0 4px}
+.plan .price small{font-size:.9rem;color:var(--soft);font-weight:600}
+.plan p{color:var(--soft);margin-bottom:20px}
+.plan .btn{width:100%;justify-content:center}
+
+/* faq soft accordion */
+.faqs{max-width:760px;margin:0 auto;display:grid;gap:14px}
+.fq{background:#fff;border-radius:20px;box-shadow:0 8px 20px rgba(44,58,73,.06);overflow:hidden}
+.fq summary{list-style:none;cursor:pointer;padding:20px 24px;font-family:"Baloo 2";font-weight:700;font-size:1.08rem;display:flex;justify-content:space-between;align-items:center}
+.fq summary::-webkit-details-marker{display:none}
+.fq summary::after{content:"˅";color:var(--blue);transition:transform .2s}
+.fq[open] summary::after{transform:rotate(180deg)}
+.fq p{padding:0 24px 22px;color:var(--soft)}
+
+/* cta panel */
+.ctawrap{padding:0 26px 90px}
+.cta{max-width:1000px;margin:0 auto;background:linear-gradient(135deg,#4c8dff,#7db3ff);border-radius:40px;text-align:center;color:#fff;padding:70px 30px;box-shadow:0 30px 60px rgba(76,141,255,.35);position:relative;overflow:hidden}
+.cta h2{font-size:clamp(2rem,5vw,3.2rem);margin-bottom:10px}
+.cta p{opacity:.92;font-size:1.15rem;margin-bottom:26px}
+.cta .btn{background:#fff;color:var(--blue)}
+
+/* footer soft rounded */
+footer{background:#eef4fb;border-radius:44px 44px 0 0;padding:64px 0 30px;margin-top:20px}
+.f-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.2fr;gap:32px;padding-bottom:40px;border-bottom:2px solid #dde8f4}
+.f-top h4{font-family:"Baloo 2";font-weight:700;margin-bottom:14px;font-size:1.05rem}
+.f-top a,.f-top p{display:block;color:var(--soft);padding:5px 0;font-weight:600}
+.f-top a:hover{color:var(--blue)}
+.f-card{background:#fff;border-radius:24px;padding:22px;box-shadow:0 12px 26px rgba(44,58,73,.08)}
+.f-card .btn{width:100%;justify-content:center;margin-top:12px}
+.f-social{display:flex;gap:10px;margin-top:16px}
+.f-social a{width:40px;height:40px;border-radius:50%;background:var(--sky);display:grid;place-items:center;font-family:"Baloo 2";font-weight:700;color:var(--blue)}
+.f-social a:hover{background:var(--blue);color:#fff}
+.f-bot{text-align:center;padding-top:26px;color:var(--soft);font-weight:600}
+
+@media(max-width:900px){
+  .nav__links{display:none}
+  .navtoggle{display:grid;place-items:center}
+  .mmenu{display:none;flex-direction:column;gap:4px;max-width:1000px;margin:10px auto 0;background:#fff;border-radius:24px;padding:14px;box-shadow:0 12px 30px rgba(44,58,73,.12)}
+  .mmenu.open{display:flex}.mmenu a{padding:12px 16px;border-radius:14px;font-family:"Baloo 2";font-weight:700}.mmenu a:hover{background:var(--sky)}
+  .tiles,.stepgrid,.why,.bubbles,.plans,.f-top{grid-template-columns:1fr}
+  .stepgrid::before{display:none}
+  .bubble::after{display:none}
+}
+</style>
+</head>
+<body id="top">
+<div class="navwrap">
+  <nav class="nav">
+    <a href="#top" class="logo"><span class="logo__d"></span>Nimbus</a>
+    <div class="nav__links"><a href="#services">Services</a><a href="#how">How it works</a><a href="#love">Reviews</a><a href="#pricing">Pricing</a></div>
+    <a class="btn btn--blue" href="tel:+12065550164">Book now</a>
+    <button class="navtoggle" onclick="document.getElementById('mm').classList.toggle('open')">☰</button>
+  </nav>
+  <div class="mmenu" id="mm"><a href="#services">Services</a><a href="#how">How it works</a><a href="#love">Reviews</a><a href="#pricing">Pricing</a><a href="tel:+12065550164">Book now</a></div>
+</div>
+
+<section class="hero">
+  <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
+  <div class="hero__in">
+    <span class="chip">👋 Seattle's friendliest garage door team</span>
+    <h1>A stuck door is stressful.<br>We make it <span class="hl">easy.</span></h1>
+    <p class="hero__lead">No pushy quotes, no jargon — just a warm, on-time visit and a fair fix. The kind of help you'd tell a neighbor about.</p>
+    <div class="hero__btns"><a class="btn btn--blue" href="tel:+12065550164">📞 Book a friendly visit</a><a class="btn btn--soft" href="#pricing">See simple pricing</a></div>
+    <div class="trust"><div class="avatars"><span></span><span></span><span></span><span></span></div>Loved by homeowners across Seattle</div>
+  </div>
+</section>
+
+<section class="sec" id="services"><div class="wrap">
+  <div class="sec__head"><span class="eyebrow">What we help with</span><h2>Care for every kind of door</h2><p>Whatever's going on, there's a gentle, get-it-done option here.</p></div>
+  <div class="tiles">
+    <div class="tile"><div class="tile__ic">🔧</div><h3>Quick Repairs</h3><p>Springs, cables, rollers and openers — sorted in a single friendly visit.</p><a href="tel:+12065550164">Get help →</a></div>
+    <div class="tile"><div class="tile__ic">🚪</div><h3>New Doors</h3><p>Cozy insulated doors that suit your home and keep the Seattle damp out.</p><a href="tel:+12065550164">Explore →</a></div>
+    <div class="tile"><div class="tile__ic">✨</div><h3>Tune-Ups</h3><p>A little seasonal love so your door stays quiet, smooth and reliable.</p><a href="tel:+12065550164">Tidy it up →</a></div>
+    <div class="tile"><div class="tile__ic">🔊</div><h3>Noise Fixes</h3><p>Grinding, squeaking, banging? We'll find the sound and hush it.</p><a href="tel:+12065550164">Quiet it →</a></div>
+    <div class="tile"><div class="tile__ic">📱</div><h3>Smart Openers</h3><p>Open from your phone, no more “did I close it?” on the commute.</p><a href="tel:+12065550164">Upgrade →</a></div>
+    <div class="tile"><div class="tile__ic">🛟</div><h3>Same-Day SOS</h3><p>Door won't budge? We'll pop by today and get you back inside.</p><a href="tel:+12065550164">Rescue me →</a></div>
+  </div>
+</div></section>
+
+<section class="sec" id="how" style="padding-bottom:40px"><div class="steps"><div class="inner">
+  <div class="sec__head"><span class="eyebrow">Nice and simple</span><h2>Help in three easy steps</h2></div>
+  <div class="stepgrid">
+    <div class="step"><div class="step__n">1</div><h3>Say hello</h3><p>Tell us what's up by phone or text. A real Seattle human answers.</p></div>
+    <div class="step"><div class="step__n">2</div><h3>We pop by</h3><p>On time, tidy, and up-front. You'll see the price before we start.</p></div>
+    <div class="step"><div class="step__n">3</div><h3>All better</h3><p>Fixed, tested, and tidied — with tips to keep it happy.</p></div>
+  </div>
+</div></div></section>
+
+<section class="sec"><div class="wrap why">
+  <div class="why__img"><img src="/photos/gd-3.jpg" alt="A friendly Nimbus technician"><div class="why__badge">🧡 Neighborly by nature</div></div>
+  <div><span class="eyebrow">Why folks pick us</span><h2>Fewer surprises, more smiles</h2><p style="color:var(--soft)">We treat your home like our own and your time like it matters — because both do.</p>
+    <ul class="checks"><li><span class="c">✓</span>Upfront prices, always explained</li><li><span class="c">✓</span>Friendly, background-checked techs</li><li><span class="c">✓</span>Tidy work &amp; clean-up after</li><li><span class="c">✓</span>No-pressure, honest advice</li></ul>
+  </div>
+</div></section>
+
+<section class="sec" id="love"><div class="wrap">
+  <div class="sec__head"><span class="eyebrow">Kind words</span><h2>Neighbors say the sweetest things</h2></div>
+  <div class="bubbles">
+    <div class="bubble"><div class="stars">★★★★★</div><p>“So refreshing. They explained everything, no jargon, no pressure. My door's never been quieter!”</p><div class="who"><span class="av"></span><div><b>Priya S.</b><span>Ballard</span></div></div></div>
+    <div class="bubble"><div class="stars">★★★★★</div><p>“Texted at breakfast, fixed by lunch. Genuinely lovely people to have in your driveway.”</p><div class="who"><span class="av"></span><div><b>Marcus L.</b><span>West Seattle</span></div></div></div>
+    <div class="bubble"><div class="stars">★★★★★</div><p>“They could've sold me a new door and didn't. Just an honest little repair. Customers for life.”</p><div class="who"><span class="av"></span><div><b>Dana &amp; Rob</b><span>Green Lake</span></div></div></div>
+  </div>
+</div></section>
+
+<section class="sec" id="pricing"><div class="wrap">
+  <div class="sec__head"><span class="eyebrow">No sticker shock</span><h2>Simple, friendly pricing</h2><p>Ballpark ranges up front — your exact price is always confirmed before we begin.</p></div>
+  <div class="plans">
+    <div class="plan"><span class="tag">Visit</span><div class="price">$0<small></small></div><p>Friendly diagnosis, waived when you book a repair.</p><a class="btn btn--soft" href="tel:+12065550164">Book a visit</a></div>
+    <div class="plan"><span class="tag">Popular</span><div class="price">$180<small>/avg</small></div><p>Most repairs — springs, rollers, openers, all in.</p><a class="btn btn--blue" href="tel:+12065550164">Get a fix</a></div>
+    <div class="plan"><span class="tag">New door</span><div class="price">$1,200<small>+</small></div><p>A cozy new insulated door, fitted and cleaned up.</p><a class="btn btn--soft" href="tel:+12065550164">Get a quote</a></div>
+  </div>
+</div></section>
+
+<section class="sec" style="padding-bottom:20px"><div class="wrap">
+  <div class="sec__head"><span class="eyebrow">Good to know</span><h2>Little questions, answered</h2></div>
+  <div class="faqs">
+    <details class="fq" open><summary>Do you really answer texts?</summary><p>We do! Text us a photo of the door and we'll often diagnose it before we even arrive.</p></details>
+    <details class="fq"><summary>Will you try to upsell me?</summary><p>Never. If a small repair does the job, that's what we'll recommend — honestly.</p></details>
+    <details class="fq"><summary>How soon can you come?</summary><p>Most Seattle visits are same or next day, and SOS calls jump the line.</p></details>
+    <details class="fq"><summary>Do you clean up after?</summary><p>Always. We leave your garage tidier than we found it — promise.</p></details>
+  </div>
+</div></section>
+
+<div class="ctawrap"><div class="cta"><h2>Let's get that door smiling again 🙂</h2><p>Book a warm, no-pressure visit with your Seattle neighbors at Nimbus.</p><a class="btn" href="tel:+12065550164">📞 (206) 555-0164</a></div></div>
+
+<footer><div class="wrap">
+  <div class="f-top">
+    <div><div class="logo" style="margin-bottom:12px"><span class="logo__d"></span>Nimbus</div><p style="max-width:30ch">Friendly garage door care for Seattle homes. The neighborly first call.</p><div class="f-social"><a>f</a><a>◎</a><a>▷</a></div></div>
+    <div><h4>Help with</h4><a href="#services">Repairs</a><a href="#services">New doors</a><a href="#services">Tune-ups</a><a href="#services">Smart openers</a></div>
+    <div><h4>Company</h4><a href="#how">How it works</a><a href="#love">Reviews</a><a href="#pricing">Pricing</a><a href="tel:+12065550164">Book now</a></div>
+    <div class="f-card"><h4>Say hi 👋</h4><p style="color:var(--soft);font-weight:600">(206) 555-0164<br>hello@nimbusdoors.co</p><a class="btn btn--blue" href="tel:+12065550164">Book a visit</a></div>
+  </div>
+  <div class="f-bot">© 2024 Nimbus Doors · Made with 🧡 in Seattle</div>
+</div></footer>
+</body>
+</html>
