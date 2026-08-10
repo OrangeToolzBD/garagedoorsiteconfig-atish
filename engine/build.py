@@ -99,6 +99,48 @@ GD_CSS = """
 .gf-legal a{color:#aeb9c5;text-decoration:none}
 @media(max-width:820px){.gf-cols{grid-template-columns:1fr 1fr}.gf-brand{grid-column:1/-1}}
 @media(max-width:520px){.gf-cols{grid-template-columns:1fr}.gf-cta__in{flex-direction:column;align-items:flex-start}}
+
+/* trust bar sits on the dark --p background: a coloured --accent highlight can't hit
+   4.5:1 on many themes, so highlights go white (emphasis via weight), regular text is
+   dimmed so the bold still pops, and only the decorative icons keep a lightened accent */
+.trust span{color:rgba(255,255,255,.80)}
+.trust b{color:#fff}
+.trust svg{stroke:color-mix(in srgb, var(--accent) 30%, #fff);color:color-mix(in srgb, var(--accent) 30%, #fff)}
+
+/* ===== showcase homepage variant ===== */
+/* split "why us": copy + checklist beside an image with an optional review badge */
+.whyx{display:grid;grid-template-columns:1.05fr .95fr;gap:46px;align-items:center}
+.whyx h2{margin:.3rem 0 .9rem}
+.whyx__img{position:relative;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-lg);min-height:340px}
+.whyx__img img{width:100%;height:100%;object-fit:cover;display:block}
+.rev-badge{position:absolute;left:18px;bottom:18px;background:#fff;border-radius:14px;padding:11px 15px;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:11px}
+.rev-badge .stars{display:flex;gap:1px}
+.rev-badge .stars svg{width:13px;height:13px;color:var(--accent)}
+.rev-badge b{display:block;font-family:var(--disp);font-size:1.15rem;color:var(--ink);line-height:1.05}
+.rev-badge span{font-size:.78rem;color:var(--muted)}
+.checklist{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:13px}
+.checklist li{display:flex;align-items:flex-start;gap:11px;font-weight:600;color:var(--ink)}
+.checklist svg{width:22px;height:22px;color:var(--accent);flex:0 0 auto;margin-top:1px}
+@media(max-width:820px){.whyx{grid-template-columns:1fr;gap:28px}.whyx__img{min-height:250px}}
+
+/* stat / credibility row */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:38px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 18px;text-align:center}
+.stat b{display:block;font-family:var(--disp);font-size:1.85rem;color:var(--p);line-height:1}
+.stat span{display:block;margin-top:7px;font-size:.85rem;color:var(--muted)}
+@media(max-width:700px){.stats{grid-template-columns:1fr 1fr}}
+
+/* homepage contact block — its own tinted background, distinct from the gradient CTA band */
+.sec--contact{background:color-mix(in srgb, var(--accent) 9%, #fff);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.contact{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.contact__c{display:flex;flex-direction:column;gap:6px}
+.contact__c .lbl{display:flex;align-items:center;gap:8px;font-family:var(--disp);font-weight:700;color:var(--ink);font-size:.92rem}
+.contact__c .lbl svg{width:18px;height:18px;color:var(--accent);flex:0 0 auto}
+.contact__c a,.contact__c .v{color:var(--muted);font-size:.95rem;word-break:break-word;text-decoration:none}
+.contact__c a:hover{color:var(--p)}
+.contact__cta{display:flex;gap:13px;justify-content:center;flex-wrap:wrap;margin-top:28px}
+@media(max-width:700px){.contact{grid-template-columns:1fr 1fr;gap:22px 16px}}
+@media(max-width:430px){.contact{grid-template-columns:1fr}}
 """
 
 # ---------------------------------------------------------------- config
@@ -123,6 +165,10 @@ def load_config():
             "content": s.get("content", s["city"].lower()),
             "ghl_form_id": s.get("ghl_form_id", ""),
             "port": s.get("port"),
+            # showcase homepage variant + its optional, business-supplied trust data
+            "home": s.get("home", "classic"),
+            "stats": s.get("stats", []), "hours": s.get("hours", ""),
+            "email": s.get("email", ""), "rating": s.get("rating", ""), "reviews": s.get("reviews", ""),
         })
         sites[s["domain"]] = t
     return sites
@@ -439,6 +485,64 @@ def how_it_works(t):
             f'<div class="step"><div class="step__b"><h3>Repaired or installed</h3><p>Most repairs are done on the same visit; installs are scheduled around you.</p></div></div>'
             f'</div></div></section>')
 
+# ---- showcase-variant sections (inspired by the reference design) ----
+def stats_band(t):
+    """Config-driven credibility row. Renders only if the site defines 'stats'
+    (a list of [number, label] pairs) — never fabricates numbers."""
+    stats = t.get("stats") or []
+    if not stats:
+        return ""
+    cells = "".join(f'<div class="stat"><b>{esc(str(n))}</b><span>{esc(str(l))}</span></div>' for n, l in stats)
+    return f'<div class="stats">{cells}</div>'
+
+def why_us_split(t):
+    """Two-column 'why us': copy + checklist beside an image (+ optional review badge)."""
+    checks = ["Local, licensed technicians", "Upfront, written quotes",
+              "Parts and labor warranty", "No overtime or weekend fees"]
+    li = "".join(f'<li>{icon("check")}{esc(c)}</li>' for c in checks)
+    img = CARD_IMGS[_stable_idx(t["domain"], len(CARD_IMGS))]
+    badge = ""
+    if t.get("rating") and t.get("reviews"):     # only with real, configured figures
+        badge = (f'<div class="rev-badge"><div class="stars">{icon("star") * 5}</div>'
+                 f'<div><b>{esc(str(t["rating"]))}/5</b><span>{esc(str(t["reviews"]))} local reviews</span></div></div>')
+    return (f'<section class="sec"><div class="wrap"><div class="whyx"><div>'
+            f'<p class="eyebrow">Why Us</p>'
+            f'<h2>Local garage door experts {esc(t["city"])} relies on</h2>'
+            f'<p>We are a locally owned garage door team that treats your home and your time like our own. '
+            f'Every job is handled by a vetted technician, never a subcontractor, and priced upfront before any work starts.</p>'
+            f'<p>From the first call to the final test, you get straight answers, clean workmanship, and a warranty that actually means something.</p>'
+            f'<ul class="checklist">{li}</ul></div>'
+            f'<div class="whyx__img"><img src="/assets/photos/{img}" alt="Garage door service in {esc(t["city"])}" loading="lazy">{badge}</div>'
+            f'</div>{stats_band(t)}</div></section>')
+
+def _svg_mail():
+    return ('<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" '
+            'stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>')
+
+def _svg_pin():
+    return ('<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" '
+            'stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>')
+
+def contact_band(t):
+    """Homepage 'Book Your Service Today' block: call / hours / email / service area."""
+    hours = t.get("hours") or "Mon-Sat, 7am-7pm"
+    phone_cell = (f'<a href="tel:{t["tel"]}">{esc(t["phone"])}</a>' if t.get("phone")
+                  else '<a href="/request-a-quote/">Request a callback</a>')
+    email_cell = (f'<div class="contact__c"><span class="lbl">{_svg_mail()}Email</span>'
+                  f'<a href="mailto:{esc(t["email"])}">{esc(t["email"])}</a></div>') if t.get("email") else ""
+    return (f'<section class="sec sec--contact"><div class="wrap"><div class="sec-head">'
+            f'<p class="eyebrow">Get In Touch</p><h2>Book your service today</h2>'
+            f'<p>Call, email, or request a callback — a real person in {esc(t["city"])} answers.</p></div>'
+            f'<div class="contact">'
+            f'<div class="contact__c"><span class="lbl">{icon("phone")}Call us</span>{phone_cell}</div>'
+            f'<div class="contact__c"><span class="lbl">{icon("clock")}Hours</span><span class="v">{esc(hours)}</span></div>'
+            f'{email_cell}'
+            f'<div class="contact__c"><span class="lbl">{_svg_pin()}Service area</span>'
+            f'<span class="v">{esc(t["city"])}, {esc(t["st"])} &amp; nearby</span></div></div>'
+            f'<div class="contact__cta"><a class="btn btn--primary" href="/request-a-quote/">Get a Free Quote</a>'
+            f'<a class="btn btn--ghost" href="tel:{t["tel"]}">{icon("phone")}Call now</a></div>'
+            f'</div></section>')
+
 def areas_band(t, pages):
     areas = [p for u, p in pages.items() if p["cat"] == "area"]
     if not areas:
@@ -483,10 +587,15 @@ def home_page(t, pages):
     title = seo_title((home["title"] if home else "") or f"Garage Door Repair in {t['city']}, {t['st']} | {t['brand']}")
     desc = (home["meta"] if home else "") or lead
     schemas = [org_schema(t), faq_schema(faqs)]
-    return (head_html(t, title, desc, "/", schemas) + header(t, pages) + hero(t, h1, lead)
-            + trust_bar() + services_grid(t, pages) + why_us(t) + how_it_works(t)
-            + areas_band(t, pages) + faq_html + cta_band(t)
-            + footer(t, pages) + "</body></html>")
+    top = head_html(t, title, desc, "/", schemas) + header(t, pages) + hero(t, h1, lead) + trust_bar()
+    if t.get("home") == "showcase":
+        # contact_band() helper kept in code for reuse, but not rendered on the page
+        mid = (why_us_split(t) + services_grid(t, pages) + how_it_works(t)
+               + areas_band(t, pages) + faq_html + cta_band(t))
+    else:
+        mid = (services_grid(t, pages) + why_us(t) + how_it_works(t)
+               + areas_band(t, pages) + faq_html + cta_band(t))
+    return top + mid + footer(t, pages) + "</body></html>"
 
 def inner_page(t, p, pages):
     h1 = p["h1"] or area_label(p)

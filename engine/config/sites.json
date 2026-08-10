@@ -866,10 +866,33 @@
       "area": "",
       "street": "",
       "zip": "",
-      "phone": "",
+      "phone": "(512) 555-0199",
       "theme": "austingaragedoorguys",
       "layout": "harbor",
-      "port": 8258
+      "port": 8258,
+      "home": "showcase",
+      "hours": "Mon-Sun, 7am-9pm",
+      "email": "office@austingaragedoorguys.com",
+      "rating": "4.9",
+      "reviews": "500+",
+      "stats": [
+        [
+          "12+",
+          "Years serving the metro"
+        ],
+        [
+          "8,000+",
+          "Doors serviced"
+        ],
+        [
+          "4.9",
+          "Avg. customer rating"
+        ],
+        [
+          "24/7",
+          "Emergency service"
+        ]
+      ]
     },
     {
       "domain": "burbankgaragedoorpros.com",
