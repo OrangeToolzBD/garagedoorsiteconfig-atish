@@ -548,16 +548,36 @@ def area_label(p):
 
 # ---------------------------------------------------------------- sections
 def hero(t, h1, lead, img=HERO_IMG):
+    """Distinct hero markup per site layout (split-right/left, stacked, center, banner,
+    overlap) -- the shared design system (build_site.py's css()) already ships CSS for
+    every one of these variants; this was previously hardcoded to "banner" always."""
+    variant = t.get("layout", {}).get("hero", "banner")
     call = f'<a class="btn btn--primary" href="tel:{t["tel"]}">{icon("phone")}Call {esc(t["phone"])}</a>'
     quote = '<a class="btn btn--ghost" href="/request-a-quote/">Get a Free Quote</a>'
+    eyebrow = f'<p class="eyebrow">{esc(t["city"])}, {esc(t["st"])} &middot; Garage Door Service</p>'
+    leadh = f'<p class="lead">{esc(lead)}</p>'
     chips = ('<ul class="chips">'
              f'<li>{icon("check")}Same-day service</li><li>{icon("check")}Licensed &amp; insured</li>'
              f'<li>{icon("check")}Upfront pricing</li><li>{icon("check")}Local crew</li></ul>')
-    return (f'<section class="hero hero--banner" style="--hero-bg:url(/assets/photos/{img})">'
-            f'<div class="wrap"><div class="hero__copy">'
-            f'<p class="eyebrow">{esc(t["city"])}, {esc(t["st"])} &middot; Garage Door Service</p>'
-            f'<h1>{esc(h1)}</h1><p class="lead">{esc(lead)}</p>'
-            f'<div class="cta">{call}{quote}</div>{chips}</div></div></section>')
+    copy = f'<div class="hero__copy">{eyebrow}<h1>{esc(h1)}</h1>{leadh}<div class="cta">{call}{quote}</div>{chips}</div>'
+    src = f'/assets/photos/{img}'
+    alt = f'Garage door service in {esc(t["city"])}, {esc(t["st"])}'
+    badge = f'<div class="hero__badge">{icon("shield")}<div><b>Licensed</b><span>&amp; insured crew</span></div></div>'
+    media = f'<div class="hero__media"><img src="{src}" alt="{alt}" fetchpriority="high">{badge}</div>'
+
+    if variant == "split-left":
+        return f'<section class="hero hero--split hero--left"><div class="wrap">{media}{copy}</div></section>'
+    if variant == "stacked":
+        wide = f'<div class="hero__media--wide"><img src="{src}" alt="{alt}" fetchpriority="high"></div>'
+        return f'<section class="hero hero--stacked"><div class="wrap">{copy}{wide}</div></section>'
+    if variant == "center":
+        return f'<section class="hero hero--center" style="--hero-bg:url({src})"><div class="wrap">{copy}</div></section>'
+    if variant == "overlap":
+        return (f'<section class="hero hero--overlap"><div class="hero__bgimg"><img src="{src}" alt="{alt}" fetchpriority="high"></div>'
+                f'<div class="wrap"><div class="hero__card">{copy}</div></div></section>')
+    if variant == "split-right":
+        return f'<section class="hero hero--split hero--right"><div class="wrap">{copy}{media}</div></section>'
+    return f'<section class="hero hero--banner" style="--hero-bg:url({src})"><div class="wrap">{copy}</div></section>'
 
 def trust_bar():
     return (f'<section class="trust"><div class="wrap">'
@@ -568,19 +588,40 @@ def trust_bar():
             f'</div></section>')
 
 def services_grid(t, pages):
-    cards = ""
+    """Card style follows the site's layout.cards (classic/overlay/side/bold) instead of
+    always rendering the same dark image-overlay card. "bold" keeps that original
+    garage-door look (plus the icon chip it always had CSS for but never rendered);
+    classic/overlay/side reuse the shared scard component system (build_site.py's
+    css()) that was already shipped in every stylesheet but never referenced here."""
     card_imgs = t.get("card_imgs") or CARD_IMGS
+    style = t.get("layout", {}).get("cards", "bold")
+    items = []
     for i, (ic, title, blurb, slug) in enumerate(SERVICE_TILES):
         url = f"/services/{slug}/" if slug and f"/services/{slug}/" in pages else "/request-a-quote/"
-        img = card_imgs[i % len(card_imgs)]
-        cards += (f'<a class="svc-card" href="{url}">'
-                  f'<img src="/assets/photos/{img}" alt="{title} in {esc(t["city"])}" loading="lazy">'
-                  f'<div class="svc-card__b"><h3>{title}</h3><p>{blurb}</p>'
-                  f'<span class="more">Learn more {icon("arrow")}</span></div></a>')
+        items.append((ic, title, blurb, url, card_imgs[i % len(card_imgs)]))
+
+    if style == "bold":
+        cards = "".join(
+            f'<a class="svc-card" href="{url}">'
+            f'<img src="/assets/photos/{img}" alt="{title} in {esc(t["city"])}" loading="lazy">'
+            f'<div class="svc-card__ic">{icon(ic)}</div>'
+            f'<div class="svc-card__b"><h3>{title}</h3><p>{blurb}</p>'
+            f'<span class="more">Learn more {icon("arrow")}</span></div></a>'
+            for ic, title, blurb, url, img in items)
+        grid_cls = "svc-grid"
+    else:
+        cards = "".join(
+            f'<a class="scard" href="{url}">'
+            f'<img src="/assets/photos/{img}" alt="{title} in {esc(t["city"])}" loading="lazy">'
+            f'<div class="scard__b"><h3>{title}</h3><p>{blurb}</p>'
+            f'<span class="more">Learn more {icon("arrow")}</span></div></a>'
+            for ic, title, blurb, url, img in items)
+        grid_cls = f"grid g3 scards scards--{style}"
+
     return (f'<section class="sec sec--soft"><div class="wrap"><div class="sec-head">'
             f'<p class="eyebrow">What We Do</p><h2>Garage door services in {esc(t["city"])}</h2>'
             f'<p>From a snapped spring to a full door replacement — one local crew, upfront pricing.</p></div>'
-            f'<div class="svc-grid">{cards}</div></div></section>')
+            f'<div class="{grid_cls}">{cards}</div></div></section>')
 
 def why_us(t):
     feats = [("clock", "Same-day dispatch", "Most repair calls are handled the same or next day — springs and openers don't wait."),

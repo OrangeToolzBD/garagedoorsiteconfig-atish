@@ -13,7 +13,7 @@
       "zip": "",
       "phone": "(214) 000-0000",
       "theme": "steel-berry",
-      "layout": "harbor",
+      "layout": "aurora",
       "port": 8201
     },
     {
@@ -283,7 +283,7 @@
       "zip": "75207",
       "phone": "",
       "theme": "dallasdoorpros",
-      "layout": "aurora",
+      "layout": "cobalt",
       "port": 8219
     },
     {
@@ -14663,7 +14663,7 @@
       "zip": "43147",
       "phone": "",
       "theme": "pickeringtongaragedoorpros",
-      "layout": "harbor",
+      "layout": "monarch",
       "port": 9176,
       "template": "nimbus"
     },
