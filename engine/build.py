@@ -39,6 +39,7 @@ SERVICE_TILES = [
 ]
 
 # license-free garage-door photos (Pexels), pooled in assets_shared/photos and copied per site
+# -- last-resort fallback only; brand/photos/ (below) is the real photo source now.
 PHOTO_POOL = [f"gd-{i}.jpg" for i in range(1, 10)]
 HERO_IMG = "gd-4.jpg"
 CARD_IMGS = ["gd-2.jpg", "gd-3.jpg", "gd-5.jpg", "gd-6.jpg", "gd-7.jpg", "gd-9.jpg"]
@@ -46,6 +47,114 @@ INNER_IMGS = ["gd-1.jpg", "gd-8.jpg", "gd-2.jpg", "gd-5.jpg", "gd-6.jpg"]
 
 def _stable_idx(s, n):
     return (sum(ord(c) for c in s) % n) if n else 0
+
+# ---------------------------------------------------------------- brand/photos
+# 30 city hero shots ("<city>_garage_door.webp") + 4 per-service category pools
+# (30 photos each) + 5 per-guide-topic pools (~10 photos each). Real, on-topic
+# photography for every one of the 1000 registered domains -- not just the 10
+# that currently build. assets_shared/photos/gd-*.jpg is now only a fallback for
+# the rare gap (e.g. a city with no hero shot).
+BRAND_PHOTOS = os.path.join(os.path.dirname(ROOT), "brand", "photos")
+
+def _brand_list(subdir=""):
+    d = os.path.join(BRAND_PHOTOS, subdir)
+    try:
+        return sorted(f for f in os.listdir(d) if f.lower().endswith(".webp"))
+    except FileNotFoundError:
+        return []
+
+# city hero photos, keyed by city slug (filenames are mostly "<slug>_garage_door.webp",
+# with a couple of one-off variants -- "dallas_door.webp", "wheaton_garage_doo.webp").
+_CITY_HERO = {}
+for _fn in _brand_list():
+    _base = re.sub(r"_garage_door$|_garage_doo$|_door$|_doo$", "", os.path.splitext(_fn)[0])
+    _CITY_HERO[_base] = _fn
+
+SVC_PHOTO_DIRS = {
+    "garage-door-repair": "GD REPAIR",
+    "garage-door-installation": "GD INSTALLATION",
+    "garage-door-service": "GD SERVICE",
+}
+GENERAL_PHOTO_DIRS = ["GD REPAIR", "GD INSTALLATION", "GD SERVICE", "GD MAINTENNANCE"]  # sic: source folder is misspelled
+GUIDE_PHOTO_DIRS = {
+    "why-a-door-goes-off-track": "Door Goes Off Track",
+    "doors-on-houses-built-before-insulation-rules": "Doors on Houses Built Before Insulation Rules",
+    "noises-that-mean-something": "Noises",
+    "what-an-older-door-is-worth-fixing": "Older Door Worth Fixing",
+    "when-a-spring-goes-in-cold-weather": "Spring Goes Cold Weather",
+}
+
+def _guide_dir_for(slug):
+    """Exact match against the 5 known guide topics; best word-overlap otherwise
+    (so a guide topic outside today's fixed taxonomy still gets a themed photo)."""
+    if slug in GUIDE_PHOTO_DIRS:
+        return GUIDE_PHOTO_DIRS[slug]
+    words = set((slug or "").split("-"))
+    best, best_score = None, 0
+    for gslug, dirname in GUIDE_PHOTO_DIRS.items():
+        score = len(words & set(gslug.split("-")))
+        if score > best_score:
+            best, best_score = dirname, score
+    return best
+
+def select_photos(t, pages, photos_dir):
+    """Choose brand/photos/ images for this site's hero + service tiles + every
+    inner page, copy the chosen files into <site>/assets/photos/, and return
+    (hero_filename, card_imgs[6], inner_imgs{url: filename}) for the renderers.
+    Falls back to assets_shared/photos/gd-*.jpg wherever brand/photos has no match."""
+    to_copy = {}  # dest filename -> source abs path
+    fallback_pool = os.path.join(ROOT, "assets_shared", "photos")
+
+    hero_src = _CITY_HERO.get(slugify(t["city"]))
+    if hero_src:
+        hero_fn = "hero.webp"
+        to_copy[hero_fn] = os.path.join(BRAND_PHOTOS, hero_src)
+    else:
+        hero_fn = HERO_IMG
+        to_copy[hero_fn] = os.path.join(fallback_pool, HERO_IMG)
+
+    card_imgs = []
+    for i, (_, title, _, slug) in enumerate(SERVICE_TILES):
+        dirname = SVC_PHOTO_DIRS.get(slug) or GENERAL_PHOTO_DIRS[i % len(GENERAL_PHOTO_DIRS)]
+        files = _brand_list(dirname)
+        if files:
+            fn = files[_stable_idx(t["domain"] + title, len(files))]
+            dest = f"svc-{i}.webp"
+            to_copy[dest] = os.path.join(BRAND_PHOTOS, dirname, fn)
+        else:
+            dest = CARD_IMGS[i % len(CARD_IMGS)]
+            to_copy[dest] = os.path.join(fallback_pool, dest)
+        card_imgs.append(dest)
+
+    inner_imgs = {}
+    for url, p in pages.items():
+        if p["cat"] == "home":
+            continue
+        dirname = None
+        if p["cat"] == "service":
+            dirname = SVC_PHOTO_DIRS.get(p["slug"])
+        elif p["cat"] == "guide":
+            dirname = _guide_dir_for(p["slug"])
+        if not dirname:
+            dirname = GENERAL_PHOTO_DIRS[_stable_idx(p["slug"] or url, len(GENERAL_PHOTO_DIRS))]
+        files = _brand_list(dirname)
+        if files:
+            fn = files[_stable_idx(t["domain"] + (p["slug"] or url), len(files))]
+            safe = re.sub(r"[^a-z0-9]+", "-", (p["slug"] or "page").lower()).strip("-")
+            dest = f"inner-{safe}.webp"
+            to_copy[dest] = os.path.join(BRAND_PHOTOS, dirname, fn)
+        else:
+            dest = INNER_IMGS[_stable_idx(p["slug"] or url, len(INNER_IMGS))]
+            to_copy[dest] = os.path.join(fallback_pool, dest)
+        inner_imgs[url] = dest
+
+    for dest, src in to_copy.items():
+        try:
+            shutil.copy(src, os.path.join(photos_dir, dest))
+        except FileNotFoundError:
+            pass
+
+    return hero_fn, card_imgs, inner_imgs
 
 # garage-door-specific CSS (appended after the shared design system; leaves porta-potty untouched)
 GD_CSS = """
@@ -89,6 +198,7 @@ GD_CSS = """
 .gf-cols a:hover{color:#fff}
 .gf-logo{display:flex;align-items:center;gap:11px;color:#fff;font-family:var(--disp);font-weight:800;font-size:1.2rem;margin-bottom:14px;text-decoration:none}
 .gf-mark{width:42px;height:42px;border-radius:11px;background:#fff;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.gf-logo-img{height:128px;width:auto;max-width:320px;display:block}
 .gf-brand p{font-size:.95rem;max-width:34ch;line-height:1.6;color:#9aa6b2;margin:0}
 .gf-addr{font-style:normal;line-height:1.7;font-size:.94rem;margin-top:12px;color:#9aa6b2}
 .gf-addr a{color:#fff;font-weight:700;text-decoration:none}
@@ -404,7 +514,12 @@ def footer(t, pages):
     area_links = "".join(f'<a href="{p["url"]}">{esc(area_label(p))}</a>' for p in areas)
     addr = f"{t['city']}, {t['st']}" + (f" {t['zip']}" if t["zip"] else "")
     blurb = f"Garage door repair, spring and opener service, and new-door installation across {esc(t['city'])} and the surrounding metro."
-    logo = f'<span class="gf-mark">{brand_chip(t, 30)}</span><span>{esc(t["brand"])}</span>'
+    if t.get("has_logo"):
+        # real per-domain logo already reads as a full lockup (mark + name) on its
+        # own -- no white chip box, no redundant brand-name text next to it.
+        logo = f'<img class="gf-logo-img" src="/assets/logo-emblem.png" alt="{esc(t["brand"])}" loading="lazy">'
+    else:
+        logo = f'<span class="gf-mark">{brand_chip(t, 30)}</span><span>{esc(t["brand"])}</span>'
     brand_block = (f'<div class="gf-brand"><a class="gf-logo" href="/">{logo}</a><p>{blurb}</p>'
                    f'<address class="gf-addr">{addr}<br><a href="tel:{t["tel"]}">{esc(t["phone"])}</a></address></div>')
     cols = (f'<div><h4>Services</h4>{services}</div><div><h4>Company</h4>{company}</div>'
@@ -454,9 +569,10 @@ def trust_bar():
 
 def services_grid(t, pages):
     cards = ""
+    card_imgs = t.get("card_imgs") or CARD_IMGS
     for i, (ic, title, blurb, slug) in enumerate(SERVICE_TILES):
         url = f"/services/{slug}/" if slug and f"/services/{slug}/" in pages else "/request-a-quote/"
-        img = CARD_IMGS[i % len(CARD_IMGS)]
+        img = card_imgs[i % len(card_imgs)]
         cards += (f'<a class="svc-card" href="{url}">'
                   f'<img src="/assets/photos/{img}" alt="{title} in {esc(t["city"])}" loading="lazy">'
                   f'<div class="svc-card__b"><h3>{title}</h3><p>{blurb}</p>'
@@ -502,7 +618,8 @@ def why_us_split(t):
     checks = ["Local, licensed technicians", "Upfront, written quotes",
               "Parts and labor warranty", "No overtime or weekend fees"]
     li = "".join(f'<li>{icon("check")}{esc(c)}</li>' for c in checks)
-    img = CARD_IMGS[_stable_idx(t["domain"], len(CARD_IMGS))]
+    card_imgs = t.get("card_imgs") or CARD_IMGS
+    img = card_imgs[_stable_idx(t["domain"], len(card_imgs))]
     badge = ""
     if t.get("rating") and t.get("reviews"):     # only with real, configured figures
         badge = (f'<div class="rev-badge"><div class="stars">{icon("star") * 5}</div>'
@@ -589,7 +706,9 @@ def home_page(t, pages):
     title = seo_title((home["title"] if home else "") or f"Garage Door Repair in {t['city']}, {t['st']} | {t['brand']}")
     desc = (home["meta"] if home else "") or lead
     schemas = [org_schema(t), faq_schema(faqs)]
-    top = head_html(t, title, desc, "/", schemas) + header(t, pages) + hero(t, h1, lead) + trust_bar()
+    hero_img = t.get("hero_img") or HERO_IMG
+    top = (head_html(t, title, desc, "/", schemas, og_image=hero_img) + header(t, pages)
+           + hero(t, h1, lead, img=hero_img) + trust_bar())
     if t.get("home") == "showcase":
         # contact_band() helper kept in code for reuse, but not rendered on the page
         mid = (why_us_split(t) + services_grid(t, pages) + how_it_works(t)
@@ -601,7 +720,7 @@ def home_page(t, pages):
 
 def inner_page(t, p, pages):
     h1 = p["h1"] or area_label(p)
-    img = INNER_IMGS[_stable_idx(p["slug"] or p["url"], len(INNER_IMGS))]
+    img = (t.get("inner_imgs") or {}).get(p["url"]) or INNER_IMGS[_stable_idx(p["slug"] or p["url"], len(INNER_IMGS))]
     parts = []
     for idx, sec in enumerate(p["sections"]):
         h2 = sec.get("h2", "")
@@ -646,7 +765,7 @@ def index_page(t, pages, cat, url, title_h1, eyebrow, blurb):
             f'<div class="grid g3 feats feats--tiles">{cards}</div></div></section>'
             + cta_band(t))
     schemas = [org_schema(t), breadcrumb_schema(t, [("Home", "/"), (title_h1, url)])]
-    return (head_html(t, seo_title(f"{title_h1} | {t['brand']}"), blurb, url, schemas)
+    return (head_html(t, seo_title(f"{title_h1} | {t['brand']}"), blurb, url, schemas, og_image=t.get("hero_img") or HERO_IMG)
             + header(t, pages) + body + footer(t, pages) + "</body></html>")
 
 def trust_page(t, pages, url, h1, blocks, is_quote=False):
@@ -664,7 +783,8 @@ def trust_page(t, pages, url, h1, blocks, is_quote=False):
             f'<div class="wrap"><div class="article"><div class="body">{parts}</div>{aside}</div></div>'
             + cta_band(t))
     schemas = [org_schema(t), breadcrumb_schema(t, [("Home", "/"), (h1, url)])]
-    return (head_html(t, seo_title(f"{h1} | {t['brand']}"), f"{h1} — {t['brand']}, {t['city']}, {t['st']}.", url, schemas)
+    return (head_html(t, seo_title(f"{h1} | {t['brand']}"), f"{h1} — {t['brand']}, {t['city']}, {t['st']}.", url, schemas,
+                       og_image=t.get("hero_img") or HERO_IMG)
             + header(t, pages) + body + footer(t, pages) + "</body></html>")
 
 # ---------------------------------------------------------------- renderer dispatch
@@ -727,14 +847,21 @@ def build():
                 if dst == "logo-emblem.png":
                     t["has_logo"] = True
 
-        # garage-door photos (shared pool -> per-site /assets/photos/)
+        pages = load_content(t)
+
+        # generic pool, always copied: the alt templates (ironclad/volt/nimbus in
+        # templates.py) reference these gd-*.jpg filenames directly.
         pool = os.path.join(ROOT, "assets_shared", "photos")
         photos = os.path.join(assets, "photos"); os.makedirs(photos, exist_ok=True)
         if os.path.isdir(pool):
             for fn in os.listdir(pool):
                 shutil.copy(os.path.join(pool, fn), os.path.join(photos, fn))
 
-        pages = load_content(t)
+        # brand/photos/ -> per-site /assets/photos/: real city hero shot (where one
+        # exists) + on-topic photos for every service tile and inner page. Used by
+        # the default "garage" design (falls back to the pool above only where
+        # brand/photos has no match).
+        t["hero_img"], t["card_imgs"], t["inner_imgs"] = select_photos(t, pages, photos)
         # inner content pages
         for url, p in pages.items():
             if p["cat"] == "home":
