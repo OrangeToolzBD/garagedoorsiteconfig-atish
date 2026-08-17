@@ -59,7 +59,7 @@ def missing_essentials():
     need = {"coverage": ('class="areagrid"', 'class="areas"'),
             "process":  ('class="steps', "pf-seq"),
             "visual":   ('class="shots"', "splitfeat", "pf-detail", "pf-tech",
-                         "pf-cine", "pf-seq"),
+                         "pf-cine", "pf-seq", "pf-mos", "pf-stk"),
             "faq":      ('class="faq"',),
             "cta":      ("cta-band",)}
     sites = {s["domain"]: s for s in

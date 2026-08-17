@@ -733,10 +733,6 @@ GD_CSS = """
 
 @media(prefers-reduced-motion:reduce){
   .svcx-vis--swap img,.svcx-cs>li{transition:opacity .001s;transform:none!important}
-  /* `.svcx *` matches elements only -- a pseudo-element's transition is not
-     inherited and was still animating under reduce */
-  .svcx-word::after{transition:none!important}
-  .svcx-word__t{transform:none!important}
 }
 
 
@@ -897,75 +893,6 @@ GD_CSS = """
 .svcx-step:has(.svcx-r:focus-visible){outline:3px solid var(--accent);
   outline-offset:5px;border-radius:4px}
 
-/* 12 TYPO -- the service names are the artwork.
-   The plate OVERLAPS the list rather than sitting beside it. Each rule runs the
-   full section width and terminates underneath the photograph, so there is no
-   dead tail to leave the rows looking unfinished -- that overlap is the
-   composition, not decoration. Row padding-right keeps the type clear of it. */
-.svcx--typo{--plate:clamp(300px,40%,470px);--gut:44px;--rowpad:30px;
-  display:grid;grid-template-columns:minmax(0,1fr) var(--plate);
-  grid-template-rows:auto auto auto;gap:0}
-/* five names would make the plate tall and narrow; tighten the rows instead */
-.svcx--typo:has(.svcx-word:nth-child(5)){--rowpad:22px}
-.svcx-kick{grid-column:1/-1;grid-row:1;display:grid;grid-template-columns:1fr auto;
-  gap:14px 40px;align-items:end;padding-bottom:26px;
-  border-bottom:1px solid var(--line)}
-.svcx-kick h2{margin:6px 0 0;font-size:clamp(1.05rem,1.3vw,1.18rem);
-  line-height:1.35;letter-spacing:0;max-width:34ch}
-.svcx-kick__p{margin:0;color:var(--muted);font-size:.97rem;max-width:34ch;
-  text-align:right}
-.svcx-words{grid-column:1/-1;grid-row:2;list-style:none;margin:0;padding:0;
-  min-width:0}
-/* no border-top on the first row: the kicker's rule already opens the list, and
-   two hairlines a row-padding apart read as a table header */
-.svcx-word{position:relative;display:grid;grid-template-columns:44px minmax(0,1fr);
-  align-items:baseline;gap:0 8px;padding:var(--rowpad) 0;
-  padding-right:calc(var(--plate) + var(--gut));
-  border-bottom:1px solid var(--line)}
-.svcx-word__i{display:flex;align-items:center;justify-content:flex-start;
-  min-width:44px;min-height:44px;cursor:pointer;font-family:var(--disp);
-  font-weight:800;font-size:.8rem;letter-spacing:.08em;
-  color:color-mix(in srgb,var(--ink) 42%,transparent);transition:color .25s}
-/* justify-self:start is load-bearing. As a grid item the anchor stretched to
-   fill its cell, so hundreds of px of blank space per row was still a link --
-   it navigated on click and it made the rules run into nothing. */
-.svcx-word__t{display:inline-block;justify-self:start;font-family:var(--disp);
-  font-weight:800;font-size:clamp(1.65rem,2.9vw + .45rem,2.85rem);line-height:1.1;
-  letter-spacing:-.02em;color:var(--ink);overflow-wrap:break-word;padding:8px 0;
-  transition:color .3s ease,transform .35s cubic-bezier(.2,.7,.3,1)}
-/* transient tier = preview: colour and a small shift, never geometry */
-.svcx-word:hover .svcx-word__t,.svcx-word:focus-within .svcx-word__t{
-  color:var(--p);transform:translateX(9px)}
-.svcx-word:hover .svcx-word__i,.svcx-word:focus-within .svcx-word__i{color:var(--p)}
-/* committed tier = the rule itself draws. Hover must NOT draw it, or four bars
-   animate as the cursor travels and the section reads as a menu. */
-.svcx-word::after{content:"";position:absolute;left:0;bottom:-1px;height:2px;
-  width:0;background:var(--accent);transition:width .55s cubic-bezier(.2,.7,.3,1)}
-.svcx-word:has(.svcx-r:checked)::after{width:100%}
-.svcx-word:has(.svcx-r:checked) .svcx-word__t{color:var(--p)}
-.svcx-word:has(.svcx-r:checked) .svcx-word__i{color:var(--accent-lt)}
-.svcx-word:has(.svcx-r:focus-visible){outline:3px solid var(--accent);
-  outline-offset:4px;border-radius:4px}
-/* the plate: column 2, spanning the list and the all-services row, painted over
-   the rules. z-index 3 clears .svcx-pick (1) and .svcx-nav (2). */
-.svcx-reveal{grid-column:2;grid-row:2/4;position:relative;z-index:3;
-  align-self:stretch}
-.svcx-vis--reveal{aspect-ratio:auto;height:100%;min-height:400px}
-/* the copy is a caption ON the plate, not a paragraph parked under it */
-/* the scrim is load-bearing, not decoration: measured at 1.74:1 with a
-   lighter ramp, because the caption can land on a bright part of an
-   unknown photograph. Hold it near-opaque wherever type actually sits. */
-.svcx-reveal .svcx-cs{position:absolute;left:0;right:0;bottom:0;z-index:1;
-  padding:44px 28px 24px;border-radius:0 0 calc(var(--radius) + 6px)
-  calc(var(--radius) + 6px);
-  background:linear-gradient(to top,rgba(8,12,18,.96) 0%,rgba(8,12,18,.94) 64%,
-  rgba(8,12,18,.84) 86%,rgba(8,12,18,.38) 100%)}
-.svcx-reveal .svcx-cs>li h3{display:none}
-.svcx-reveal .svcx-cs>li p{margin:0 0 12px;max-width:38ch;font-size:.98rem;
-  color:rgba(255,255,255,.9)}
-.svcx-reveal .svcx-cs>li .svcx-nav,.svcx-reveal .svcx-cs>li .svcx-go{color:#fff}
-.svcx--typo .svcx-all{grid-column:1;grid-row:3;justify-self:start}
-
 /* 13 ORBIT -- services placed around the work itself.
    Positioned with cos()/sin() on an ellipse that is deliberately wider than it
    is tall and rotated off the vertical, so it reads as a composition rather
@@ -1108,33 +1035,6 @@ GD_CSS = """
   .svcx-step:has(.svcx-r:checked){border-top-color:var(--line);
     border-left-color:var(--accent)}
   .svcx-step .svcx-nav{opacity:1}
-
-  /* TYPO -> not the desktop grid stacked. The name moves ONTO the photograph
-     as its caption and the list demotes to a compact ruled index, so the type
-     stays the artwork without needing a width the phone does not have. */
-  .svcx--typo{--plate:0px;--gut:0px;--rowpad:0px;
-    grid-template-columns:1fr;grid-template-rows:none;gap:22px}
-  .svcx-kick,.svcx-words,.svcx-reveal,.svcx--typo .svcx-all{
-    grid-column:1;grid-row:auto}
-  .svcx-kick{order:1;grid-template-columns:1fr;align-items:start;gap:10px;
-    padding-bottom:18px}
-  .svcx-kick__p{text-align:left;max-width:none}
-  .svcx-reveal{order:2;align-self:auto}
-  .svcx-words{order:3}
-  .svcx--typo .svcx-all{order:4}
-  .svcx-vis--reveal{height:auto;min-height:0;aspect-ratio:4/3}
-  .svcx-reveal .svcx-cs{padding:22px 20px 18px}
-  .svcx-reveal .svcx-cs>li h3{display:block;margin:0 0 10px;color:#fff;
-    font-size:clamp(1.5rem,6.4vw,2.1rem);line-height:1.08;letter-spacing:-.02em}
-  .svcx-reveal .svcx-cs>li p{display:none}
-  .svcx-word{grid-template-columns:minmax(0,1fr) 56px;align-items:center;
-    padding:0;gap:0}
-  .svcx-word__t{grid-column:1;grid-row:1;display:flex;align-items:center;
-    min-height:48px;
-    padding:12px 0;font-size:clamp(1.05rem,4.4vw,1.32rem);letter-spacing:-.01em}
-  .svcx-word:hover .svcx-word__t,.svcx-word:focus-within .svcx-word__t{transform:none}
-  .svcx-word__i{grid-column:2;grid-row:1;justify-content:flex-end;min-width:56px;
-    font-size:.72rem}
 
   /* TABS -> head, then the tab bar as a scroll-snap chip row, then image,
      then the active service's copy. The bar scrolls rather than wrapping: a
@@ -1280,7 +1180,71 @@ GD_CSS = """
 .pf-step h3{margin:0 0 8px;font-size:clamp(1.05rem,1.5vw,1.24rem)}
 .pf-step p{margin:0;color:var(--muted);font-size:.96rem;line-height:1.55}
 
+/* 06 MOSAIC -- tall plate left, copy right, two tiles beneath the copy.
+   Ratios are deliberately not the reference's: it drew the plate at 0.59, which
+   against a 16:9 library shows a third of the frame. 5/6 keeps the asymmetry
+   the composition depends on while leaving the subject legible. */
+.pf-mos{display:grid;grid-template-columns:repeat(12,1fr);gap:0 48px;align-items:start}
+.pf-mos__plate{grid-column:1/6;overflow:hidden;border:1px solid var(--line);
+  border-radius:var(--radius)}
+.pf-mos__plate img{display:block;width:100%;aspect-ratio:5/6;object-fit:cover;
+  transition:transform .7s cubic-bezier(.2,.7,.3,1)}
+.pf-mos__plate:hover img{transform:scale(1.03)}
+.pf-mos__b{grid-column:6/13}
+.pf-mos__b h2{margin:0 0 14px;font-size:clamp(1.5rem,2.4vw,2.15rem);line-height:1.14}
+.pf-mos__sub{margin:0 0 26px;color:var(--muted);font-size:1.04rem;max-width:46ch}
+.pf-mos__tiles{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:0 0 8px}
+.pf-mos__tiles figure{margin:0;overflow:hidden;border:1px solid var(--line);
+  border-radius:var(--radius)}
+.pf-mos__tiles img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;
+  transition:transform .6s cubic-bezier(.2,.7,.3,1)}
+.pf-mos__tiles figure:hover img{transform:scale(1.04)}
+.pf-mos__where{display:flex;align-items:center;gap:8px;margin:20px 0 0;
+  color:var(--muted);font-size:.92rem}
+.pf-mos__where svg{width:16px;height:16px;color:var(--accent-lt)}
+
+/* 07 STACK -- three plates overlapped, the centre raised and in colour.
+   Elevation is used here where the rest of the set stays flat: the whole point
+   of the composition is which plate is in front.
+
+   All three keep the same 4/3 crop. An earlier pass gave the outer plates a
+   portrait ratio and the centre a landscape one, on the theory that the
+   occluded plates could afford the harder crop -- but equal columns made the
+   portrait plates 428px tall against the centre's 254px, so the plate meant to
+   dominate became the smallest thing in the row. Depth comes from scale,
+   stacking order and colour instead, which costs no legibility. */
+.pf-stk{position:relative;display:grid;grid-template-columns:repeat(3,1fr);
+  align-items:center;max-width:960px;margin:0 auto}
+.pf-stk__p{position:relative;margin:0;overflow:hidden;border:1px solid var(--line);
+  border-radius:var(--radius);background:var(--card)}
+.pf-stk__p img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;
+  transition:filter .55s ease,transform .7s cubic-bezier(.2,.7,.3,1)}
+.pf-stk__p--l,.pf-stk__p--r{z-index:1}
+.pf-stk__p--l img,.pf-stk__p--r img{filter:grayscale(.55)}
+.pf-stk__p--l{margin-right:-10%}
+.pf-stk__p--r{margin-left:-10%}
+.pf-stk__p--c{z-index:2;transform:scale(1.12);box-shadow:var(--shadow-lg)}
+.pf-stk__p:hover img{filter:grayscale(0)}
+.pf-stk__p figcaption{position:absolute;left:12px;bottom:12px;background:var(--card);
+  border:1px solid var(--line);border-radius:var(--btn-r);padding:6px 12px;
+  font-family:var(--disp);font-weight:700;font-size:.74rem;letter-spacing:.05em;
+  text-transform:uppercase;color:var(--ink)}
+
 @media(max-width:900px){
+  /* the overlap unwinds rather than squeezing: at this width the plates would
+     cover each other's subject entirely */
+  .pf-mos{grid-template-columns:1fr;gap:26px}
+  .pf-mos__plate,.pf-mos__b{grid-column:1}
+  .pf-mos__plate img{aspect-ratio:16/10}
+  .pf-stk{grid-template-columns:1fr;gap:14px;max-width:440px}
+  .pf-stk__p--l{margin-right:0}
+  .pf-stk__p--r{margin-left:0}
+  .pf-stk__p--c{transform:none;box-shadow:none}
+  /* the outer plates must match `.pf-stk__p--l img` for specificity, not just
+     `.pf-stk__p img` -- otherwise two of the three stay desaturated here, with
+     no overlap to justify it and no hover to undo it */
+  .pf-stk__p img,.pf-stk__p--l img,.pf-stk__p--r img{aspect-ratio:16/10;
+    filter:none}
   .pf-detail,.pf-cine{grid-template-columns:1fr;gap:26px}
   .pf-detail__img img{aspect-ratio:16/10}
   .pf-cine__img,.pf-points--rail,.pf-cine__hd{grid-column:1}
@@ -1303,10 +1267,18 @@ GD_CSS = """
   .pf-step h3{grid-column:2}
   .pf-step p{grid-column:2}
 }
+/* two tiles side by side leave 153px each on a 360px screen -- too small to
+   show what the photograph is of, which is the only job they have */
+@media(max-width:560px){.pf-mos__tiles{grid-template-columns:1fr;gap:12px}}
+
 @media(prefers-reduced-motion:reduce){
   .pf-detail__img img,.pf-tech__img img,.pf-cine__img img,.pf-step__im img,
-  .pf-ic,.pf-step__n,.pf-go svg{transition:none!important;transform:none!important}
+  .pf-ic,.pf-step__n,.pf-go svg,.pf-mos__plate img,.pf-mos__tiles img,
+  .pf-stk__p img{transition:none!important;transform:none!important}
   .pf-step__im img{filter:none!important}
+  /* the centre plate's scale is layout, not motion, so it is restored after
+     the blanket transform reset above */
+  .pf-stk__p--c{transform:scale(1.12)!important}
 }
 .splitfeat{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:center}
 .splitfeat--flip .splitfeat__img{order:2}
@@ -2163,11 +2135,6 @@ def services_archetype(t, pages, tiles):
     eligible = ["featured", "editorial", "spotlight", "accordion"]   # n >= 3
     if n >= 3:
         eligible.append("tabs")
-    if n >= 3:
-        # the giant-type treatment needs names short enough to set large; one
-        # long service name wrecks the whole composition, so measure first
-        if max(len(_plain(x[1])) for x in tiles) <= 22:
-            eligible.append("typo")
     if n >= 4:
         eligible += ["floating", "bento", "overlay", "timeline"]
     if n >= 4:
@@ -2183,7 +2150,7 @@ def services_archetype(t, pages, tiles):
     # "quiet" = type leads and the photograph is held in a contained panel;
     # these follow a photo-dominant hero. The rest let the image carry the
     # section and follow a type-led hero.
-    quiet = {"editorial", "accordion", "bento", "problem", "typo", "timeline",
+    quiet = {"editorial", "accordion", "bento", "problem", "timeline",
              "tabs"}
     preferred = [a for a in eligible if (a in quiet) == photo_hero]
     pool = preferred or eligible
@@ -2191,13 +2158,13 @@ def services_archetype(t, pages, tiles):
 
 SERVICE_ARCHETYPES = ["featured", "editorial", "spotlight", "floating",
                       "bento", "overlay", "accordion", "problem",
-                      "timeline", "typo", "orbit", "tabs"]
+                      "timeline", "orbit", "tabs"]
 
 # Archetypes that compose the section heading INTO their own layout rather than
 # taking the centred stack above. A centred eyebrow/h2/blurb on top of every
 # composition is the strongest "template" tell there is.
 _SVCX_OWN_HEAD = {"featured", "editorial", "spotlight", "floating", "overlay",
-                  "accordion", "timeline", "typo", "orbit", "tabs"}
+                  "accordion", "timeline", "orbit", "tabs"}
 
 def services_grid(t, pages):
     """The Services section: one of eight art-directed compositions.
@@ -2211,9 +2178,9 @@ def services_grid(t, pages):
     arch = services_archetype(t, pages, tiles)
     cap = {"featured": 4, "editorial": 5, "spotlight": 5, "floating": 4,
            "bento": 5, "overlay": 6, "accordion": 5, "problem": 5,
-           # the ring holds 6 comfortably; the journey and the giant words
-           # lose their point past 5 -- a 6-step route is a list again
-           "timeline": 5, "typo": 5, "orbit": 6,
+           # the ring holds 6 comfortably; the journey loses its point past
+           # 5 -- a 6-step route is a list again
+           "timeline": 5, "orbit": 6,
            # a six-tab bar stops reading as tabs and starts reading as nav
            "tabs": 5}[arch]
     items, overflow = _svc_items(t, pages, tiles, cap)
@@ -2267,11 +2234,6 @@ def _svcx_visual(t, img, mod="", label=None):
     what = label or "Garage door service"
     return (f'<div class="svcx-vis {mod}"><img src="/assets/photos/{img}" loading="lazy" '
             f'alt="{what} in {esc(t["city"])}, {esc(t["st"])}"></div>')
-
-def _plain(t):
-    """Visible length of a pre-escaped title: "Openers &amp; Remotes" is 17
-    characters on screen, not 21."""
-    return html.unescape(t or "")
 
 def _svcx_group(t):
     """Radio-group name. Unique per site so two sections never share state."""
@@ -2452,36 +2414,6 @@ def _svcx_timeline(t, items, overflow):
             f'{_svcx_head(t, "sec-head--left svcx-hd")}'
             f'{_svcx_stack(t, items, "svcx-vis--journey")}'
             f'<ol class="svcx-steps">{steps}</ol>'
-            f'{_svcx_more(t, items, overflow)}</div>')
-
-def _svcx_typo(t, items, overflow):
-    """12. The service names ARE the artwork. Type carries the section and the
-    photograph reveals behind the engaged word.
-
-    The names are the headline, so the section heading is demoted to a kicker
-    bar -- a 40px h2 above a 56px list of the same words is two headlines
-    fighting, which is what made the first cut of this read badly. The index is
-    set to the LEFT as part of the type, not as a floating circle to the right.
-
-    Editorial rather than four large buttons: the words are unboxed, ruled only
-    by hairlines, and the active one is the only thing that gains weight."""
-    group = _svcx_group(t)
-    eyebrow, h2, blurb = copy_deck(t, "services_head")
-    head = (f'<div class="svcx-kick"><div><p class="eyebrow">{_city(eyebrow, t)}</p>'
-            f'<h2>{_city(h2, t)}</h2></div>'
-            f'<p class="svcx-kick__p">{_city(blurb, t)}</p></div>')
-    words = "".join(
-        f'<li class="svcx-word">{_svcx_radio(group, i + 1, i == 0)}'
-        f'{_svcx_pick(group, i + 1, it["title"])}'
-        f'{_svcx_dot(group, i + 1, it["title"], "svcx-word__i")}'
-        f'<a class="svcx-nav svcx-sel svcx-sel--{i + 1} svcx-word__t" '
-        f'href="{it["url"]}">{it["title"]}</a></li>'
-        for i, it in enumerate(items))
-    return (f'<div class="svcx svcx--typo">{head}'
-            f'<ul class="svcx-words">{words}</ul>'
-            f'<div class="svcx-reveal">'
-            f'{_svcx_stack(t, items, "svcx-vis--reveal")}'
-            f'{_svcx_copystack(t, items)}</div>'
             f'{_svcx_more(t, items, overflow)}</div>')
 
 def _svcx_orbit(t, items, overflow):
@@ -2905,9 +2837,15 @@ def photo_band(t):
 # three-up photo strip. Each variant declares which downstream copy deck it
 # consumes so the page never makes the same claim twice.
 
-PROOF_VARIANTS = ["photoband", "detail", "technician", "cinematic", "sequence"]
+PROOF_VARIANTS = ["photoband", "detail", "technician", "cinematic", "sequence",
+                  "mosaic", "stack"]
 # variant -> the slot it eats further down the page
-_PROOF_EATS = {"technician": "split", "cinematic": "split", "sequence": "process"}
+_PROOF_EATS = {"technician": "split", "cinematic": "split", "sequence": "process",
+               "mosaic": "split"}
+# variants whose composition falls apart with fewer than three photographs.
+# Each renderer also returns "" defensively, but gating here keeps a site that
+# cannot show one from losing the slot to it.
+_PROOF_NEEDS_3 = {"photoband", "mosaic", "stack"}
 
 def _gal(t, n=1):
     """(filename, truthful category label) pairs from the gallery pool."""
@@ -2998,6 +2936,60 @@ def _pf_sequence(t):
         f'<h2>{_city(h2, t)}</h2></div>'
         f'<ol class="pf-seq" style="--pf-n:{len(steps)}">{cells}</ol>')
 
+def _pf_mosaic(t):
+    """06. Asymmetric mosaic: a tall plate beside the copy, two tiles under it.
+
+    The reference drew the tall plate at a 0.59 box ratio. Every photograph in
+    the library is 16:9, and object-fit:cover at 0.59 shows only 33% of the
+    frame -- a garage door is a wide subject, so a centre third of it is rarely
+    still a door. Relaxed to 5/6, and the tiles to the 4/3 the rest of the
+    engine already uses."""
+    shots = _gal(t, 3)
+    if len(shots) < 3:
+        return ""
+    head, sub, points = copy_deck(t, "split_feature")
+    (g0, l0), rest = shots[0], shots[1:]
+    tiles = "".join(
+        f'<figure><img src="/assets/photos/{g}" loading="lazy" '
+        f'alt="{_pf_alt(t, lab)}"></figure>' for g, lab in rest)
+    return _pf_shell(
+        f'<div class="pf-mos__plate"><img src="/assets/photos/{g0}" loading="lazy" '
+        f'alt="{_pf_alt(t, l0)}"></div>'
+        f'<div class="pf-mos__b"><p class="eyebrow">{_city("On the tools", t)}</p>'
+        f'<h2>{_city(head, t)}</h2>'
+        f'<p class="pf-mos__sub">{_city(sub, t)}</p>'
+        f'<div class="pf-mos__tiles">{tiles}</div>'
+        f'<ul class="pf-points">{_pf_points(t, points)}</ul>'
+        f'<p class="pf-mos__where">{icon("pin")}'
+        f'{esc(t["city"])}, {esc(t["st"])}</p></div>', "pf-mos")
+
+def _pf_stack(t):
+    """07. Three plates overlapped, the centre one raised and in colour.
+
+    The reference closed with a "Certified Technicians / Lifetime Warranty /
+    Same Day Response" row. The first two are dropped rather than filled -- no
+    site supplies a certification or a warranty -- and with only one truthful
+    item left the row stops being a row, so it goes entirely.
+
+    Its eyebrow read "Our Portfolio", which claims these are the company's own
+    completed jobs; the photographs are category stock, so the standard eyebrow
+    is used instead. The side plates sit ~14% behind the centre, so they can
+    carry the tighter crop the composition wants while the centre stays 4/3."""
+    shots = _gal(t, 3)
+    if len(shots) < 3:
+        return ""
+    head, sub = copy_deck(t, "photo_band")
+    pos = ["l", "c", "r"]
+    plates = "".join(
+        f'<figure class="pf-stk__p pf-stk__p--{pos[i]}">'
+        f'<img src="/assets/photos/{g}" loading="lazy" alt="{_pf_alt(t, lab)}">'
+        f'<figcaption>{esc(lab)}</figcaption></figure>'
+        for i, (g, lab) in enumerate(shots))
+    return _pf_shell(
+        f'<div class="sec-head"><p class="eyebrow">{_city("On the tools", t)}</p>'
+        f'<h2>{_city(head, t)}</h2><p>{_city(sub, t)}</p></div>'
+        f'<div class="pf-stk">{plates}</div>')
+
 def proof_section(t):
     """Pick the visual-proof variant. Returns (html, decks_consumed).
 
@@ -3011,7 +3003,7 @@ def proof_section(t):
         arch = pinned
     else:
         ok = [v for v in PROOF_VARIANTS
-              if not (v == "photoband" and len(gal) < 3)
+              if not (v in _PROOF_NEEDS_3 and len(gal) < 3)
               and not (v == "sequence" and len(gal) < len(copy_deck(t, "steps")))]
         arch = ok[_hash_idx(f'{t["domain"]}|proof', len(ok))] if ok else "detail"
     html = globals()[f"_pf_{arch}"](t)

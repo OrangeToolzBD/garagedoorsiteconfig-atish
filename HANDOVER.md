@@ -100,12 +100,19 @@ gate.
 
 ## 4. What has been built
 
-### Services section — 12 archetypes, 11 reachable
+### Services section — 11 archetypes, 10 reachable
 
 `SERVICE_ARCHETYPES` in `build.py`. Chosen by `services_archetype()`.
 
 `featured · editorial · spotlight · floating · bento · overlay · accordion ·
-problem · timeline · typo · orbit · tabs`
+problem · timeline · orbit · tabs`
+
+**`typo` was removed** on client rejection (2026-08-17). It set the service
+names as giant type carrying the whole section, with the photograph revealing
+behind the engaged word. Deleted outright rather than disabled — renderer,
+~110 lines of CSS, its registration in every lookup, the `dallasdoorpros.com`
+pin, and the then-orphaned `_plain()` helper. It is recoverable from git if the
+decision is ever revisited.
 
 **`problem` never fires.** It requires ≥3 services whose copy carries genuine
 symptom language; the content yields 1. That is the no-inventing rule holding,
@@ -116,12 +123,11 @@ Selection narrows by real signals before the digest:
 | Signal | Effect |
 |---|---|
 | ≥3 services | `featured editorial spotlight accordion tabs` |
-| ≥3 services **and** longest title ≤22 visible chars | adds `typo` (long names wreck giant type) |
 | ≥4 services | adds `floating bento overlay timeline orbit` |
 | ≥3 symptom-bearing blurbs | adds `problem` (never met) |
 | **Hero contrast** | a photo-led hero is followed by a *quiet* archetype and vice versa, so the two read as different moments |
 
-`quiet = {editorial, accordion, bento, problem, typo, timeline, tabs}`.
+`quiet = {editorial, accordion, bento, problem, timeline, tabs}`.
 Everything else is image-led.
 
 **Every service carries its own photograph.** `select_photos()` already drew one
@@ -234,9 +240,13 @@ the glyphs to sample the true ground), and check reduced motion on elements
 | 8203 | mesagaragedoorco.com | `orbit` | **pinned** |
 | 8204 | napervillegaragedoorpros.com | `floating` | auto |
 | 8207 | auroragaragedoorpros.com | `tabs` | **pinned** |
-| 8219 | dallasdoorpros.com | `typo` | **pinned** |
-| 8258 | austingaragedoorguys.com | `featured` | auto |
+| 8219 | dallasdoorpros.com | `bento` | proof **pinned** to `stack` |
+| 8258 | austingaragedoorguys.com | `featured` | proof `mosaic`, auto |
 | 8283 | puntagordagaragedoorpros.com | `editorial` | proof **pinned** to `cinematic` |
+
+Run them all with `python3 serve.py` from `engine/` — portal on `:8000`, each
+site on its config port, bound to `0.0.0.0` so a phone on the same Wi-Fi can
+reach them too.
 
 **⚠ Remove the review pins before production.** Five rows in `sites.json` carry
 `"services"` / `"proof"` keys that override automatic selection. They exist so a

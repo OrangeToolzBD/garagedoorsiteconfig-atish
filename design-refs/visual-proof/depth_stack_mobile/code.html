@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Depth Stack - Mobile</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@600;700;800&amp;family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#d8e2ff",
+                        "on-secondary-fixed-variant": "#004395",
+                        "tertiary-container": "#191c1e",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#cbdbf5",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "outline": "#76777d",
+                        "on-error": "#ffffff",
+                        "on-surface": "#0b1c30",
+                        "on-primary-container": "#7c839b",
+                        "tertiary": "#000000",
+                        "secondary": "#0058be",
+                        "on-primary-fixed": "#131b2e",
+                        "surface": "#f8f9ff",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#eff4ff",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#191c1e",
+                        "on-secondary-container": "#fefcff",
+                        "primary-fixed": "#dae2fd",
+                        "tertiary-fixed": "#e0e3e5",
+                        "on-tertiary-container": "#818486",
+                        "secondary-fixed-dim": "#adc6ff",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed-dim": "#c4c7c9",
+                        "surface-container": "#e5eeff",
+                        "surface-tint": "#565e74",
+                        "secondary-container": "#2170e4",
+                        "primary-fixed-dim": "#bec6e0",
+                        "error-container": "#ffdad6",
+                        "surface-variant": "#d3e4fe",
+                        "inverse-on-surface": "#eaf1ff",
+                        "surface-bright": "#f8f9ff",
+                        "on-secondary-fixed": "#001a42",
+                        "surface-container-high": "#dce9ff",
+                        "background": "#f8f9ff",
+                        "surface-container-highest": "#d3e4fe",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface-variant": "#45464d",
+                        "primary": "#000000",
+                        "inverse-surface": "#213145",
+                        "on-background": "#0b1c30",
+                        "outline-variant": "#c6c6cd",
+                        "primary-container": "#131b2e",
+                        "inverse-primary": "#bec6e0"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "margin-desktop": "48px",
+                        "margin-mobile": "16px",
+                        "section-padding": "120px",
+                        "gutter": "24px",
+                        "stack-lg": "32px",
+                        "container-max": "1280px",
+                        "stack-sm": "8px",
+                        "stack-md": "16px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "display-lg": ["Epilogue"],
+                        "label-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Epilogue"],
+                        "headline-md": ["Epilogue"],
+                        "headline-lg-mobile": ["Epilogue"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-lg": ["72px", { "lineHeight": "80px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-md": ["30px", { "lineHeight": "38px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface antialiased">
+<!-- Mobile Container -->
+<main class="max-w-md mx-auto min-h-screen flex flex-col pt-12 pb-16 px-margin-mobile">
+<!-- Top Content Section -->
+<header class="mb-10 text-center">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-stack-sm tracking-tight">
+                Structural Harmony
+            </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-[320px] mx-auto">
+                Elevating environments through precise geometry and uncompromising material selection.
+            </p>
+</header>
+<!-- Vertical Overlapping Image Stack -->
+<section class="flex flex-col items-center w-full mb-12 relative">
+<!-- Back Image -->
+<div class="w-full aspect-[4/3] rounded-xl overflow-hidden border border-outline-variant z-10 bg-surface-container-lowest">
+<img alt="Architectural exterior" class="w-full h-full object-cover" data-alt="A striking, minimalist modern architectural exterior shot during golden hour. The building features clean, straight lines, expansive floor-to-ceiling glass windows, and a smooth concrete facade. The lighting is soft and warm, casting long, elegant shadows that highlight the geometric structural integrity. The overall aesthetic is premium, high-end corporate, and exudes quiet confidence with a light-mode color palette dominated by whites, warm grays, and natural light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6g_Ucunh-9TqtnuiX9LAqb9e_ujUpIBfbJNV7upiaOr2o7cMr9HSsJAq4CzYB6d1siTIbYMzPGoHOPsixPkvcyDWv_z7McEp3IjWQHT_itb0zI9DCNAJNC6fD5EhZ4Wj5xebc6-SzSR0o1akJMvTgkX7vZbVgAy0Y2PyVIrztPLscyxs6CEXVei6j4uNbGkV1_m4qhN4Wm3spcyDOOh_RNxNFAvMwlfn7fxjwsEZ3ZpymBIgIeKA03w"/>
+</div>
+<!-- Middle Image -->
+<div class="w-[92%] aspect-[4/3] rounded-xl overflow-hidden border border-outline-variant ring-[6px] ring-surface z-20 -mt-16 bg-surface-container-lowest transition-transform duration-500 hover:-translate-y-1">
+<img alt="Interior design detail" class="w-full h-full object-cover" data-alt="A close-up editorial shot of a high-end, minimalist interior design detail. The image focuses on a precise junction between polished light wood flooring, a stark white wall, and a custom matte black metal staircase railing. The lighting is bright, diffuse, and natural, creating a soft, shadow-free environment that emphasizes structural clarity and premium material quality. The mood is serene, highly professional, and distinctly modern corporate." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8-DKvUMddyIKcdMlipxVdwDGbJtDzSWBsBVbuBV712XELT-jviyoaiSY4xWZ9w429KBTZW5XfCelx-CuwqXN9lqUeGYZpEfdH8bspPpVGI5k6udEuZJSOp1oi9E82z5HXlvhFQAdyeJTBKUddQglpHMNH9jvrvbCdqa0K_WbtS2k3TI8ANCfQEukElYakh2XRaqEFljJNYTksKl2W8qhghy1wg6hBtCMy9rxzAyj1C74nJHJIbFvfcQ"/>
+</div>
+<!-- Front Image -->
+<div class="w-[84%] aspect-[4/3] rounded-xl overflow-hidden border border-outline-variant ring-[6px] ring-surface z-30 -mt-16 bg-surface-container-lowest transition-transform duration-500 hover:-translate-y-2">
+<img alt="Premium material textures" class="w-full h-full object-cover" data-alt="A macro photography shot of premium architectural materials, showcasing a slab of heavily veined, pristine white marble resting against a piece of lightly treated, natural oak wood. The composition is highly structured and asymmetric, reflecting a modern corporate design ethos. Soft, high-key studio lighting eliminates harsh shadows, focusing entirely on the rich textures, subtle tonal shifts, and the quiet authority of high-quality craftsmanship in a light-mode aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlMqGHdKXy8tjNUqrQsLER8CZiK1AXgO3sisLIzLQqWcNoBFOoTb5xqbHrvLPXytTg8piwNwi2jGwtD5lcQoc9jA0Gpj_6htyQGHq5h5s7bQSh6_F-mj49M59BqwGGvvJZFFqm4SdlxRKhL67w1UslFDnA5vk6PfyNJv3JHaOePfzE5ri0ZWc92neMIKEXLV8DfXHyiG_yC-2IrwMTGZS4p2DjQQ8TAYNh_qzNghjrHAC98ZH62fAhcQ"/>
+</div>
+</section>
+<!-- Bottom Claim Lines Section -->
+<section class="flex flex-col gap-6 mt-auto">
+<!-- Claim Item 1 -->
+<div class="flex items-start gap-4 border-t border-outline-variant pt-6">
+<span class="material-symbols-outlined text-primary mt-1" style="font-variation-settings: 'FILL' 1;">architecture</span>
+<div>
+<h3 class="font-label-md text-label-md text-on-surface uppercase tracking-wider mb-1">Precision Engineered</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Every angle calculated for optimal spatial flow and structural integrity.</p>
+</div>
+</div>
+<!-- Claim Item 2 -->
+<div class="flex items-start gap-4 border-t border-outline-variant pt-6">
+<span class="material-symbols-outlined text-primary mt-1" style="font-variation-settings: 'FILL' 1;">eco</span>
+<div>
+<h3 class="font-label-md text-label-md text-on-surface uppercase tracking-wider mb-1">Sustainable Sourcing</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Prioritizing locally extracted, low-impact materials without aesthetic compromise.</p>
+</div>
+</div>
+<!-- Claim Item 3 -->
+<div class="flex items-start gap-4 border-y border-outline-variant py-6">
+<span class="material-symbols-outlined text-primary mt-1" style="font-variation-settings: 'FILL' 1;">verified</span>
+<div>
+<h3 class="font-label-md text-label-md text-on-surface uppercase tracking-wider mb-1">Decade Guarantee</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Backed by an industry-leading warranty, reflecting our quiet confidence in execution.</p>
+</div>
+</div>
+</section>
+</main>
+</body></html>
