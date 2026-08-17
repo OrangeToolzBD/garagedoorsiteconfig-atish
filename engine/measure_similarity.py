@@ -74,7 +74,7 @@ def missing_essentials():
     need = {"coverage": ('class="areagrid"', 'class="areas"'),
             "process":  ('class="steps', "pf-seq"),
             "visual":   ('class="shots"', "splitfeat", "pf-detail", "pf-tech",
-                         "pf-cine", "pf-seq", "pf-mos", "pf-stk"),
+                         "pf-cine", "pf-seq", "pf-mos", "pf-stk", "pf-sel"),
             # `class="faq` without the closing quote: the block now carries a
             # variant modifier (class="faq faq--list"), which the old exact
             # needle would have missed on every site, reporting the FAQ as

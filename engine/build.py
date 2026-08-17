@@ -1267,6 +1267,46 @@ GD_CSS = """
   .pf-step h3{grid-column:2}
   .pf-step p{grid-column:2}
 }
+/* 08 SELECTOR -- a category rail that swaps the plate beside it.
+   The swap itself is the services block's machinery: the wrapper carries
+   `svcx`, so the committed-radio / pointer / :focus-visible tiers already
+   defined up there drive this too. Nothing new is declared for the mechanism,
+   only for the rail's own look. */
+.pf-sel{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);
+  gap:0 52px;align-items:center}
+.pf-sel__vis{aspect-ratio:4/3}
+.pf-sel__b h2{margin:0 0 12px;font-size:clamp(1.45rem,2.3vw,2.05rem);
+  line-height:1.14}
+.pf-sel__b>p{margin:0 0 24px;color:var(--muted);font-size:1.03rem;max-width:42ch}
+.pf-sel__rail{list-style:none;margin:0;padding:0}
+.pf-sel__rail li{position:relative;border-top:1px solid var(--line)}
+.pf-sel__rail li:last-child{border-bottom:1px solid var(--line)}
+.pf-sel__opt{display:flex;align-items:center;min-height:56px;padding:6px 2px;
+  cursor:pointer;font-family:var(--disp);font-weight:700;
+  font-size:clamp(1.02rem,1.5vw,1.22rem);color:var(--muted);
+  transition:color .25s,padding-left .25s}
+.pf-sel__opt::before{content:"";position:absolute;left:0;bottom:-1px;height:2px;
+  width:0;background:var(--accent);transition:width .5s cubic-bezier(.2,.7,.3,1)}
+.pf-sel__rail li:hover .pf-sel__opt,
+.pf-sel__rail li:focus-within .pf-sel__opt{color:var(--ink);padding-left:10px}
+/* committed tier draws the rule; hover must not, or every row animates as the
+   pointer travels and the rail reads as a menu */
+.pf-sel__rail li:has(.svcx-r:checked) .pf-sel__opt{color:var(--p)}
+.pf-sel__rail li:has(.svcx-r:checked) .pf-sel__opt::before{width:100%}
+.pf-sel__rail li:has(.svcx-r:focus-visible){outline:3px solid var(--accent);
+  outline-offset:3px;border-radius:4px}
+/* This block has to sit AFTER the base rules above, not up in the shared
+   max-width:900px block earlier in the sheet: a media query does not raise
+   specificity, so a base `.pf-sel` declared later simply wins and the desktop
+   grid survives to 360px. That is exactly what happened first time round --
+   plate and rail were still side by side at 156px and 116px wide. */
+@media(max-width:900px){
+  /* plate above the rail rather than beside it; the rail keeps its 56px rows,
+     which is what makes it selectable by thumb */
+  .pf-sel{grid-template-columns:1fr;gap:24px}
+  .pf-sel__vis{aspect-ratio:16/10}
+}
+
 /* two tiles side by side leave 153px each on a 360px screen -- too small to
    show what the photograph is of, which is the only job they have */
 @media(max-width:560px){.pf-mos__tiles{grid-template-columns:1fr;gap:12px}}
@@ -2915,14 +2955,14 @@ def photo_band(t):
 # consumes so the page never makes the same claim twice.
 
 PROOF_VARIANTS = ["photoband", "detail", "technician", "cinematic", "sequence",
-                  "mosaic", "stack"]
+                  "mosaic", "stack", "selector"]
 # variant -> the slot it eats further down the page
 _PROOF_EATS = {"technician": "split", "cinematic": "split", "sequence": "process",
                "mosaic": "split"}
 # variants whose composition falls apart with fewer than three photographs.
 # Each renderer also returns "" defensively, but gating here keeps a site that
 # cannot show one from losing the slot to it.
-_PROOF_NEEDS_3 = {"photoband", "mosaic", "stack"}
+_PROOF_NEEDS_3 = {"photoband", "mosaic", "stack", "selector"}
 
 def _gal(t, n=1):
     """(filename, truthful category label) pairs from the gallery pool."""
@@ -3066,6 +3106,46 @@ def _pf_stack(t):
         f'<div class="sec-head"><p class="eyebrow">{_city("On the tools", t)}</p>'
         f'<h2>{_city(head, t)}</h2><p>{_city(sub, t)}</p></div>'
         f'<div class="pf-stk">{plates}</div>')
+
+def _pf_selector(t):
+    """08. A category rail that swaps the photograph beside it.
+
+    The reference did this with `#rail:has(#btn:hover) ~ .imgs #img` and nothing
+    else -- hover only, no committed state, so on a touch tablet at desktop
+    width the picture could never be changed. It also switched to a five-photo
+    snap carousel on mobile, against a library that tops out at four.
+
+    Both are dropped in favour of the selector this engine already ships: the
+    wrapper carries `svcx`, so the committed-radio / pointer / :focus-visible
+    tiers in the services block drive this too. No new CSS mechanism, and the
+    touch case works because the radio stays checked.
+
+    The reference's closing three-up -- "Certified Experts", "rigorous
+    architectural and mechanical training", "Premium Materials / high-gauge
+    steel", "Precision Timing" -- is dropped entirely rather than reworded. All
+    four are claims no site can back.
+
+    The rail labels are the gallery categories, which are the only truthful
+    per-photo signal that exists."""
+    shots = _gal(t, 4)
+    if len(shots) < 3:
+        return ""
+    head, sub = copy_deck(t, "photo_band")
+    group = _svcx_group(t) + "-pf"
+    plane = "".join(
+        f'<img src="/assets/photos/{g}" loading="lazy" alt="{_pf_alt(t, lab)}">'
+        for g, lab in shots)
+    rail = "".join(
+        f'<li>{_svcx_radio(group, i + 1, i == 0)}'
+        f'<label class="svcx-sel svcx-sel--{i + 1} pf-sel__opt" '
+        f'for="{group}-{i + 1}">{esc(lab)}</label></li>'
+        for i, (g, lab) in enumerate(shots))
+    return _pf_shell(
+        f'<div class="pf-sel__vis svcx-vis svcx-vis--swap">{plane}</div>'
+        f'<div class="pf-sel__b"><p class="eyebrow">{_city("On the tools", t)}</p>'
+        f'<h2>{_city(head, t)}</h2><p>{_city(sub, t)}</p>'
+        f'<ul class="pf-sel__rail">{rail}</ul></div>', "pf-sel svcx")
+
 
 def proof_section(t):
     """Pick the visual-proof variant. Returns (html, decks_consumed).
