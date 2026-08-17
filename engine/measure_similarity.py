@@ -75,7 +75,11 @@ def missing_essentials():
             "process":  ('class="steps', "pf-seq"),
             "visual":   ('class="shots"', "splitfeat", "pf-detail", "pf-tech",
                          "pf-cine", "pf-seq", "pf-mos", "pf-stk"),
-            "faq":      ('class="faq"',),
+            # `class="faq` without the closing quote: the block now carries a
+            # variant modifier (class="faq faq--list"), which the old exact
+            # needle would have missed on every site, reporting the FAQ as
+            # absent from pages that plainly have one.
+            "faq":      ('class="faq',),
             "cta":      ("cta-band",)}
     sites = {s["domain"]: s for s in
              json.load(open(os.path.join(CONFIG, "sites.json"), encoding="utf-8"))["sites"]}

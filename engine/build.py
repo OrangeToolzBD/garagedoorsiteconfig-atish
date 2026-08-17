@@ -1691,11 +1691,42 @@ def render_body(text):
             out.append(f"<p>{esc(' '.join(lines))}</p>")
     return "".join(out)
 
-def faq_accordion(faqs):
-    return "".join(
-        f'<details{" open" if i == 0 else ""}><summary>{esc(q)}</summary>'
-        f'<div class="a"><p>{esc(a)}</p></div></details>'
-        for i, (q, a) in enumerate(faqs))
+# ---- FAQ: five treatments, one library for both places it appears ----------
+# Adapted from the client's FAQ concept sets. The FAQ renders twice: as its own
+# section on the homepage, and embedded in the article column on service, area
+# and guide pages -- 108 of 150 inner pages carry one. Those look like two
+# different components, but `.faq` is capped at 820px and the article body runs
+# 764-820px, so they are the same width and need one library, not two.
+#
+# `grid` and `plain` drop <details> and answer in the open. That is a different
+# element sequence, not a restyled one: the gate scores DOM as a tag.class run,
+# so variants differing only by a wrapper class would move similarity by a
+# single token and buy nothing.
+#
+# Append-only: selection is digest % len().
+FAQ_VARIANTS = ["cards", "list", "pullout", "grid", "plain"]
+_FAQ_OPEN = {"grid", "plain"}      # answered in the open, no disclosure
+
+
+def faq_block(t, faqs):
+    """The FAQ pairs as one of five treatments, chosen per domain.
+
+    Every answer is in the markup either way. The page publishes FAQPage
+    JSON-LD built from these pairs, so an answer that only existed once
+    expanded would describe content the crawler cannot see -- a collapsed
+    <details> keeps its content in the DOM, and the open variants have nothing
+    to collapse."""
+    v = FAQ_VARIANTS[_hash_idx(f'{t["domain"]}|faq', len(FAQ_VARIANTS))]
+    if v in _FAQ_OPEN:
+        items = "".join(
+            f'<div class="faq-qa"><h3>{esc(q)}</h3>'
+            f'<div class="a"><p>{esc(a)}</p></div></div>' for q, a in faqs)
+    else:
+        items = "".join(
+            f'<details{" open" if i == 0 else ""}><summary>{esc(q)}</summary>'
+            f'<div class="a"><p>{esc(a)}</p></div></details>'
+            for i, (q, a) in enumerate(faqs))
+    return f'<div class="faq faq--{v}">{items}</div>'
 
 def seo_title(raw):
     """Trim to <=60 chars, dropping the " | Brand" suffix first.
@@ -1796,9 +1827,17 @@ def breadcrumb_schema(t, trail):
         for i, (n, u) in enumerate(trail)]}
 
 def faq_schema(faqs):
+    """FAQPage schema, normalised the same way the visible answer is.
+
+    clean_text() sweeps em dashes and curly quotes out of the assembled page,
+    but it runs over the raw HTML, where the JSON-LD has already encoded them
+    as \\u2014 escapes -- so the sweep fixed the visible answer and left the
+    schema saying something subtly different. FAQPage rich results require the
+    two to match, so the pairs are cleaned here, before serialisation."""
     return {"@type": "FAQPage", "mainEntity": [
-        {"@type": "Question", "name": q,
-         "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faqs]}
+        {"@type": "Question", "name": clean_text(q),
+         "acceptedAnswer": {"@type": "Answer", "text": clean_text(a)}}
+        for q, a in faqs]}
 
 def head_html(t, title, desc, url, schemas, og_image=HERO_IMG):
     lay = t["layout"]
@@ -3155,7 +3194,7 @@ def home_page(t, pages):
     faq_eyebrow, faq_h2 = copy_deck(t, "faq_head")
     faq_html = (f'<section class="sec sec--soft"><div class="wrap"><div class="sec-head">'
                 f'<p class="eyebrow">{_city(faq_eyebrow, t)}</p><h2>{_city(faq_h2, t)}</h2></div>'
-                f'<div class="faq">{faq_accordion(faqs)}</div></div></section>')
+                f'{faq_block(t, faqs)}</div></section>')
     title = seo_title((home["title"] if home else "") or f"Garage Door Repair in {t['city']}, {t['st']} | {t['brand']}")
     desc = (home["meta"] if home else "") or lead
     schemas = [org_schema(t), faq_schema(faqs)]
@@ -3293,7 +3332,7 @@ def inner_page(t, p, pages):
         parts.append(f'<img src="/assets/photos/{img}" alt="{esc(h1)}" loading="lazy">')
     if p["faq"]:
         _, faq_h2 = copy_deck(t, "faq_head")
-        parts.append(f'<h2 id="faq">{_city(faq_h2, t)}</h2><div class="faq">{faq_accordion(p["faq"])}</div>')
+        parts.append(f'<h2 id="faq">{_city(faq_h2, t)}</h2>{faq_block(t, p["faq"])}')
 
     label = {"service": "Services", "area": "Service Areas", "guide": "Guides"}.get(p["cat"], "")
     parent = {"service": "/services/", "area": "/service-areas/", "guide": "/guides/"}.get(p["cat"], "/")

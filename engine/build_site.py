@@ -783,6 +783,57 @@ table{width:100%;border-collapse:collapse}
 .faq details[open] summary::after{transform:rotate(45deg)}
 .faq .a{padding:0 22px 20px;color:var(--muted)}
 .faq .a p{margin:0 0 .7rem}
+/* ---- FAQ variants ---------------------------------------------------------
+   One library serves both places the FAQ renders: its own section on the
+   homepage, and embedded in the article column on inner pages. `.faq` is
+   capped at 820px above and the article body runs 764-820px, so both are the
+   same width. `cards` is the base rule above; everything here is a modifier.
+   The in-article context is why nothing below sets a heading larger than the
+   article's own h2 (~37px) or paints a full-bleed ground. */
+
+/* list -- hairline rows, no card. The quietest of the five: inside an article
+   it should read as part of the prose, not as a widget dropped into it. */
+.faq--list{gap:0}
+.faq--list details{background:none;border:0;border-bottom:1px solid var(--line);
+  border-radius:0;box-shadow:none}
+.faq--list details:first-child{border-top:1px solid var(--line)}
+.faq--list summary{padding:18px 2px;font-size:1.02rem}
+.faq--list summary::after{content:"";width:9px;height:9px;flex:0 0 9px;
+  border-right:2px solid var(--accent);border-bottom:2px solid var(--accent);
+  transform:rotate(45deg);margin-right:6px;transition:transform .2s}
+.faq--list details[open] summary::after{transform:rotate(225deg);margin-top:5px}
+.faq--list .a{padding:0 2px 20px}
+
+/* pullout -- marked out from the prose by a tinted ground and an accent edge,
+   without becoming a band */
+.faq--pullout{gap:0;background:var(--soft);border-left:3px solid var(--accent);
+  border-radius:0 var(--radius) var(--radius) 0;padding:8px 24px}
+.faq--pullout details{background:none;border:0;border-radius:0;box-shadow:none;
+  border-bottom:1px solid var(--line)}
+.faq--pullout details:last-child{border-bottom:0}
+.faq--pullout summary{padding:16px 0;font-size:1rem}
+.faq--pullout .a{padding:0 0 16px}
+
+/* grid + plain -- answered in the open, so no <details> and no marker at all.
+   Safest of the five for the FAQPage JSON-LD: there is no collapsed state to
+   reason about. */
+.faq-qa h3{margin:0 0 6px;font-family:var(--disp);font-weight:700;
+  font-size:1rem;line-height:1.35;color:var(--ink)}
+.faq-qa .a{padding:0;color:var(--muted)}
+.faq-qa .a p{margin:0;font-size:.97rem;line-height:1.6}
+
+.faq--grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.faq--grid .faq-qa{border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--card);padding:20px}
+/* 40 of the pages carrying an FAQ carry exactly ONE pair. Left alone, the two
+   columns stand and the lone card fills half the row with 374px of dead space
+   beside it, which reads as a broken layout rather than a short one. */
+.faq--grid .faq-qa:only-child{grid-column:1/-1}
+
+/* plain -- type weight and whitespace only, no borders anywhere */
+.faq--plain{gap:26px}
+.faq--plain .faq-qa{padding-left:18px;border-left:2px solid var(--line)}
+.faq--plain .faq-qa h3{font-size:1.04rem}
 /* cta band */
 .cta-band{background:linear-gradient(135deg,var(--p),var(--pd));color:#fff;border-radius:24px;padding:52px;text-align:center;box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
 .cta-band h2{color:#fff;margin:0 0 10px}
@@ -1011,6 +1062,10 @@ footer.site a.btn--ghost,footer.site a.btn--ghost:hover{color:#fff}
   .scards--side{grid-template-columns:1fr}
   .trust .wrap{grid-template-columns:1fr}
   .cta-band{padding:34px 20px}
+  /* two 370px cards become two ~150px ones inside the article column long
+     before the phone breakpoint, so the grid unwinds early */
+  .faq--grid{grid-template-columns:1fr}
+  .faq--pullout{padding:6px 18px}
   .hero h1{font-size:2rem}
   .hero .cta .btn,.cta-band .cta .btn{width:100%;justify-content:center}
   /* every side-by-side CTA variant unwinds to one column here. .ctab--bar and
