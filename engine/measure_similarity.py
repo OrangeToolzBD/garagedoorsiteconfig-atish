@@ -13,6 +13,12 @@ average.
 Similarity is measured after normalising away the tokens that are *supposed* to
 differ -- brand, city, state, phone, zip, domain -- so a high score means the
 pages really are the same page, not just two cities with the same name length.
+
+Homepages are scored on text AND DOM. Inner pages are scored on DOM only, and
+compared like with like -- a service page against another site's service page.
+Inner-page prose is the content pack, and 8 of the 9 packs are 99.4-100%
+identical after the city swap, so gating their text would be permanently red
+for a reason no renderer change can fix. The DOM is the renderer's own surface.
 """
 import difflib
 import glob
@@ -33,6 +39,14 @@ TARGETS = {
     "text_median": ("<=", 0.65),
     "text_max": ("<", 0.85),
     "dom_median": ("<=", 0.75),
+    # Inner pages are structurally far more alike than homepages: 88.6% at the
+    # time this check was added, against 54.1% below the hero. The homepage has
+    # a Services archetype library and a visual-proof library; every inner-page
+    # section has exactly one design, and the CTA band alone appears on 77% of
+    # pages. This target is a RATCHET, not an ambition -- it holds the current
+    # figure so nothing regresses, and should be tightened each time a
+    # section-variant library lands. Do not loosen it to make a change pass.
+    "inner_dom_median": ("<=", 0.90),
     "pairs_ge_95_text": ("==", 0),
     "single_value_strings": ("==", 0),
     "dead_axis_values": ("==", 0),
@@ -148,8 +162,14 @@ def below_hero(htmlstr):
 
     Walks <section>/</section> with a depth counter -- the hero contains nested
     sections in some layout variants, so a regex for the next </section> finds
-    the wrong tag."""
-    m = re.search(r'<section class="hero', htmlstr)
+    the wrong tag.
+
+    Inner pages open with `page-hero` rather than `hero`; both are matched so
+    the same "everything below the masthead" region is compared on every page
+    type. Without the `page-` alternative this returned the whole inner page,
+    header and nav included, which are identical everywhere and would flatter
+    every score."""
+    m = re.search(r'<section class="(?:page-)?hero', htmlstr)
     if not m:
         return htmlstr
     i, depth = m.start(), 0
@@ -207,6 +227,62 @@ def pairwise(domains, get):
             vals.append(r)
             pairs.append((r, domains[i], domains[j]))
     return vals, sorted(pairs, reverse=True)
+
+
+# Inner page types, by URL segment. Compared like with like: a service page is
+# only ever scored against another site's service page.
+INNER_TYPES = ("services", "service-areas", "guides")
+
+
+def inner_pages(domain):
+    """One representative detail page per type, plus that type's index.
+
+    One per type, not all of them: every service page on a site shares a
+    renderer, so scoring all of them against all of them measures the content
+    pack over and over and drowns the structural signal we are after."""
+    out = {}
+    for kind in INNER_TYPES:
+        base = os.path.join(DIST, domain, kind)
+        if not os.path.isdir(base):
+            continue
+        idx = os.path.join(base, "index.html")
+        if os.path.isfile(idx):
+            out[f"{kind}/"] = idx
+        detail = sorted(p for p in glob.glob(os.path.join(base, "*", "index.html")))
+        if detail:
+            out[f"{kind}/*"] = detail[0]
+    return out
+
+
+def inner_dom_similarity(domains, sites):
+    """DOM similarity of inner pages, like-with-like across sites.
+
+    DOM only, deliberately. 8 of the 9 content packs are 99.4-100% identical
+    after the city swap, so inner-page *prose* similarity is a content fact no
+    renderer change can move -- gating it would be a permanently-red check that
+    everyone learns to bypass, which is the same reason text_max excludes pairs
+    sharing a pack. The DOM is the renderer's own surface, and it is what a
+    section-variant library actually moves.
+
+    Returns (per_type, all_values) where per_type maps a page type to its
+    pairwise ratios, so a regression can be traced to the page type that caused
+    it rather than just to "inner pages"."""
+    per_type, every = {}, []
+    have = {d: inner_pages(d) for d in domains}
+    kinds = sorted({k for v in have.values() for k in v})
+    for kind in kinds:
+        present = [d for d in domains if kind in have[d]]
+        if len(present) < 2:
+            continue
+        regions = {}
+        for d in present:
+            h = open(have[d][kind], encoding="utf-8").read()
+            regions[d] = dom_tokens(below_hero(h))
+        vals, _ = pairwise(present, lambda d: regions[d])
+        if vals:
+            per_type[kind] = vals
+            every += vals
+    return per_type, every
 
 
 def count_single_value_strings(domains, texts):
@@ -318,6 +394,9 @@ def main():
         "dead_axis_values": len(dead),
         "discarded_home_words": disc_words,
     }
+    inner_per_type, inner_all = inner_dom_similarity(domains, sites)
+    if inner_all:
+        res["inner_dom_median"] = statistics.median(inner_all)
     cfails, cdetail, ntheme = contrast_failures()
     ess = missing_essentials()
     npages, no_main, no_skip, calling_nobody = page_checks()
@@ -336,6 +415,14 @@ def main():
     print(f"  DOM   similarity  min {min(dvals):.1%}  median {res['dom_median']:.1%}  max {max(dvals):.1%}")
     print(f"  pairs >=95% text  {res['pairs_ge_95_text']} / {len(tvals)}")
     print()
+    if inner_all:
+        print(f"  INNER-PAGE DOM similarity  median {statistics.median(inner_all):.1%}"
+              f"  ({len(inner_all)} pairs over {len(inner_per_type)} page types)")
+        for kind in sorted(inner_per_type):
+            v = inner_per_type[kind]
+            print(f"    {kind:<16} median {statistics.median(v):.1%}"
+                  f"  min {min(v):.1%}  max {max(v):.1%}")
+        print()
     print("  most-alike pairs (text):")
     for r, a, b in tpairs[:5]:
         same = sites[a].get("content") == sites[b].get("content")
