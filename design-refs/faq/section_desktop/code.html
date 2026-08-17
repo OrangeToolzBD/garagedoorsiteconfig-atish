@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ServicePro FAQ Component Library</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#131b2e",
+                        "on-error": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "surface-container-low": "#eff4ff",
+                        "on-secondary-fixed-variant": "#004395",
+                        "outline-variant": "#c6c6cd",
+                        "surface-dim": "#cbdbf5",
+                        "secondary-fixed-dim": "#adc6ff",
+                        "on-primary-fixed": "#131b2e",
+                        "on-surface": "#0b1c30",
+                        "secondary-fixed": "#d8e2ff",
+                        "on-tertiary-container": "#818486",
+                        "on-error-container": "#93000a",
+                        "on-secondary-container": "#fefcff",
+                        "primary-fixed": "#dae2fd",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "primary": "#000000",
+                        "on-secondary-fixed": "#001a42",
+                        "tertiary-fixed-dim": "#c4c7c9",
+                        "error-container": "#ffdad6",
+                        "surface-tint": "#565e74",
+                        "primary-fixed-dim": "#bec6e0",
+                        "inverse-surface": "#213145",
+                        "on-primary-container": "#7c839b",
+                        "surface-variant": "#d3e4fe",
+                        "on-tertiary-fixed": "#191c1e",
+                        "on-secondary": "#ffffff",
+                        "on-background": "#0b1c30",
+                        "tertiary-fixed": "#e0e3e5",
+                        "surface-container-highest": "#d3e4fe",
+                        "inverse-primary": "#bec6e0",
+                        "tertiary-container": "#191c1e",
+                        "inverse-on-surface": "#eaf1ff",
+                        "surface-bright": "#f8f9ff",
+                        "surface-container": "#e5eeff",
+                        "background": "#f8f9ff",
+                        "secondary-container": "#2170e4",
+                        "outline": "#76777d",
+                        "on-surface-variant": "#45464d",
+                        "tertiary": "#000000",
+                        "surface-container-high": "#dce9ff",
+                        "error": "#ba1a1a",
+                        "on-tertiary": "#ffffff",
+                        "surface": "#f8f9ff",
+                        "secondary": "#0058be"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "container-max": "1180px",
+                        "gutter": "24px",
+                        "stack-lg": "32px",
+                        "stack-md": "16px",
+                        "unit": "8px",
+                        "margin-desktop": "48px",
+                        "section-padding": "120px",
+                        "stack-sm": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Epilogue"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Epilogue"],
+                        "label-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Epilogue"],
+                        "display-lg": ["Epilogue"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["30px", { "lineHeight": "38px", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-lg": ["44px", { "lineHeight": "52px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "display-lg": ["72px", { "lineHeight": "80px", "letterSpacing": "-0.02em", "fontWeight": "800" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Details/Summary Native Interactions */
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] summary ~ * { animation: sweep .3s ease-in-out; }
+        @keyframes sweep { 0%    {opacity: 0; margin-top: -10px} 100%  {opacity: 1; margin-top: 0px} }
+        
+        .faq-icon { transition: transform 0.3s ease; }
+        details[open] .faq-icon { transform: rotate(180deg); }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md antialiased selection:bg-surface-dim selection:text-primary">
+<!-- Top Navigation (Shell Context - Not strictly required for the library but good for framing) -->
+<header class="bg-surface dark:bg-on-background fixed top-0 w-full z-50 border-b border-outline-variant dark:border-on-tertiary-fixed-variant transition-colors duration-300">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop flex justify-between items-center h-20">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed cursor-pointer active:opacity-70 transition-opacity" data-icon="menu">menu</span>
+<span class="font-headline-md text-headline-md font-bold text-on-surface dark:text-surface-bright tracking-tight">ServicePro</span>
+</div>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="text-on-surface-variant dark:text-on-surface-variant font-label-md text-label-md hover:text-secondary dark:hover:text-secondary-fixed transition-colors duration-300" href="#">Services</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant font-label-md text-label-md hover:text-secondary dark:hover:text-secondary-fixed transition-colors duration-300" href="#">Portfolio</a>
+<a class="text-secondary dark:text-secondary-fixed font-bold font-label-md text-label-md cursor-default" href="#">FAQ Library</a>
+</nav>
+<button class="bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded-DEFAULT hover:bg-inverse-surface transition-colors">Book Now</button>
+</div>
+</header>
+<main class="pt-24 pb-section-padding">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop mb-16 text-center">
+<h1 class="font-display-lg text-display-lg text-primary mb-4">FAQ Component Library</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">A collection of premium, structural FAQ layouts for service-based websites.</p>
+</div>
+<!-- ==========================================
+             CONCEPT 1: THE ASYMMETRIC EDITORIAL
+             ========================================== -->
+<section class="py-section-padding border-t border-outline-variant bg-surface-container-lowest">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="mb-12 border-b border-outline-variant pb-4">
+<span class="font-label-md text-label-md text-secondary uppercase tracking-widest">Concept 01</span>
+<h2 class="font-headline-md text-headline-md text-primary mt-2">The Asymmetric Editorial</h2>
+</div>
+<!-- 1-Pair Version -->
+<div class="mb-24">
+<h3 class="font-label-md text-label-md text-on-surface-variant mb-8 uppercase tracking-wider">1-Pair Variation</h3>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<div class="md:col-span-5 md:pr-12 border-b md:border-b-0 md:border-r border-outline-variant pb-8 md:pb-0 mb-8 md:mb-0">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest block mb-4">Before you call</span>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary">Questions we get a lot</h2>
+</div>
+<div class="md:col-span-7 md:pl-8">
+<details class="group cursor-pointer border-b border-outline-variant last:border-0 pb-6" open="">
+<summary class="flex justify-between items-center font-headline-md text-[24px] leading-[32px] text-on-surface font-semibold pt-2">
+                                    Is replacing a spring a DIY job?
+                                    <span class="material-symbols-outlined faq-icon text-on-surface-variant">expand_more</span>
+</summary>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-4 pt-2 pr-12">No. Garage door springs are under extreme tension. Attempting a DIY replacement without proper tools and training can lead to serious injury or damage to the door system.</p>
+</details>
+</div>
+</div>
+</div>
+<!-- 4-Pair Version -->
+<div>
+<h3 class="font-label-md text-label-md text-on-surface-variant mb-8 uppercase tracking-wider">4-Pair Variation</h3>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<div class="md:col-span-5 md:pr-12 border-b md:border-b-0 md:border-r border-outline-variant pb-8 md:pb-0 mb-8 md:mb-0">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest block mb-4">Before you call</span>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary sticky top-32">Questions we get a lot</h2>
+</div>
+<div class="md:col-span-7 md:pl-8 flex flex-col gap-0">
+<details class="group cursor-pointer border-b border-outline-variant py-6" open="">
+<summary class="flex justify-between items-center font-headline-md text-[24px] leading-[32px] text-on-surface font-semibold">
+                                    Is replacing a spring a DIY job?
+                                    <span class="material-symbols-outlined faq-icon text-on-surface-variant">expand_more</span>
+</summary>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-4 pr-12">No. Garage door springs are under extreme tension. Attempting a DIY replacement without proper tools and training can lead to serious injury or damage to the door system.</p>
+</details>
+<details class="group cursor-pointer border-b border-outline-variant py-6">
+<summary class="flex justify-between items-center font-headline-md text-[24px] leading-[32px] text-on-surface font-semibold">
+                                    Why is my door making a grinding noise?
+                                    <span class="material-symbols-outlined faq-icon text-on-surface-variant">expand_more</span>
+</summary>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-4 pr-12">Grinding usually indicates worn rollers or lack of lubrication. If left unaddressed, this creates friction that can burn out your opener motor prematurely.</p>
+</details>
+<details class="group cursor-pointer border-b border-outline-variant py-6">
+<summary class="flex justify-between items-center font-headline-md text-[24px] leading-[32px] text-on-surface font-semibold">
+                                    Do you offer same-day repairs?
+                                    <span class="material-symbols-outlined faq-icon text-on-surface-variant">expand_more</span>
+</summary>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-4 pr-12">We stock our trucks with common high-cycle springs and hardware to ensure most repairs are completed in a single visit, often on the day you call.</p>
+</details>
+<details class="group cursor-pointer border-b border-outline-variant py-6">
+<summary class="flex justify-between items-center font-headline-md text-[24px] leading-[32px] text-on-surface font-semibold">
+                                    How often should I service my door?
+                                    <span class="material-symbols-outlined faq-icon text-on-surface-variant">expand_more</span>
+</summary>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-4 pr-12">We recommend a professional safety check and lubrication once a year to prevent major hardware failures and keep your warranty valid.</p>
+</details>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Component Execution -->
+<footer class="bg-surface-container-lowest dark:bg-tertiary-container border-t border-outline-variant dark:border-on-tertiary-fixed-variant transition-colors duration-300 w-full">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg flex flex-col md:flex-row justify-between items-center gap-stack-md">
+<span class="font-headline-md text-[20px] leading-[28px] font-bold text-on-background dark:text-surface-bright tracking-tight">ServicePro</span>
+<div class="flex gap-6 flex-wrap justify-center">
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-tertiary-container hover:text-primary dark:hover:text-primary-fixed transition-all transition-opacity duration-200" href="#">Services</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-tertiary-container hover:text-primary dark:hover:text-primary-fixed transition-all transition-opacity duration-200" href="#">Portfolio</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-tertiary-container hover:text-primary dark:hover:text-primary-fixed transition-all transition-opacity duration-200" href="#">Process</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-tertiary-container hover:text-primary dark:hover:text-primary-fixed transition-all transition-opacity duration-200" href="#">Contact</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-tertiary-container hover:text-primary dark:hover:text-primary-fixed transition-all transition-opacity duration-200" href="#">Privacy</a>
+</div>
+<span class="font-body-md text-sm text-on-surface-variant dark:text-on-tertiary-container">© 2024 ServicePro Architecture. All rights reserved.</span>
+</div>
+</footer>
+</body></html>
