@@ -52,6 +52,7 @@ TARGETS = {
     "dead_axis_values": ("==", 0),
     "discarded_home_words": ("==", 0),
     "contrast_failures": ("==", 0),
+    "cta_contrast_failures": ("==", 0),
     "pages_missing_main": ("==", 0),
     "pages_missing_skiplink": ("==", 0),
     "pages_calling_nobody": ("==", 0),
@@ -118,6 +119,49 @@ def contrast_failures():
                B._cratio(B._rgb(dk), B.BANNER_OVERLAY)) < 4.5:
             fails.setdefault("accent text on hero", []).append(s["theme"])
     return sum(len(v) for v in fails.values()), fails, len(sites)
+
+
+def cta_contrast_failures():
+    """Themes where the CTA band's own text fails AA on its own ground.
+
+    contrast_failures() above checks the accent-derived colours only, so the
+    filled CTA band -- white type on the --p/--pd gradient -- was never scored.
+    It should have been: `.cta-band p` shipped as rgba(255,255,255,.9), which
+    lands at 4.32:1 on the lightest primaries in themes.json.
+
+    Pure white on that same ground is 4.99:1. It passes, but the margin is thin
+    enough that fading this text again would reintroduce the failure.
+
+    So this reads the ALPHA ACTUALLY SHIPPED in the built stylesheet rather than
+    assuming white: a check that only proved "white would be fine" would have
+    stayed green through the very regression it exists to catch."""
+    import build_site as B
+    themes = json.load(open(os.path.join(CONFIG, "themes.json"), encoding="utf-8"))
+    sites = json.load(open(os.path.join(CONFIG, "sites.json"), encoding="utf-8"))["sites"]
+
+    # every white the CTA band paints text with, as an alpha in 0..1
+    alphas = {1.0}
+    for css in glob.glob(os.path.join(DIST, "*", "assets", "site.css"))[:1]:
+        sheet = open(css, encoding="utf-8").read()
+        for rule in re.finditer(r"\.(?:cta-band|ctab__[a-z]+)[^{}]*\{([^}]*)\}", sheet):
+            body = rule.group(1)
+            for m in re.finditer(r"color:\s*rgba\(255,\s*255,\s*255,\s*([\d.]+)\)", body):
+                alphas.add(float(m.group(1)))
+            if re.search(r"(?<!-)color:\s*#fff\b", body):
+                alphas.add(1.0)
+    worst = min(alphas)
+
+    def blend(a, ground):
+        return tuple(round(a * 255 + (1 - a) * c) for c in ground)
+
+    bad = {}
+    for s in sites:
+        t = themes[s["theme"]]
+        for key in ("p", "pd"):          # the gradient runs between the two
+            g = B._rgb(t[key])
+            if B._cratio(blend(worst, g), g) < 4.5:
+                bad.setdefault(f"white@{worst:g} on --{key}", []).append(s["theme"])
+    return sum(len(v) for v in bad.values()), bad
 
 
 def page_checks():
@@ -398,9 +442,11 @@ def main():
     if inner_all:
         res["inner_dom_median"] = statistics.median(inner_all)
     cfails, cdetail, ntheme = contrast_failures()
+    ctafails, ctadetail = cta_contrast_failures()
     ess = missing_essentials()
     npages, no_main, no_skip, calling_nobody = page_checks()
-    res.update({"contrast_failures": cfails, "pages_missing_main": no_main,
+    res.update({"contrast_failures": cfails,
+                "cta_contrast_failures": ctafails, "pages_missing_main": no_main,
                 "pages_missing_skiplink": no_skip, "pages_calling_nobody": calling_nobody,
                 "sites_missing_essentials": len(ess)})
 
@@ -445,6 +491,7 @@ def main():
     print(f"  homepage words discarded by the renderer: {disc_words}  {disc_per}")
     print()
     print(f"  contrast (WCAG AA) over {ntheme} in-use themes: {cfails} failures")
+    print(f"  CTA-band text on its own gradient: {ctafails} failures  {ctadetail if ctafails else ''}")
     for k, v in sorted(cdetail.items()):
         print(f"    {k}: {len(v)}")
     print(f"  landmarks: {npages - no_main}/{npages} have <main>, "

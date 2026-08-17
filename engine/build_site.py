@@ -786,8 +786,60 @@ table{width:100%;border-collapse:collapse}
 /* cta band */
 .cta-band{background:linear-gradient(135deg,var(--p),var(--pd));color:#fff;border-radius:24px;padding:52px;text-align:center;box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
 .cta-band h2{color:#fff;margin:0 0 10px}
-.cta-band p{color:rgba(255,255,255,.9);max-width:52ch;margin:0 auto 26px}
+/* solid white, not rgba(...,.9): the band's ground is the --p/--pd gradient,
+   and on the lightest primaries in themes.json a 90% white lands at 4.32:1 --
+   below AA. Pure white is 4.99:1 on that same ground, which passes but leaves
+   little headroom, so nothing here should be faded again without re-running
+   the cta_contrast_failures check. */
+.cta-band p{color:#fff;max-width:52ch;margin:0 auto 26px}
 .cta-band .cta{display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
+/* ---- CTA band variants ----------------------------------------------------
+   The base above is the filled gradient card ("panel") and is left alone: the
+   porta-potty templates in this file render it directly. Everything below is a
+   modifier. Variants that drop the fill must also drop the white text the base
+   sets, or they paint white on white. */
+.ctab--bar,.ctab--card,.ctab--editorial{background:none;box-shadow:none;
+  color:var(--ink);text-align:left;padding:0}
+.ctab--bar h2,.ctab--card h2,.ctab--editorial h2{color:var(--ink)}
+.ctab--bar p,.ctab--card p,.ctab--editorial p{color:var(--muted)}
+.ctab--bar .cta,.ctab--editorial .cta{justify-content:flex-start}
+
+/* bar -- copy and actions on one baseline, hairline top and bottom */
+.ctab--bar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:22px 40px;
+  align-items:center;border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);padding:30px 0}
+.ctab__b h2{margin:0 0 6px;font-size:clamp(1.25rem,2vw,1.6rem);line-height:1.2}
+.ctab__b p{margin:0;max-width:56ch}
+
+/* card -- a quiet bordered card rather than a filled one */
+.ctab--card{border:1px solid var(--line);background:var(--card);
+  border-radius:var(--radius);padding:40px;text-align:center}
+.ctab--card .cta{justify-content:center}
+.ctab--card h2{margin:0 0 10px;font-size:clamp(1.3rem,2.2vw,1.75rem)}
+.ctab--card p{margin:0 auto 24px;max-width:52ch}
+.ctab__k{margin:0 0 12px;font-family:var(--disp);font-weight:700;font-size:.76rem;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--accent-lt)}
+
+/* editorial -- heading leads, the lead line demoted beneath a rule */
+.ctab--editorial{display:grid;grid-template-columns:minmax(0,1fr) auto;
+  gap:20px 48px;align-items:start}
+.ctab--editorial h2{grid-column:1;margin:0;
+  font-size:clamp(1.6rem,3.1vw,2.45rem);line-height:1.08;letter-spacing:-.02em}
+.ctab--editorial .cta{grid-column:2;grid-row:1/3;flex-direction:column;
+  align-items:stretch}
+.ctab__lead{grid-column:1;display:flex;gap:14px;margin:0;max-width:54ch}
+.ctab__rule{flex:0 0 3px;width:3px;background:var(--accent);border-radius:2px}
+
+/* strip -- compact single row, the place named inline */
+.ctab--strip{display:flex;flex-wrap:wrap;align-items:center;gap:10px 20px;
+  padding:22px 28px;border-radius:var(--radius);text-align:left}
+.ctab--strip h2{margin:0;font-size:clamp(1.05rem,1.6vw,1.3rem);line-height:1.25}
+.ctab--strip p{margin:0;max-width:44ch;font-size:.95rem}
+.ctab--strip .cta{margin-left:auto;gap:12px}
+.ctab__where{display:inline-flex;align-items:center;font-family:var(--disp);
+  font-weight:700;font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;
+  color:#fff;padding-right:16px;
+  border-right:1px solid rgba(255,255,255,.38)}
 /* footer */
 footer.site{background:#0f151b;color:#aeb9c5;padding:60px 0 26px;margin-top:0}
 footer.site .cols{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.3fr;gap:34px;padding-bottom:34px;border-bottom:1px solid rgba(255,255,255,.1)}
@@ -961,6 +1013,17 @@ footer.site a.btn--ghost,footer.site a.btn--ghost:hover{color:#fff}
   .cta-band{padding:34px 20px}
   .hero h1{font-size:2rem}
   .hero .cta .btn,.cta-band .cta .btn{width:100%;justify-content:center}
+  /* every side-by-side CTA variant unwinds to one column here. .ctab--bar and
+     .ctab--editorial are two-column grids and .ctab--strip pushes its actions
+     with margin-left:auto -- all three would otherwise squeeze the buttons
+     into a sliver beside the copy. */
+  .ctab--bar,.ctab--editorial{grid-template-columns:1fr;gap:18px}
+  .ctab--editorial h2,.ctab--editorial .cta,.ctab__lead{grid-column:1}
+  .ctab--editorial .cta{grid-row:auto}
+  .ctab--strip{flex-direction:column;align-items:stretch;padding:24px 20px}
+  .ctab--strip .cta{margin-left:0}
+  .ctab__where{border-right:0;padding-right:0}
+  .ctab--card{padding:28px 20px}
   .brand small{display:none}
   footer.site .cols{grid-template-columns:1fr}
   footer.site.ft--split .ft-links{grid-template-columns:1fr}

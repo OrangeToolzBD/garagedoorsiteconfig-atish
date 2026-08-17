@@ -1885,7 +1885,11 @@ def call_btn(t, cls="btn btn--primary", fallback_label="Get a Free Quote"):
     if t.get("phone"):
         return (f'<a class="{cls}" href="tel:{t["tel"]}">{icon("phone")}'
                 f'Call {esc(t["phone"])}</a>')
-    return f'<a class="{cls}" href="/request-a-quote/">{icon("phone")}{fallback_label}</a>'
+    # 998 of 1001 sites have no number, and this branch was still drawing the
+    # phone glyph -- a handset on a button that opens a quote form, promising a
+    # call that cannot happen. Same defect class as the "Call" prose the gate
+    # already checks for, one layer down in the iconography.
+    return f'<a class="{cls}" href="/request-a-quote/">{icon("arrow")}{fallback_label}</a>'
 
 def reach_phrase(t):
     """"one call away" only if there is actually a number to call."""
@@ -2564,6 +2568,21 @@ def areas_band(t, pages):
             f'<p>{_city(blurb, t)}</p></div>'
             f'<div class="areas">{chips}<a class="areas__all" href="/service-areas/">View all areas {icon("arrow")}</a></div></div></section>')
 
+# ---- CTA BAND: the closing strip, on 100% of inner pages -------------------
+# Adapted from the client's CTA concept set. This was the single most repeated
+# block in the output: one structure on every page of every site, ~9% of an
+# inner page's DOM.
+#
+# The variants differ in ELEMENT STRUCTURE, not just a modifier class. The gate
+# scores DOM as a tag.class sequence, so five layouts sharing one skeleton and
+# differing by a wrapper class would move similarity by a single token and buy
+# nothing -- the whole point of the exercise.
+#
+# Append-only, like BUTTON_STYLES: selection is digest % len(), so inserting or
+# reordering re-rolls nearly every domain.
+CTA_VARIANTS = ["panel", "bar", "card", "editorial", "strip"]
+
+
 def cta_band(t, heading=None):
     ch, with_phone, without_phone = copy_deck(t, "cta")
     # heading is raw here -- the caller may pass one, and it is esc()'d below,
@@ -2573,10 +2592,29 @@ def cta_band(t, heading=None):
     second = ('<a class="btn btn--ghost" href="/request-a-quote/">Request a Quote</a>'
               if t.get("phone") else
               '<a class="btn btn--ghost" href="/services/">See Our Services</a>')
-    return (f'<section class="sec"><div class="wrap"><div class="cta-band"><h2>{esc(heading)}</h2>'
-            f'<p>{lead}</p>'
-            f'<div class="cta">{call_btn(t, "btn btn--primary", "Request a Quote")}'
-            f'{second}</div></div></div></section>')
+    cta = (f'<div class="cta">{call_btn(t, "btn btn--primary", "Request a Quote")}'
+           f'{second}</div>')
+    h2, p = f'<h2>{esc(heading)}</h2>', f'<p>{lead}</p>'
+    v = CTA_VARIANTS[_hash_idx(f'{t["domain"]}|ctaband', len(CTA_VARIANTS))]
+
+    if v == "bar":                      # copy left, actions right, one baseline
+        inner = f'<div class="ctab__b">{h2}{p}</div>{cta}'
+    elif v == "card":                   # quiet card, kicker above the heading
+        inner = (f'<p class="ctab__k">{_city("Next step", t)}</p>{h2}{p}{cta}')
+    elif v == "editorial":              # heading leads, lead demoted under a rule
+        inner = (f'{h2}{cta}<p class="ctab__lead">'
+                 f'<span class="ctab__rule"></span>{lead}</p>')
+    elif v == "strip":                  # compact single row, place named inline
+        inner = (f'<span class="ctab__where">{esc(t["city"])}, {esc(t["st"])}</span>'
+                 f'{h2}{p}{cta}')
+    else:                               # panel -- the original filled card
+        inner = f'{h2}{p}{cta}'
+
+    mod = "" if v == "panel" else f" ctab--{v}"
+    # `cta-band` stays on every variant: the gate looks for it to prove the
+    # section exists at all, and build_site.py's mobile rules key off it.
+    return (f'<section class="sec"><div class="wrap">'
+            f'<div class="cta-band{mod}">{inner}</div></div></section>')
 
 def home_faqs(t):
     """Fallback FAQ when the content pack supplies none.
