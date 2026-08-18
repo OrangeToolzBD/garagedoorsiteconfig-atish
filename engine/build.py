@@ -437,7 +437,7 @@ GD_CSS = """
 .areas__all:hover svg{transform:translateX(3px);transition:transform .2s}
 
 /* Footer — CTA strip + columns + trust row + legal */
-.gfooter{background:#0e141b;color:#aeb9c5;margin-top:0}
+.gfooter{background:var(--ft-bg);color:var(--ft-tx);margin-top:0}
 .gf-cta{background:linear-gradient(135deg,var(--p),var(--pd))}
 .gf-cta__in{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:34px 0}
 .gf-cta h3{color:#fff;margin:0;font-size:clamp(1.3rem,2.5vw,1.75rem);font-family:var(--disp)}
@@ -448,19 +448,19 @@ GD_CSS = """
 .gf-main{padding:56px 0 24px}
 .gf-cols{display:grid;grid-template-columns:1.7fr 1fr 1fr 1.25fr;gap:34px;padding-bottom:32px;border-bottom:1px solid rgba(255,255,255,.1)}
 .gf-cols h4{color:#fff;font-size:.82rem;letter-spacing:.09em;text-transform:uppercase;margin:0 0 14px}
-.gf-cols a{color:#b9c3ce;display:block;padding:5px 0;font-size:.94rem;text-decoration:none}
+.gf-cols a{color:var(--ft-tx);display:block;padding:5px 0;font-size:.94rem;text-decoration:none}
 .gf-cols a:hover{color:#fff}
 .gf-logo{display:flex;align-items:center;gap:11px;color:#fff;font-family:var(--disp);font-weight:800;font-size:1.2rem;margin-bottom:14px;text-decoration:none}
 .gf-mark{width:42px;height:42px;border-radius:11px;background:#fff;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
 .gf-logo-img{height:128px;width:auto;max-width:320px;display:block}
-.gf-brand p{font-size:.95rem;max-width:34ch;line-height:1.6;color:#9aa6b2;margin:0}
-.gf-addr{font-style:normal;line-height:1.7;font-size:.94rem;margin-top:12px;color:#9aa6b2}
+.gf-brand p{font-size:.95rem;max-width:34ch;line-height:1.6;color:var(--ft-dim);margin:0}
+.gf-addr{font-style:normal;line-height:1.7;font-size:.94rem;margin-top:12px;color:var(--ft-dim)}
 .gf-addr a{color:#fff;font-weight:700;text-decoration:none}
 .gf-trust{display:flex;flex-wrap:wrap;gap:14px 30px;padding:22px 0;border-bottom:1px solid rgba(255,255,255,.1)}
-.gf-trust div{display:flex;align-items:center;gap:10px;font-size:.9rem;color:#c9d2dc}
+.gf-trust div{display:flex;align-items:center;gap:10px;font-size:.9rem;color:var(--ft-dim)}
 .gf-trust svg{width:20px;height:20px;color:var(--accent-dk);flex:0 0 auto}
-.gf-legal{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;padding-top:20px;font-size:.85rem;color:#7d8894}
-.gf-legal a{color:#aeb9c5;text-decoration:none}
+.gf-legal{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;padding-top:20px;font-size:.85rem;color:var(--ft-faint)}
+.gf-legal a{color:var(--ft-tx);text-decoration:none}
 
 /* ---- footer variants -------------------------------------------------------
    config/layouts.json has assigned every one of the 1001 sites one of six
@@ -482,7 +482,7 @@ GD_CSS = """
 .gfooter.gf--light .gf-addr a{color:var(--p)}
 .gfooter.gf--light .gf-mark{background:var(--p)}
 .gfooter.gf--light .gf-cols,.gfooter.gf--light .gf-trust{border-bottom-color:var(--line)}
-.gfooter.gf--light .gf-legal{color:#6b7682}
+.gfooter.gf--light .gf-legal{color:var(--muted)}
 .gfooter.gf--light .gf-legal a{color:var(--p)}
 /* center: no columns at all -- the link lists flatten into one inline row */
 .gfooter.gf--center{text-align:center;border-top:4px solid var(--accent)}

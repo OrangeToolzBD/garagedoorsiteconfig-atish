@@ -447,6 +447,40 @@ def best_label(accent):
     w, k = _cratio((255, 255, 255), _rgb(accent)), _cratio(_rgb(INK), _rgb(accent))
     return ("#ffffff", w) if w >= k else (INK, k)
 
+FOOTER_FLOOR = (14, 20, 27)          # #0e141b -- the old fixed footer ground
+
+
+def footer_ramp(pd):
+    """Per-theme footer ground and text ramp.
+
+    The footer shipped one hardcoded scale -- a #0e141b ground with #aeb9c5,
+    #b9c3ce, #9aa6b2, #c9d2dc and #7d8894 over it -- so all 1001 sites rendered
+    an identical near-black footer whatever their palette was. It is a third of
+    every inner page, which made it the single largest piece of sameness in the
+    output.
+
+    The ground is now the theme's own dark tone mixed halfway to that old
+    near-black. Mixing rather than using --pd raw keeps two properties: the
+    result is never lighter than the lighter of the two inputs, so a pale
+    primary cannot produce a washed-out footer, and it still carries the site's
+    hue, so two themes are visibly different.
+
+    The ramp is then lightened OUT of that ground, so every step keeps the hue
+    and each one is measured against its own ground rather than assumed."""
+    g = tuple(round(0.45 * a + 0.55 * b) for a, b in zip(_rgb(pd), FOOTER_FLOOR))
+
+    def step(target):
+        c = list(g)
+        for _ in range(40):
+            q = tuple(max(0, min(255, int(round(v)))) for v in c)
+            if _cratio(q, g) >= target:
+                return _hex(q)
+            c = [v + (255 - v) * .06 for v in c]
+        return _hex(c)
+
+    return {"bg": _hex(g), "tx": step(8.0), "dim": step(5.5), "faint": step(4.5)}
+
+
 def accent_button(accent):
     """(fill, label) for a filled accent button whose label clears WCAG AA.
 
@@ -493,7 +527,10 @@ def css(t):
     btnr = {"pill": "999px", "round": "12px", "sharp": "3px"}.get(shape, "999px")
     cardr = {"pill": "16px", "round": "14px", "sharp": "4px"}.get(shape, "16px")
     fill, label = accent_button(t["accent"])
+    ft = footer_ramp(t["pd"])
     return CSS_TMPL.replace("__P__", t["p"]).replace("__PD__", t["pd"]) \
+        .replace("__FTBG__", ft["bg"]).replace("__FTTX__", ft["tx"]) \
+        .replace("__FTDIM__", ft["dim"]).replace("__FTFAINT__", ft["faint"]) \
         .replace("__ACCENT__", fill).replace("__ONACCENT__", label) \
         .replace("__ACCENTLT__", accent_on_light(t["accent"])) \
         .replace("__ACCENTDK__", accent_on_dark(t["accent"], t["pd"])) \
@@ -509,6 +546,8 @@ CSS_TMPL = """
   --accent-dk:__ACCENTDK__;--accent-lt:__ACCENTLT__;
   --ink:#182029;--muted:#5c6773;--bg:#ffffff;--soft:#f5f7f9;--soft2:#eef2f6;
   --line:#e3e8ee;--card:#ffffff;--radius:__CARDR__;--btn-r:__BTNR__;--maxw:1180px;
+  /* footer ramp, derived per theme from --pd -- see footer_ramp() */
+  --ft-bg:__FTBG__;--ft-tx:__FTTX__;--ft-dim:__FTDIM__;--ft-faint:__FTFAINT__;
   --shadow:0 1px 2px rgba(16,32,48,.05),0 8px 24px rgba(16,32,48,.06);
   --shadow-lg:0 12px 40px rgba(16,32,48,.14);
   --disp:'__DISPLAY__',system-ui,sans-serif;--body:'__BODY__',system-ui,sans-serif;

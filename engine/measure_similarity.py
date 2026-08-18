@@ -53,6 +53,7 @@ TARGETS = {
     "discarded_home_words": ("==", 0),
     "contrast_failures": ("==", 0),
     "cta_contrast_failures": ("==", 0),
+    "footer_contrast_failures": ("==", 0),
     "pages_missing_main": ("==", 0),
     "pages_missing_skiplink": ("==", 0),
     "pages_calling_nobody": ("==", 0),
@@ -165,6 +166,33 @@ def cta_contrast_failures():
             g = B._rgb(t[key])
             if B._cratio(blend(worst, g), g) < 4.5:
                 bad.setdefault(f"white@{worst:g} on --{key}", []).append(s["theme"])
+    return sum(len(v) for v in bad.values()), bad
+
+
+def footer_contrast_failures():
+    """Themes whose derived footer ramp fails AA on its own ground.
+
+    The footer used to be a fixed #0e141b with a fixed grey scale over it, so
+    contrast was a constant and nobody had to check it. It is now derived per
+    theme by footer_ramp(), which means 1001 separate grounds and 1001 separate
+    ramps -- exactly the situation that produced the 410-theme button-label
+    failure and the 154-theme CTA-paragraph failure before it.
+
+    Each step is measured against the ground it is actually painted on, not
+    against white or a nominal background."""
+    import build_site as B
+    themes = json.load(open(os.path.join(CONFIG, "themes.json"), encoding="utf-8"))
+    sites = json.load(open(os.path.join(CONFIG, "sites.json"), encoding="utf-8"))["sites"]
+    bad = {}
+    for s in sites:
+        ramp = B.footer_ramp(themes[s["theme"]]["pd"])
+        ground = B._rgb(ramp["bg"])
+        # headings and the logo stay solid white on this ground
+        checks = [("--ft-tx", B._rgb(ramp["tx"])), ("--ft-dim", B._rgb(ramp["dim"])),
+                  ("--ft-faint", B._rgb(ramp["faint"])), ("white", (255, 255, 255))]
+        for name, col in checks:
+            if B._cratio(col, ground) < 4.5:
+                bad.setdefault(f"{name} on --ft-bg", []).append(s["theme"])
     return sum(len(v) for v in bad.values()), bad
 
 
@@ -447,10 +475,12 @@ def main():
         res["inner_dom_median"] = statistics.median(inner_all)
     cfails, cdetail, ntheme = contrast_failures()
     ctafails, ctadetail = cta_contrast_failures()
+    ftfails, ftdetail = footer_contrast_failures()
     ess = missing_essentials()
     npages, no_main, no_skip, calling_nobody = page_checks()
     res.update({"contrast_failures": cfails,
-                "cta_contrast_failures": ctafails, "pages_missing_main": no_main,
+                "cta_contrast_failures": ctafails,
+                "footer_contrast_failures": ftfails, "pages_missing_main": no_main,
                 "pages_missing_skiplink": no_skip, "pages_calling_nobody": calling_nobody,
                 "sites_missing_essentials": len(ess)})
 
@@ -496,6 +526,7 @@ def main():
     print()
     print(f"  contrast (WCAG AA) over {ntheme} in-use themes: {cfails} failures")
     print(f"  CTA-band text on its own gradient: {ctafails} failures  {ctadetail if ctafails else ''}")
+    print(f"  Footer ramp on its own ground: {ftfails} failures  {ftdetail if ftfails else ''}")
     for k, v in sorted(cdetail.items()):
         print(f"    {k}: {len(v)}")
     print(f"  landmarks: {npages - no_main}/{npages} have <main>, "
