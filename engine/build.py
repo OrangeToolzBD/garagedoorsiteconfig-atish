@@ -2091,7 +2091,8 @@ def area_label(p):
 #
 # Append-only -- selection is digest % len().
 HERO_VARIANTS = ["banner", "center", "overlap", "split-left", "split-right",
-                 "stacked", "overhang", "twotone", "inset"]
+                 "stacked", "overhang", "twotone", "inset",
+                 "masthead", "plate"]
 
 
 def hero(t, h1, lead, img=HERO_IMG):
@@ -2141,6 +2142,21 @@ def hero(t, h1, lead, img=HERO_IMG):
                 f'<div class="cta">{call}{quote}</div></div>'
                 f'<div class="hero__shot"><img src="{src}" alt="{alt}" fetchpriority="high"></div>'
                 f'{chips}</div></section>')
+    if variant == "masthead":
+        # No photograph at all. Every other hero leads with the image, and the
+        # imagery is ordinary stock that differs on all 1001 sites -- these two
+        # are the only compositions that do not bet the first impression on it.
+        return (f'<section class="hero hero--masthead"><div class="wrap">'
+                f'<div class="hero__mast">{eyebrow}<h1>{esc(h1)}</h1>{leadh}'
+                f'<div class="cta">{call}{quote}</div></div>'
+                f'<div class="hero__band">{chips}</div></div></section>')
+    if variant == "plate":
+        # No photograph. The eyebrow rides the top rule of the frame and the
+        # chips ride the bottom one.
+        return (f'<section class="hero hero--plate"><div class="wrap">'
+                f'<div class="hero__plate">{eyebrow}<h1>{esc(h1)}</h1>{leadh}'
+                f'<div class="cta">{call}{quote}</div>{chips}</div>'
+                f'</div></section>')
     if variant == "inset":
         # everything inside one ruled frame: label and lead above a photo band,
         # the h1 and actions below it

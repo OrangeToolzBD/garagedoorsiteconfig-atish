@@ -674,6 +674,46 @@ nav.main>a:hover,.nav-item>button:hover{background:var(--soft);text-decoration:n
 .hero--inset .lead{color:var(--muted);margin:0}
 .hero--inset .chips{margin:0}
 .hero--inset .chips li{color:var(--ink)}
+/* ---- masthead (09) -- no photograph. Oversized h1 on the site's dark brand
+   ground, chips on a ruled band beneath. --pd rather than a literal, so it
+   takes each site's own dark tone; white on --pd is already gate-checked by
+   cta_contrast_failures. */
+.hero--masthead{background:var(--pd);padding:0;min-height:0}
+.hero--masthead .wrap{padding:58px 34px 30px}
+.hero--masthead .hero__mast{max-width:58ch}
+.hero--masthead h1{color:#fff;margin:0 0 18px;
+  font-size:clamp(2rem,4.4vw,3.6rem);line-height:1.05;letter-spacing:-.02em}
+.hero--masthead .eyebrow{color:var(--accent-dk)}
+.hero--masthead .lead{color:rgba(255,255,255,.86);max-width:52ch;margin:0 0 28px}
+.hero--masthead .hero__band{margin-top:32px;padding-top:20px;
+  border-top:1px solid rgba(255,255,255,.22)}
+.hero--masthead .chips{display:flex;flex-wrap:wrap;gap:12px 34px;margin:0}
+.hero--masthead .chips li{color:rgba(255,255,255,.9);font-size:.82rem;
+  letter-spacing:.06em;text-transform:uppercase}
+.hero--masthead .chips svg{color:var(--accent-dk)}
+
+/* ---- plate (10) -- no photograph. A hairline frame with the eyebrow riding
+   its top rule and the chips riding the bottom one.
+   Both need a background that matches the ground to punch the rule, and both
+   need scoping: `.hero .eyebrow` already exists at (0,2,0), so an unscoped
+   `.hero__plate .eyebrow` would not reliably win. */
+.hero--plate{background:var(--bg);padding:40px 0 44px;min-height:0}
+.hero--plate .wrap{padding:0 24px}
+.hero--plate .hero__plate{position:relative;border:2px solid var(--ink);
+  border-radius:calc(var(--radius) + 4px);padding:52px 40px 46px;
+  text-align:center;display:grid;justify-items:center}
+.hero--plate .hero__plate .eyebrow{position:absolute;top:0;left:50%;
+  transform:translate(-50%,-50%);margin:0;padding:0 16px;background:var(--bg);
+  color:var(--muted);white-space:nowrap}
+.hero--plate h1{color:var(--ink);margin:0 0 16px;max-width:20ch;
+  font-size:clamp(1.7rem,3.4vw,2.8rem);line-height:1.1}
+.hero--plate .lead{color:var(--muted);max-width:56ch;margin:0 0 28px}
+.hero--plate .cta{justify-content:center;margin:0}
+.hero--plate .chips{position:absolute;bottom:0;left:50%;
+  transform:translate(-50%,50%);background:var(--bg);padding:0 18px;margin:0;
+  display:flex;flex-wrap:nowrap;gap:0 26px;white-space:nowrap}
+.hero--plate .chips li{color:var(--muted);font-size:.78rem;letter-spacing:.06em;
+  text-transform:uppercase}
 .hero--stacked .wrap{position:relative;padding:66px 24px 0;text-align:center}
 .hero--stacked .hero__copy{max-width:760px;margin:0 auto}
 .hero--stacked .lead{margin:0 auto 26px}
@@ -1196,6 +1236,15 @@ footer.site a.btn--ghost,footer.site a.btn--ghost:hover{color:#fff}
   .hero--inset .hero__foot{grid-template-columns:1fr;gap:14px}
   .hero--inset .hero__foot .cta{grid-column:1}
   .hero--inset .hero__strip img{aspect-ratio:16/9;max-height:none}
+  .hero--masthead .wrap{padding:40px 20px 26px}
+  .hero--masthead .chips{gap:10px 20px}
+  .hero--masthead .chips li{font-size:.76rem}
+  /* the chips ride the bottom rule on desktop; at 390px four uppercase labels
+     cannot sit on one line, so they come inside the plate and wrap normally */
+  .hero--plate .hero__plate{padding:44px 20px 30px}
+  .hero--plate .chips{position:static;transform:none;background:none;padding:0;
+    margin:26px 0 0;flex-wrap:wrap;white-space:normal;justify-content:center;
+    gap:8px 18px}
   .trust .wrap{grid-template-columns:repeat(2,1fr);gap:16px}
   .g4{grid-template-columns:repeat(2,1fr)}
   .g3,.steps{grid-template-columns:1fr}
