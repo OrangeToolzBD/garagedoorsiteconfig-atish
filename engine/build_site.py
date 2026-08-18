@@ -1023,7 +1023,16 @@ footer.site a.btn--ghost,footer.site a.btn--ghost:hover{color:#fff}
 @keyframes aDrop{from{transform:translateY(-14px);opacity:0}to{transform:none;opacity:1}}
 /* responsive */
 @media(max-width:1120px){
-  nav.main{display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;padding:12px;gap:2px;box-shadow:var(--shadow-lg);max-height:calc(100vh - 70px);overflow-y:auto}
+  nav.main{display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;padding:12px;gap:2px;box-shadow:var(--shadow-lg);max-height:calc(100vh - 70px);max-height:calc(100dvh - 70px - env(safe-area-inset-bottom,0px));padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+  /* The drawer used to cap at calc(100vh - 70px). On iOS Safari 100vh is the
+     LARGE viewport -- it excludes the dynamic toolbar and the home indicator --
+     so the bottom of an open menu sat under browser chrome and could not be
+     tapped at all. The menu looked fine and simply did not respond, which is
+     exactly how it was reported. 100dvh tracks the visible viewport and the
+     safe-area inset keeps the last row clear of the home indicator; the 100vh
+     line above stays as the fallback for engines without dvh.
+     overscroll-behavior:contain stops a scroll at the drawer's end from
+     chaining to the page behind it. */
   nav.main.open{display:flex}
   /* pill-nav variant: reset the desktop pill so the mobile panel isn't a giant ellipse */
   .lay-nav-pill nav.main{border-radius:0;padding:12px;gap:2px;background:#fff}
