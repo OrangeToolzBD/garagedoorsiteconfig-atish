@@ -2012,6 +2012,19 @@ def call_bar(t, is_quote=False):
     return (f'<div class="callbar callbar--{variant}" role="region" '
             f'aria-label="Contact {esc(t["brand"])}">{call}{second}</div>')
 
+# The footer axis in layouts.json mapped 1:1 onto the six layout families, so
+# the footer never varied independently of hero/nav/cards and ~167 sites shared
+# each one. It now has its own per-domain digest, matching every other section.
+#
+# The layouts.json `footer` field is left in place: it feeds nothing now, but
+# removing it would renumber the other axes in that file. Note the field itself
+# was dead for far longer -- build.py never read it at all until recently, so
+# all 1000 sites shipped the same dark footer.
+#
+# Append-only: selection is digest % len().
+FOOTER_VARIANTS = ["dark", "light", "brand", "center", "split", "cta"]
+
+
 def footer(t, pages, is_quote=False):
     svc = [p for u, p in pages.items() if p["cat"] == "service"][:5]
     areas = [p for u, p in pages.items() if p["cat"] == "area"][:8]
@@ -2045,9 +2058,7 @@ def footer(t, pages, is_quote=False):
     legal = (f'<div class="gf-legal"><span>&copy; {date.today().year} {esc(t["brand"])}. All rights reserved.</span>'
              f'<span>{addr}{legal_tel}</span></div>')
     js = '<script src="/assets/nav.js" defer></script>'
-    # layout.footer has been assigned per site in layouts.json all along and was
-    # simply never read here
-    variant = t.get("layout", {}).get("footer", "dark")
+    variant = FOOTER_VARIANTS[_hash_idx(f'{t["domain"]}|footer', len(FOOTER_VARIANTS))]
     strip = footer_cta(t) if variant == "cta" else ""
     # </main> closes here rather than in each of the four page renderers -- they
     # all compose as header(...) + body + footer(...), so opening the landmark in
