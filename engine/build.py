@@ -3607,17 +3607,85 @@ def article_layout(t):
     """Prose/sidebar arrangement for inner and trust pages."""
     return ARTICLE_LAYOUTS[_hash_idx(f'{t["domain"]}|article', len(ARTICLE_LAYOUTS))]
 
-def quote_card(t):
-    """Sidebar quote card, shared by inner and trust pages.
+# The sidebar was one centred card on every interior page of all 1001 sites.
+# APPEND-ONLY: selection is digest % len, so inserting re-rolls every domain.
+ASIDE_VARIANTS = ["card", "dark", "toc", "reasons", "stack"]
 
-    Was two near-identical hardcoded blocks, so every inner page on every site
-    carried the same three lines."""
+
+def quote_card(t, pages=None, headings=None):
+    """The interior-page sidebar column.
+
+    Every variant keeps the quote card. Two of the source designs dropped it
+    for a single other module, but it is the sidebar's only conversion path on
+    a lead-generation site, and removing it from a fifth of the estate is not a
+    rendering decision. The variants add a module around it instead.
+
+    `toc` needs at least three article headings and `stack` at least three area
+    pages; both fall back to the plain card rather than rendering a stub."""
     head, sub, second_label, second_href = copy_deck(t, "qcard")
-    return (f'<aside class="aside"><div class="qcard">{icon("phone")}<h3>{_city(head, t)}</h3>'
-            f'<p>{_city(sub, t)}</p>'
-            f'{tel_link(t, "tel")}'
-            f'<a class="btn btn--primary" href="/request-a-quote/">Request a Quote</a>'
-            f'<a class="btn btn--outline" href="{second_href}">{second_label}</a></div></aside>')
+    v = ASIDE_VARIANTS[_hash_idx(f'{t["domain"]}|aside', len(ASIDE_VARIANTS))]
+
+    # five, not six. The column is sticky: taller than the viewport and it
+    # pins with its lower half below the fold, where the quote button then
+    # stays for the whole scroll. toc puts the list above the card, so the
+    # list is what has to give.
+    heads = [h for h in (headings or []) if h[0] and h[1]][:5]
+    areas = [a for a in (areas_for(pages) if pages else [])][:6]
+    if v == "toc" and len(heads) < 3:
+        v = "card"
+    if v == "stack" and len(areas) < 3:
+        v = "card"
+
+    tel = tel_link(t, "tel")
+    cta = ('<a class="btn btn--primary" href="/request-a-quote/">Request a Quote</a>'
+           f'<a class="btn btn--outline" href="{second_href}">{second_label}</a>')
+
+    if v == "dark":
+        # icon and heading share a row, so the card reads as a banner rather
+        # than the centred stack every other site shows
+        card = (f'<div class="qcard qcard--dark"><div class="qc__top">{icon("phone")}'
+                f'<h3>{_city(head, t)}</h3></div><p>{_city(sub, t)}</p>{tel}{cta}</div>')
+    else:
+        card = (f'<div class="qcard">{icon("phone")}<h3>{_city(head, t)}</h3>'
+                f'<p>{_city(sub, t)}</p>{tel}{cta}</div>')
+
+    extra = ""
+    if v == "toc":
+        items = "".join(f'<li><a href="#{hid}">{esc(txt)}</a></li>' for hid, txt in heads)
+        extra = (f'<nav class="as-toc" aria-label="On this page">'
+                 f'<p class="as-toc__h">On this page</p><ol>{items}</ol></nav>')
+    elif v == "reasons":
+        # the third deck variant: the trust bar takes the first and the footer
+        # the second, so a page never states the same four claims twice
+        decks = COPY["trust"]
+        alt = decks[(_hash_idx(f'{t["domain"]}|copy|trust', len(decks)) + 2) % len(decks)]
+        cells = "".join(f'<div class="as-why__c">{icon(ic)}<span>{_city(txt, t)}</span></div>'
+                        for ic, txt in alt)
+        extra = (f'<div class="as-why"><p class="as-why__h">Why choose us</p>'
+                 f'<div class="as-why__g">{cells}</div></div>')
+    elif v == "stack":
+        pills = "".join(f'<a href="{u}">{esc(lbl)}</a>' for lbl, u in areas)
+        extra = (f'<div class="as-areas"><p class="as-areas__h">Service Areas</p>'
+                 f'<div class="as-areas__p">{pills}</div></div>')
+
+    body = extra + card if v == "toc" else card + extra
+    return f'<aside class="aside as--{v}">{body}</aside>'
+
+
+def areas_for(pages):
+    """(label, url) for this site's area pages, in a stable order."""
+    out = [(area_label(p), p["url"]) for p in pages.values() if p["cat"] == "area"]
+    return sorted(out)
+
+
+def article_headings(parts):
+    """(id, text) for every h2 in the assembled article, for the `toc` sidebar."""
+    out = []
+    for m in re.finditer(r'<h2 id="([^"]+)">(.*?)</h2>', "".join(parts), re.S):
+        txt = re.sub(r"<[^>]+>", "", m.group(2)).strip()
+        if txt:
+            out.append((m.group(1), txt))
+    return out
 
 # Inner pages carry ~200 URLs per site against the homepage's one, and every
 # one of them opened with the same gradient band holding a crumb and an h1.
@@ -3721,7 +3789,7 @@ def inner_page(t, p, pages):
 
     label = {"service": "Services", "area": "Service Areas", "guide": "Guides"}.get(p["cat"], "")
     parent = {"service": "/services/", "area": "/service-areas/", "guide": "/guides/"}.get(p["cat"], "/")
-    aside = quote_card(t)
+    aside = quote_card(t, pages, article_headings(parts))
     art = article_layout(t)
     links = [("Home", "/")] + ([(label, parent)] if label else [])
     body = (page_hero(t, links, h1, h1, desc=p["meta"] or "", img=img)
@@ -3755,12 +3823,13 @@ def index_page(t, pages, cat, url, title_h1, eyebrow, blurb):
             + header(t, pages) + body + footer(t, pages) + "</body></html>")
 
 def trust_page(t, pages, url, h1, blocks, is_quote=False):
-    parts = "".join(f'<h2>{esc(h)}</h2><p>{esc(b)}</p>' for h, b in blocks)
+    # ids so the `toc` sidebar has something to link to; these pages had none
+    parts = "".join(f'<h2 id="{slugify(h)}">{esc(h)}</h2><p>{esc(b)}</p>' for h, b in blocks)
     embed = ""
     if is_quote and t.get("ghl_form_id"):
         from build_site import quote_embed
         embed = quote_embed(t["ghl_form_id"])
-    aside = quote_card(t)
+    aside = quote_card(t, pages, article_headings([parts]))
     # no desc: on these pages it is built from the h1 and the brand, so showing
     # it would print the title back to the reader a second time
     body = (page_hero(t, [("Home", "/")], h1, h1, desc="",
@@ -3835,7 +3904,7 @@ def strip_css_comments(css):
 # is the selector prefix that identifies a rule as belonging to a single
 # variant; anything not matching a prefix is shared and never pruned.
 _PRUNE_FAMILIES = (".hero--", ".svcx--", ".svcx-sec--", ".ctab--", ".faq--",
-                   ".gf--", ".pf-", ".ph--")
+                   ".gf--", ".pf-", ".ph--", ".as--")
 
 
 def _css_rules(css):

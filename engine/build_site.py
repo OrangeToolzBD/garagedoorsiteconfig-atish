@@ -1333,6 +1333,62 @@ footer.site a.btn--ghost,footer.site a.btn--ghost:hover{color:#fff}
 .qcard p{color:var(--muted);font-size:.94rem}
 .qcard .tel{font-family:var(--disp);font-weight:800;font-size:1.5rem;color:var(--p);display:block;margin:8px 0 16px}
 .qcard .btn{width:100%;justify-content:center;margin-bottom:10px}
+
+/* ---- sidebar variants --------------------------------------------------
+   Every interior page of all 1001 sites carried the same centred card. The
+   column is sticky, so each variant has to stay short enough to fit a
+   viewport beside the article -- roughly 520px -- or it stops sticking and
+   trails the prose down the page. */
+
+/* -- dark: icon and heading on one row, text ranged left. The card reads as
+      a banner rather than the centred stack everyone else shows. */
+.qcard--dark{background:var(--pd);border-color:transparent;text-align:left}
+.qcard--dark .qc__top{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.qcard--dark .qc__top svg{width:26px;height:26px;color:#fff;flex:0 0 auto}
+.qcard--dark h3{color:#fff;margin:0}
+.qcard--dark p{color:rgba(255,255,255,.86)}
+.qcard--dark .tel{color:#fff}
+.qcard--dark .btn--outline{border-color:rgba(255,255,255,.55);color:#fff}
+
+/* -- toc: the article's own headings, above the card. The only variant where
+      something precedes the card rather than following it. */
+.as-toc{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:14px 18px;margin-bottom:14px}
+.as-toc__h{margin:0 0 10px;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted)}
+.as-toc ol{list-style:none;margin:0;padding:0}
+.as-toc li{margin:0}
+.as-toc a{display:block;padding:6px 0 6px 12px;border-left:2px solid var(--line);
+  color:var(--ink);text-decoration:none;font-size:.94rem;line-height:1.35}
+.as-toc a:hover{border-left-color:var(--accent);color:var(--p)}
+
+/* -- reasons: the four claims as a two-by-two block under the card */
+.as-why{margin-top:14px}
+.as-why__h{margin:0 0 10px;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted)}
+.as-why__g{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.as-why__c{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:12px 10px;text-align:center;display:flex;flex-direction:column;
+  align-items:center;gap:6px;font-size:.8rem;line-height:1.3;color:var(--ink)}
+.as-why__c svg{width:20px;height:20px;color:var(--accent-lt)}
+.as-why__c b{font-weight:700}
+
+/* -- stack: area links as pills under the card. Pills wrap, so a label like
+      "Buckner Terrace / Everglade Park" lengthens one pill instead of
+      overflowing the 320px column. */
+.as-areas{margin-top:14px}
+.as-areas__h{margin:0 0 10px;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted)}
+.as-areas__p{display:flex;flex-wrap:wrap;gap:8px}
+.as-areas__p a{display:inline-block;padding:7px 12px;border:1px solid var(--line);
+  border-radius:999px;background:var(--card);color:var(--ink);text-decoration:none;
+  font-size:.85rem;line-height:1.2}
+.as-areas__p a:hover{border-color:var(--accent);color:var(--p)}
+
+/* .article--wide lays the card out as a horizontal bar with no column at all,
+   so the added modules have to drop back to a normal block there. */
+.article--wide .as-toc,.article--wide .as-why,.article--wide .as-areas{max-width:820px}
+@media(min-width:821px){.article--wide .as-why__g{grid-template-columns:repeat(4,1fr)}}
 .article .faq{margin:1.4em 0 0}
 /* GoHighLevel quote form embed (+ shimmer skeleton) */
 .quote-embed{padding:clamp(1.6rem,3.5vw,2.8rem) 0;background:var(--soft)}

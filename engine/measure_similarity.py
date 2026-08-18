@@ -47,7 +47,7 @@ TARGETS = {
     #   75.0%  after the footer (10 variants), which is ~48% of an inner page
     # Held at 78% rather than 75% only to absorb the swing that comes from
     # re-rolling digests when a variant is added or removed.
-    "inner_dom_median": ("<=", 0.78),
+    "inner_dom_median": ("<=", 0.75),
     "pairs_ge_95_text": ("==", 0),
     "single_value_strings": ("==", 0),
     "dead_axis_values": ("==", 0),
@@ -55,6 +55,7 @@ TARGETS = {
     "contrast_failures": ("==", 0),
     "cta_contrast_failures": ("==", 0),
     "footer_contrast_failures": ("==", 0),
+    "aside_contrast_failures": ("==", 0),
     "pruned_away_live_css": ("==", 0),
     "pages_missing_main": ("==", 0),
     "pages_missing_skiplink": ("==", 0),
@@ -195,6 +196,40 @@ def footer_contrast_failures():
         for name, col in checks:
             if B._cratio(col, ground) < 4.5:
                 bad.setdefault(f"{name} on --ft-bg", []).append(s["theme"])
+    return sum(len(v) for v in bad.values()), bad
+
+
+def aside_contrast_failures():
+    """Themes where the dark sidebar card's text fails AA on its own ground.
+
+    Third check of this shape, because this is the shape that keeps shipping
+    broken: white-at-an-alpha over a per-theme colour. Button labels failed on
+    410 themes, the CTA paragraph on 154, and both looked fine on the handful
+    of sites anyone opened.
+
+    The alpha is read from the built stylesheet rather than hardcoded here, so
+    editing the CSS moves the check with it instead of leaving it asserting a
+    value the sites no longer use."""
+    import build_site as B
+    css = ""
+    for f in glob.glob(os.path.join(DIST, "*", "assets", "site.css")):
+        c = open(f, encoding="utf-8").read()
+        if ".qcard--dark" in c:
+            css = c
+            break
+    if not css:
+        return 0, {}
+    m = re.search(r"\.qcard--dark p\{color:rgba\(255,255,255,([.\d]+)\)", css)
+    alpha = float(m.group(1)) if m else 1.0
+    themes = json.load(open(os.path.join(CONFIG, "themes.json"), encoding="utf-8"))
+    sites = json.load(open(os.path.join(CONFIG, "sites.json"), encoding="utf-8"))["sites"]
+    bad = {}
+    for s in sites:
+        # the card is solid --pd, not the p->pd gradient the CTA band uses
+        g = B._rgb(themes[s["theme"]]["pd"])
+        fg = tuple(round(alpha * 255 + (1 - alpha) * c) for c in g)
+        if B._cratio(fg, g) < 4.5:
+            bad.setdefault(f"white@{alpha:g} on --pd", []).append(s["theme"])
     return sum(len(v) for v in bad.values()), bad
 
 
@@ -511,12 +546,14 @@ def main():
     cfails, cdetail, ntheme = contrast_failures()
     ctafails, ctadetail = cta_contrast_failures()
     ftfails, ftdetail = footer_contrast_failures()
+    asfails, asdetail = aside_contrast_failures()
     prunefails, prunedetail = pruned_away_live_css()
     ess = missing_essentials()
     npages, no_main, no_skip, calling_nobody = page_checks()
     res.update({"contrast_failures": cfails,
                 "cta_contrast_failures": ctafails,
                 "footer_contrast_failures": ftfails,
+                "aside_contrast_failures": asfails,
                 "pruned_away_live_css": prunefails, "pages_missing_main": no_main,
                 "pages_missing_skiplink": no_skip, "pages_calling_nobody": calling_nobody,
                 "sites_missing_essentials": len(ess)})
@@ -564,6 +601,8 @@ def main():
     print(f"  contrast (WCAG AA) over {ntheme} in-use themes: {cfails} failures")
     print(f"  CTA-band text on its own gradient: {ctafails} failures  {ctadetail if ctafails else ''}")
     print(f"  Footer ramp on its own ground: {ftfails} failures  {ftdetail if ftfails else ''}")
+    print(f"  Dark sidebar card on its own ground: {asfails} failures  "
+          f"{asdetail if asfails else ''}")
     print(f"  variant CSS pruned away while still rendered: {prunefails} "
           f"{prunedetail if prunefails else ''}")
     for k, v in sorted(cdetail.items()):

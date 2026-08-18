@@ -194,12 +194,20 @@ label that exists** — there are no captions, titles or dates anywhere.
 cd engine && python3 measure_similarity.py --gate
 ```
 
-16 checks (the hero region excluded from all of them -- see above), exits
+17 checks (the hero region excluded from all of them -- see above), exits
 non-zero on regression: text/DOM similarity, pairs ≥95%,
 single-value strings, dead layout axes, discarded prose, WCAG AA over all 1001
 in-use themes (plus the CTA gradient and the footer ramp separately), `<main>`,
 skip links, phone-less "Call" prose, **missing essential sections**, and
 **variant CSS pruned away while still rendered**.
+
+### The sidebar column is sticky
+
+`.aside` is `position:sticky; top:96px`. Anything taller than the viewport
+pins with its lower half below the fold and *stays* there for the rest of the
+scroll -- so a tall variant can park its "Request a Quote" button permanently
+off-screen. Keep every sidebar variant under ~600px, and put the quote card
+first unless there is a reason not to.
 
 ### The gate cannot see the hero
 
