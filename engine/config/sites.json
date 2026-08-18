@@ -14,8 +14,7 @@
       "phone": "(214) 555-0100",
       "theme": "steel-berry",
       "layout": "aurora",
-      "port": 8201,
-      "services": "timeline"
+      "port": 8201
     },
     {
       "domain": "chicopeegaragedoorpros.com",
@@ -45,8 +44,7 @@
       "phone": "",
       "theme": "mesagaragedoorco",
       "layout": "cobalt",
-      "port": 8203,
-      "services": "orbit"
+      "port": 8203
     },
     {
       "domain": "napervillegaragedoorpros.com",
@@ -106,8 +104,7 @@
       "phone": "",
       "theme": "auroragaragedoorpros",
       "layout": "aurora",
-      "port": 8207,
-      "services": "tabs"
+      "port": 8207
     },
     {
       "domain": "wheatongaragedoorpros.com",
@@ -287,8 +284,7 @@
       "phone": "(469) 555-0142",
       "theme": "dallasdoorpros",
       "layout": "cobalt",
-      "port": 8219,
-      "proof": "stack"
+      "port": 8219
     },
     {
       "domain": "ashlandgaragedoorpros.com",
@@ -1272,8 +1268,7 @@
       "phone": "",
       "theme": "puntagordagaragedoorpros",
       "layout": "summit",
-      "port": 8283,
-      "proof": "cinematic"
+      "port": 8283
     },
     {
       "domain": "planogaragedoorpros.com",
