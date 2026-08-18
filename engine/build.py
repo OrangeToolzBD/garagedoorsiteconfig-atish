@@ -3492,6 +3492,36 @@ def write(out, url, htmlstr):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     open(path, "w", encoding="utf-8").write(htmlstr)
 
+def strip_css_comments(css):
+    """Drop comments from the SHIPPED stylesheet only.
+
+    The source comments are load-bearing -- most record why a rule exists and
+    which bug it fixed -- so they stay in build_site.py and are removed here,
+    on the way out. They were 22KB of the 108KB served to every page.
+
+    String-aware: a comment opener inside a quoted value (content:"a/*b") is
+    not a comment. Nothing in the sheet does that today, but a stripper that
+    silently eats half a rule the first time someone writes it is not worth
+    the bytes it saves. `/*!` is kept, by convention for licence banners.
+    """
+    out, i, n = [], 0, len(css)
+    while i < n:
+        c = css[i]
+        if c == '"' or c == "'":            # copy the quoted run verbatim
+            j = i + 1
+            while j < n and css[j] != c:
+                j += 2 if css[j] == "\\" else 1
+            out.append(css[i:j + 1])
+            i = j + 1
+        elif css.startswith("/*", i) and not css.startswith("/*!", i):
+            j = css.find("*/", i + 2)
+            i = n if j < 0 else j + 2
+        else:
+            out.append(c)
+            i += 1
+    return re.sub(r"\n[ \t]*(?:\n[ \t]*)+", "\n", "".join(out))
+
+
 def build(only=None):
     """Render every registered domain that has content.
 
@@ -3515,7 +3545,8 @@ def build(only=None):
         out = os.path.join(DIST, domain)
         assets = os.path.join(out, "assets")
         os.makedirs(assets, exist_ok=True)
-        open(os.path.join(assets, "site.css"), "w", encoding="utf-8").write(R["css"](t))
+        open(os.path.join(assets, "site.css"), "w", encoding="utf-8").write(
+            strip_css_comments(R["css"](t)))
         if R.get("navjs"):
             open(os.path.join(assets, "nav.js"), "w", encoding="utf-8").write(R["navjs"])
         open(os.path.join(assets, "favicon.svg"), "w", encoding="utf-8").write(
