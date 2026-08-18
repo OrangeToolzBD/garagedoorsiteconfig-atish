@@ -2081,11 +2081,22 @@ def area_label(p):
     return h1 or p["slug"].replace("-", " ").title()
 
 # ---------------------------------------------------------------- sections
+# The hero axis in layouts.json mapped 1:1 onto the six layout families, so the
+# hero never varied independently of nav/cards/footer and ~167 sites shared each
+# one. Selection is now its own per-domain digest, matching every other section,
+# which also lets variants be added without touching layout families.
+#
+# The layouts.json `hero` field is deliberately left in place: it feeds nothing
+# now, but removing it would renumber the other axes in that file.
+#
+# Append-only -- selection is digest % len().
+HERO_VARIANTS = ["banner", "center", "overlap", "split-left", "split-right",
+                 "stacked", "overhang", "twotone", "inset"]
+
+
 def hero(t, h1, lead, img=HERO_IMG):
-    """Distinct hero markup per site layout (split-right/left, stacked, center, banner,
-    overlap) -- the shared design system (build_site.py's css()) already ships CSS for
-    every one of these variants; this was previously hardcoded to "banner" always."""
-    variant = t.get("layout", {}).get("hero", "banner")
+    """One of nine hero compositions, chosen per domain."""
+    variant = HERO_VARIANTS[_hash_idx(f'{t["domain"]}|hero', len(HERO_VARIANTS))]
     call = call_btn(t, "btn btn--primary", "Get a Free Quote")
     # when there is no phone the primary already points at the quote page, so the
     # ghost button would be a duplicate link -- send it to services instead
@@ -2115,6 +2126,30 @@ def hero(t, h1, lead, img=HERO_IMG):
                 f'<div class="wrap"><div class="hero__card">{copy}</div></div></section>')
     if variant == "split-right":
         return f'<section class="hero hero--split hero--right"><div class="wrap">{copy}{media}</div></section>'
+    if variant == "overhang":
+        # photo bleeds off the right edge, the copy card overhangs it. The card
+        # is opaque, so the text never sits on the photograph -- which matters
+        # when the photograph is ordinary stock and sometimes bright.
+        return (f'<section class="hero hero--overhang">'
+                f'<div class="hero__bleed"><img src="{src}" alt="{alt}" fetchpriority="high"></div>'
+                f'<div class="wrap"><div class="hero__card">{copy}</div></div></section>')
+    if variant == "twotone":
+        # a solid colour field carries the copy, the photo takes the other half,
+        # and the chips ride a bar across the seam
+        return (f'<section class="hero hero--twotone"><div class="wrap">'
+                f'<div class="hero__field">{eyebrow}<h1>{esc(h1)}</h1>{leadh}'
+                f'<div class="cta">{call}{quote}</div></div>'
+                f'<div class="hero__shot"><img src="{src}" alt="{alt}" fetchpriority="high"></div>'
+                f'{chips}</div></section>')
+    if variant == "inset":
+        # everything inside one ruled frame: label and lead above a photo band,
+        # the h1 and actions below it
+        return (f'<section class="hero hero--inset"><div class="wrap">'
+                f'<div class="hero__frame"><div class="hero__top">{eyebrow}{leadh}</div>'
+                f'<div class="hero__strip"><img src="{src}" alt="{alt}" fetchpriority="high"></div>'
+                f'<div class="hero__foot"><h1>{esc(h1)}</h1>'
+                f'<div class="cta">{call}{quote}</div></div>{chips}</div>'
+                f'</div></section>')
     return f'<section class="hero hero--banner" style="--hero-bg:url({src})"><div class="wrap">{copy}</div></section>'
 
 def trust_bar(t):

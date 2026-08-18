@@ -616,6 +616,64 @@ nav.main>a:hover,.nav-item>button:hover{background:var(--soft);text-decoration:n
 .hero--split .wrap{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:52px;align-items:center;padding:76px 24px 82px}
 .hero--left .wrap{grid-template-columns:.95fr 1.05fr}
 /* -- stacked: centered copy, wide image below -- */
+/* ---- overhang (08) -- photo bleeds off the right edge, copy card overhangs it.
+   The card is opaque on purpose: the photography is ordinary stock and often
+   bright, so text is never placed directly on it. */
+.hero--overhang{position:relative;background:var(--soft);min-height:0;padding:0}
+.hero--overhang .hero__bleed{position:absolute;top:0;right:0;width:58%;height:74%;
+  overflow:hidden;border-bottom-left-radius:calc(var(--radius) + 10px)}
+.hero--overhang .hero__bleed img{width:100%;height:100%;object-fit:cover;display:block}
+.hero--overhang .wrap{position:relative;z-index:1;padding:56px 24px 60px}
+.hero--overhang .hero__card{max-width:600px;background:var(--card);
+  border:1px solid var(--line);border-radius:calc(var(--radius) + 6px);
+  padding:38px 40px;box-shadow:var(--shadow-lg)}
+.hero--overhang h1{color:var(--ink)}
+.hero--overhang .eyebrow{color:var(--accent-lt)}
+.hero--overhang .lead{color:var(--muted)}
+.hero--overhang .chips{grid-template-columns:1fr 1fr}
+.hero--overhang .chips li{color:var(--ink)}
+
+/* ---- twotone (16) -- a solid field carries the copy, the photo takes the rest,
+   and the chip bar rides the seam between them */
+.hero--twotone{background:none;padding:0;min-height:0}
+.hero--twotone .wrap{position:relative;display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;padding:0;
+  align-items:stretch}
+.hero--twotone .hero__field{background:var(--soft);padding:64px 46px 92px;
+  display:flex;flex-direction:column;justify-content:center}
+.hero--twotone .hero__shot{overflow:hidden}
+.hero--twotone .hero__shot img{width:100%;height:100%;min-height:420px;
+  object-fit:cover;display:block}
+.hero--twotone h1{color:var(--ink);margin:0 0 14px}
+.hero--twotone .eyebrow{color:var(--accent-lt)}
+.hero--twotone .lead{color:var(--muted)}
+.hero--twotone .chips{position:absolute;left:34px;right:34px;bottom:26px;
+  background:var(--card);border:1px solid var(--line);
+  border-radius:var(--btn-r);padding:12px 18px;
+  display:flex;flex-wrap:wrap;gap:10px 26px;justify-content:center;
+  box-shadow:var(--shadow);margin:0}
+.hero--twotone .chips li{color:var(--ink)}
+
+/* ---- inset (17) -- one ruled frame holds label and lead, then a photo band,
+   then the h1 and the actions */
+.hero--inset{background:var(--soft);padding:26px 0 30px;min-height:0}
+.hero--inset .hero__frame{border:1px solid var(--line);
+  border-radius:calc(var(--radius) + 8px);background:var(--card);padding:22px}
+.hero--inset .hero__top{display:grid;gap:4px;margin:0 0 14px;max-width:62ch}
+.hero--inset .hero__strip{overflow:hidden;border-radius:var(--radius)}
+/* 21/9 across a 1130px frame is a 484px photograph, which made this the tallest
+   of the nine heroes at 894px -- taller than the two that were already pushing
+   the fold down. Capped so the actions stay reachable. */
+.hero--inset .hero__strip img{width:100%;aspect-ratio:21/9;max-height:270px;
+  object-fit:cover;display:block}
+.hero--inset .hero__foot{display:grid;grid-template-columns:minmax(0,1fr) auto;
+  gap:14px 40px;align-items:center;margin:18px 0 14px}
+.hero--inset h1{color:var(--ink);margin:0;grid-column:1}
+.hero--inset .hero__foot .cta{grid-column:2;margin:0}
+.hero--inset .eyebrow{color:var(--accent-lt)}
+.hero--inset .lead{color:var(--muted);margin:0}
+.hero--inset .chips{margin:0}
+.hero--inset .chips li{color:var(--ink)}
 .hero--stacked .wrap{position:relative;padding:66px 24px 0;text-align:center}
 .hero--stacked .hero__copy{max-width:760px;margin:0 auto}
 .hero--stacked .lead{margin:0 auto 26px}
@@ -1122,6 +1180,22 @@ footer.site a.btn--ghost,footer.site a.btn--ghost:hover{color:#fff}
   .hero--split .wrap{grid-template-columns:1fr;gap:32px;padding:52px 24px}
   .hero--split .hero__media{order:-1}
   .hero--overlap .wrap{margin-top:-90px}
+  /* the three newer heroes are all side-by-side grids and had no mobile rules
+     at all: twotone ran to 951px on a 390px screen with its actions 703px
+     down, because a 1fr 1fr grid at that width just makes both columns tall. */
+  .hero--twotone .wrap{grid-template-columns:1fr}
+  .hero--twotone .hero__field{padding:40px 24px 30px;order:2}
+  .hero--twotone .hero__shot{order:1}
+  .hero--twotone .hero__shot img{min-height:0;aspect-ratio:16/9}
+  .hero--twotone .chips{position:static;order:3;margin:0 24px 24px;
+    justify-content:flex-start;box-shadow:none}
+  .hero--overhang .hero__bleed{position:relative;width:100%;height:auto}
+  .hero--overhang .hero__bleed img{aspect-ratio:16/9;height:auto}
+  .hero--overhang .wrap{padding:0 20px 36px;margin-top:-42px}
+  .hero--overhang .hero__card{max-width:none;padding:26px 22px}
+  .hero--inset .hero__foot{grid-template-columns:1fr;gap:14px}
+  .hero--inset .hero__foot .cta{grid-column:1}
+  .hero--inset .hero__strip img{aspect-ratio:16/9;max-height:none}
   .trust .wrap{grid-template-columns:repeat(2,1fr);gap:16px}
   .g4{grid-template-columns:repeat(2,1fr)}
   .g3,.steps{grid-template-columns:1fr}
