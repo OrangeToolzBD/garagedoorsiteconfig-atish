@@ -578,7 +578,12 @@ nav.main{margin-left:auto;display:flex;align-items:center;gap:2px;flex:0 1 auto}
 nav.main>a,.nav-item>button{font-family:var(--disp);font-weight:600;font-size:.88rem;color:var(--ink);background:none;border:0;padding:8px 9px;border-radius:10px;cursor:pointer;white-space:nowrap}
 nav.main>a:hover,.nav-item>button:hover{background:var(--soft);text-decoration:none}
 .nav-item{position:relative}
-.nav-item>button::after{content:"";display:inline-block;width:7px;height:7px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);margin-left:7px;vertical-align:2px}
+.nav-item>button::after{content:"";display:inline-block;width:7px;height:7px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);margin-left:7px;vertical-align:2px;transition:transform .2s}
+/* the chevron never moved: it was drawn at rotate(45deg) with no open-state
+   rule, so on every site it pointed down whether the panel was open or shut.
+   225deg points it back up; the 3px nudge keeps the glyph optically centred
+   once its heavy corner is at the top. */
+.nav-item.open>button::after{transform:rotate(225deg);vertical-align:-3px}
 .mega{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%) translateY(6px);
   background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-lg);
   padding:14px;min-width:280px;opacity:0;visibility:hidden;transition:.16s;z-index:70}
