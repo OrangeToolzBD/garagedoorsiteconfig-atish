@@ -39,14 +39,15 @@ TARGETS = {
     "text_median": ("<=", 0.65),
     "text_max": ("<", 0.85),
     "dom_median": ("<=", 0.75),
-    # Inner pages are structurally far more alike than homepages: 88.6% at the
-    # time this check was added, against 54.1% below the hero. The homepage has
-    # a Services archetype library and a visual-proof library; every inner-page
-    # section has exactly one design, and the CTA band alone appears on 77% of
-    # pages. This target is a RATCHET, not an ambition -- it holds the current
-    # figure so nothing regresses, and should be tightened each time a
-    # section-variant library lands. Do not loosen it to make a change pass.
-    "inner_dom_median": ("<=", 0.90),
+    # A RATCHET, not an ambition: it holds the figure actually achieved so
+    # nothing regresses, and is tightened each time a section-variant library
+    # lands. Do not loosen it to make a change pass.
+    #   88.6%  when the check was added -- every inner-page section had one design
+    #   84.0%  after the CTA band (8 variants) and the FAQ (5)
+    #   75.0%  after the footer (10 variants), which is ~48% of an inner page
+    # Held at 78% rather than 75% only to absorb the swing that comes from
+    # re-rolling digests when a variant is added or removed.
+    "inner_dom_median": ("<=", 0.78),
     "pairs_ge_95_text": ("==", 0),
     "single_value_strings": ("==", 0),
     "dead_axis_values": ("==", 0),
