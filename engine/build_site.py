@@ -1109,6 +1109,20 @@ NAVJS = """(function(){
      }
    });
  });
+ // A tap outside the nav closes any open dropdown. Scoped to nav.main and the
+ // burger that drives it: a tap on a real link INSIDE the nav has to be left
+ // alone, because collapsing an open panel mid-tap shifts the layout and can
+ // swallow the navigation on touch. Mobile widths only -- above the breakpoint
+ // the dropdowns are hover-driven and carry no .open state to clear.
+ document.addEventListener('click',function(e){
+   if(!window.matchMedia('(max-width:1120px)').matches) return;
+   if(e.target.closest('nav.main')||e.target.closest('.burger')) return;
+   document.querySelectorAll('.nav-item.open').forEach(function(it){
+     it.classList.remove('open');
+     var ib=it.querySelector('button');
+     if(ib)ib.setAttribute('aria-expanded','false');
+   });
+ });
  // scroll-reveal entrance animations
  (function(){
    var root=document.documentElement;
