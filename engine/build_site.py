@@ -1158,6 +1158,146 @@ footer.site a.btn--ghost,footer.site a.btn--ghost:hover{color:#fff}
 .page-hero .crumb{font-size:.85rem;color:rgba(255,255,255,.7);margin-bottom:10px}
 .page-hero .crumb a{color:rgba(255,255,255,.85)}
 .page-hero h1{color:#fff;margin:0}
+/* The crumb's last item is the current page, which is standard, but our inner
+   h1 runs to 75 characters -- so the tail is capped rather than dropped. The
+   full trail still ships in the BreadcrumbList schema either way. */
+.crumb__c{display:inline-block;max-width:34ch;overflow:hidden;text-overflow:ellipsis;
+  white-space:nowrap;vertical-align:bottom}
+.page-hero .ph__d{margin:12px 0 0;max-width:62ch;color:rgba(255,255,255,.92);
+  font-size:1.02rem;line-height:1.55}
+.page-hero .ph__loc{display:inline-block;font-size:.72rem;letter-spacing:.09em;
+  text-transform:uppercase;padding:4px 10px;border-radius:999px;
+  background:rgba(255,255,255,.16);color:#fff;white-space:nowrap}
+
+/* ---- page-hero variants ------------------------------------------------
+   Every inner page of every one of the 1001 sites opened with the same
+   gradient band: crumb, then h1, nothing else. Inner pages carry ~200 URLs
+   per site, so this was the single most-repeated block in the estate after
+   the footer. Four of the seven drop the gradient for a light ground, which
+   is a bigger visual break than any rearrangement of the same band.
+
+   The light ones are safe on contrast without a per-theme check: --ink,
+   --muted, --soft and --soft2 are fixed values, identical in all 1001
+   themes, so their ratios are constants rather than 1001 separate cases. */
+
+/* -- band: the original gradient, now with the location chip and the page's
+      own description sentence, which until now existed only in <meta>. */
+.page-hero.ph--band .ph__top{display:flex;align-items:center;gap:14px;
+  flex-wrap:wrap;margin-bottom:10px}
+.page-hero.ph--band .crumb{margin-bottom:0}
+
+/* -- photo: light ground, prose left, photograph right */
+.page-hero.ph--photo{background:var(--soft);color:var(--ink);padding:0;
+  border-bottom:1px solid var(--line)}
+.page-hero.ph--photo .ph__split{display:grid;grid-template-columns:1.25fr .95fr;
+  gap:40px;align-items:center}
+.page-hero.ph--photo .ph__tx{padding:44px 0}
+.page-hero.ph--photo h1{color:var(--ink)}
+.page-hero.ph--photo .crumb{color:var(--muted)}
+.page-hero.ph--photo .crumb a{color:var(--muted)}
+.page-hero.ph--photo .ph__d{color:var(--muted)}
+.page-hero.ph--photo .ph__loc{background:var(--soft2);color:var(--muted)}
+.page-hero.ph--photo .ph__ph{align-self:stretch;overflow:hidden}
+.page-hero.ph--photo .ph__ph img{width:100%;height:100%;object-fit:cover;
+  min-height:210px;max-height:280px;display:block}
+
+/* -- center: a solid deep ground rather than the gradient, stacked centred */
+.page-hero.ph--center{background:var(--pd);padding:56px 0 48px;text-align:center}
+.page-hero.ph--center .ph__mid{max-width:52rem;margin:0 auto}
+.page-hero.ph--center .crumb{justify-content:center;margin-bottom:14px}
+.page-hero.ph--center h1{margin:0 0 16px}
+
+/* -- utility: a thin bar carries the crumb and the location, the title sits
+      below a rule. The only variant where the crumb is not stacked above the
+      title in the same column. */
+.page-hero.ph--utility{background:var(--bg);color:var(--ink);padding:0;
+  border-bottom:1px solid var(--line)}
+.page-hero.ph--utility .ph__bar{background:var(--soft);
+  border-bottom:1px solid var(--line)}
+.page-hero.ph--utility .ph__bar .wrap{display:flex;align-items:center;
+  justify-content:space-between;gap:16px;padding-top:11px;padding-bottom:11px}
+.page-hero.ph--utility .ph__body{padding:34px 0 30px}
+.page-hero.ph--utility h1{color:var(--ink)}
+.page-hero.ph--utility .crumb{margin-bottom:0;color:var(--muted)}
+.page-hero.ph--utility .crumb a{color:var(--muted)}
+.page-hero.ph--utility .ph__d{color:var(--muted)}
+.page-hero.ph--utility .ph__loc{background:transparent;color:var(--muted);padding:0}
+
+/* -- strip: a full-bleed photograph above the title. The text sits below the
+      image, never on it -- text over an arbitrary photo is unprovable on
+      contrast, and a caption on a photo already measured 1.74:1 once. */
+.page-hero.ph--strip{background:var(--bg);color:var(--ink);padding:0;
+  border-bottom:1px solid var(--line)}
+.page-hero.ph--strip .ph__band{height:170px;overflow:hidden}
+.page-hero.ph--strip .ph__band img{width:100%;height:100%;object-fit:cover;display:block}
+.page-hero.ph--strip .ph__body{padding:26px 0 28px}
+.page-hero.ph--strip h1{color:var(--ink)}
+.page-hero.ph--strip .crumb{color:var(--muted)}
+.page-hero.ph--strip .crumb a{color:var(--muted)}
+
+/* -- cta: gradient, prose left, a single button held right */
+.page-hero.ph--cta .ph__row{display:flex;align-items:center;gap:32px;
+  justify-content:space-between}
+.page-hero.ph--cta .ph__tx{min-width:0}
+.page-hero.ph--cta .ph__act{flex:0 0 auto}
+
+/* -- grid: a left rail of stacked crumb items, the title in the middle, the
+      photograph on the right. The crumb reads as a column, not a trail. */
+.page-hero.ph--grid{background:var(--bg);color:var(--ink);padding:0;
+  border-bottom:1px solid var(--line)}
+.page-hero.ph--grid .ph__g{display:grid;grid-template-columns:190px 1fr 260px;
+  align-items:stretch;min-height:190px}
+.page-hero.ph--grid .ph__rail{padding:26px 22px 26px 0;
+  border-right:1px solid var(--line);display:flex;flex-direction:column;
+  gap:10px;justify-content:center}
+.page-hero.ph--grid .ph__rail .crumb{display:flex;flex-direction:column;
+  align-items:flex-start;gap:6px;margin:0;color:var(--muted);font-size:.8rem}
+.page-hero.ph--grid .ph__rail .crumb .sep{display:none}
+.page-hero.ph--grid .ph__rail .crumb a{color:var(--muted)}
+.page-hero.ph--grid .ph__mid{display:flex;align-items:center;padding:26px 30px}
+.page-hero.ph--grid h1{color:var(--ink);margin:0}
+.page-hero.ph--grid .ph__loc{background:var(--soft2);color:var(--muted)}
+.page-hero.ph--grid .ph__ph{overflow:hidden}
+.page-hero.ph--grid .ph__ph img{width:100%;height:100%;object-fit:cover;display:block}
+
+@media(max-width:900px){
+  .page-hero{padding:38px 0}
+  .page-hero .ph__d{font-size:.97rem;margin-top:10px}
+  .page-hero.ph--photo .ph__split{grid-template-columns:1fr;gap:0}
+  .page-hero.ph--photo .ph__tx{padding:22px 0 24px;order:2}
+  .page-hero.ph--photo .ph__ph{order:1}
+  .page-hero.ph--photo .ph__ph img{min-height:0;height:150px;max-height:150px}
+  .page-hero.ph--cta .ph__row{flex-direction:column;align-items:flex-start;gap:20px}
+  .page-hero.ph--cta .ph__act{width:100%}
+  .page-hero.ph--cta .ph__act .btn{width:100%;justify-content:center}
+  /* the rail becomes a normal trail again -- a 190px column of stacked
+     crumb items is most of a 390px screen */
+  .page-hero.ph--grid .ph__g{grid-template-columns:1fr;min-height:0}
+  .page-hero.ph--grid .ph__rail{border-right:0;padding:20px 0 0;
+    flex-direction:row;align-items:center;gap:12px;flex-wrap:wrap}
+  .page-hero.ph--grid .ph__rail .crumb{flex-direction:row;align-items:center;gap:6px}
+  .page-hero.ph--grid .ph__rail .crumb .sep{display:inline}
+  .page-hero.ph--grid .ph__mid{padding:12px 0 16px}
+  .page-hero.ph--grid .ph__ph{height:140px}
+  .page-hero.ph--utility .ph__bar .wrap{gap:10px}
+  .page-hero.ph--strip .ph__band{height:130px}
+}
+@media(max-width:560px){
+  .crumb__c{max-width:20ch}
+  .page-hero{padding:28px 0}
+  /* the sentence stays, bounded -- four lines of it plus a three-line title
+     was over half a 812px screen before any content */
+  .page-hero .ph__d{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;
+    overflow:hidden}
+  .page-hero.ph--photo .ph__ph img{height:128px;max-height:128px}
+  .page-hero.ph--center{padding:32px 0 28px}
+  .page-hero.ph--utility .ph__body{padding:22px 0 20px}
+  .page-hero.ph--strip .ph__band{height:118px}
+  .page-hero.ph--strip .ph__body{padding:18px 0 20px}
+  .page-hero.ph--cta .ph__row{gap:16px}
+  .page-hero.ph--utility .ph__bar .wrap{flex-direction:column;
+    align-items:flex-start;gap:4px}
+}
 .article{display:grid;grid-template-columns:1fr 320px;gap:48px;padding:56px 0}
 /* inner-article layouts. Every inner page on every site used the same
    prose-left / sidebar-right grid, which left inner pages measurably MORE

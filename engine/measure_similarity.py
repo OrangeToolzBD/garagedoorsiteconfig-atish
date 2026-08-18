@@ -213,7 +213,7 @@ def pruned_away_live_css():
     svcx-sec--* is excluded: it is a positional hook on the section element and
     has never had rules of its own, so its absence is not evidence of anything.
     """
-    fam = (".hero--", ".svcx--", ".ctab--", ".faq--", ".gf--", ".pf-")
+    fam = (".hero--", ".svcx--", ".ctab--", ".faq--", ".gf--", ".pf-", ".ph--")
     bad = {}
     for d in sorted(os.listdir(DIST)) if os.path.isdir(DIST) else []:
         css_p = os.path.join(DIST, d, "assets", "site.css")

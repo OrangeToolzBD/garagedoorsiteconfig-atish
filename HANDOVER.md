@@ -194,11 +194,25 @@ label that exists** — there are no captions, titles or dates anywhere.
 cd engine && python3 measure_similarity.py --gate
 ```
 
-16 checks, exits non-zero on regression: text/DOM similarity, pairs ≥95%,
+16 checks (the hero region excluded from all of them -- see above), exits
+non-zero on regression: text/DOM similarity, pairs ≥95%,
 single-value strings, dead layout axes, discarded prose, WCAG AA over all 1001
 in-use themes (plus the CTA gradient and the footer ramp separately), `<main>`,
 skip links, phone-less "Call" prose, **missing essential sections**, and
 **variant CSS pruned away while still rendered**.
+
+### The gate cannot see the hero
+
+`below_hero()` cuts the hero out before scoring, on purpose -- otherwise the
+header and nav, which are identical everywhere, would flatter every pair. The
+side effect is that **no hero work moves any gate number**. Twelve homepage
+heroes and seven page heroes are invisible to `dom_median` and
+`inner_dom_median` alike.
+
+Measure that region separately or you will conclude the work did nothing. The
+inner-page hero went from **100% identical markup on all 1001 sites** to a
+**57.1% median** across variants, and `inner_dom_median` did not move a tenth
+of a point either way.
 
 ### CSS pruning
 

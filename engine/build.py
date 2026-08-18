@@ -3619,6 +3619,89 @@ def quote_card(t):
             f'<a class="btn btn--primary" href="/request-a-quote/">Request a Quote</a>'
             f'<a class="btn btn--outline" href="{second_href}">{second_label}</a></div></aside>')
 
+# Inner pages carry ~200 URLs per site against the homepage's one, and every
+# one of them opened with the same gradient band holding a crumb and an h1.
+# APPEND-ONLY: selection is digest % len, so inserting re-rolls every domain.
+PAGE_HERO_VARIANTS = ["band", "photo", "center", "utility", "strip", "cta", "grid"]
+
+_PH_WANTS_DESC  = {"band", "photo", "utility", "cta"}
+_PH_WANTS_PHOTO = {"photo", "strip", "grid"}
+
+
+def crumb_trail(links, tail):
+    """A breadcrumb whose separators are marked up rather than bare text.
+
+    ph--grid stacks the trail into a column, where a chevron floating between
+    two rows reads as a bullet; it needs to hide the separators, which it can
+    only do if they are elements."""
+    out = ['<div class="crumb">']
+    for i, (label, href) in enumerate(links):
+        if i:
+            out.append('<span class="sep"> \u203a </span>')
+        out.append(f'<a href="{href}">{esc(label)}</a>')
+    if tail:
+        out.append('<span class="sep"> \u203a </span>'
+                   f'<span class="crumb__c">{esc(tail)}</span>')
+    out.append("</div>")
+    return "".join(out)
+
+
+def page_hero(t, links, tail, h1, desc="", img=None, allow_cta=True):
+    """The band at the top of an interior page.
+
+    `desc` is the page's own description sentence. It is authored on service,
+    area, guide and index pages and worth showing; on about/contact/quote it is
+    assembled from the h1 and the brand, so those pass "" and the variants that
+    would show it simply render without it.
+
+    `allow_cta` is False on the quote page itself, where a "Request a Quote"
+    button in the header would point at the page the reader is already on."""
+    v = PAGE_HERO_VARIANTS[_hash_idx(f'{t["domain"]}|pagehero', len(PAGE_HERO_VARIANTS))]
+    if v == "cta" and not allow_cta:
+        v = "band"
+    if v in _PH_WANTS_PHOTO and not img:
+        v = "band"
+    crumb = crumb_trail(links, tail)
+    loc = f'<span class="ph__loc">{esc(t["city"])}, {esc(t["st"])}</span>'
+    d = f'<p class="ph__d">{esc(desc)}</p>' if (desc and v in _PH_WANTS_DESC) else ""
+    # alt="" on purpose: the band's photograph is decorative and sits beside the
+    # h1 it would otherwise repeat, so a screen reader would read the page title
+    # twice in a row
+    shot = (f'<div class="ph__ph"><img src="/assets/photos/{img}" alt="" '
+            f'loading="lazy" decoding="async"></div>') if img else ""
+    head = f"<h1>{esc(h1)}</h1>"
+    open_ = f'<section class="page-hero ph--{v}">'
+
+    if v == "photo":
+        return (f'{open_}<div class="wrap"><div class="ph__split">'
+                f'<div class="ph__tx">{crumb}{head}{d}</div>{shot}'
+                f"</div></div></section>")
+    if v == "center":
+        return (f'{open_}<div class="wrap"><div class="ph__mid">'
+                f"{crumb}{head}{loc}</div></div></section>")
+    if v == "utility":
+        return (f'{open_}<div class="ph__bar"><div class="wrap">{crumb}{loc}</div></div>'
+                f'<div class="wrap ph__body">{head}{d}</div></section>')
+    if v == "strip":
+        return (f'{open_}<div class="ph__band">'
+                f'<img src="/assets/photos/{img}" alt="" loading="lazy" '
+                f'decoding="async"></div>'
+                f'<div class="wrap ph__body">{crumb}{head}</div></section>')
+    if v == "cta":
+        return (f'{open_}<div class="wrap"><div class="ph__row">'
+                f'<div class="ph__tx">{crumb}{head}{d}</div>'
+                f'<div class="ph__act"><a class="btn btn--primary" '
+                f'href="/request-a-quote/">Request a Quote</a></div>'
+                f"</div></div></section>")
+    if v == "grid":
+        return (f'{open_}<div class="wrap"><div class="ph__g">'
+                f'<div class="ph__rail">{crumb}{loc}</div>'
+                f'<div class="ph__mid">{head}</div>{shot}'
+                f"</div></div></section>")
+    return (f'{open_}<div class="wrap"><div class="ph__top">{crumb}{loc}</div>'
+            f"{head}{d}</div></section>")
+
+
 def inner_page(t, p, pages):
     h1 = p["h1"] or area_label(p)
     img = (t.get("inner_imgs") or {}).get(p["url"]) or INNER_IMGS[_stable_idx(p["slug"] or p["url"], len(INNER_IMGS))]
@@ -3638,11 +3721,11 @@ def inner_page(t, p, pages):
 
     label = {"service": "Services", "area": "Service Areas", "guide": "Guides"}.get(p["cat"], "")
     parent = {"service": "/services/", "area": "/service-areas/", "guide": "/guides/"}.get(p["cat"], "/")
-    crumb = f'<div class="crumb"><a href="/">Home</a> › <a href="{parent}">{label}</a> › {esc(h1)}</div>'
     aside = quote_card(t)
     art = article_layout(t)
-    body = (f'<section class="page-hero"><div class="wrap">{crumb}<h1>{esc(h1)}</h1></div></section>'
-            f'<div class="wrap"><div class="article {art}"><div class="body">{"".join(parts)}</div>{aside}</div></div>'
+    links = [("Home", "/")] + ([(label, parent)] if label else [])
+    body = (page_hero(t, links, h1, h1, desc=p["meta"] or "", img=img)
+            + f'<div class="wrap"><div class="article {art}"><div class="body">{"".join(parts)}</div>{aside}</div></div>'
             + cta_band(t, f"Book garage door service in {t['city']}"))
     title = seo_title(p["title"] or f"{h1} | {t['brand']}")
     trail = [("Home", "/"), (label, parent), (h1, p["url"])]
@@ -3661,9 +3744,9 @@ def index_page(t, pages, cat, url, title_h1, eyebrow, blurb):
         desc = (p["meta"] or "").split(".")[0]
         cards += (f'<a class="feat" href="{p["url"]}"><div class="ic">{icon("arrow")}</div>'
                   f'<div class="feat__b"><h3>{esc(area_label(p))}</h3><p>{esc(desc)}</p></div></a>')
-    crumb = f'<div class="crumb"><a href="/">Home</a> › {esc(title_h1)}</div>'
-    body = (f'<section class="page-hero"><div class="wrap">{crumb}<h1>{esc(title_h1)}</h1></div></section>'
-            f'<section class="sec"><div class="wrap"><div class="sec-head"><p class="eyebrow">{eyebrow}</p>'
+    body = (page_hero(t, [("Home", "/")], title_h1, title_h1, desc=blurb,
+                      img=INNER_IMGS[_stable_idx(url, len(INNER_IMGS))])
+            + f'<section class="sec"><div class="wrap"><div class="sec-head"><p class="eyebrow">{eyebrow}</p>'
             f'<h2>{esc(title_h1)}</h2><p>{esc(blurb)}</p></div>'
             f'<div class="grid g3 feats feats--{t["layout"]["feats"]}">{cards}</div></div></section>'
             + cta_band(t))
@@ -3677,10 +3760,14 @@ def trust_page(t, pages, url, h1, blocks, is_quote=False):
     if is_quote and t.get("ghl_form_id"):
         from build_site import quote_embed
         embed = quote_embed(t["ghl_form_id"])
-    crumb = f'<div class="crumb"><a href="/">Home</a> › {esc(h1)}</div>'
     aside = quote_card(t)
-    body = (f'<section class="page-hero"><div class="wrap">{crumb}<h1>{esc(h1)}</h1></div></section>{embed}'
-            f'<div class="wrap"><div class="article {article_layout(t)}"><div class="body">{parts}</div>{aside}</div></div>'
+    # no desc: on these pages it is built from the h1 and the brand, so showing
+    # it would print the title back to the reader a second time
+    body = (page_hero(t, [("Home", "/")], h1, h1, desc="",
+                      img=INNER_IMGS[_stable_idx(url, len(INNER_IMGS))],
+                      allow_cta=not is_quote)
+            + embed
+            + f'<div class="wrap"><div class="article {article_layout(t)}"><div class="body">{parts}</div>{aside}</div></div>'
             + cta_band(t))
     schemas = [org_schema(t), breadcrumb_schema(t, [("Home", "/"), (h1, url)])]
     return (head_html(t, seo_title(f"{h1} | {t['brand']}"), f"{h1} — {t['brand']}, {t['city']}, {t['st']}.", url, schemas,
@@ -3748,7 +3835,7 @@ def strip_css_comments(css):
 # is the selector prefix that identifies a rule as belonging to a single
 # variant; anything not matching a prefix is shared and never pruned.
 _PRUNE_FAMILIES = (".hero--", ".svcx--", ".svcx-sec--", ".ctab--", ".faq--",
-                   ".gf--", ".pf-")
+                   ".gf--", ".pf-", ".ph--")
 
 
 def _css_rules(css):
