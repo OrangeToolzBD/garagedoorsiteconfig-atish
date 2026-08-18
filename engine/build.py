@@ -2659,7 +2659,7 @@ def areas_band(t, pages):
 #
 # Append-only, like BUTTON_STYLES: selection is digest % len(), so inserting or
 # reordering re-rolls nearly every domain.
-CTA_VARIANTS = ["panel", "bar", "card", "editorial", "strip"]
+CTA_VARIANTS = ["panel", "bar", "card", "editorial"]
 
 
 def cta_band(t, heading=None):
@@ -2683,9 +2683,6 @@ def cta_band(t, heading=None):
     elif v == "editorial":              # heading leads, lead demoted under a rule
         inner = (f'{h2}{cta}<p class="ctab__lead">'
                  f'<span class="ctab__rule"></span>{lead}</p>')
-    elif v == "strip":                  # compact single row, place named inline
-        inner = (f'<span class="ctab__where">{esc(t["city"])}, {esc(t["st"])}</span>'
-                 f'{h2}{p}{cta}')
     else:                               # panel -- the original filled card
         inner = f'{h2}{p}{cta}'
 

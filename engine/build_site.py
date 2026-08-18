@@ -886,16 +886,6 @@ table{width:100%;border-collapse:collapse}
 .ctab__lead{grid-column:1;display:flex;gap:14px;margin:0;max-width:54ch}
 .ctab__rule{flex:0 0 3px;width:3px;background:var(--accent);border-radius:2px}
 
-/* strip -- compact single row, the place named inline */
-.ctab--strip{display:flex;flex-wrap:wrap;align-items:center;gap:10px 20px;
-  padding:22px 28px;border-radius:var(--radius);text-align:left}
-.ctab--strip h2{margin:0;font-size:clamp(1.05rem,1.6vw,1.3rem);line-height:1.25}
-.ctab--strip p{margin:0;max-width:44ch;font-size:.95rem}
-.ctab--strip .cta{margin-left:auto;gap:12px}
-.ctab__where{display:inline-flex;align-items:center;font-family:var(--disp);
-  font-weight:700;font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;
-  color:#fff;padding-right:16px;
-  border-right:1px solid rgba(255,255,255,.38)}
 /* footer */
 footer.site{background:#0f151b;color:#aeb9c5;padding:60px 0 26px;margin-top:0}
 footer.site .cols{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.3fr;gap:34px;padding-bottom:34px;border-bottom:1px solid rgba(255,255,255,.1)}
@@ -1094,15 +1084,11 @@ footer.site a.btn--ghost,footer.site a.btn--ghost:hover{color:#fff}
   .hero h1{font-size:2rem}
   .hero .cta .btn,.cta-band .cta .btn{width:100%;justify-content:center}
   /* every side-by-side CTA variant unwinds to one column here. .ctab--bar and
-     .ctab--editorial are two-column grids and .ctab--strip pushes its actions
-     with margin-left:auto -- all three would otherwise squeeze the buttons
-     into a sliver beside the copy. */
+     .ctab--editorial are two-column grids that would otherwise squeeze the
+     buttons into a sliver beside the copy. */
   .ctab--bar,.ctab--editorial{grid-template-columns:1fr;gap:18px}
   .ctab--editorial h2,.ctab--editorial .cta,.ctab__lead{grid-column:1}
   .ctab--editorial .cta{grid-row:auto}
-  .ctab--strip{flex-direction:column;align-items:stretch;padding:24px 20px}
-  .ctab--strip .cta{margin-left:0}
-  .ctab__where{border-right:0;padding-right:0}
   .ctab--card{padding:28px 20px}
   .brand small{display:none}
   footer.site .cols{grid-template-columns:1fr}
