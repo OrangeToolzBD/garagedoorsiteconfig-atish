@@ -502,6 +502,72 @@ GD_CSS = """
   width:30%;min-width:145px;margin-right:2.5%}
 /* cta: the gradient strip above the columns */
 .gfooter.gf--cta .gf-main{padding-top:38px}
+/* ---- rail -- the three link groups lead, the brand block sits to their right
+   behind a vertical rule. An inversion of the base, which puts brand first. */
+.gfooter.gf--rail .gf-cols{grid-template-columns:1fr 1fr 1.15fr 1.6fr}
+.gfooter.gf--rail .gf-brand{padding-left:34px;border-left:1px solid rgba(255,255,255,.14)}
+.gfooter.gf--rail .gf-trust{justify-content:flex-start}
+
+/* ---- promo -- the closing strip leads, then brand and trust share one row,
+   then the links. gf--cta only adds padding above the same body; this one
+   restructures it, which is what makes the two worth having separately. */
+.gfooter.gf--promo .gf-top{display:grid;grid-template-columns:1.3fr 1fr;gap:34px;
+  align-items:start;padding-bottom:28px;border-bottom:1px solid rgba(255,255,255,.1)}
+.gfooter.gf--promo .gf-top .gf-trust{border-bottom:0;padding:0;
+  display:grid;grid-template-columns:1fr 1fr;gap:14px 22px}
+.gfooter.gf--promo .gf-cols--3{grid-template-columns:repeat(3,1fr);padding-top:28px}
+.gfooter.gf--promo .gf-main{padding-top:34px}
+
+/* ---- grid -- hairline cells, and the link groups are disclosures.
+   Rendered CLOSED so a phone gets three tappable headings rather than a
+   17-link wall; desktop forces the bodies open again below. */
+.gfooter.gf--grid .gf-cols{grid-template-columns:1.15fr 2fr;gap:0;
+  border-top:1px solid rgba(255,255,255,.12);border-bottom:0;padding-bottom:0}
+.gfooter.gf--grid .gf-brand{padding:26px 30px 26px 0;
+  border-right:1px solid rgba(255,255,255,.12)}
+.gf-grps{display:grid;grid-template-columns:repeat(3,1fr)}
+.gf-grp{border-left:1px solid rgba(255,255,255,.12);padding:26px 22px}
+.gf-grp__t{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.gf-grp__h{color:#fff;font-size:.82rem;letter-spacing:.09em;text-transform:uppercase;
+  margin:0 0 14px;display:flex;justify-content:space-between;align-items:center;
+  min-height:24px;cursor:pointer}
+.gf-grp__h::after{content:"";width:7px;height:7px;flex:0 0 7px;
+  border-right:2px solid var(--ft-dim);border-bottom:2px solid var(--ft-dim);
+  transform:rotate(45deg);transition:transform .2s}
+.gf-grp__t:checked ~ .gf-grp__h::after{transform:rotate(225deg)}
+.gf-grp__t:focus-visible ~ .gf-grp__h{outline:2px solid var(--accent-dk);
+  outline-offset:3px;border-radius:3px}
+.gf-grp__b a{color:var(--ft-tx);display:block;padding:5px 0;font-size:.94rem;
+  text-decoration:none}
+.gf-grp__b a:hover{color:#fff}
+/* desktop: the groups are always open and the summary is not a control */
+/* desktop: always open, and the heading stops being a control */
+@media(min-width:821px){
+  .gf-grp__b{display:block}
+  .gf-grp__h{cursor:default;pointer-events:none}
+  .gf-grp__h::after{display:none}
+}
+/* phone/tablet: collapsed until tapped */
+@media(max-width:820px){
+  .gf-grp__b{display:none}
+  .gf-grp__t:checked ~ .gf-grp__b{display:block}
+}
+
+/* ---- editorial -- the blurb leads at size, the columns are demoted beneath.
+   The group headings are links to their index pages, which is what lets the
+   deep links drop on a phone without the group becoming a dead label. */
+.gfooter.gf--editorial .gf-brand{max-width:none;padding-bottom:30px;
+  border-bottom:1px solid rgba(255,255,255,.12)}
+.gfooter.gf--editorial .gf-brand p{max-width:46ch;font-size:1.18rem;
+  line-height:1.5;color:var(--ft-tx)}
+.gfooter.gf--editorial .gf-cols--3{grid-template-columns:repeat(3,1fr);
+  padding:28px 0 24px;border-bottom:0}
+.gfooter.gf--editorial .gf-cols h4 a{color:#fff;text-decoration:none}
+.gfooter.gf--editorial .gf-foot{display:flex;justify-content:space-between;
+  gap:20px 34px;flex-wrap:wrap;align-items:center;padding-top:20px;
+  border-top:1px solid rgba(255,255,255,.12)}
+.gfooter.gf--editorial .gf-foot .gf-trust{border-bottom:0;padding:0}
+.gfooter.gf--editorial .gf-foot .gf-legal{padding-top:0}
 
 /* Footer links were ~32px tall with no mobile override anywhere in the sheet,
    and each footer carries 13-17 of them stacked with no gutter. */
@@ -512,6 +578,28 @@ GD_CSS = """
 }
 @media(max-width:820px){.gf-cols{grid-template-columns:1fr 1fr}.gf-brand{grid-column:1/-1}
   .gfooter.gf--split .gf-cols{grid-template-columns:1fr}}
+@media(max-width:820px){
+  .gfooter.gf--rail .gf-cols{grid-template-columns:1fr 1fr}
+  .gfooter.gf--rail .gf-brand{grid-column:1/-1;padding-left:0;border-left:0;
+    border-top:1px solid rgba(255,255,255,.14);padding-top:24px;margin-top:8px}
+  .gfooter.gf--promo .gf-top{grid-template-columns:1fr}
+  .gfooter.gf--promo .gf-cols--3,
+  .gfooter.gf--editorial .gf-cols--3{grid-template-columns:1fr 1fr}
+  /* the disclosures collapse and the cells lose their rules: at this
+     width three 1px-separated columns read as a table, not a group */
+  .gfooter.gf--grid .gf-cols{grid-template-columns:1fr}
+  .gfooter.gf--grid .gf-brand{border-right:0;padding:24px 0}
+  .gf-grps{grid-template-columns:1fr}
+  .gf-grp{border-left:0;border-top:1px solid rgba(255,255,255,.12);padding:4px 0}
+  .gf-grp__h{min-height:44px;margin:0}
+  .gf-grp__b{padding-bottom:10px}
+  /* deep links drop; the heading link to each index carries the group */
+  .gfooter.gf--editorial .gf-cols--3>div>a{display:none}
+  .gfooter.gf--editorial .gf-cols h4{margin:0}
+  .gfooter.gf--editorial .gf-cols h4 a{display:block;min-height:44px;
+    display:flex;align-items:center}
+  .gfooter.gf--editorial .gf-brand p{font-size:1.02rem}
+}
 @media(max-width:520px){.gf-cols{grid-template-columns:1fr}.gf-cta__in{flex-direction:column;align-items:flex-start}
   .gfooter.gf--split .gf-cols>div:not(.gf-brand),
   .gfooter.gf--center .gf-cols>div:not(.gf-brand){display:block;width:auto;margin-right:0}}
@@ -2022,7 +2110,8 @@ def call_bar(t, is_quote=False):
 # all 1000 sites shipped the same dark footer.
 #
 # Append-only: selection is digest % len().
-FOOTER_VARIANTS = ["dark", "light", "brand", "center", "split", "cta"]
+FOOTER_VARIANTS = ["dark", "light", "brand", "center", "split", "cta",
+                   "rail", "promo", "grid", "editorial"]
 
 
 def footer(t, pages, is_quote=False):
@@ -2047,6 +2136,31 @@ def footer(t, pages, is_quote=False):
                    f'<address class="gf-addr">{addr}{addr_tel}</address></div>')
     cols = (f'<div><h4>Services</h4>{services}</div><div><h4>Company</h4>{company}</div>'
             f'<div><h4>Service Areas</h4>{area_links}</div>')
+    # gf--grid collapses each group behind a disclosure on a phone. Rendered
+    # CLOSED, with desktop CSS forcing the body visible again: <details> cannot
+    # be opened by CSS, so shipping them open would leave the phone with the
+    # same 17-link wall this exists to avoid.
+    groups = [("Services", services, "/services/"),
+              ("Company", company, "/about/"),
+              ("Service Areas", area_links, "/service-areas/")]
+    # A checkbox, not <details>. A closed <details> hides its content through a
+    # UA shadow slot that `display` cannot reach, so the desktop rule meant to
+    # force the groups open had no effect and desktop showed three bare
+    # headings. Measured: closed 481px vs open 610px at 1280, when the two
+    # should have been identical. A checkbox puts the state fully in CSS, which
+    # is the same reason the services selector uses radios.
+    gid = f'gfg-{slugify(t["domain"])}'
+    discl = "".join(
+        f'<div class="gf-grp">'
+        f'<input class="gf-grp__t" type="checkbox" id="{gid}-{i}">'
+        f'<label class="gf-grp__h" for="{gid}-{i}">{h}</label>'
+        f'<div class="gf-grp__b">{links}</div></div>'
+        for i, (h, links, _) in enumerate(groups))
+    # gf--editorial keeps the headings as links to each index and drops the deep
+    # links on a phone, so the group still leads somewhere when its list is gone.
+    idx_cols = "".join(
+        f'<div><h4><a href="{url}">{h}</a></h4>{links}</div>'
+        for h, links, url in groups)
     # The footer used to repeat the trust bar's four claims verbatim, so every
     # page said the same thing twice. Show the *other* deck variant here instead.
     decks = COPY["trust"]
@@ -2063,8 +2177,25 @@ def footer(t, pages, is_quote=False):
     # </main> closes here rather than in each of the four page renderers -- they
     # all compose as header(...) + body + footer(...), so opening the landmark in
     # header() and closing it here covers every page from one place.
+    if variant == "rail":
+        # links lead, the brand block sits to their right behind a rule
+        body = (f'<div class="gf-cols">{cols}{brand_block}</div>{trust}{legal}')
+    elif variant == "promo":
+        # the closing strip leads, then brand and trust share a row, then links
+        strip = footer_cta(t)
+        body = (f'<div class="gf-top">{brand_block}{trust}</div>'
+                f'<div class="gf-cols gf-cols--3">{cols}</div>{legal}')
+    elif variant == "grid":
+        body = (f'<div class="gf-cols">{brand_block}<div class="gf-grps">{discl}</div></div>'
+                f'{trust}{legal}')
+    elif variant == "editorial":
+        # the blurb leads at size; the columns are demoted beneath it
+        body = (f'{brand_block}<div class="gf-cols gf-cols--3">{idx_cols}</div>'
+                f'<div class="gf-foot">{legal}{trust}</div>')
+    else:
+        body = f'<div class="gf-cols">{brand_block}{cols}</div>{trust}{legal}'
     return (f'</main><footer class="gfooter gf--{variant}">{strip}<div class="gf-main"><div class="wrap">'
-            f'<div class="gf-cols">{brand_block}{cols}</div>{trust}{legal}</div></div></footer>'
+            f'{body}</div></div></footer>'
             f'{call_bar(t, is_quote)}{js}')
 
 def footer_cta(t):
