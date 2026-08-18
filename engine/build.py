@@ -3611,6 +3611,13 @@ def article_layout(t):
 # APPEND-ONLY: selection is digest % len, so inserting re-rolls every domain.
 ASIDE_VARIANTS = ["card", "dark", "toc", "reasons", "stack"]
 
+# article--wide has no sidebar column: the aside stacks BELOW the prose. The
+# claims block and the area links still read fine there, but a table of
+# contents does not -- it landed 50px past the end of the article it indexes,
+# on 75 sites. Those re-pick from the variants that survive the stack.
+_ASIDE_NEEDS_COLUMN = {"toc"}
+_ASIDE_STACKABLE = ["card", "dark", "reasons", "stack"]
+
 
 def quote_card(t, pages=None, headings=None):
     """The interior-page sidebar column.
@@ -3629,6 +3636,10 @@ def quote_card(t, pages=None, headings=None):
     # pins with its lower half below the fold, where the quote button then
     # stays for the whole scroll. toc puts the list above the card, so the
     # list is what has to give.
+    if v in _ASIDE_NEEDS_COLUMN and article_layout(t) == "article--wide":
+        v = _ASIDE_STACKABLE[_hash_idx(f'{t["domain"]}|asidestack',
+                                       len(_ASIDE_STACKABLE))]
+
     heads = [h for h in (headings or []) if h[0] and h[1]][:5]
     areas = [a for a in (areas_for(pages) if pages else [])][:6]
     if v == "toc" and len(heads) < 3:
@@ -3736,7 +3747,7 @@ def page_hero(t, links, tail, h1, desc="", img=None, allow_cta=True):
     # h1 it would otherwise repeat, so a screen reader would read the page title
     # twice in a row
     shot = (f'<div class="ph__ph"><img src="/assets/photos/{img}" alt="" '
-            f'loading="lazy" decoding="async"></div>') if img else ""
+            f'loading="eager" fetchpriority="high" decoding="async"></div>') if img else ""
     head = f"<h1>{esc(h1)}</h1>"
     open_ = f'<section class="page-hero ph--{v}">'
 
@@ -3752,8 +3763,8 @@ def page_hero(t, links, tail, h1, desc="", img=None, allow_cta=True):
                 f'<div class="wrap ph__body">{head}{d}</div></section>')
     if v == "strip":
         return (f'{open_}<div class="ph__band">'
-                f'<img src="/assets/photos/{img}" alt="" loading="lazy" '
-                f'decoding="async"></div>'
+                f'<img src="/assets/photos/{img}" alt="" loading="eager" '
+                f'fetchpriority="high" decoding="async"></div>'
                 f'<div class="wrap ph__body">{crumb}{head}</div></section>')
     if v == "cta":
         return (f'{open_}<div class="wrap"><div class="ph__row">'

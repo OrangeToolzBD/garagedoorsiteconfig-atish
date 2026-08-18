@@ -226,6 +226,18 @@ Two habits it encodes, both learned by getting them wrong here:
 - `max-width` on a nowrap flex item does not make it shrink to its parent.
   Pair it with `min-width:0` on the item.
 
+### article--wide has no sidebar column
+
+`ARTICLE_LAYOUTS` is `["", "article--left", "article--wide"]`. The third has no
+column at all -- the aside stacks **below** the prose. Any sidebar module that
+depends on being read *before* the article is wrong there. The table of
+contents landed 50px past the end of the article it indexed, on 75 sites.
+
+`_ASIDE_NEEDS_COLUMN` lists the variants that cannot stack; they re-pick from
+`_ASIDE_STACKABLE`. Add to that set when a new module only makes sense in a
+column. `devtools/preview_variants.py` renders every variant in all three
+layouts for exactly this reason.
+
 ### The sidebar column is sticky
 
 `.aside` is `position:sticky; top:96px`. Anything taller than the viewport

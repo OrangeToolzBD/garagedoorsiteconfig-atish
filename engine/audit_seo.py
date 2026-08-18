@@ -33,7 +33,10 @@ def audit_page(fp, domain):
     h1 = re.findall(r"<h1[ >]", h, re.I)
     h2 = re.findall(r"<h2[ >]", h, re.I)
     imgs = re.findall(r"<img\b[^>]*>", h, re.I)
-    imgs_alt = [i for i in imgs if re.search(r'alt="[^"]+"', i)]
+    # alt="" is the correct markup for a decorative image, not a missing alt --
+    # the page-hero photographs carry it deliberately, because they sit beside
+    # the h1 they would otherwise repeat. Only a wholly absent alt is a fault.
+    imgs_alt = [i for i in imgs if re.search(r'\balt="', i)]
     jsonld = re.findall(r'<script type="application/ld\+json">(.*?)</script>', h, re.S)
     types = []
     for block in jsonld:

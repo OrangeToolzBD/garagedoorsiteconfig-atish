@@ -128,23 +128,29 @@ def main(dest):
     open(os.path.join(dest, "heroes.html"), "w", encoding="utf-8",
          newline="\n").write(shell(css, "".join(blocks)))
 
-    # ---- sidebars: every variant in a real 320px column ---------------------
+    # ---- sidebars: every variant, in every article layout -------------------
+    # article--wide has no column at all: the aside stacks below the prose, and
+    # that is where the table of contents landed -- after the article it
+    # indexes, on 75 sites. Rendering only the 320px column hid that entirely.
     pages = {f"/service-areas/{s}/": {"cat": "area", "url": f"/service-areas/{s}/",
                                       "slug": s, "h1": s.replace("-", " ").title()}
              for s in AREAS}
+    prose = ('<h2 id="common-failures">What usually breaks</h2><p>'
+             + "Body copy. " * 40
+             + '</p><h2 id="repair-costs">What a repair costs</h2><p>'
+             + "More copy. " * 40 + "</p>")
     orig = B.ASIDE_VARIANTS
-    cols = []
-    for v in orig:
-        B.ASIDE_VARIANTS = [v]
-        cols.append(f'<div class="col"><p class="lbl">{v}</p>'
-                    + B.quote_card(t, pages, HEADINGS) + "</div>")
+    out = []
+    for lay in B.ARTICLE_LAYOUTS:
+        for v in orig:
+            B.ASIDE_VARIANTS = [v]
+            out.append(f'<p class="lbl">{v} &mdash; article{lay or " (default)"}</p>'
+                       f'<div class="wrap"><div class="article {lay}">'
+                       f'<div class="body">{prose}</div>'
+                       + B.quote_card(t, pages, HEADINGS) + "</div></div>")
     B.ASIDE_VARIANTS = orig
-    extra = (".rail{display:flex;gap:24px;align-items:flex-start;padding:16px}"
-             ".col{width:320px;flex:0 0 320px}.aside{position:static}"
-             "@media(max-width:900px){.rail{display:block}"
-             ".col{width:auto;flex:none;margin-bottom:24px}}")
     open(os.path.join(dest, "sidebars.html"), "w", encoding="utf-8",
-         newline="\n").write(shell(css, f'<div class="rail">{"".join(cols)}</div>', extra))
+         newline="\n").write(shell(css, "".join(out), ".aside{position:static}"))
 
     open(os.path.join(dest, "audit.html"), "w", encoding="utf-8",
          newline="\n").write(AUDIT)
