@@ -1034,6 +1034,17 @@ footer.site a.btn--ghost,footer.site a.btn--ghost:hover{color:#fff}
      overscroll-behavior:contain stops a scroll at the drawer's end from
      chaining to the page behind it. */
   nav.main.open{display:flex}
+  /* Stuck :hover after a tap. iOS holds the hover state on the last tapped
+     element, so a nav row stayed highlighted after the menu closed and read as
+     still-selected. Neutralised by WIDTH, not @media(hover:none): some touch
+     devices report hover capability, so that gate silently never applies --
+     the reference fix in the porta-potty repo hit exactly that and had to be
+     rewritten. At <=1120px the nav is always the drawer and hover never opens
+     a panel, so hover should have no visual effect at all here. */
+  nav.main>a:hover,.nav-item>button:hover,
+  .lay-nav-pill nav.main>a:hover,.lay-nav-pill .nav-item>button:hover{
+    background:transparent}
+  .mega a:hover{background:transparent;color:var(--ink)}
   /* pill-nav variant: reset the desktop pill so the mobile panel isn't a giant ellipse */
   .lay-nav-pill nav.main{border-radius:0;padding:12px;gap:2px;background:#fff}
   .lay-nav-pill nav.main>a,.lay-nav-pill .nav-item>button{border-radius:10px;padding:12px 14px}
