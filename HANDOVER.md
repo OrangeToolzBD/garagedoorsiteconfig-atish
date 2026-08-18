@@ -201,6 +201,31 @@ in-use themes (plus the CTA gradient and the footer ramp separately), `<main>`,
 skip links, phone-less "Call" prose, **missing essential sections**, and
 **variant CSS pruned away while still rendered**.
 
+### The gate cannot see layout
+
+`measure_similarity.py` reads HTML and CSS as text. It cannot tell whether a
+box paints outside the box meant to contain it, so **a section can be visibly
+broken at 17/17 green**. Both page-hero grid bugs were of that kind: a 249px
+breadcrumb tail inside a 190px rail, then a 375px grid track inside a 354px
+container. Neither moved a single check.
+
+```bash
+cd engine && python3 devtools/preview_variants.py preview
+python3 -m http.server 8890 --directory preview   # then open /audit.html
+```
+
+That renders every page-hero and sidebar variant with both a 75-character and
+a short title, and reports any element painting outside its parent at 1280,
+900, 768, 390 and 360. **Run it whenever you add a variant.**
+
+Two habits it encodes, both learned by getting them wrong here:
+
+- Use `minmax(0,1fr)`, never bare `1fr`. A grid track's automatic minimum is
+  its item's min-content width, so one `white-space:nowrap` row can hold a
+  column wider than the container it sits in.
+- `max-width` on a nowrap flex item does not make it shrink to its parent.
+  Pair it with `min-width:0` on the item.
+
 ### The sidebar column is sticky
 
 `.aside` is `position:sticky; top:96px`. Anything taller than the viewport

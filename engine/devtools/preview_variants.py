@@ -1,0 +1,157 @@
+#!/usr/bin/env python
+"""Render every section variant on one page, and audit it for overflow.
+
+The gate in measure_similarity.py reads HTML and CSS as text. It cannot see
+layout, so it cannot catch the bug class that actually reaches the eye: a box
+painting outside the box that is supposed to contain it. Both page-hero grid
+bugs were of that kind -- a 249px breadcrumb tail inside a 190px rail, then a
+375px grid track inside a 354px container -- and both passed the gate 17/17.
+
+    python3 devtools/preview_variants.py out/
+    python3 -m http.server 8890 --directory out/
+    # open /audit.html and read the result
+
+The audit iframes the preview at five widths and reports any element that
+paints outside its parent's content box, plus any page that scrolls sideways.
+"""
+import os
+import shutil
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import build as B
+
+DOMAIN = "dallasgaragedoor.com"
+
+LONG_H1 = "Garage Door Repair for Dallas Homes Built 1973-2007"
+SHORT_H1 = "About Dallas Garage Door"
+DESC = ("Broken springs and stuck tracks are common in Dallas homes built "
+        "1973-2007. See what a repair call involves, what it costs, and when "
+        "to skip DIY fixes.")
+LINKS = [("Home", "/"), ("Services", "/services/")]
+HEADINGS = [("common-failures", "What usually breaks on an older door"),
+            ("repair-costs", "What a repair actually costs"),
+            ("diy-safety", "When to skip the DIY fix"),
+            ("warranty", "Warranty and parts"),
+            ("timing", "How long a call takes"),
+            ("faq", "Questions people ask")]
+# the longest real area label in the estate, which is what broke the pills
+AREAS = ["buckner-terrace-everglade-park", "lakewood", "preston-hollow",
+         "desoto", "balch-springs", "cedar-crest", "ferris"]
+
+AUDIT = """<meta charset="utf-8"><title>overflow audit</title>
+<body style="font:13px/1.5 monospace;padding:14px"><pre id="out">running...</pre>
+<script>
+const NL = String.fromCharCode(10);
+const WIDTHS = [1280, 900, 768, 390, 360];
+function audit(doc, win) {
+  const bad = [];
+  doc.querySelectorAll('.page-hero, .aside').forEach(root => {
+    const tag = root.className.replace(/\\s+/g, '.');
+    root.querySelectorAll('*').forEach(el => {
+      const r = el.getBoundingClientRect();
+      if (!r.width || !r.height) return;
+      const p = el.parentElement, pr = p.getBoundingClientRect();
+      const cs = getComputedStyle(p);
+      const inL = pr.left + parseFloat(cs.paddingLeft);
+      const inR = pr.right - parseFloat(cs.paddingRight);
+      if (cs.overflow === 'visible' && (r.right > inR + 1 || r.left < inL - 1))
+        bad.push('    ' + tag + ' > ' + (el.className || el.tagName) + ' spills ' +
+                 Math.round(Math.max(r.right - inR, inL - r.left)) + 'px');
+    });
+  });
+  if (doc.documentElement.scrollWidth > win.innerWidth + 1)
+    bad.push('    PAGE scrolls sideways: ' + doc.documentElement.scrollWidth +
+             ' > ' + win.innerWidth);
+  return bad;
+}
+function frame(w, src) {
+  return new Promise(res => {
+    const f = document.createElement('iframe');
+    f.style.cssText = 'position:absolute;left:-9999px;border:0;height:1000px;width:' + w + 'px';
+    f.src = src;
+    f.onload = () => setTimeout(() => res(f), 220);
+    document.body.appendChild(f);
+  });
+}
+(async () => {
+  const out = [];
+  for (const u of ['/heroes.html', '/sidebars.html']) {
+    for (const w of WIDTHS) {
+      const f = await frame(w, u);
+      let bad = [];
+      try { bad = audit(f.contentDocument, f.contentWindow); }
+      catch (e) { bad = ['    could not read: ' + e.message]; }
+      f.remove();
+      if (bad.length) out.push('  ' + u + '  @' + w + NL + bad.join(NL));
+    }
+  }
+  document.getElementById('out').textContent = out.length
+    ? 'PROBLEMS:' + NL + out.join(NL)
+    : 'CLEAN - nothing spills its container at any width.';
+})();
+</script>
+"""
+
+
+def shell(css, body, extra=""):
+    return ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
+            '<meta name="viewport" content="width=device-width,initial-scale=1">'
+            f"<title>variants</title><style>{css}\n"
+            ".lbl{font:600 12px/1 ui-monospace,monospace;letter-spacing:.08em;"
+            "text-transform:uppercase;color:#888;margin:22px 0 6px;padding:0 16px}"
+            f"body{{margin:0}}{extra}</style></head><body>{body}</body></html>")
+
+
+def main(dest):
+    os.makedirs(dest, exist_ok=True)
+    t = B.load_config()[DOMAIN]
+    css = B.strip_css_comments(B.GARAGE["css"](t))
+
+    src = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                       "dist", DOMAIN, "assets")
+    if os.path.isdir(src):
+        shutil.rmtree(os.path.join(dest, "assets"), ignore_errors=True)
+        shutil.copytree(src, os.path.join(dest, "assets"))
+
+    # ---- page heroes: every variant, with a long and a short title ----------
+    orig = B.PAGE_HERO_VARIANTS
+    blocks = []
+    for v in orig:
+        B.PAGE_HERO_VARIANTS = [v]
+        blocks.append(
+            f'<p class="lbl">{v} &mdash; long title, with description</p>'
+            + B.page_hero(t, LINKS, LONG_H1, LONG_H1, desc=DESC, img="gd-1.jpg")
+            + f'<p class="lbl">{v} &mdash; short title, no description</p>'
+            + B.page_hero(t, [("Home", "/")], SHORT_H1, SHORT_H1, desc="", img="gd-2.jpg"))
+    B.PAGE_HERO_VARIANTS = orig
+    open(os.path.join(dest, "heroes.html"), "w", encoding="utf-8",
+         newline="\n").write(shell(css, "".join(blocks)))
+
+    # ---- sidebars: every variant in a real 320px column ---------------------
+    pages = {f"/service-areas/{s}/": {"cat": "area", "url": f"/service-areas/{s}/",
+                                      "slug": s, "h1": s.replace("-", " ").title()}
+             for s in AREAS}
+    orig = B.ASIDE_VARIANTS
+    cols = []
+    for v in orig:
+        B.ASIDE_VARIANTS = [v]
+        cols.append(f'<div class="col"><p class="lbl">{v}</p>'
+                    + B.quote_card(t, pages, HEADINGS) + "</div>")
+    B.ASIDE_VARIANTS = orig
+    extra = (".rail{display:flex;gap:24px;align-items:flex-start;padding:16px}"
+             ".col{width:320px;flex:0 0 320px}.aside{position:static}"
+             "@media(max-width:900px){.rail{display:block}"
+             ".col{width:auto;flex:none;margin-bottom:24px}}")
+    open(os.path.join(dest, "sidebars.html"), "w", encoding="utf-8",
+         newline="\n").write(shell(css, f'<div class="rail">{"".join(cols)}</div>', extra))
+
+    open(os.path.join(dest, "audit.html"), "w", encoding="utf-8",
+         newline="\n").write(AUDIT)
+    print(f"wrote heroes.html, sidebars.html and audit.html to {dest}")
+    print(f"  python3 -m http.server 8890 --directory {dest}")
+    print("  then open http://127.0.0.1:8890/audit.html")
+
+
+if __name__ == "__main__":
+    main(sys.argv[1] if len(sys.argv) > 1 else "preview")

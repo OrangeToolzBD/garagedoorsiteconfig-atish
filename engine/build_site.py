@@ -1245,7 +1245,7 @@ footer.site a.btn--ghost,footer.site a.btn--ghost:hover{color:#fff}
       photograph on the right. The crumb reads as a column, not a trail. */
 .page-hero.ph--grid{background:var(--bg);color:var(--ink);padding:0;
   border-bottom:1px solid var(--line)}
-.page-hero.ph--grid .ph__g{display:grid;grid-template-columns:190px 1fr 260px;
+.page-hero.ph--grid .ph__g{display:grid;grid-template-columns:190px minmax(0,1fr) 260px;
   align-items:stretch;min-height:190px}
 .page-hero.ph--grid .ph__rail{padding:26px 22px 26px 0;
   border-right:1px solid var(--line);display:flex;flex-direction:column;
@@ -1254,6 +1254,12 @@ footer.site a.btn--ghost,footer.site a.btn--ghost:hover{color:#fff}
   align-items:flex-start;gap:6px;margin:0;color:var(--muted);font-size:.8rem}
 .page-hero.ph--grid .ph__rail .crumb .sep{display:none}
 .page-hero.ph--grid .ph__rail .crumb a{color:var(--muted)}
+/* the 34ch cap on .crumb__c is wider than this 190px rail, and a nowrap flex
+   item does not shrink to its container -- so the tail ran 59px past the rail
+   and collided with the h1 beside it */
+.page-hero.ph--grid .ph__rail .crumb a,
+.page-hero.ph--grid .ph__rail .crumb__c{max-width:100%;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
 .page-hero.ph--grid .ph__mid{display:flex;align-items:center;padding:26px 30px}
 .page-hero.ph--grid h1{color:var(--ink);margin:0}
 .page-hero.ph--grid .ph__loc{background:var(--soft2);color:var(--muted)}
@@ -1272,10 +1278,14 @@ footer.site a.btn--ghost,footer.site a.btn--ghost:hover{color:#fff}
   .page-hero.ph--cta .ph__act .btn{width:100%;justify-content:center}
   /* the rail becomes a normal trail again -- a 190px column of stacked
      crumb items is most of a 390px screen */
-  .page-hero.ph--grid .ph__g{grid-template-columns:1fr;min-height:0}
+  .page-hero.ph--grid .ph__g{grid-template-columns:minmax(0,1fr);min-height:0}
+  .page-hero.ph--grid .ph__rail,.page-hero.ph--grid .ph__mid,
+  .page-hero.ph--grid .ph__ph{min-width:0}
   .page-hero.ph--grid .ph__rail{border-right:0;padding:20px 0 0;
     flex-direction:row;align-items:center;gap:12px;flex-wrap:wrap}
-  .page-hero.ph--grid .ph__rail .crumb{flex-direction:row;align-items:center;gap:6px}
+  .page-hero.ph--grid .ph__rail .crumb{flex-direction:row;align-items:center;
+    gap:6px;flex-wrap:wrap;min-width:0}
+  .page-hero.ph--grid .ph__rail .crumb__c{min-width:0;flex:0 1 auto}
   .page-hero.ph--grid .ph__rail .crumb .sep{display:inline}
   .page-hero.ph--grid .ph__mid{padding:12px 0 16px}
   .page-hero.ph--grid .ph__ph{height:140px}
