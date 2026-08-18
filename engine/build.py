@@ -2092,7 +2092,7 @@ def area_label(p):
 # Append-only -- selection is digest % len().
 HERO_VARIANTS = ["banner", "center", "overlap", "split-left", "split-right",
                  "stacked", "overhang", "twotone", "inset",
-                 "masthead", "plate"]
+                 "masthead", "plate", "wide"]
 
 
 def hero(t, h1, lead, img=HERO_IMG):
@@ -2142,6 +2142,16 @@ def hero(t, h1, lead, img=HERO_IMG):
                 f'<div class="cta">{call}{quote}</div></div>'
                 f'<div class="hero__shot"><img src="{src}" alt="{alt}" fetchpriority="high"></div>'
                 f'{chips}</div></section>')
+    if variant == "wide":
+        # Uneven split: the photograph takes two thirds, the copy one third.
+        # Every other split in the set is 50/50. The copy never sits on the
+        # photograph, which is what makes this safe with ordinary stock imagery.
+        return (f'<section class="hero hero--wide"><div class="wrap">'
+                f'<div class="hero__pane"><img src="{src}" alt="{alt}" '
+                f'fetchpriority="high"></div>'
+                f'<div class="hero__side">{eyebrow}<h1>{esc(h1)}</h1>{leadh}'
+                f'<div class="cta">{call}{quote}</div>{chips}</div>'
+                f'</div></section>')
     if variant == "masthead":
         # No photograph at all. Every other hero leads with the image, and the
         # imagery is ordinary stock that differs on all 1001 sites -- these two

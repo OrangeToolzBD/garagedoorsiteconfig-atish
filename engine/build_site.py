@@ -714,6 +714,27 @@ nav.main>a:hover,.nav-item>button:hover{background:var(--soft);text-decoration:n
   display:flex;flex-wrap:nowrap;gap:0 26px;white-space:nowrap}
 .hero--plate .chips li{color:var(--muted);font-size:.78rem;letter-spacing:.06em;
   text-transform:uppercase}
+/* ---- wide (18) -- uneven split, photograph two thirds, copy one third.
+   Every other split in the set is 50/50. The copy column is narrow, so the
+   heading clamps smaller than elsewhere and the chips run as a single stacked
+   list rather than the usual two-up grid. The reference render overflowed its
+   own right edge here; minmax(0,..) on both tracks is what prevents that -- a
+   plain 2fr 1fr lets the copy push the grid wider than the wrap. */
+.hero--wide{background:var(--soft);padding:0;min-height:0}
+.hero--wide .wrap{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);
+  gap:0;padding:0;align-items:stretch}
+.hero--wide .hero__pane{overflow:hidden}
+.hero--wide .hero__pane img{width:100%;height:100%;min-height:440px;
+  object-fit:cover;display:block}
+.hero--wide .hero__side{background:var(--card);border-left:1px solid var(--line);
+  padding:44px 34px;display:flex;flex-direction:column;justify-content:center}
+.hero--wide h1{color:var(--ink);margin:0 0 12px;
+  font-size:clamp(1.4rem,2.1vw,2.05rem);line-height:1.14}
+.hero--wide .eyebrow{color:var(--accent-lt)}
+.hero--wide .lead{color:var(--muted);font-size:1rem;margin:0 0 22px;max-width:none}
+.hero--wide .cta{margin:0 0 22px;flex-direction:column;align-items:stretch}
+.hero--wide .chips{grid-template-columns:1fr;gap:9px;margin:0}
+.hero--wide .chips li{color:var(--ink);font-size:.9rem}
 .hero--stacked .wrap{position:relative;padding:66px 24px 0;text-align:center}
 .hero--stacked .hero__copy{max-width:760px;margin:0 auto}
 .hero--stacked .lead{margin:0 auto 26px}
@@ -1236,6 +1257,11 @@ footer.site a.btn--ghost,footer.site a.btn--ghost:hover{color:#fff}
   .hero--inset .hero__foot{grid-template-columns:1fr;gap:14px}
   .hero--inset .hero__foot .cta{grid-column:1}
   .hero--inset .hero__strip img{aspect-ratio:16/9;max-height:none}
+  .hero--wide .wrap{grid-template-columns:1fr}
+  .hero--wide .hero__pane img{min-height:0;aspect-ratio:16/9}
+  .hero--wide .hero__side{border-left:0;border-top:1px solid var(--line);
+    padding:30px 22px}
+  .hero--wide .cta{flex-direction:column}
   .hero--masthead .wrap{padding:40px 20px 26px}
   .hero--masthead .chips{gap:10px 20px}
   .hero--masthead .chips li{font-size:.76rem}
