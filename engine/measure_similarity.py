@@ -55,6 +55,7 @@ TARGETS = {
     "contrast_failures": ("==", 0),
     "cta_contrast_failures": ("==", 0),
     "footer_contrast_failures": ("==", 0),
+    "pruned_away_live_css": ("==", 0),
     "pages_missing_main": ("==", 0),
     "pages_missing_skiplink": ("==", 0),
     "pages_calling_nobody": ("==", 0),
@@ -194,6 +195,39 @@ def footer_contrast_failures():
         for name, col in checks:
             if B._cratio(col, ground) < 4.5:
                 bad.setdefault(f"{name} on --ft-bg", []).append(s["theme"])
+    return sum(len(v) for v in bad.values()), bad
+
+
+def pruned_away_live_css():
+    """Variant classes a page renders that its own stylesheet no longer styles.
+
+    Each site now ships only the variant CSS it uses -- one hero out of twelve,
+    one footer out of ten -- which took site.css from 98K to ~70K. The failure
+    mode of that pass is silent: the page still renders, just unstyled in one
+    band, and nothing else in the build notices.
+
+    Checked against the shipped files rather than by re-deriving which variant
+    each site should have had, because a second prediction of the renderer's
+    choice is a second place to be wrong.
+
+    svcx-sec--* is excluded: it is a positional hook on the section element and
+    has never had rules of its own, so its absence is not evidence of anything.
+    """
+    fam = (".hero--", ".svcx--", ".ctab--", ".faq--", ".gf--", ".pf-")
+    bad = {}
+    for d in sorted(os.listdir(DIST)) if os.path.isdir(DIST) else []:
+        css_p = os.path.join(DIST, d, "assets", "site.css")
+        if not os.path.isfile(css_p):
+            continue
+        css = open(css_p, encoding="utf-8").read()
+        used = set()
+        for page in glob.glob(os.path.join(DIST, d, "**", "index.html"), recursive=True):
+            for m in re.finditer(r'class="([^"]*)"', open(page, encoding="utf-8").read()):
+                used.update(m.group(1).split())
+        for c in sorted(used):
+            tok = "." + c
+            if tok.startswith(fam) and not tok.startswith(".svcx-sec--") and tok not in css:
+                bad.setdefault(d, []).append(c)
     return sum(len(v) for v in bad.values()), bad
 
 
@@ -477,11 +511,13 @@ def main():
     cfails, cdetail, ntheme = contrast_failures()
     ctafails, ctadetail = cta_contrast_failures()
     ftfails, ftdetail = footer_contrast_failures()
+    prunefails, prunedetail = pruned_away_live_css()
     ess = missing_essentials()
     npages, no_main, no_skip, calling_nobody = page_checks()
     res.update({"contrast_failures": cfails,
                 "cta_contrast_failures": ctafails,
-                "footer_contrast_failures": ftfails, "pages_missing_main": no_main,
+                "footer_contrast_failures": ftfails,
+                "pruned_away_live_css": prunefails, "pages_missing_main": no_main,
                 "pages_missing_skiplink": no_skip, "pages_calling_nobody": calling_nobody,
                 "sites_missing_essentials": len(ess)})
 
@@ -528,6 +564,8 @@ def main():
     print(f"  contrast (WCAG AA) over {ntheme} in-use themes: {cfails} failures")
     print(f"  CTA-band text on its own gradient: {ctafails} failures  {ctadetail if ctafails else ''}")
     print(f"  Footer ramp on its own ground: {ftfails} failures  {ftdetail if ftfails else ''}")
+    print(f"  variant CSS pruned away while still rendered: {prunefails} "
+          f"{prunedetail if prunefails else ''}")
     for k, v in sorted(cdetail.items()):
         print(f"    {k}: {len(v)}")
     print(f"  landmarks: {npages - no_main}/{npages} have <main>, "

@@ -3744,6 +3744,111 @@ def strip_css_comments(css):
     return re.sub(r"\n[ \t]*(?:\n[ \t]*)+", "\n", "".join(out))
 
 
+# Variant families whose CSS is written once but used one-at-a-time. The value
+# is the selector prefix that identifies a rule as belonging to a single
+# variant; anything not matching a prefix is shared and never pruned.
+_PRUNE_FAMILIES = (".hero--", ".svcx--", ".svcx-sec--", ".ctab--", ".faq--",
+                   ".gf--", ".pf-")
+
+
+def _css_rules(css):
+    """Split a stylesheet into (context, selector, whole_rule).
+
+    Context is the enclosing at-rule prelude, or "" at top level. String-aware
+    for the same reason strip_css_comments is: a brace inside content:"{" is
+    not a block boundary."""
+    out, buf, i, n = [], [], 0, len(css)
+    while i < n:
+        c = css[i]
+        if c in "\"'":
+            j = i + 1
+            while j < n and css[j] != c:
+                j += 2 if css[j] == "\\" else 1
+            buf.append(css[i:j + 1]); i = j + 1; continue
+        if c == "{":
+            prelude = "".join(buf).strip(); buf = []
+            depth, j = 1, i + 1
+            while j < n and depth:
+                if css[j] == "{": depth += 1
+                elif css[j] == "}": depth -= 1
+                j += 1
+            inner = css[i + 1:j - 1]
+            if prelude.startswith("@") and re.match(r"@(media|supports|container)", prelude):
+                for _, sel, raw in _css_rules(inner):
+                    out.append((prelude, sel, raw))
+            else:
+                out.append(("", prelude, prelude + "{" + inner + "}"))
+            i = j; continue
+        buf.append(c); i += 1
+    return out
+
+
+def prune_site_css(site_dir):
+    """Drop variant CSS this site cannot use.
+
+    Every site ships the whole library -- 12 heroes, 10 footers, 8 proof
+    variants, 8 CTA bands, 5 FAQs -- and renders exactly one of each. The
+    unused rules were ~15% of a 100KB stylesheet on every page of all 1001
+    sites, and the cost grows with every variant added.
+
+    Pruning works from the HTML actually written, not from re-running the
+    selectors: a second prediction of what the renderer chose is a second place
+    to be wrong, and the pages are already on disk by the time this runs.
+
+    A rule is dropped only when EVERY selector in it names a variant this site
+    does not use. Rules mixing a used and an unused selector stay, as do all
+    shared primitives -- .svcx-sel drives the services selector for several
+    archetypes, .pf-points is shared by three proof variants."""
+    css_path = os.path.join(site_dir, "assets", "site.css")
+    if not os.path.isfile(css_path):
+        return 0, 0
+    markup = []
+    for root, _dirs, files in os.walk(site_dir):
+        for fn in files:
+            if fn.endswith(".html"):
+                markup.append(open(os.path.join(root, fn), encoding="utf-8").read())
+    if not markup:
+        return 0, 0
+    classes = set()
+    for h in markup:
+        for m in re.finditer(r'class="([^"]*)"', h):
+            classes.update(m.group(1).split())
+
+    def unused(sel):
+        """True if this selector names a variant class the site never renders."""
+        hit = False
+        for tok in re.findall(r"\.[-A-Za-z0-9_]+", sel):
+            name = tok[1:]
+            if any(tok.startswith(f) for f in _PRUNE_FAMILIES):
+                if name in classes:
+                    return False          # a used variant -- keep the rule
+                hit = True
+        return hit
+
+    before = os.path.getsize(css_path)
+    css = open(css_path, encoding="utf-8").read()
+    kept = [(ctx, raw) for ctx, sel, raw in _css_rules(css)
+            if not (lambda parts: parts and all(unused(p) for p in parts))(
+                [p.strip() for p in sel.split(",") if p.strip()])]
+    # Re-emit in SOURCE ORDER, grouping only CONSECUTIVE rules that share a
+    # context. Collecting every rule under its @media prelude instead would
+    # merge the six separate max-width:560px blocks into the position of the
+    # first one, hoisting later rules above the base rules they override --
+    # media queries carry no extra specificity, so order is all they have. That
+    # silently rebuilt the mobile trust bar as two columns.
+    out, i = [], 0
+    while i < len(kept):
+        ctx = kept[i][0]
+        j = i
+        while j < len(kept) and kept[j][0] == ctx:
+            j += 1
+        run = "".join(r for _c, r in kept[i:j])
+        out.append(run if not ctx else ctx + "{" + run + "}")
+        i = j
+    open(css_path, "w", encoding="utf-8", newline="\n").write("".join(out))
+    return before, os.path.getsize(css_path)
+
+
 def build(only=None):
     """Render every registered domain that has content.
 
@@ -3873,7 +3978,9 @@ def build(only=None):
             f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{sm}</urlset>')
         open(os.path.join(out, "robots.txt"), "w", encoding="utf-8").write(
             f"User-agent: *\nAllow: /\nSitemap: https://{domain}/sitemap.xml\n")
-        print(f"  {domain}: {len(urls)} pages ({t['city']}, {t['st']})")
+        was, now = prune_site_css(out)
+        saved = f"  css {was // 1024}K->{now // 1024}K" if was else ""
+        print(f"  {domain}: {len(urls)} pages ({t['city']}, {t['st']}){saved}")
     print("Done ->", DIST)
 
 if __name__ == "__main__":

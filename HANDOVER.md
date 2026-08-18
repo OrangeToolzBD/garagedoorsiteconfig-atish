@@ -194,10 +194,37 @@ label that exists** — there are no captions, titles or dates anywhere.
 cd engine && python3 measure_similarity.py --gate
 ```
 
-12 checks, exits non-zero on regression: text/DOM similarity, pairs ≥95%,
+16 checks, exits non-zero on regression: text/DOM similarity, pairs ≥95%,
 single-value strings, dead layout axes, discarded prose, WCAG AA over all 1001
-in-use themes, `<main>`, skip links, phone-less "Call" prose, and **missing
-essential sections**.
+in-use themes (plus the CTA gradient and the footer ramp separately), `<main>`,
+skip links, phone-less "Call" prose, **missing essential sections**, and
+**variant CSS pruned away while still rendered**.
+
+### CSS pruning
+
+Every site used to ship the whole variant library -- twelve heroes, ten footers,
+eight proof blocks, eight CTA bands, five FAQs -- and render one of each.
+`prune_site_css()` in `build.py` runs at the end of each site's build, reads the
+HTML just written, and drops any rule whose selectors *all* name variants that
+site does not use. **98K -> ~70K**, on every page of all 1001 sites.
+
+Three rules, learned the hard way:
+
+- **Re-emit in source order.** Grouping the kept rules under their `@media`
+  prelude looks tidier and is wrong: the sheet contains six separate
+  `max-width:560px` blocks, and merging them hoists later rules above the base
+  rules they override. Media queries add no specificity, so order is all they
+  have. This silently rebuilt the mobile trust bar as two columns.
+- **Never prune shared primitives.** `.svcx-sel`, `.svcx-vis`, `.pf-points`,
+  `.gf-cols` and `.gf-trust` are used by several variants each. A rule survives
+  if *any* of its comma-separated selectors is live.
+- **`.svcx-sec--*` has no CSS at all** and never has -- it is a positional hook
+  on the section element. Its absence from a stylesheet means nothing.
+
+Verified two ways, neither of which trusts the pruner's own logic: the pruned
+sheet is an exact **ordered subsequence** of the unpruned one (no rule moved or
+altered), and all 2,238 dropped selectors were run through the browser's CSS
+engine against all 202 built pages -- 40,029 tests, zero matches.
 
 Two things worth understanding:
 
