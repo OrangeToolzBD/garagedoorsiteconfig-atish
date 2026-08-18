@@ -2659,7 +2659,14 @@ def areas_band(t, pages):
 #
 # Append-only, like BUTTON_STYLES: selection is digest % len(), so inserting or
 # reordering re-rolls nearly every domain.
-CTA_VARIANTS = ["panel", "bar", "card", "editorial"]
+CTA_VARIANTS = ["panel", "bar", "card", "editorial",
+                "offset", "frame", "grid", "rail"]
+
+
+def _where(t):
+    """City and state as a short label. Four CTA variants show it; it is the
+    only per-site string the band carries besides the decked copy."""
+    return f'{esc(t["city"])}, {esc(t["st"])}'
 
 
 def cta_band(t, heading=None):
@@ -2683,6 +2690,21 @@ def cta_band(t, heading=None):
     elif v == "editorial":              # heading leads, lead demoted under a rule
         inner = (f'{h2}{cta}<p class="ctab__lead">'
                  f'<span class="ctab__rule"></span>{lead}</p>')
+    elif v == "offset":                 # card lifted off an accent block behind it
+        inner = (f'<div class="ctab__slab"></div>'
+                 f'<div class="ctab__panel"><p class="ctab__k">{_where(t)}</p>'
+                 f'<div class="ctab__b">{h2}{p}</div>{cta}</div>')
+    elif v == "frame":                  # heading breaks the top edge of the frame
+        inner = (f'<h2 class="ctab__over">{esc(heading)}</h2>'
+                 f'<div class="ctab__box"><p class="ctab__k">{_where(t)}</p>'
+                 f'{p}{cta}</div>')
+    elif v == "grid":                   # three columns: heading | lead | actions
+        inner = (f'<div class="ctab__c1"><p class="ctab__k">{_where(t)}</p>{h2}</div>'
+                 f'<div class="ctab__c2">{p}</div>{cta}')
+    elif v == "rail":                   # heavy accent bar down the left edge
+        inner = (f'<span class="ctab__bar"></span>'
+                 f'<div class="ctab__b"><p class="ctab__k">{_where(t)}</p>{h2}{p}</div>'
+                 f'{cta}')
     else:                               # panel -- the original filled card
         inner = f'{h2}{p}{cta}'
 

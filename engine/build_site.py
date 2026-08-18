@@ -885,6 +885,68 @@ table{width:100%;border-collapse:collapse}
   align-items:stretch}
 .ctab__lead{grid-column:1;display:flex;gap:14px;margin:0;max-width:54ch}
 .ctab__rule{flex:0 0 3px;width:3px;background:var(--accent);border-radius:2px}
+/* offset (06) -- the card is lifted off an accent slab sitting behind it.
+   The slab is a real element, not a ::before: it has to sit UNDER the panel in
+   the stacking order while both are in normal flow, and a pseudo-element on a
+   grid parent cannot be placed in the same grid cell as its own children. */
+.ctab--offset{position:relative;background:none;box-shadow:none;padding:0;
+  text-align:left;color:var(--ink)}
+.ctab--offset h2{color:var(--ink)}
+.ctab--offset p{color:var(--muted)}
+.ctab__slab{position:absolute;left:24px;right:24px;top:26px;bottom:-14px;
+  background:var(--soft2);border-radius:var(--radius)}
+.ctab__panel{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;
+  gap:18px 40px;align-items:center;background:var(--card);
+  border:1px solid var(--line);border-radius:var(--radius);padding:34px 36px}
+.ctab--offset .ctab__k{grid-column:1;margin:0}
+.ctab--offset .ctab__b{grid-column:1}
+.ctab--offset .cta{grid-column:2;grid-row:1/4;flex-direction:column;align-items:stretch}
+
+/* frame (08) -- the heading breaks the top edge of a hairline box.
+   Negative margin plus a background on the heading punches the rule; the
+   background must be a token, not #fff, or it shows as a white notch on a
+   tinted band. */
+.ctab--frame{background:none;box-shadow:none;padding:26px 0 0;text-align:left;
+  color:var(--ink)}
+/* display:block + width:fit-content, not inline-block: as an inline box the
+   heading still generates a line box, whose half-leading and descender sat
+   below the glyphs, so the negative margin was eaten and the heading floated
+   10px ABOVE the frame instead of breaking its edge. */
+.ctab--frame .ctab__over{margin:0 0 -20px 34px;position:relative;z-index:1;
+  display:block;width:fit-content;padding:0 14px;background:var(--bg);
+  color:var(--ink);font-size:clamp(1.3rem,2.3vw,1.9rem);line-height:1.1}
+.ctab__box{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px 40px;
+  align-items:center;border:1px solid var(--line);border-radius:var(--radius);
+  padding:34px 34px 28px}
+.ctab--frame .ctab__k{grid-column:1;margin:0}
+.ctab--frame p{grid-column:1;margin:0;color:var(--muted);max-width:52ch}
+.ctab--frame .cta{grid-column:2;grid-row:1/3}
+
+/* grid (11) -- heading, lead and actions as three columns, ruled between */
+.ctab--grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr) auto;
+  gap:0 34px;align-items:center;background:none;box-shadow:none;
+  padding:30px 0;text-align:left;color:var(--ink);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.ctab--grid h2{margin:0;color:var(--ink);font-size:clamp(1.2rem,1.9vw,1.55rem);
+  line-height:1.2}
+.ctab__c1 .ctab__k{margin:0 0 6px}
+.ctab__c2{border-left:1px solid var(--line);padding-left:34px}
+.ctab--grid p{margin:0;color:var(--muted);font-size:.98rem}
+.ctab--grid .cta{flex-direction:column;align-items:stretch}
+
+/* rail (12) -- a heavy accent bar down the left edge. The most confident of the
+   set on a plain ground, which is why it earns its place: the others all rely
+   on a border or a tint to be visible at all. */
+.ctab--rail{display:grid;grid-template-columns:auto minmax(0,1fr) auto;
+  gap:0 26px;align-items:center;background:none;box-shadow:none;
+  padding:6px 0;text-align:left;color:var(--ink)}
+.ctab__bar{align-self:stretch;width:6px;min-height:96px;border-radius:3px;
+  background:var(--accent)}
+.ctab--rail h2{margin:6px 0 8px;color:var(--ink);
+  font-size:clamp(1.35rem,2.4vw,2rem);line-height:1.14}
+.ctab--rail p{margin:0;color:var(--muted);max-width:56ch}
+.ctab--rail .ctab__k{margin:0}
+.ctab--rail .cta{flex-direction:column;align-items:stretch}
 
 /* footer */
 footer.site{background:#0f151b;color:#aeb9c5;padding:60px 0 26px;margin-top:0}
@@ -1089,6 +1151,19 @@ footer.site a.btn--ghost,footer.site a.btn--ghost:hover{color:#fff}
   .ctab--bar,.ctab--editorial{grid-template-columns:1fr;gap:18px}
   .ctab--editorial h2,.ctab--editorial .cta,.ctab__lead{grid-column:1}
   .ctab--editorial .cta{grid-row:auto}
+  /* every new variant is a side-by-side grid on desktop and must unwind, or
+     the actions column collapses to a sliver beside the copy */
+  .ctab__panel,.ctab__box,.ctab--grid{grid-template-columns:1fr;gap:18px}
+  .ctab--offset .cta,.ctab--frame .cta{grid-column:1;grid-row:auto}
+  .ctab__slab{left:12px;right:12px;top:18px;bottom:-10px}
+  .ctab__panel{padding:26px 20px}
+  .ctab__box{padding:26px 20px 22px}
+  .ctab--frame .ctab__over{margin:0 0 -16px 18px;
+    font-size:clamp(1.15rem,5.2vw,1.5rem)}
+  .ctab__c2{border-left:0;padding-left:0}
+  .ctab--rail{grid-template-columns:auto minmax(0,1fr);gap:0 16px}
+  .ctab--rail .cta{grid-column:2;margin-top:16px}
+  .ctab__bar{min-height:0}
   .ctab--card{padding:28px 20px}
   .brand small{display:none}
   footer.site .cols{grid-template-columns:1fr}
