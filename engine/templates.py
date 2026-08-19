@@ -23,11 +23,32 @@ def _call_target(t):
     a dead primary CTA, so fall back to the quote page instead."""
     if t.get("phone"):
         return f'tel:{t["tel"]}', f'Call {H.esc(t["phone"])}'
+    if t.get("email"):
+        return f'mailto:{H.esc(t["email"])}', H.esc(t["email"])
     return "/request-a-quote/", "Get a free quote"
 
 def _tel_or(t, fallback_href="/request-a-quote/"):
     """Bare href only: tel: when there is a number, the quote page otherwise."""
-    return f'tel:{t["tel"]}' if t.get("phone") else fallback_href
+    if t.get("phone"):
+        return f'tel:{t["tel"]}'
+    if t.get("email"):
+        return f'mailto:{H.esc(t["email"])}'
+    return fallback_href
+
+def _contact_row(t, url, cls, fallback="Get a free quote"):
+    """The sidebar's contact line: a phone, an email, or nothing at all.
+
+    With neither on file it fell back to /request-a-quote/, which on the quote
+    page itself is a link to the page the reader is already reading. All three
+    templates did it, one link each. Off that page the fallback still earns its
+    place -- it is at least somewhere else to go."""
+    if t.get("phone"):
+        return f'<a class="{cls}" href="tel:{t["tel"]}">{H.esc(t["phone"])}</a>'
+    if t.get("email"):
+        return f'<a class="{cls}" href="mailto:{H.esc(t["email"])}">{H.esc(t["email"])}</a>'
+    if url == "/request-a-quote/":
+        return ""
+    return f'<a class="{cls}" href="/request-a-quote/">{fallback}</a>'
 
 # ---------------------------------------------------------------- shared bits
 def _head(t, title, desc, url, schemas, fonts, bodyclass="", og=None):
@@ -360,8 +381,10 @@ def iron_trust(t, pages, url, h1, blocks, is_quote=False):
     e = H.esc
     body = "".join(f'<h2 class="serif">{e(hh)}</h2><p>{e(bb)}</p>' for hh, bb in blocks)
     aside = (f'<aside class="aside"><h3 class="serif">Talk to us</h3><p>Garage door help in {e(t["city"])}, {e(t["st"])}.</p>'
-             f'<a class="tel serif" href="{_tel_or(t)}">{e(t["phone"]) or "Get a free quote"}</a>'
-             f'<a class="pill pill--brass" href="/request-a-quote/">Request a Visit</a></aside>')
+             + _contact_row(t, url, "tel serif")
+             + ('' if url == "/request-a-quote/" else
+                '<a class="pill pill--brass" href="/request-a-quote/">Request a Visit</a>')
+             + '</aside>')
     schemas = [H.org_schema(t), H.breadcrumb_schema(t, [("Home", "/"), (h1, url)])]
     return (_head(t, H.seo_title(f"{h1} | {t['brand']}"), f"{h1} — {t['brand']}, {t['city']}, {t['st']}.", url, schemas, IRON_FONTS)
             + _iron_header(t, pages)
@@ -548,11 +571,17 @@ def volt_home(t, pages):
             + f'<section class="cta"><h2>Stop wrestling that door.</h2><a class="btn" href="{_call_target(t)[0]}">⚡ {_call_target(t)[1]}</a></section>'
             + _volt_footer(t, pages) + "</body></html>")
 
-def _volt_aside(t):
+def _volt_aside(t, url=None):
     e = H.esc
     return (f'<aside class="aside"><h3>Book a fix</h3><p style="color:var(--dim);font-family:\'Space Mono\';font-size:.82rem">// flat-rate, same-day</p>'
-            f'<a class="tel" href="{_tel_or(t)}">{e(t["phone"]) or "Get a free quote"}</a>'
-            f'<a class="btn btn--lime" href="/request-a-quote/" style="width:100%;justify-content:center">Get a Quote →</a></aside>')
+            + _contact_row(t, url, "tel")
+            # omitted on the quote page: there it reloads the page the
+            # reader is already on
+            + ('' if url == "/request-a-quote/" else
+               '<a class="btn btn--lime" href="/request-a-quote/" '
+               'style="width:100%;justify-content:center">Get a Quote</a>')
+            + '</aside>')
+
 
 def volt_inner(t, pages, p):
     e = H.esc
@@ -564,7 +593,7 @@ def volt_inner(t, pages, p):
     return (_head(t, H.seo_title(p["title"] or f"{h1} | {t['brand']}"), p["meta"] or "", p["url"], schemas, VOLT_FONTS, og=img)
             + _volt_header(t, pages)
             + f'<section class="phero"><div class="wrap"><div class="crumb"><a href="/">Home</a> // <a href="{parent}">{label}</a> // {e(h1)}</div><h1>{e(h1)}</h1></div></section>'
-            + f'<div class="wrap"><div class="article"><div class="body"><img src="{PHOTOS}{img}" alt="{e(h1)}" loading="lazy">{body}</div>{_volt_aside(t)}</div></div>'
+            + f'<div class="wrap"><div class="article"><div class="body"><img src="{PHOTOS}{img}" alt="{e(h1)}" loading="lazy">{body}</div>{_volt_aside(t, p["url"])}</div></div>'
             + _volt_footer(t, pages) + "</body></html>")
 
 def volt_index(t, pages, cat, url, h1, eyebrow, blurb):
@@ -585,7 +614,7 @@ def volt_trust(t, pages, url, h1, blocks, is_quote=False):
     return (_head(t, H.seo_title(f"{h1} | {t['brand']}"), f"{h1} — {t['brand']}, {t['city']}, {t['st']}.", url, schemas, VOLT_FONTS)
             + _volt_header(t, pages)
             + f'<section class="phero"><div class="wrap"><div class="crumb"><a href="/">Home</a> // {e(h1)}</div><h1>{e(h1)}</h1></div></section>'
-            + f'<div class="wrap"><div class="article"><div class="body">{body}</div>{_volt_aside(t)}</div></div>'
+            + f'<div class="wrap"><div class="article"><div class="body">{body}</div>{_volt_aside(t, url)}</div></div>'
             + _volt_footer(t, pages) + "</body></html>")
 
 
@@ -779,11 +808,16 @@ def nim_home(t, pages):
             + f'<div class="ctawrap"><div class="cta"><h2>Let\'s get that door smiling again 🙂</h2><p>Book a warm, no-pressure visit with your {e(t["city"])} neighbors.</p><a class="btn" href="{chref}">📞 {clabel}</a></div></div>'
             + _nim_footer(t, pages) + "</body></html>")
 
-def _nim_aside(t):
+def _nim_aside(t, url=None):
     e = H.esc
     href, label = _nim_call(t)
-    return (f'<div class="aside"><h3>Need a hand? 👋</h3><p>Friendly, no-pressure garage door help in {e(t["city"])}.</p>'
-            f'<a class="btn btn--blue" href="{href}">📞 {label}</a></div>')
+    # nothing to link to on the quote page when the site has no phone and no
+    # email: _nim_call falls back to this very page
+    btn = ("" if (url == "/request-a-quote/" and href == "/request-a-quote/")
+           else f'<a class="btn btn--blue" href="{href}">{label}</a>')
+    return (f'<div class="aside"><h3>Need a hand?</h3>'
+            f'<p>Friendly, no-pressure garage door help in {e(t["city"])}.</p>'
+            f'{btn}</div>')
 
 def nim_inner(t, pages, p):
     e = H.esc
@@ -796,7 +830,7 @@ def nim_inner(t, pages, p):
             + _nim_header(t, pages)
             + f'<section class="phero"><div class="crumb"><a href="/">Home</a> · <a href="{parent}">{label}</a> · {e(h1)}</div><h1>{e(h1)}</h1></section>'
             + f'<div class="article"><div class="body"><img src="{PHOTOS}{img}" alt="{e(h1)}" loading="lazy">{body}</div></div>'
-            + f'<div class="wrap" style="padding-bottom:40px">{_nim_aside(t)}</div>'
+            + f'<div class="wrap" style="padding-bottom:40px">{_nim_aside(t, p["url"])}</div>'
             + _nim_footer(t, pages) + "</body></html>")
 
 def nim_index(t, pages, cat, url, h1, eyebrow, blurb):
@@ -818,7 +852,7 @@ def nim_trust(t, pages, url, h1, blocks, is_quote=False):
             + _nim_header(t, pages)
             + f'<section class="phero"><div class="crumb"><a href="/">Home</a> · {e(h1)}</div><h1>{e(h1)}</h1></section>'
             + f'<div class="article"><div class="body">{body}</div></div>'
-            + f'<div class="wrap" style="padding-bottom:40px">{_nim_aside(t)}</div>'
+            + f'<div class="wrap" style="padding-bottom:40px">{_nim_aside(t, url)}</div>'
             + _nim_footer(t, pages) + "</body></html>")
 
 

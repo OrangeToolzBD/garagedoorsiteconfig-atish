@@ -23,6 +23,7 @@ for a reason no renderer change can fix. The DOM is the renderer's own surface.
 import difflib
 import glob
 import html as _html
+import collections
 import json
 import os
 import re
@@ -298,6 +299,27 @@ def template_contrast_failures():
         if r < need:
             bad[label] = [f"{fg} on {bg} = {r:.2f}:1, needs {need}"]
     return len(bad), bad
+
+
+def sites_with_no_contact_route():
+    """Sites a visitor cannot actually contact.
+
+    Every call to action points at /request-a-quote/. That page can only do
+    something if the site carries a form id, a phone or an email; with none of
+    them it is a page telling the reader to get in touch with no way to do it.
+
+    Reported rather than enforced, because it is a data gap, not a rendering
+    fault -- the renderer already degrades honestly. It is here so the size of
+    the gap stays visible instead of being invisible in the output."""
+    import build as BLD
+    cfg = BLD.load_config()
+    counts = {}
+    for domain, t in cfg.items():
+        counts[domain] = BLD.contact_routes(t)
+    none = [d for d, r in counts.items() if not r]
+    have = collections.Counter(
+        ",".join(r) or "none" for r in counts.values())
+    return len(none), dict(have)
 
 
 def pruned_away_live_css():
@@ -615,6 +637,7 @@ def main():
     ftfails, ftdetail = footer_contrast_failures()
     asfails, asdetail = aside_contrast_failures()
     tplfails, tpldetail = template_contrast_failures()
+    noroute, routemix = sites_with_no_contact_route()
     prunefails, prunedetail = pruned_away_live_css()
     ess = missing_essentials()
     npages, no_main, no_skip, calling_nobody = page_checks()
@@ -670,6 +693,11 @@ def main():
     print(f"  contrast (WCAG AA) over {ntheme} in-use themes: {cfails} failures")
     print(f"  CTA-band text on its own gradient: {ctafails} failures  {ctadetail if ctafails else ''}")
     print(f"  Footer ramp on its own ground: {ftfails} failures  {ftdetail if ftfails else ''}")
+    print(f"  Sites a visitor cannot contact: {noroute} of {sum(routemix.values())}"
+          f"   routes in use: {routemix}")
+    if noroute:
+        print("    ^ a data gap, not a rendering fault -- the pages degrade "
+              "honestly. Set ghl_form_id, phone or email in sites.json.")
     print(f"  Alt templates (ironclad/volt/nimbus): {tplfails} failures  "
           f"{tpldetail if tplfails else ''}")
     print(f"  Dark sidebar card on its own ground: {asfails} failures  "

@@ -1518,6 +1518,18 @@ GD_CSS = """
   /* the view-all link was the one target under 44px in every variant */
   .areas__all{display:inline-flex;align-items:center;min-height:44px}
 }
+/* The contact routes on the quote page. Rendered only where the config
+   supplies one, so this block is simply absent on a site that has none --
+   which is better than a button that reloads the page. */
+.qroutes{display:flex;flex-wrap:wrap;gap:12px;max-width:var(--maxw);
+  margin:0 auto;padding:22px 24px 0}
+.qroutes .btn{flex:0 1 auto}
+.qroutes--card{flex-direction:column;padding:0;margin:0}
+.qroutes--card .btn{width:100%;justify-content:center;margin-bottom:10px}
+@media(max-width:560px){
+  .qroutes{padding:16px 18px 0}
+  .qroutes .btn{width:100%;justify-content:center}
+}
 .areagrid{list-style:none;padding:0;margin:0;display:grid;
   grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px 14px}
 .areagrid li{display:flex}
@@ -4077,7 +4089,7 @@ _ASIDE_NEEDS_COLUMN = {"toc"}
 _ASIDE_STACKABLE = ["card", "dark", "reasons", "stack"]
 
 
-def quote_card(t, pages=None, headings=None):
+def quote_card(t, pages=None, headings=None, is_quote=False):
     """The interior-page sidebar column.
 
     Every variant keeps the quote card. Two of the source designs dropped it
@@ -4106,7 +4118,12 @@ def quote_card(t, pages=None, headings=None):
         v = "card"
 
     tel = tel_link(t, "tel")
-    cta = ('<a class="btn btn--primary" href="/request-a-quote/">Request a Quote</a>'
+    # On the quote page itself this button pointed at the page the reader was
+    # already on. There it becomes the real route, or nothing.
+    if is_quote:
+        cta = contact_block(t).replace('class="qroutes"', 'class="qroutes qroutes--card"')
+    else:
+        cta = ('<a class="btn btn--primary" href="/request-a-quote/">Request a Quote</a>'
            f'<a class="btn btn--outline" href="{second_href}">{second_label}</a>')
 
     if v == "dark":
@@ -4291,14 +4308,64 @@ def index_page(t, pages, cat, url, title_h1, eyebrow, blurb):
     return (head_html(t, seo_title(f"{title_h1} | {t['brand']}"), blurb, url, schemas, og_image=t.get("hero_img") or HERO_IMG)
             + header(t, pages) + body + footer(t, pages) + "</body></html>")
 
+# ---- CONTACT ROUTES -------------------------------------------------------
+# Everything that says "Request a Quote" points at /request-a-quote/. That page
+# instructed the reader to get in touch and then offered five buttons that
+# linked back to itself -- a loop, on 998 of 1001 sites, because none of them
+# carry a form, a phone or an email.
+#
+# Nothing here invents a route. Each is rendered only where the config supplies
+# it, and the page states what it can actually do:
+#
+#   ghl_form_id -> the booking form is embedded
+#   phone       -> a tel: link, and the call bar
+#   email       -> a mailto: link
+#   none of them-> the page stops asking. No instruction to send anything, and
+#                  no button pointing back at the page the reader is already on.
+#
+# `contact_routes` is what the gate counts, so a site with no way to reach
+# anyone is visible rather than silently shipped.
+
+
+def contact_routes(t):
+    """Which contact routes this site actually has, in order of directness."""
+    out = []
+    if t.get("ghl_form_id"):
+        out.append("form")
+    if t.get("phone"):
+        out.append("phone")
+    if t.get("email"):
+        out.append("email")
+    return out
+
+
+def contact_block(t):
+    """The routes themselves, rendered only where they exist."""
+    routes = contact_routes(t)
+    if not routes:
+        return ""
+    rows = []
+    if "phone" in routes:
+        rows.append(f'<a class="btn btn--primary" href="tel:{t["tel"]}">'
+                    f'{icon("phone")}Call {esc(t["phone"])}</a>')
+    if "email" in routes:
+        cls = "btn btn--outline" if "phone" in routes else "btn btn--primary"
+        rows.append(f'<a class="{cls}" href="mailto:{esc(t["email"])}">'
+                    f'{esc(t["email"])}</a>')
+    return (f'<div class="qroutes">{"".join(rows)}</div>') if rows else ""
+
+
 def trust_page(t, pages, url, h1, blocks, is_quote=False):
     # ids so the `toc` sidebar has something to link to; these pages had none
     parts = "".join(f'<h2 id="{slugify(h)}">{esc(h)}</h2><p>{esc(b)}</p>' for h, b in blocks)
     embed = ""
-    if is_quote and t.get("ghl_form_id"):
-        from build_site import quote_embed
-        embed = quote_embed(t["ghl_form_id"])
-    aside = quote_card(t, pages, article_headings([parts]))
+    if is_quote:
+        if t.get("ghl_form_id"):
+            from build_site import quote_embed
+            embed = quote_embed(t["ghl_form_id"])
+        # the phone and email, up front, where someone who wants to book is
+        embed += contact_block(t)
+    aside = quote_card(t, pages, article_headings([parts]), is_quote=is_quote)
     # no desc: on these pages it is built from the h1 and the brand, so showing
     # it would print the title back to the reader a second time
     body = (page_hero(t, [("Home", "/")], h1, h1, desc="",
@@ -4306,7 +4373,7 @@ def trust_page(t, pages, url, h1, blocks, is_quote=False):
                       allow_cta=not is_quote)
             + embed
             + f'<div class="wrap"><div class="article {article_layout(t)}"><div class="body">{parts}</div>{aside}</div></div>'
-            + cta_band(t))
+            + ("" if is_quote else cta_band(t)))
     schemas = [org_schema(t), breadcrumb_schema(t, [("Home", "/"), (h1, url)])]
     return (head_html(t, seo_title(f"{h1} | {t['brand']}"), f"{h1} — {t['brand']}, {t['city']}, {t['st']}.", url, schemas,
                        og_image=t.get("hero_img") or HERO_IMG)
@@ -4590,9 +4657,15 @@ def build(only=None):
             # No site has a form (`ghl_form_id` is unset on all 1001), so the copy
             # must not promise one, and with no phone on file it must not render
             # "Call  or use the form." with an empty gap where the number should be.
-            ("Tell us what the door is doing",
+            # The instruction only appears when there is something to act on.
+            # With no form, no phone and no email this page used to say "send a
+            # quote request" and then offer five buttons back to itself.
+            ("Tell us what the door is doing" if contact_routes(t)
+             else "What we need to know",
              "Describe the problem — noise, off-track, a broken spring, or a door you want replaced — and we'll give you a written price."
-             + (f" Call {t['phone']} to get started." if t.get("phone") else "")),
+             + (f" Call {t['phone']} to get started." if t.get("phone")
+                else " Use the form above and we'll come back with a number."
+                if t.get("ghl_form_id") else "")),
             ("Fast, no-pressure quotes", "You get a real number, not a range, once we've seen the door. Same-day service is available on most repairs.")], True))
 
         # sitemap / robots

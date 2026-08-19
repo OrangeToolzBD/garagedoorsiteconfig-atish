@@ -201,6 +201,27 @@ in-use themes (plus the CTA gradient and the footer ramp separately), `<main>`,
 skip links, phone-less "Call" prose, **missing essential sections**, and
 **variant CSS pruned away while still rendered**.
 
+### The booking page can only offer what the config gives it
+
+Every call to action points at `/request-a-quote/`. That page renders whichever
+of three routes the site actually has, and **nothing where it has none**:
+
+| config field | what appears |
+|---|---|
+| `ghl_form_id` | the booking form, embedded |
+| `phone` | a `tel:` link, and the call bar |
+| `email` | a `mailto:` link |
+| none of them | no instruction to get in touch, and no button |
+
+It used to instruct the reader to "send a quote request" and then offer **five
+buttons that linked back to the same page** -- on 998 of 1001 sites, because
+none of them carry any of the three. All four templates did some version of it.
+
+`contact_routes(t)` is the single source of truth, and the gate reports
+`sites a visitor cannot contact` so the gap stays visible. It is **reported,
+not enforced**: it is a data gap, not a rendering fault, and the pages already
+degrade honestly. Today it reads **998 of 1001**.
+
 ### The alt templates carry their own colours, and their own gate
 
 ironclad, volt and nimbus hardcode their palettes in `templates.py`. The four
