@@ -12,7 +12,7 @@ Page types (by filename): <city>-home / -svc- / -nb- / -sub- / -top-.
   sub  -> /service-areas/<slug>/   (suburbs)
   top  -> /guides/<slug>/          (topic guides)
 """
-import os, re, sys, json, html, shutil, hashlib
+import os, re, sys, json, html, shutil, hashlib, colorsys
 from datetime import date
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -1922,12 +1922,105 @@ def header_variant(domain):
     return HEADER_VARIANTS[_hash_idx(f"{domain}|header", len(HEADER_VARIANTS))]
 
 
+# ---- ACCENT COLOUR --------------------------------------------------------
+# themes.json pairs one accent with one primary, permanently. 101 primaries are
+# in use, so the estate held 101 palettes for 1001 sites -- ten sites to a
+# palette, fifteen in the worst case -- while the file itself carries 193
+# distinct accents that never meet any primary but their own.
+#
+# Nothing here invents a colour. The accent is simply chosen per domain from the
+# accents already in the file, which is the same unwelding the hero, footer,
+# feats and steps axes each went through.
+#
+# Two rules decide which accents a primary may take:
+#
+#   * Hue within 45 degrees of the primary, AND far enough away to still read
+#     as a second colour. Analogous pairing keeps the result deliberate rather
+#     than two colours that merely happen to be legible together; nothing
+#     measures harmony, so the constraint has to be geometric.
+#
+#     The second half of that is not fussiness. A hue limit alone put #9a3412
+#     next to #9e330f and #4c1d95 next to #49119e -- 152 sites whose accent was
+#     invisible against their own primary, so buttons and highlights stopped
+#     reading as accents at all. An accent may share the primary's hue only if
+#     its lightness differs by 18 points or more, which is what makes a tint a
+#     legitimate accent rather than an accident.
+#   * Every accent-derived surface clears AA. This one currently rejects
+#     nothing -- all 193 accents in the pool pass it -- and it is worth being
+#     precise about why, because it is easy to mistake for the thing keeping
+#     the estate readable. It is not. accent_button(), accent_on_light() and
+#     accent_on_dark() each iterate until they clear 4.5:1, so ANY accent comes
+#     out compliant; removing this filter entirely still leaves the contrast
+#     gate at zero failures, which I confirmed by deleting it and re-running.
+#     What it guards is a future accent added to themes.json that would only
+#     reach AA after a large correction -- the shipped colour would then be a
+#     long way from the chosen one. Today the fill moves a median of 0.
+#
+# The primary is left as the theme assigns it. It is the constrained colour --
+# it has to work as white-on-colour AND as coloured-text-on-white -- and it is
+# already spread ~10 sites apiece, so re-rolling it buys nothing.
+_ACCENT_CACHE = {}
+
+
+def _hue(hexv):
+    r, g, b = (int(hexv.lstrip("#")[i:i + 2], 16) / 255 for i in (0, 2, 4))
+    return colorsys.rgb_to_hls(r, g, b)[0] * 360
+
+
+def _light(hexv):
+    r, g, b = (int(hexv.lstrip("#")[i:i + 2], 16) / 255 for i in (0, 2, 4))
+    return colorsys.rgb_to_hls(r, g, b)[1] * 100
+
+
+def _hue_gap(a, b):
+    d = abs(a - b) % 360
+    return min(d, 360 - d)
+
+
+def accents_for(p, pd, pool):
+    """Accents this primary may wear, nearest hue first."""
+    key = (p, pd)
+    if key not in _ACCENT_CACHE:
+        import build_site as B
+        hp, lp, out = _hue(p), _light(p), []
+        for a in pool:
+            d, dl = _hue_gap(hp, _hue(a)), abs(lp - _light(a))
+            if d > 45 or (d < 15 and dl < 18):
+                continue
+            fill, label = B.accent_button(a)
+            if B._cratio(B._rgb(label), B._rgb(fill)) < 4.5:
+                continue
+            lt = B.accent_on_light(a)
+            if any(B._cratio(B._rgb(lt), bg) < 4.5
+                   for bg in ((255, 255, 255), (245, 247, 249), (238, 242, 246))):
+                continue
+            if B._cratio(B._rgb(B.accent_on_dark(a, pd)), B._rgb(pd)) < 4.5:
+                continue
+            out.append(a)
+        # sorted by hue distance so the list is stable and the closest pairings
+        # sit at the front; the digest still picks anywhere in it
+        _ACCENT_CACHE[key] = sorted(out, key=lambda a: (_hue_gap(hp, _hue(a)), a))
+        # (order is stable and arbitrary; the digest picks anywhere in it)
+    return _ACCENT_CACHE[key]
+
+
+def accent_for(domain, p, pd, pool, fallback):
+    opts = accents_for(p, pd, pool)
+    if not opts:
+        return fallback          # never seen; keep whatever the theme said
+    return opts[_hash_idx(f"{domain}|accent", len(opts))]
+
+
 # ---------------------------------------------------------------- config
 def load_config():
     themes = json.load(open(os.path.join(CONFIG, "themes.json"), encoding="utf-8"))
     sdata = json.load(open(os.path.join(CONFIG, "sites.json"), encoding="utf-8"))
     lpath = os.path.join(CONFIG, "layouts.json")
     layouts = json.load(open(lpath, encoding="utf-8")) if os.path.exists(lpath) else {}
+    # every accent in the file, not only the ones a theme currently uses -- 193
+    # against 98, and the unused ones are as valid as any other
+    accent_pool = sorted({v["accent"] for v in themes.values()
+                          if isinstance(v, dict) and v.get("accent")})
     sites = {}
     for s in sdata["sites"]:
         th = themes[s["theme"]]
@@ -1938,6 +2031,8 @@ def load_config():
         # type varies independently of palette instead of being welded to it
         t.update(font_pack(s["domain"]))
         t["hd_h"] = header_variant(s["domain"])[1]
+        t["accent"] = accent_for(s["domain"], t["p"], t["pd"],
+                                 accent_pool, t["accent"])
         phone = s.get("phone", "")
         t.update({
             "domain": s["domain"], "city": s["city"], "st": s["st"],

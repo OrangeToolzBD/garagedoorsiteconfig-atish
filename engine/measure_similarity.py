@@ -112,14 +112,20 @@ def contrast_failures():
       * accent text on the light bands             (was 410 / 437 / 455)
       * accent text on the dark hero grounds       (was 982, fixed earlier)
     Kept as a gate because every one of these was introduced by a theme
-    generator that believed it was already contrast-checking."""
+    generator that believed it was already contrast-checking.
+
+    Read through load_config(), not out of themes.json. The accent is chosen per
+    domain now and no longer matches the theme's own field on any of the 1001
+    sites, so reading the file would check a colour that is not on any page --
+    the check would pass on evidence it had invented."""
     import build_site as B
-    themes = json.load(open(os.path.join(CONFIG, "themes.json"), encoding="utf-8"))
+    import build as BLD
+    cfg = BLD.load_config()
     sites = json.load(open(os.path.join(CONFIG, "sites.json"), encoding="utf-8"))["sites"]
     surfaces = {"#ffffff": (255, 255, 255), "--soft": (245, 247, 249), "--soft2": (238, 242, 246)}
     fails = {}
     for s in sites:
-        t = themes[s["theme"]]
+        t = cfg[s["domain"]]
         fill, label = B.accent_button(t["accent"])
         if B._cratio(B._rgb(label), B._rgb(fill)) < 4.5:
             fails.setdefault("button label on fill", []).append(s["theme"])

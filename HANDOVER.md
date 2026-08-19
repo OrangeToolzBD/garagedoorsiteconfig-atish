@@ -201,6 +201,31 @@ in-use themes (plus the CTA gradient and the footer ramp separately), `<main>`,
 skip links, phone-less "Call" prose, **missing essential sections**, and
 **variant CSS pruned away while still rendered**.
 
+### The accent is chosen per domain, not taken from the theme
+
+themes.json still supplies `p` and `pd`. The `accent` field is **overwritten in
+load_config()** and the `on_accent` field feeds nothing at all -- accent_button()
+computes the label. 101 primaries were welded to 101 accents, giving the estate
+101 palettes for 1001 sites; it now holds ~850, worst case 4 sites to a palette.
+
+Two rules pick it, and the second one matters more than it looks:
+
+- hue within 45 degrees of the primary, so the pairing reads as deliberate
+- **and far enough away to still be a second colour.** The hue limit alone put
+  `#9a3412` beside `#9e330f` -- 152 sites whose accent was invisible against
+  their own primary. An accent may share the hue only if its lightness differs
+  by 18 points or more.
+
+Anything reading a theme colour must go through `load_config()`, never
+themes.json. `contrast_failures` was reading the file and so was checking a
+colour that no longer shipped on **any** of the 1001 sites.
+
+And do not mistake the AA filter in `accents_for` for what keeps the estate
+readable. `accent_button`, `accent_on_light` and `accent_on_dark` each iterate
+until they clear 4.5:1, so any accent comes out compliant -- deleting the filter
+leaves the gate at zero failures, which I checked. It guards against a future
+accent that would only reach AA after a large correction.
+
 ### Nothing reads layouts.json any more
 
 Every axis it defines -- hero, nav, footer, cards, feats, steps, shape, bands --
