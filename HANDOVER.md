@@ -201,6 +201,20 @@ in-use themes (plus the CTA gradient and the footer ramp separately), `<main>`,
 skip links, phone-less "Call" prose, **missing essential sections**, and
 **variant CSS pruned away while still rendered**.
 
+### Nothing reads layouts.json any more
+
+Every axis it defines -- hero, nav, footer, cards, feats, steps, shape, bands --
+is now picked per domain instead. `bands` and `shape` still feed a class on
+`<body>`; the rest feed nothing. The file is kept because it documents what the
+six families used to mean, and deleting it changes no output.
+
+The reason for moving the last two, `feats` and `steps`, was not the per-axis
+count -- that barely moved, and `steps` got a point worse. It was that the axes
+arrived **as a set**: one of six families decided the cards *and* the steps
+together, so the estate held **5 distinct (feats, steps) pairs across 1001
+sites**. On a per-domain digest it holds all **12**. That is the number to watch
+when decoupling an axis, not how many sites share one value.
+
 ### Header variants: three contracts to keep
 
 `HEADER_VARIANTS` is `[(name, starting height)]`. Anything added to it must:

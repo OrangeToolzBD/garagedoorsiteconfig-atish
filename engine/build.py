@@ -3045,10 +3045,34 @@ def why_us(t):
     eyebrow, h2 = copy_deck(t, "why_head")
     return (f'<section class="sec"><div class="wrap"><div class="sec-head">'
             f'<p class="eyebrow">{_city(eyebrow, t)}</p><h2>{_city(h2, t)}</h2></div>'
-            f'<div class="grid g3 feats feats--{t["layout"]["feats"]}">{cells}</div></div></section>')
+            f'<div class="grid g3 feats feats--{feats_style(t)}">{cells}</div></div></section>')
+
+# ---- FEATURE CARDS and HOW-IT-WORKS ---------------------------------------
+# Both already had these designs; both read them from layouts.json, which maps
+# every site onto one of six families. So a third of the estate -- 335 sites --
+# shared each value, and worse, shared it *together*: same family meant the same
+# cards AND the same steps AND the same everything else on that axis. Decoupling
+# is what stops the design choices arriving as a set.
+#
+# The `feats` and `steps` fields are left in layouts.json. Removing them would
+# re-roll nothing, since nothing reads them now, but they document what the
+# families used to mean. Same treatment as the hero and footer axes before them.
+#
+# APPEND-ONLY: selection is digest % len, so inserting re-rolls every domain.
+FEATS_VARIANTS = ["bar", "list", "minimal", "tiles"]
+STEPS_VARIANTS = ["bignum", "cards", "timeline"]
+
+
+def feats_style(t):
+    return FEATS_VARIANTS[_hash_idx(f'{t["domain"]}|feats', len(FEATS_VARIANTS))]
+
+
+def steps_style(t):
+    return STEPS_VARIANTS[_hash_idx(f'{t["domain"]}|steps', len(STEPS_VARIANTS))]
+
 
 def how_it_works(t):
-    style = t["layout"]["steps"]
+    style = steps_style(t)
     eyebrow, h2 = copy_deck(t, "steps_head")
     steps = "".join(f'<div class="step"><div class="step__b"><h3>{_city(h, t)}</h3>'
                     f'<p>{_city(p, t)}</p></div></div>' for h, p in copy_deck(t, "steps"))
@@ -3430,7 +3454,7 @@ def _process_block(t, h2, raw):
     paras = [p.strip() for p in re.split(r"\n\s*\n", raw) if p.strip()]
     if not (2 < len(paras) <= 5):
         return None
-    style = t["layout"]["steps"]
+    style = steps_style(t)
     lead = ["What you tell us", "What we check on site", "What happens next",
             "If a part has to come in", "Before we leave"]
     steps = "".join(f'<div class="step"><div class="step__b"><h3>{esc(lead[i])}</h3>'
@@ -4166,7 +4190,7 @@ def index_page(t, pages, cat, url, title_h1, eyebrow, blurb):
                       img=INNER_IMGS[_stable_idx(url, len(INNER_IMGS))])
             + f'<section class="sec"><div class="wrap"><div class="sec-head"><p class="eyebrow">{eyebrow}</p>'
             f'<h2>{esc(title_h1)}</h2><p>{esc(blurb)}</p></div>'
-            f'<div class="grid g3 feats feats--{t["layout"]["feats"]}">{cards}</div></div></section>'
+            f'<div class="grid g3 feats feats--{feats_style(t)}">{cards}</div></div></section>'
             + cta_band(t))
     schemas = [org_schema(t), breadcrumb_schema(t, [("Home", "/"), (title_h1, url)])]
     return (head_html(t, seo_title(f"{title_h1} | {t['brand']}"), blurb, url, schemas, og_image=t.get("hero_img") or HERO_IMG)
