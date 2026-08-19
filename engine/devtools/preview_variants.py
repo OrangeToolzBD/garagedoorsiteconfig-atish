@@ -50,11 +50,23 @@ const NL = String.fromCharCode(10);
 const WIDTHS = [1280, 900, 768, 390, 360];
 function audit(doc, win) {
   const bad = [];
-  doc.querySelectorAll('.page-hero, .aside').forEach(root => {
+  doc.querySelectorAll('.page-hero, .aside, header.site').forEach(root => {
     const tag = root.className.replace(/\\s+/g, '.');
     root.querySelectorAll('*').forEach(el => {
       const r = el.getBoundingClientRect();
       if (!r.width || !r.height) return;
+      const own = getComputedStyle(el).position;
+      if (own === 'absolute' || own === 'fixed') {
+        // A dropdown is meant to be wider than the button it hangs off, so
+        // measuring it against its parent reports the design as a fault. What
+        // actually matters for something out of flow is whether it stays on
+        // screen -- a 560px menu is fine until it runs off the right edge.
+        if (r.right > win.innerWidth + 1 || r.left < -1)
+          bad.push('    ' + tag + ' > ' + (el.className || el.tagName) +
+                   ' leaves the viewport: ' + Math.round(r.left) + '..' +
+                   Math.round(r.right) + ' of ' + win.innerWidth);
+        return;
+      }
       const p = el.parentElement, pr = p.getBoundingClientRect();
       const cs = getComputedStyle(p);
       const inL = pr.left + parseFloat(cs.paddingLeft);
@@ -164,6 +176,37 @@ def main(dest):
     open(os.path.join(dest, "sidebars.html"), "w", encoding="utf-8",
          newline="\n").write(shell(css, "".join(out), ".aside{position:static}"))
 
+    # ---- headers: every variant, with a dropdown forced open ----------------
+    # The header is 21% of every page and carries the only JavaScript in the
+    # build. The dropdown has to be audited OPEN: closed it is 0x0 and cannot
+    # overflow anything, which is exactly the state that hides the problem.
+    hdr_pages = dict(pages)
+    for i, n in enumerate(["Garage Door Repair", "New Door Installation",
+                           "Spring Replacement", "Opener Repair"]):
+        hdr_pages[f"/services/s{i}/"] = {"cat": "service", "url": f"/services/s{i}/",
+                                         "slug": f"s{i}", "h1": n}
+    orig = B.HEADER_VARIANTS
+    out = []
+    for pack in orig:
+        B.HEADER_VARIANTS = [pack]
+        # header() is a page-opener: it ends with `<main id="main">`. Keep only
+        # the header itself, or <main> lands inside it and the audit reports the
+        # harness rather than the header.
+        mk = B.header(t, hdr_pages)
+        out.append(f'<p class="lbl">header &mdash; {pack[0]}</p>'
+                   + mk[:mk.index("<main")] + '<div style="height:420px"></div>')
+    B.HEADER_VARIANTS = orig
+    open(os.path.join(dest, "headers.html"), "w", encoding="utf-8",
+         newline="\n").write(shell(css, "".join(out),
+             # Reveal the dropdowns without taking them out of absolute
+             # positioning. Forcing position:static drops them into the flow and
+             # shoves the Free Quote button out of the bar -- which the audit
+             # then reports as a 167px overflow that does not exist.
+             ".mega{opacity:1!important;visibility:visible!important;"
+             "transform:translateX(-50%)!important;pointer-events:auto!important}"
+             ".mega--areas{transform:translateX(-50%)!important}"
+             "header.site{position:static}"))
+
     # ---- service areas: every variant, sparse and dense ---------------------
     # 3 places is what almost every site has today; 26 is what the one site
     # with real neighbourhood data has. A design that only ever sees 3 hides
@@ -196,7 +239,7 @@ def main(dest):
 
     open(os.path.join(dest, "audit.html"), "w", encoding="utf-8",
          newline="\n").write(AUDIT.replace("'/sidebars.html'",
-                                           "'/sidebars.html', '/areas.html'"))
+                                           "'/sidebars.html', '/areas.html', '/headers.html'"))
     print(f"wrote heroes.html, sidebars.html and audit.html to {dest}")
     print(f"  python3 -m http.server 8890 --directory {dest}")
     print("  then open http://127.0.0.1:8890/audit.html")

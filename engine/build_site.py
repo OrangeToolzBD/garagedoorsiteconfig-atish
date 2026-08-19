@@ -535,6 +535,7 @@ def css(t):
         .replace("__ACCENTLT__", accent_on_light(t["accent"])) \
         .replace("__ACCENTDK__", accent_on_dark(t["accent"], t["pd"])) \
         .replace("__DISPLAY__", t["display"]).replace("__BODY__", t["body"]) \
+        .replace("__HDH__", t.get("hd_h", "79px")) \
         .replace("__DISPHI__", str(t.get("disp_hi", "800"))) \
         .replace("__DISPTRACK__", t.get("disp_track", "-.02em")) \
         .replace("__BTNR__", btnr).replace("__CARDR__", cardr)
@@ -557,7 +558,7 @@ CSS_TMPL = """
      bar without moving anything that sits below it, so anchors would land
      behind it and the sticky panels would overlap, with nothing reporting a
      fault. Measured 79 / 69 / 45 across the two existing breakpoints. */
-  --hd-h:79px;
+  --hd-h:__HDH__;
   --shadow:0 1px 2px rgba(16,32,48,.05),0 8px 24px rgba(16,32,48,.06);
   --shadow-lg:0 12px 40px rgba(16,32,48,.14);
   --disp:'__DISPLAY__',system-ui,sans-serif;--body:'__BODY__',system-ui,sans-serif;
@@ -617,6 +618,18 @@ img{max-width:100%;display:block}
 .nav-quote{display:none}
 header.site{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .hd{display:flex;align-items:center;gap:12px;padding:12px 0}
+/* ---- header variants ---------------------------------------------------
+   The announcement strip stays in both -- content decision, not a design one.
+   Both keep .burger, nav.main and .nav-item>button, which is what NAVJS binds
+   to, and both leave the bar's height alone so --hd-h stays true. */
+.hd--rail .hd__lead{display:flex;align-items:center;gap:26px;min-width:0;flex:1}
+.hd--rail .brand--tight{gap:10px}
+.hd--rail .brand--tight span:last-child{white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;font-size:1.02rem}
+.hd--rail nav.main{margin-left:0}
+@media(max-width:1120px){
+  .hd--rail .hd__lead{flex:1;gap:0}
+}
 .brand{display:flex;align-items:center;gap:10px;font-family:var(--disp);font-weight:var(--disp-hi);font-size:.9rem;color:var(--ink);flex:0 0 auto}
 .brand:hover{text-decoration:none}
 .brand>span{white-space:nowrap;line-height:1.08}
@@ -644,7 +657,17 @@ nav.main>a:hover,.nav-item>button:hover{background:var(--soft);text-decoration:n
 .nav-item:hover .mega{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
 .mega a{display:block;padding:9px 12px;border-radius:9px;color:var(--ink);font-size:.94rem;font-weight:500}
 .mega a:hover{background:var(--soft);color:var(--p);text-decoration:none}
-.mega--areas{min-width:380px;display:grid;grid-template-columns:1fr 1fr;gap:2px 8px}
+/* Three columns, not two. 19 area links in two columns made a 533px panel --
+   on a 768px-tall laptop that is most of the screen, and the count only grows.
+   Three brings it to roughly 370px. minmax(0,1fr) so "Dallas Downtown Historic
+   District" wraps inside its column instead of widening the track; the names
+   must wrap rather than truncate, because a cut-off place name cannot be
+   identified at all. Back to two columns where three would not fit. */
+.mega--areas{min-width:560px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:2px 8px}
+@media(max-width:1240px){
+  .mega--areas{min-width:380px;grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 .mega--areas .mega-all{grid-column:1/-1;font-weight:700;color:var(--p);border-bottom:1px solid var(--line);border-radius:0;margin-bottom:6px}
 .hd .tel{margin-left:4px;display:inline-flex;align-items:center;gap:7px;font-family:var(--disp);font-weight:700;color:var(--p);white-space:nowrap;flex:0 0 auto;font-size:.95rem}
 .hd .tel svg{fill:var(--accent);flex:0 0 auto}

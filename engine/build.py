@@ -1873,6 +1873,35 @@ def font_pack(domain):
             "disp_hi": str(hi), "disp_track": track}
 
 
+# ---- HEADER --------------------------------------------------------------
+# 21% of every page's elements, and byte-identical on all 998 sites using this
+# template. The `nav` axis in layouts.json looks like variety and is not: it
+# only sets a class on <body>, so the markup never changed.
+#
+# The announcement strip stays in every variant -- that is a content decision,
+# not a design one.
+#
+# Anything here must keep the hooks NAVJS binds to: `.burger`, `nav.main`,
+# `.nav-item > button` and the `.nav-item.open` class it toggles. A variant
+# that needs its own JavaScript does not belong in this list.
+#
+# Height is the other contract. Five rules sit at calc(var(--hd-h) + Npx); a
+# variant that changes the bar's height must move --hd-h with it or anchors
+# land behind the header and the sticky panels overlap it.
+#
+# APPEND-ONLY: selection is digest % len, so inserting re-rolls every domain.
+# (name, height of the sticky bar at desktop). The height is measured, not
+# guessed, and it feeds --hd-h -- the five rules that sit under the header read
+# it, so a variant that is 8px shorter and does not say so leaves anchors
+# landing 8px into the page and the sticky sidebar 8px lower than it needs.
+# Below 1120 both variants collapse to the same bar, so only this tier varies.
+HEADER_VARIANTS = [("classic", "79px"), ("rail", "71px")]
+
+
+def header_variant(domain):
+    return HEADER_VARIANTS[_hash_idx(f"{domain}|header", len(HEADER_VARIANTS))]
+
+
 # ---------------------------------------------------------------- config
 def load_config():
     themes = json.load(open(os.path.join(CONFIG, "themes.json"), encoding="utf-8"))
@@ -1888,6 +1917,7 @@ def load_config():
         # themes.json keeps the colours; the pairing comes from the digest, so
         # type varies independently of palette instead of being welded to it
         t.update(font_pack(s["domain"]))
+        t["hd_h"] = header_variant(s["domain"])[1]
         phone = s.get("phone", "")
         t.update({
             "domain": s["domain"], "city": s["city"], "st": s["st"],
@@ -2197,13 +2227,33 @@ def header(t, pages):
     nav += '<a href="/about/">About</a><a href="/contact/">Contact</a>'
     nav += '<a class="nav-quote" href="/request-a-quote/">Request a Quote</a>'
 
-    return f"""<div class="top"><div class="wrap"><span>Serving {esc(t['city'])} &amp; the surrounding metro</span><span class="dot">&bull;</span><span>Same-day service available</span><span class="tsp"></span>{f'<a href="tel:{t["tel"]}">{icon("phone")}{esc(t["phone"])}</a>' if t.get('phone') else ''}</div></div>
-<header class="site"><div class="wrap hd">
-<a class="brand" href="/"><span class="brand__chip">{brand_chip(t, 40)}</span><span>{esc(t['brand'])}<small>{esc(t['tagline'])}</small></span></a>
-<button class="burger" aria-label="Menu" aria-expanded="false" aria-controls="mainnav"><span></span><span></span><span></span></button>
-<nav class="main" id="mainnav">{nav}</nav>
-<a class="btn btn--primary" href="/request-a-quote/">Free Quote</a>
-</div></header><main id="main">"""
+    v = header_variant(t["domain"])[0]
+    tel = (f'<a href="tel:{t["tel"]}">{icon("phone")}{esc(t["phone"])}</a>'
+           if t.get("phone") else "")
+    strip = (f'<div class="top"><div class="wrap">'
+             f'<span>Serving {esc(t["city"])} &amp; the surrounding metro</span>'
+             f'<span class="dot">&bull;</span><span>Same-day service available</span>'
+             f'<span class="tsp"></span>{tel}</div></div>')
+    burger = ('<button class="burger" aria-label="Menu" aria-expanded="false" '
+              'aria-controls="mainnav"><span></span><span></span><span></span></button>')
+    quote = '<a class="btn btn--primary" href="/request-a-quote/">Free Quote</a>'
+
+    if v == "rail":
+        # The lockup loses its tagline and tightens to a single line, the nav
+        # sits directly beside it rather than out at the far end, and the whole
+        # left group is one element instead of three siblings.
+        brand = (f'<a class="brand brand--tight" href="/">'
+                 f'<span class="brand__chip">{brand_chip(t, 34)}</span>'
+                 f'<span>{esc(t["brand"])}</span></a>')
+        return (f'{strip}<header class="site hd--rail"><div class="wrap hd">'
+                f'<div class="hd__lead">{brand}<nav class="main" id="mainnav">{nav}</nav></div>'
+                f'{burger}{quote}</div></header><main id="main">')
+
+    brand = (f'<a class="brand" href="/"><span class="brand__chip">{brand_chip(t, 40)}</span>'
+             f'<span>{esc(t["brand"])}<small>{esc(t["tagline"])}</small></span></a>')
+    return (f'{strip}<header class="site hd--classic"><div class="wrap hd">'
+            f'{brand}{burger}<nav class="main" id="mainnav">{nav}</nav>{quote}'
+            f'</div></header><main id="main">')
 
 # ---- phone CTAs -------------------------------------------------------------
 # 998 of 1001 registered sites have no phone on file. Every call-to-action below
@@ -4140,7 +4190,7 @@ def strip_css_comments(css):
 # is the selector prefix that identifies a rule as belonging to a single
 # variant; anything not matching a prefix is shared and never pruned.
 _PRUNE_FAMILIES = (".hero--", ".svcx--", ".svcx-sec--", ".ctab--", ".faq--",
-                   ".gf--", ".pf-", ".ph--", ".as--", ".areas--")
+                   ".gf--", ".pf-", ".ph--", ".as--", ".areas--", ".hd--")
 
 
 def _css_rules(css):

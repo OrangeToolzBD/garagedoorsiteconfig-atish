@@ -201,6 +201,22 @@ in-use themes (plus the CTA gradient and the footer ramp separately), `<main>`,
 skip links, phone-less "Call" prose, **missing essential sections**, and
 **variant CSS pruned away while still rendered**.
 
+### Header variants: three contracts to keep
+
+`HEADER_VARIANTS` is `[(name, desktop height)]`. Anything added to it must:
+
+1. **Keep the JS hooks.** NAVJS binds to `.burger`, `nav.main` and
+   `.nav-item > button`, and toggles `.nav-item.open`. A design needing its own
+   JavaScript does not belong here.
+2. **Declare its height.** The second tuple element feeds `--hd-h`. The rail
+   variant is 71px against classic's 79px, and getting that wrong is exactly
+   the failure the token exists to prevent -- it shipped wrong once here before
+   being caught.
+3. **Keep the announcement strip.** Content decision, not a design one.
+
+`preview_variants.py` renders both with the dropdowns forced open, because a
+closed dropdown measures 0x0 and cannot overflow anything.
+
 ### Five things position themselves under the header
 
 `--hd-h` is the sticky header's height: 79px, 69px below 1120, 45px below 560,
