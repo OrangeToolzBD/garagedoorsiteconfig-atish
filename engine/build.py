@@ -693,7 +693,7 @@ GD_CSS = """
 .svcx-vis--tall{aspect-ratio:4/5}
 .svcx-vis--pano{aspect-ratio:2/1}
 .svcx-vis--fill{position:absolute;inset:0;border-radius:0;box-shadow:none}
-.svcx-vis--sticky{position:sticky;top:100px}
+.svcx-vis--sticky{position:sticky;top:calc(var(--hd-h) + 21px)}
 
 /* ruled service rail -- rows, not boxes. A stack of bordered white rectangles
    is what makes a services section read as a database dump. */
@@ -918,7 +918,7 @@ GD_CSS = """
 /* 07 ACCORDION -- one open at a time, the open panel carries the visual */
 .svcx--accordion{display:grid;grid-template-columns:.72fr 1.28fr;gap:52px;
   align-items:start}
-.svcx--accordion .svcx-hd{position:sticky;top:104px}
+.svcx--accordion .svcx-hd{position:sticky;top:calc(var(--hd-h) + 25px)}
 .svcx-accs{border-top:1px solid var(--line);min-width:0}
 .svcx-acc{border-bottom:1px solid var(--line)}
 .svcx-acc summary{display:grid;grid-template-columns:auto 1fr 24px;align-items:center;
@@ -1563,7 +1563,7 @@ GD_CSS = """
 .splitcopy{display:grid;grid-template-columns:260px 1fr;gap:44px;align-items:start;
   max-width:1000px;margin:0 auto}
 .splitcopy .localcopy{max-width:none;margin:0}
-.ranklist{list-style:none;padding:0;margin:0;position:sticky;top:96px}
+.ranklist{list-style:none;padding:0;margin:0;position:sticky;top:calc(var(--hd-h) + 17px)}
 .ranklist li{display:flex;align-items:center;gap:11px;padding:11px 0;
   border-bottom:1px solid var(--line);font-family:var(--disp);font-weight:700;
   font-size:.99rem;color:var(--ink)}

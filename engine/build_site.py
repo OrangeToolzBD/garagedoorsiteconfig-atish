@@ -550,6 +550,14 @@ CSS_TMPL = """
   --line:#e3e8ee;--card:#ffffff;--radius:__CARDR__;--btn-r:__BTNR__;--maxw:1180px;
   /* footer ramp, derived per theme from --pd -- see footer_ramp() */
   --ft-bg:__FTBG__;--ft-tx:__FTTX__;--ft-dim:__FTDIM__;--ft-faint:__FTFAINT__;
+  /* Height of the sticky header. Five other rules position themselves under
+     it -- anchor scroll-margin, the sticky sidebar, the ranked list and two
+     sticky Services panels -- and every one of them had the number written
+     in by hand. A header variant of a different height would have moved the
+     bar without moving anything that sits below it, so anchors would land
+     behind it and the sticky panels would overlap, with nothing reporting a
+     fault. Measured 79 / 69 / 45 across the two existing breakpoints. */
+  --hd-h:79px;
   --shadow:0 1px 2px rgba(16,32,48,.05),0 8px 24px rgba(16,32,48,.06);
   --shadow-lg:0 12px 40px rgba(16,32,48,.14);
   --disp:'__DISPLAY__',system-ui,sans-serif;--body:'__BODY__',system-ui,sans-serif;
@@ -570,7 +578,7 @@ html,body{overflow-x:clip;max-width:100%}
   border-radius:0 0 8px 0}
 .skiplink:focus{left:0}
 /* the sticky header would otherwise cover an in-page anchor target */
-#main,[id]{scroll-margin-top:88px}
+#main,[id]{scroll-margin-top:calc(var(--hd-h) + 9px)}
 body{margin:0;font-family:var(--body);color:var(--ink);background:var(--bg);line-height:1.65;font-size:17px}
 h1,h2,h3,h4{font-family:var(--disp);line-height:1.12;letter-spacing:var(--disp-track);margin:0 0 .5em;font-weight:700}
 h1{font-size:clamp(2.1rem,4.2vw,3.3rem);font-weight:var(--disp-hi)}
@@ -1344,7 +1352,7 @@ footer.site a.btn--ghost,footer.site a.btn--ghost:hover{color:#fff}
 .article .body ul,.article .body ol{padding-left:1.2em}
 .article .body li{margin:.35em 0}
 .article .tw{overflow-x:auto;margin:1.4em 0}
-.aside{position:sticky;top:96px;align-self:start}
+.aside{position:sticky;top:calc(var(--hd-h) + 17px);align-self:start}
 .qcard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px;text-align:center}
 .qcard h3{margin:0 0 8px}
 .qcard p{color:var(--muted);font-size:.94rem}
@@ -1446,6 +1454,9 @@ footer.site a.btn--ghost,footer.site a.btn--ghost:hover{color:#fff}
 @keyframes aDrop{from{transform:translateY(-14px);opacity:0}to{transform:none;opacity:1}}
 /* responsive */
 @media(max-width:1120px){
+  :root{--hd-h:69px}
+  /* 45px below 560. Declared here, after the 69px, because a later rule
+     wins between two matching media queries -- both match at 390. */
   nav.main{display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;padding:12px;gap:2px;box-shadow:var(--shadow-lg);max-height:calc(100vh - 70px);max-height:calc(100dvh - 70px - env(safe-area-inset-bottom,0px));padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
   /* The drawer used to cap at calc(100vh - 70px). On iOS Safari 100vh is the
      LARGE viewport -- it excludes the dynamic toolbar and the home indicator --
@@ -1484,6 +1495,7 @@ footer.site a.btn--ghost,footer.site a.btn--ghost:hover{color:#fff}
   .hd .btn{display:none}
   .hd .tel{display:none}
 }
+@media(max-width:560px){:root{--hd-h:45px}}
 @media(max-width:720px){
   .top .wrap{gap:10px;font-size:.8rem;justify-content:center}
   .top span,.top .dot{display:none}

@@ -201,6 +201,23 @@ in-use themes (plus the CTA gradient and the footer ramp separately), `<main>`,
 skip links, phone-less "Call" prose, **missing essential sections**, and
 **variant CSS pruned away while still rendered**.
 
+### Five things position themselves under the header
+
+`--hd-h` is the sticky header's height: 79px, 69px below 1120, 45px below 560,
+each measured. Anchor `scroll-margin-top`, the sticky sidebar, the ranked list
+and two sticky Services panels all sit at `calc(var(--hd-h) + Npx)`.
+
+They used to carry the number by hand -- 88, 96, 96, 100, 104. A header variant
+of a different height would have moved the bar and left all five behind it:
+anchors landing under the header, sticky panels overlapping, and nothing in the
+gate able to see any of it. **Change the header's height and you change only
+`--hd-h`.**
+
+The narrower tier is declared *after* the wider one, in its own media query.
+Both match at 390px and media queries carry no extra specificity, so source
+order is the only thing that decides -- the same trap that rebuilt the mobile
+trust bar as two columns during the CSS pruning work.
+
 ### Typography comes from FONT_PACKS, not from themes.json
 
 21 curated pairings in build.py, picked per domain like every other axis.
