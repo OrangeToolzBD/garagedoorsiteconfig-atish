@@ -201,6 +201,27 @@ in-use themes (plus the CTA gradient and the footer ramp separately), `<main>`,
 skip links, phone-less "Call" prose, **missing essential sections**, and
 **variant CSS pruned away while still rendered**.
 
+### Typography comes from FONT_PACKS, not from themes.json
+
+21 curated pairings in build.py, picked per domain like every other axis.
+`themes.json` still holds the colours; its `display`/`body`/`fonts` fields are
+overwritten in `load_config()` and feed nothing.
+
+Two rules, both learned by getting them wrong:
+
+- **List the weights, never a range.** `wght@600..800` works only for variable
+  families. For a static one -- Poppins, Barlow, Lato, Oswald and others --
+  Google answers HTTP 200 and silently omits the family, so the page renders
+  in system-ui and nothing in the build notices. `_FW` holds the weight list
+  each family actually serves, checked one by one against the API.
+- **Not every face has an 800.** Archivo Narrow, Oswald, Space Grotesk and
+  Zilla Slab stop at 700, and `h1`/`.brand` ask for 800, so the browser draws
+  a fake bold. `--disp-hi` carries the real ceiling; `--disp-track` carries the
+  heading letter-spacing, because -.02em suits a geometric sans and cramps a
+  serif.
+
+`devtools/preview_fonts.py` renders all 21 against real page copy.
+
 ### The gate cannot see layout
 
 `measure_similarity.py` reads HTML and CSS as text. It cannot tell whether a

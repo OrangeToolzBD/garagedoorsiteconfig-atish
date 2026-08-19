@@ -450,7 +450,7 @@ GD_CSS = """
 .gf-cols h4{color:#fff;font-size:.82rem;letter-spacing:.09em;text-transform:uppercase;margin:0 0 14px}
 .gf-cols a{color:var(--ft-tx);display:block;padding:5px 0;font-size:.94rem;text-decoration:none}
 .gf-cols a:hover{color:#fff}
-.gf-logo{display:flex;align-items:center;gap:11px;color:#fff;font-family:var(--disp);font-weight:800;font-size:1.2rem;margin-bottom:14px;text-decoration:none}
+.gf-logo{display:flex;align-items:center;gap:11px;color:#fff;font-family:var(--disp);font-weight:var(--disp-hi);font-size:1.2rem;margin-bottom:14px;text-decoration:none}
 .gf-mark{width:42px;height:42px;border-radius:11px;background:#fff;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
 .gf-logo-img{height:128px;width:auto;max-width:320px;display:block}
 .gf-brand p{font-size:.95rem;max-width:34ch;line-height:1.6;color:var(--ft-dim);margin:0}
@@ -719,7 +719,7 @@ GD_CSS = """
   max-width:52ch;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;
   -webkit-box-orient:vertical}
 .svcx-rail a:hover b,.svcx-rail a:focus-visible b{color:var(--p)}
-.svcx-num{font-family:var(--disp);font-weight:800;font-size:.86rem;
+.svcx-num{font-family:var(--disp);font-weight:var(--disp-hi);font-size:.86rem;
   color:var(--accent-lt);letter-spacing:.06em;padding-top:.35em}
 .svcx-rail .svcx-go svg{width:19px;height:19px;color:var(--p);
   opacity:.35;transition:opacity .2s,transform .2s}
@@ -960,7 +960,7 @@ GD_CSS = """
 .svcx-step__n{position:absolute;top:-14px;left:0;width:28px;height:28px;
   border-radius:50%;background:var(--soft);border:2px solid var(--line);
   color:var(--muted);display:grid;place-items:center;
-  font-family:var(--disp);font-weight:800;font-size:.68rem;transition:.3s}
+  font-family:var(--disp);font-weight:var(--disp-hi);font-size:.68rem;transition:.3s}
 .svcx-step+.svcx-step .svcx-step__n{left:26px}
 .svcx-step__t{display:block;font-family:var(--disp);font-weight:700;
   font-size:clamp(1.02rem,1.6vw,1.24rem);line-height:1.2;color:var(--ink);
@@ -1003,7 +1003,7 @@ GD_CSS = """
 .svcx-node__n{display:grid;place-items:center;width:44px;height:44px;
   margin:0 auto 8px;border-radius:50%;border:1px solid var(--line);
   background:var(--card);cursor:pointer;font-family:var(--disp);
-  font-weight:800;font-size:.7rem;letter-spacing:.04em;color:var(--muted);
+  font-weight:var(--disp-hi);font-size:.7rem;letter-spacing:.04em;color:var(--muted);
   transition:.25s}
 .svcx-node__n:hover{border-color:var(--p);color:var(--p)}
 .svcx-node__t{display:inline-flex;align-items:center;min-height:44px;
@@ -1060,7 +1060,7 @@ GD_CSS = """
 /* the panel heading is the section's display type, but the page h1 is 53px --
    keep it at section-h2 scale so the Services list never outranks the hero */
 .svcx-panel__t .svcx-cs>li h3{margin:0 0 14px;
-  font-size:clamp(1.5rem,2.4vw,2.25rem);line-height:1.14;letter-spacing:-.02em}
+  font-size:clamp(1.5rem,2.4vw,2.25rem);line-height:1.14;letter-spacing:var(--disp-track)}
 .svcx-panel__t .svcx-cs>li p{margin:0 0 26px;color:var(--muted);
   font-size:1.04rem;line-height:1.6;max-width:46ch}
 /* their "Secondary (Outline)" button; .btn--outline already exists */
@@ -1255,7 +1255,7 @@ GD_CSS = """
 .pf-step:last-child::before{display:none}
 .pf-step__n{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;
   background:var(--card);border:1px solid var(--line);color:var(--ink);
-  font-family:var(--disp);font-weight:800;font-size:.78rem;margin-bottom:22px;
+  font-family:var(--disp);font-weight:var(--disp-hi);font-size:.78rem;margin-bottom:22px;
   position:relative;z-index:1;transition:.25s}
 .pf-step:hover .pf-step__n{background:var(--p);border-color:var(--p);
   color:var(--on-accent)}
@@ -1540,7 +1540,7 @@ GD_CSS = """
   gap:16px;margin-bottom:34px}
 .lstat{text-align:center;padding:22px 16px;background:var(--card);
   border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
-.lstat b{display:block;font-family:var(--disp);font-weight:800;line-height:1.05;
+.lstat b{display:block;font-family:var(--disp);font-weight:var(--disp-hi);line-height:1.05;
   font-size:clamp(1.5rem,3.1vw,2.1rem);color:var(--p);margin-bottom:6px}
 .lstat span{font-size:.86rem;color:var(--muted);letter-spacing:.01em}
 .lead-para{font-size:1.15rem;line-height:1.62;color:var(--ink);margin-bottom:1.1rem}
@@ -1550,7 +1550,7 @@ GD_CSS = """
   align-items:center;gap:18px;padding:22px 6px;border-bottom:1px solid var(--line);
   text-decoration:none;transition:.16s}
 .srow:hover{background:var(--soft);padding-left:14px;text-decoration:none}
-.srow__n{font-family:var(--disp);font-weight:800;font-size:1.15rem;color:var(--accent-lt)}
+.srow__n{font-family:var(--disp);font-weight:var(--disp-hi);font-size:1.15rem;color:var(--accent-lt)}
 .srow__t{font-family:var(--disp);font-weight:700;font-size:1.12rem;color:var(--ink)}
 .srow__d{color:var(--muted);font-size:.96rem}
 .srow__a svg{width:19px;height:19px;color:var(--p)}
@@ -1790,6 +1790,89 @@ def btn_css(t):
 }}
 """
 
+# ---- TYPOGRAPHY ----------------------------------------------------------
+# Every one of the 1001 sites in use shipped Urbanist + Open Sans. themes.json
+# holds 47 display faces and 24 body faces, but all of that variety sits in the
+# 95 themes nobody uses -- 89 of them inherited from the porta-potty generator.
+# Type is the strongest visual signal after colour, so one pairing across the
+# estate was the single largest piece of sameness left.
+#
+# Curated pairings rather than anything computed: this is how every site builder
+# does it, because pairing faces is a judgement, not a formula.
+#
+# The weight lists are checked against the css2 API family by family, not
+# assumed. Two things that catches:
+#   * Archivo Narrow, Oswald, Space Grotesk and Zilla Slab have no 800 at all.
+#     h1 and .brand ask for 800, so the browser would fake it -- hence `hi`.
+#   * Lato serves only 400. It is the classic partner for Playfair Display and
+#     is unusable here, because the CSS wants 500 and 600 from the body face.
+#
+# Do NOT switch these to the range form (wght@600..800). It works only for
+# variable families; for a static one Google answers 200 and silently omits the
+# family, so the page renders in system-ui and nothing in the build notices.
+#
+# `track` is the heading letter-spacing. -.02em suits a geometric sans and
+# looks cramped on a serif or a slab, and worse on a condensed face.
+#
+# APPEND-ONLY: selection is digest % len, so inserting re-rolls every domain.
+_FW = {
+    "Archivo": "400;500;600;700;800", "Archivo Narrow": "600;700",
+    "Barlow": "400;500;600", "Barlow Condensed": "600;700;800",
+    "Bitter": "600;700;800", "DM Sans": "400;500;600",
+    "Figtree": "400;500;600;700;800", "Fraunces": "600;700;800",
+    "IBM Plex Sans": "400;500;600", "Inter": "400;500;600;700;800",
+    "Karla": "400;500;600", "Lexend": "400;500;600;700;800",
+    "Manrope": "400;500;600;700;800", "Nunito Sans": "400;500;600;700;800",
+    "Open Sans": "400;500;600", "Oswald": "600;700",
+    "Outfit": "600;700;800", "Playfair Display": "600;700;800",
+    "Poppins": "600;700;800", "Roboto": "400;500;600",
+    "Roboto Slab": "600;700;800", "Rubik": "600;700;800",
+    "Sora": "600;700;800", "Source Sans 3": "400;500;600",
+    "Source Serif 4": "600;700;800", "Space Grotesk": "600;700",
+    "Urbanist": "600;700;800", "Zilla Slab": "600;700",
+}
+
+# (display, body, heaviest display weight, heading letter-spacing)
+FONT_PACKS = [
+    # geometric sans -- the register the estate is in today
+    ("Urbanist", "Open Sans", 800, "-.02em"),
+    ("Poppins", "Inter", 800, "-.02em"),
+    ("Outfit", "DM Sans", 800, "-.02em"),
+    ("Figtree", "Figtree", 800, "-.02em"),
+    # grotesk -- neutral, a touch more corporate
+    ("Inter", "Inter", 800, "-.022em"),
+    ("Archivo", "Roboto", 800, "-.02em"),
+    ("Manrope", "Manrope", 800, "-.02em"),
+    ("Sora", "Inter", 800, "-.022em"),
+    ("Space Grotesk", "Inter", 700, "-.02em"),
+    # humanist -- warmer
+    ("Nunito Sans", "Nunito Sans", 800, "-.015em"),
+    ("Rubik", "Karla", 800, "-.015em"),
+    ("Lexend", "Lexend", 800, "-.02em"),
+    # slab -- reads as a trade shop
+    ("Roboto Slab", "Roboto", 800, "-.01em"),
+    ("Bitter", "Source Sans 3", 800, "-.01em"),
+    ("Zilla Slab", "Karla", 700, "-.01em"),
+    # serif -- more premium
+    ("Playfair Display", "Source Sans 3", 800, "-.005em"),
+    ("Fraunces", "Nunito Sans", 800, "-.005em"),
+    ("Source Serif 4", "IBM Plex Sans", 800, "-.005em"),
+    # condensed -- long headlines fit on one line
+    ("Barlow Condensed", "Barlow", 800, "0"),
+    ("Archivo Narrow", "Archivo", 700, "0"),
+    ("Oswald", "Roboto", 700, "0"),
+]
+
+
+def font_pack(domain):
+    """The pairing this site uses, and the Google Fonts query for it."""
+    disp, body, hi, track = FONT_PACKS[_hash_idx(f"{domain}|fontpack", len(FONT_PACKS))]
+    q = (f"{disp.replace(' ', '+')}:wght@{_FW[disp]}"
+         f"&family={body.replace(' ', '+')}:wght@{_FW[body]}")
+    return {"display": disp, "body": body, "fonts": q,
+            "disp_hi": str(hi), "disp_track": track}
+
+
 # ---------------------------------------------------------------- config
 def load_config():
     themes = json.load(open(os.path.join(CONFIG, "themes.json"), encoding="utf-8"))
@@ -1802,6 +1885,9 @@ def load_config():
         t = {k: v for k, v in th.items() if not k.startswith("_")}
         lay = layouts.get(s.get("layout", ""), {})
         t["layout"] = {**DEFAULT_LAYOUT, **{k: v for k, v in lay.items() if not k.startswith("_")}}
+        # themes.json keeps the colours; the pairing comes from the digest, so
+        # type varies independently of palette instead of being welded to it
+        t.update(font_pack(s["domain"]))
         phone = s.get("phone", "")
         t.update({
             "domain": s["domain"], "city": s["city"], "st": s["st"],

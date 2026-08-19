@@ -535,6 +535,8 @@ def css(t):
         .replace("__ACCENTLT__", accent_on_light(t["accent"])) \
         .replace("__ACCENTDK__", accent_on_dark(t["accent"], t["pd"])) \
         .replace("__DISPLAY__", t["display"]).replace("__BODY__", t["body"]) \
+        .replace("__DISPHI__", str(t.get("disp_hi", "800"))) \
+        .replace("__DISPTRACK__", t.get("disp_track", "-.02em")) \
         .replace("__BTNR__", btnr).replace("__CARDR__", cardr)
 
 CSS_TMPL = """
@@ -551,6 +553,11 @@ CSS_TMPL = """
   --shadow:0 1px 2px rgba(16,32,48,.05),0 8px 24px rgba(16,32,48,.06);
   --shadow-lg:0 12px 40px rgba(16,32,48,.14);
   --disp:'__DISPLAY__',system-ui,sans-serif;--body:'__BODY__',system-ui,sans-serif;
+  /* The heaviest weight the display face actually serves, and the heading
+     tracking that suits it. Four of the pairings use faces with no 800 -- ask
+     for it anyway and the browser draws a fake bold. -.02em suits a geometric
+     sans and cramps a serif. Both come from FONT_PACKS in build.py. */
+  --disp-hi:__DISPHI__;--disp-track:__DISPTRACK__;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -565,8 +572,8 @@ html,body{overflow-x:clip;max-width:100%}
 /* the sticky header would otherwise cover an in-page anchor target */
 #main,[id]{scroll-margin-top:88px}
 body{margin:0;font-family:var(--body);color:var(--ink);background:var(--bg);line-height:1.65;font-size:17px}
-h1,h2,h3,h4{font-family:var(--disp);line-height:1.12;letter-spacing:-.02em;margin:0 0 .5em;font-weight:700}
-h1{font-size:clamp(2.1rem,4.2vw,3.3rem);font-weight:800}
+h1,h2,h3,h4{font-family:var(--disp);line-height:1.12;letter-spacing:var(--disp-track);margin:0 0 .5em;font-weight:700}
+h1{font-size:clamp(2.1rem,4.2vw,3.3rem);font-weight:var(--disp-hi)}
 h2{font-size:clamp(1.6rem,3vw,2.3rem)}
 h3{font-size:1.25rem}
 p{margin:0 0 1rem}
@@ -602,7 +609,7 @@ img{max-width:100%;display:block}
 .nav-quote{display:none}
 header.site{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .hd{display:flex;align-items:center;gap:12px;padding:12px 0}
-.brand{display:flex;align-items:center;gap:10px;font-family:var(--disp);font-weight:800;font-size:.9rem;color:var(--ink);flex:0 0 auto}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--disp);font-weight:var(--disp-hi);font-size:.9rem;color:var(--ink);flex:0 0 auto}
 .brand:hover{text-decoration:none}
 .brand>span{white-space:nowrap;line-height:1.08}
 .brand__chip{width:42px;height:42px;border-radius:11px;flex:0 0 auto;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;padding:5px}
@@ -721,7 +728,7 @@ nav.main>a:hover,.nav-item>button:hover{background:var(--soft);text-decoration:n
 .hero--masthead .wrap{padding:58px 34px 30px}
 .hero--masthead .hero__mast{max-width:58ch}
 .hero--masthead h1{color:#fff;margin:0 0 18px;
-  font-size:clamp(2rem,4.4vw,3.6rem);line-height:1.05;letter-spacing:-.02em}
+  font-size:clamp(2rem,4.4vw,3.6rem);line-height:1.05;letter-spacing:var(--disp-track)}
 .hero--masthead .eyebrow{color:var(--accent-dk)}
 .hero--masthead .lead{color:rgba(255,255,255,.86);max-width:52ch;margin:0 0 28px}
 .hero--masthead .hero__band{margin-top:32px;padding-top:20px;
@@ -888,7 +895,7 @@ nav.main>a:hover,.nav-item>button:hover{background:var(--soft);text-decoration:n
 /* steps */
 .steps{counter-reset:s;display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
 .step{position:relative;padding:28px 24px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
-.step::before{counter-increment:s;content:counter(s);position:absolute;top:-18px;left:24px;width:44px;height:44px;border-radius:12px;background:var(--p);color:#fff;font-family:var(--disp);font-weight:800;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.step::before{counter-increment:s;content:counter(s);position:absolute;top:-18px;left:24px;width:44px;height:44px;border-radius:12px;background:var(--p);color:#fff;font-family:var(--disp);font-weight:var(--disp-hi);display:flex;align-items:center;justify-content:center;font-size:1.2rem}
 .step h3{margin:14px 0 6px}
 .step p{color:var(--muted);margin:0;font-size:.95rem}
 .step__b{min-width:0}
@@ -1038,7 +1045,7 @@ table{width:100%;border-collapse:collapse}
 .ctab--editorial{display:grid;grid-template-columns:minmax(0,1fr) auto;
   gap:20px 48px;align-items:start}
 .ctab--editorial h2{grid-column:1;margin:0;
-  font-size:clamp(1.6rem,3.1vw,2.45rem);line-height:1.08;letter-spacing:-.02em}
+  font-size:clamp(1.6rem,3.1vw,2.45rem);line-height:1.08;letter-spacing:var(--disp-track)}
 .ctab--editorial .cta{grid-column:2;grid-row:1/3;flex-direction:column;
   align-items:stretch}
 .ctab__lead{grid-column:1;display:flex;gap:14px;margin:0;max-width:54ch}
@@ -1113,7 +1120,7 @@ footer.site h4{color:#fff;font-size:.95rem;margin:0 0 14px;letter-spacing:.04em;
 footer.site a{color:#c4cdd8;display:block;padding:5px 0;font-size:.95rem}
 footer.site a:hover{color:#fff}
 footer.site .fbrand p{font-size:.95rem;max-width:32ch}
-footer.site .flogo{display:flex;align-items:center;gap:10px;color:#fff;font-family:var(--disp);font-weight:800;font-size:1.15rem;margin-bottom:14px}
+footer.site .flogo{display:flex;align-items:center;gap:10px;color:#fff;font-family:var(--disp);font-weight:var(--disp-hi);font-size:1.15rem;margin-bottom:14px}
 footer.site .addr{font-style:normal;line-height:1.7;font-size:.95rem}
 footer.site .addr a{display:inline;padding:0;color:#fff;font-weight:700}
 .legal{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:22px;font-size:.86rem;color:#7d8894}
@@ -1341,7 +1348,7 @@ footer.site a.btn--ghost,footer.site a.btn--ghost:hover{color:#fff}
 .qcard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px;text-align:center}
 .qcard h3{margin:0 0 8px}
 .qcard p{color:var(--muted);font-size:.94rem}
-.qcard .tel{font-family:var(--disp);font-weight:800;font-size:1.5rem;color:var(--p);display:block;margin:8px 0 16px}
+.qcard .tel{font-family:var(--disp);font-weight:var(--disp-hi);font-size:1.5rem;color:var(--p);display:block;margin:8px 0 16px}
 .qcard .btn{width:100%;justify-content:center;margin-bottom:10px}
 
 /* ---- sidebar variants --------------------------------------------------

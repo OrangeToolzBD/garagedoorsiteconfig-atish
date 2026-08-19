@@ -21,7 +21,11 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import build as B
 
-DOMAIN = "dallasgaragedoor.com"
+# Which site's tokens to render with. Fonts now vary per domain, and a face
+# 16% wider than Urbanist wraps headings differently, so the domain chosen
+# decides which typography this preview actually exercises. Pass one on the
+# command line to audit a different pairing.
+DOMAIN = os.environ.get("PREVIEW_DOMAIN", "dallasgaragedoor.com")
 
 LONG_H1 = "Garage Door Repair for Dallas Homes Built 1973-2007"
 SHORT_H1 = "About Dallas Garage Door"
@@ -95,8 +99,16 @@ function frame(w, src) {
 
 
 def shell(css, body, extra=""):
+    # The font <link> lives in head_html(), not in the stylesheet, so a preview
+    # built from css(t) alone renders in system-ui -- every height measured here
+    # before this line was added was the fallback face, not the site's own.
+    t = B.load_config()[DOMAIN]
     return ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
             '<meta name="viewport" content="width=device-width,initial-scale=1">'
+            '<link rel="preconnect" href="https://fonts.googleapis.com">'
+            '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
+            '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family='
+            f'{t["fonts"]}&display=swap">'
             f"<title>variants</title><style>{css}\n"
             ".lbl{font:600 12px/1 ui-monospace,monospace;letter-spacing:.08em;"
             "text-transform:uppercase;color:#888;margin:22px 0 6px;padding:0 16px}"
