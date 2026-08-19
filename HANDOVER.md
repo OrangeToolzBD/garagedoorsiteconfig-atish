@@ -203,16 +203,23 @@ skip links, phone-less "Call" prose, **missing essential sections**, and
 
 ### Header variants: three contracts to keep
 
-`HEADER_VARIANTS` is `[(name, desktop height)]`. Anything added to it must:
+`HEADER_VARIANTS` is `[(name, starting height)]`. Anything added to it must:
 
 1. **Keep the JS hooks.** NAVJS binds to `.burger`, `nav.main` and
    `.nav-item > button`, and toggles `.nav-item.open`. A design needing its own
    JavaScript does not belong here.
-2. **Declare its height.** The second tuple element feeds `--hd-h`. The rail
-   variant is 71px against classic's 79px, and getting that wrong is exactly
-   the failure the token exists to prevent -- it shipped wrong once here before
-   being caught.
-3. **Keep the announcement strip.** Content decision, not a design one.
+2. **Keep the announcement strip.** Content decision, not a design one.
+3. **Check where its dropdowns land.** The mega is centred on its trigger,
+   which fails once the trigger sits at the left edge: `stack` and `rail` put
+   the nav hard left and opened Services at x=-27 and Service Areas at x=-51,
+   off screen, on 306 sites. Those two anchor their menus left instead.
+
+The height in the tuple is only the **pre-script fallback**. The real height
+moves with the variant, the breakpoint *and* the font pack -- `stack` measured
+120px at desktop and 65px on a phone, `breakout` went 68px then 83px, and
+`rail` was 71px in one font and 79px in another. No single number is right, so
+NAVJS measures the header and writes `--hd-h` itself, re-running on resize and
+on `fonts.ready`.
 
 `preview_variants.py` renders both with the dropdowns forced open, because a
 closed dropdown measures 0x0 and cannot overflow anything.

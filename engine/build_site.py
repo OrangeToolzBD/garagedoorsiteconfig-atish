@@ -622,13 +622,78 @@ header.site{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.92);ba
    The announcement strip stays in both -- content decision, not a design one.
    Both keep .burger, nav.main and .nav-item>button, which is what NAVJS binds
    to, and both leave the bar's height alone so --hd-h stays true. */
+/* -- center: the nav gets its own centring cell, so a long company name
+      pushes the cell rather than shoving the nav off its axis. */
+.hd--center .hd__mid{flex:1;display:flex;justify-content:center;min-width:0}
+.hd--center .brand{flex:0 0 auto}
+
+/* -- stack: the nav on a full-width row of its own. The only two-row bar, and
+      the only one where the nav is not competing with the brand for space --
+      which is why its dropdowns can afford to be wide. */
+/* The mega is centred on its trigger, which is right until the trigger sits at
+   the left edge of the page. In stack and rail the nav starts hard left, so
+   Services opened to x=-27 and Service Areas to x=-51 -- off the screen, in the
+   real open state, on 306 sites. Anchor those two to the left of their item
+   instead. Everything else keeps the centred behaviour. */
+.hd--stack nav.main .mega,.hd--rail nav.main .mega{left:0;transform:translateY(6px)}
+.hd--stack .nav-item.open .mega,.hd--stack .nav-item:hover .mega,
+.hd--rail .nav-item.open .mega,.hd--rail .nav-item:hover .mega{
+  left:0;transform:translateY(0)}
+.hd--stack .hd{padding:10px 0}
+.hd--stack .hd__row{border-top:1px solid var(--line);background:var(--soft)}
+.hd--stack .hd__row nav.main{display:flex;gap:4px;padding:2px 0}
+.hd--stack nav.main{margin-left:0}
+.hd--stack .brand{margin-right:auto}
+
+/* -- split: two zones, divided by a rule. The lockup keeps the page ground,
+      the nav and the button sit on a tint. */
+.hd--split .hd{padding:0;gap:0}
+.hd--split .hd__z1{display:flex;align-items:center;padding:12px 26px 12px 0;flex:0 0 auto}
+.hd--split .hd__z2{display:flex;align-items:center;gap:14px;flex:1;min-width:0;
+  justify-content:space-between;padding:12px 0 12px 26px;background:var(--soft);
+  border-left:1px solid var(--line)}
+.hd--split .hd__z2 nav.main{margin-left:0}
+
+/* -- breakout: the lockup sits in a filled block that hangs past the bar's own
+      height. The block is what makes this one recognisable, so it keeps its
+      ground on every width. */
+.hd--breakout .hd{padding:0;align-items:stretch;gap:16px}
+.hd--breakout .hd__block{background:var(--pd);padding:14px 20px 20px;
+  margin-bottom:-9px;display:flex;align-items:center;flex:0 0 auto;
+  border-radius:0 0 var(--radius) var(--radius);position:relative;z-index:1}
+.hd--breakout .hd__block .brand{color:#fff}
+.hd--breakout .hd__block .brand span{color:#fff}
+.hd--breakout nav.main{margin-left:auto}
+.hd--breakout .btn{align-self:center}
+
+/* -- dark: dark ground, nav centred, tagline dropped. White on --pd is the
+      pairing the CTA band and the sidebar card already use, so the contrast is
+      the one this codebase has checked most. */
+.hd--dark{background:var(--pd);border-bottom-color:rgba(255,255,255,.14)}
+.hd--dark .hd__mid{flex:1;display:flex;justify-content:center;min-width:0}
+.hd--dark .brand,.hd--dark .brand span{color:#fff}
+.hd--dark nav.main>a,.hd--dark .nav-item>button{color:#fff}
+.hd--dark nav.main>a:hover,.hd--dark .nav-item>button:hover{background:rgba(255,255,255,.12)}
+.hd--dark .burger span{background:#fff}
+
 .hd--rail .hd__lead{display:flex;align-items:center;gap:26px;min-width:0;flex:1}
 .hd--rail .brand--tight{gap:10px}
 .hd--rail .brand--tight span:last-child{white-space:nowrap;overflow:hidden;
   text-overflow:ellipsis;font-size:1.02rem}
 .hd--rail nav.main{margin-left:0}
 @media(max-width:1120px){
+  /* Below the drawer breakpoint every variant is the same bar: lockup, burger,
+     button. The arrangements above all assume a nav on the row, and the nav is
+     not on the row here. Keeping them would leave empty cells holding space. */
   .hd--rail .hd__lead{flex:1;gap:0}
+  .hd--center .hd__mid,.hd--dark .hd__mid{flex:0;display:contents}
+  .hd--stack .hd__row{border-top:0;background:none}
+  .hd--split .hd{padding:12px 0}
+  .hd--split .hd__z1{padding:0;flex:1;min-width:0}
+  .hd--split .hd__z2{flex:0 0 auto;background:none;border-left:0;padding:0}
+  .hd--breakout .hd{padding:12px 0;align-items:center}
+  .hd--breakout .hd__block{margin-bottom:0;padding:8px 12px;border-radius:var(--radius)}
+  .hd--breakout nav.main{margin-left:0}
 }
 .brand{display:flex;align-items:center;gap:10px;font-family:var(--disp);font-weight:var(--disp-hi);font-size:.9rem;color:var(--ink);flex:0 0 auto}
 .brand:hover{text-decoration:none}
@@ -1671,6 +1736,31 @@ NAVJS = """(function(){
    els.forEach(function(el){io.observe(el)});
    // safety net: never leave content hidden if the observer never fires
    setTimeout(showAll,2600);
+ })();
+
+ /* --hd-h, measured rather than declared.
+    Five rules sit at calc(var(--hd-h) + Npx): anchor scroll-margin, the sticky
+    sidebar, the ranked list and two sticky Services panels. The stylesheet
+    carries a per-variant starting value, but the true height moves with three
+    things at once -- the variant (stack is two rows, breakout hangs past the
+    bar), the breakpoint, and the font pack, which changes the lockup's line
+    box. Measured across those, one variant ran 120px at desktop and 65px on a
+    phone; another went the other way, 68px then 83px. No single number is
+    right, so the page measures its own header. The CSS value is the pre-script
+    fallback, and fonts.ready re-runs it because a swapped face resizes the
+    lockup after first paint. */
+ (function(){
+   var hd=document.querySelector('header.site');
+   if(!hd)return;
+   var last=0;
+   function sync(){
+     var h=Math.round(hd.getBoundingClientRect().height);
+     if(h&&h!==last){last=h;document.documentElement.style.setProperty('--hd-h',h+'px');}
+   }
+   sync();
+   addEventListener('resize',function(){requestAnimationFrame(sync)},{passive:true});
+   addEventListener('load',sync);
+   if(document.fonts&&document.fonts.ready){document.fonts.ready.then(sync)}
  })();
 })();"""
 

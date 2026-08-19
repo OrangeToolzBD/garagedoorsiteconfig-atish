@@ -1895,7 +1895,13 @@ def font_pack(domain):
 # it, so a variant that is 8px shorter and does not say so leaves anchors
 # landing 8px into the page and the sticky sidebar 8px lower than it needs.
 # Below 1120 both variants collapse to the same bar, so only this tier varies.
-HEADER_VARIANTS = [("classic", "79px"), ("rail", "71px")]
+# (name, the value --hd-h starts at). This is the pre-JS fallback only: the
+# real height moves with the variant, the breakpoint AND the font pack, so
+# NAVJS measures the header and corrects the token. These are the measured
+# desktop values, which is what the token should be worth before script runs.
+HEADER_VARIANTS = [("classic", "79px"), ("rail", "79px"), ("center", "79px"),
+                   ("stack", "120px"), ("split", "79px"), ("breakout", "68px"),
+                   ("dark", "79px")]
 
 
 def header_variant(domain):
@@ -2237,22 +2243,61 @@ def header(t, pages):
     burger = ('<button class="burger" aria-label="Menu" aria-expanded="false" '
               'aria-controls="mainnav"><span></span><span></span><span></span></button>')
     quote = '<a class="btn btn--primary" href="/request-a-quote/">Free Quote</a>'
+    brand_full = (f'<a class="brand" href="/">'
+                  f'<span class="brand__chip">{brand_chip(t, 40)}</span>'
+                  f'<span>{esc(t["brand"])}<small>{esc(t["tagline"])}</small></span></a>')
+    # no tagline, smaller chip: used where the lockup has to share the row
+    brand_tight = (f'<a class="brand brand--tight" href="/">'
+                   f'<span class="brand__chip">{brand_chip(t, 34)}</span>'
+                   f'<span>{esc(t["brand"])}</span></a>')
 
+    if v == "center":
+        # nav in its own centring cell rather than a sibling pushed along the
+        # row, so the arrangement survives a long company name
+        return (f'{strip}<header class="site hd--center"><div class="wrap hd">'
+                f'{brand_full}{burger}<div class="hd__mid">'
+                f'<nav class="main" id="mainnav">{nav}</nav></div>{quote}'
+                f'</div></header><main id="main">')
+    if v == "stack":
+        # the nav gets a full-width row of its own under the lockup. The only
+        # variant where the bar is two rows, so it is also the only one where
+        # the nav is not competing with the brand for horizontal space.
+        return (f'{strip}<header class="site hd--stack">'
+                f'<div class="wrap hd">{brand_full}{burger}{quote}</div>'
+                f'<div class="hd__row"><div class="wrap">'
+                f'<nav class="main" id="mainnav">{nav}</nav></div></div>'
+                f'</header><main id="main">')
+    if v == "split":
+        # two zones divided by a rule: the lockup on one ground, the nav and
+        # the button on another
+        return (f'{strip}<header class="site hd--split"><div class="wrap hd">'
+                f'<div class="hd__z1">{brand_full}</div>{burger}'
+                f'<div class="hd__z2"><nav class="main" id="mainnav">{nav}</nav>'
+                f'{quote}</div></div></header><main id="main">')
+    if v == "breakout":
+        # the lockup sits in a filled block that hangs below the bar's own
+        # height instead of sitting inside it
+        return (f'{strip}<header class="site hd--breakout"><div class="wrap hd">'
+                f'<div class="hd__block">{brand_tight}</div>{burger}'
+                f'<nav class="main" id="mainnav">{nav}</nav>{quote}'
+                f'</div></header><main id="main">')
+    if v == "dark":
+        # dark ground, centred nav, and the tagline drops -- at this weight it
+        # competes with the nav rather than supporting the name
+        return (f'{strip}<header class="site hd--dark"><div class="wrap hd">'
+                f'{brand_tight}{burger}<div class="hd__mid">'
+                f'<nav class="main" id="mainnav">{nav}</nav></div>{quote}'
+                f'</div></header><main id="main">')
     if v == "rail":
-        # The lockup loses its tagline and tightens to a single line, the nav
-        # sits directly beside it rather than out at the far end, and the whole
-        # left group is one element instead of three siblings.
-        brand = (f'<a class="brand brand--tight" href="/">'
-                 f'<span class="brand__chip">{brand_chip(t, 34)}</span>'
-                 f'<span>{esc(t["brand"])}</span></a>')
+        # the nav sits directly beside the lockup as one group, rather than out
+        # at the far end as a third sibling
         return (f'{strip}<header class="site hd--rail"><div class="wrap hd">'
-                f'<div class="hd__lead">{brand}<nav class="main" id="mainnav">{nav}</nav></div>'
+                f'<div class="hd__lead">{brand_tight}'
+                f'<nav class="main" id="mainnav">{nav}</nav></div>'
                 f'{burger}{quote}</div></header><main id="main">')
 
-    brand = (f'<a class="brand" href="/"><span class="brand__chip">{brand_chip(t, 40)}</span>'
-             f'<span>{esc(t["brand"])}<small>{esc(t["tagline"])}</small></span></a>')
     return (f'{strip}<header class="site hd--classic"><div class="wrap hd">'
-            f'{brand}{burger}<nav class="main" id="mainnav">{nav}</nav>{quote}'
+            f'{brand_full}{burger}<nav class="main" id="mainnav">{nav}</nav>{quote}'
             f'</div></header><main id="main">')
 
 # ---- phone CTAs -------------------------------------------------------------

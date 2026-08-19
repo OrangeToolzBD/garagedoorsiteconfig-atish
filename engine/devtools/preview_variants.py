@@ -193,18 +193,20 @@ def main(dest):
         # the header itself, or <main> lands inside it and the audit reports the
         # harness rather than the header.
         mk = B.header(t, hdr_pages)
+        # .open on every dropdown: the class the script toggles, so the audit
+        # measures what a reader actually gets rather than a hidden state
         out.append(f'<p class="lbl">header &mdash; {pack[0]}</p>'
-                   + mk[:mk.index("<main")] + '<div style="height:420px"></div>')
+                   + mk[:mk.index("<main")].replace('class="nav-item"',
+                                                    'class="nav-item open"')
+                   + '<div style="height:420px"></div>')
     B.HEADER_VARIANTS = orig
     open(os.path.join(dest, "headers.html"), "w", encoding="utf-8",
          newline="\n").write(shell(css, "".join(out),
-             # Reveal the dropdowns without taking them out of absolute
-             # positioning. Forcing position:static drops them into the flow and
-             # shoves the Free Quote button out of the bar -- which the audit
-             # then reports as a 167px overflow that does not exist.
-             ".mega{opacity:1!important;visibility:visible!important;"
-             "transform:translateX(-50%)!important;pointer-events:auto!important}"
-             ".mega--areas{transform:translateX(-50%)!important}"
+             # Only unhide them. Do NOT pin left/transform: the open state has
+             # its own values, and overriding them measures a position no reader
+             # ever sees. Every element carries .open in the markup below, so
+             # this is the genuine open geometry.
+             ".nav-item.open .mega{opacity:1!important;visibility:visible!important}"
              "header.site{position:static}"))
 
     # ---- service areas: every variant, sparse and dense ---------------------
