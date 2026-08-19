@@ -129,21 +129,30 @@ _LABELS = {"service": ("Services", "/services/"), "area": ("Service Areas", "/se
 # editorial / luxury / serif — cream + brass + ink, hairline dividers
 IRON_FONTS = "family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=Inter:wght@400;500;600"
 IRON_CSS = r"""
-:root{--ink:#171512;--cream:#f6f2ea;--paper:#fbf9f4;--brass:#a9803f;--rule:#d8cfbe;--muted:#6b6459}
+/* --brass is the fill and the rule; --brass-tx is the same hue darkened
+   until it clears AA on --paper and on the cream bands. Brass at #a9803f measured 3.41:1 there,
+   and it was carrying every eyebrow, breadcrumb, service number and cite
+   on the template. */
+:root{--ink:#171512;--cream:#f6f2ea;--paper:#fbf9f4;--brass:#a9803f;
+  --brass-tx:#8a6933;--rule:#d8cfbe;--muted:#6b6459}
 *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
 body{font-family:Inter,sans-serif;color:var(--ink);background:var(--paper);line-height:1.6;-webkit-font-smoothing:antialiased}
 .serif{font-family:"Playfair Display",Georgia,serif}
 .wrap{max-width:1180px;margin:0 auto;padding:0 32px}
 a{color:inherit;text-decoration:none}img{display:block;max-width:100%}
-.kick{font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;color:var(--brass);font-weight:600}
+.kick{font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;color:var(--brass-tx);font-weight:600}
 .ulink{position:relative;font-weight:500;padding-bottom:2px}
 .ulink::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .35s}
 .ulink:hover::after{transform:scaleX(1);transform-origin:left}
 .pill{display:inline-block;border:1px solid var(--ink);padding:14px 30px;font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;font-weight:600;transition:.3s}
 .pill:hover{background:var(--ink);color:var(--cream)}
-.pill--brass{border-color:var(--brass);color:var(--brass)}.pill--brass:hover{background:var(--brass);color:#fff}
+.pill--brass{border-color:var(--brass-tx);color:var(--brass-tx)}.pill--brass:hover{background:var(--brass);color:#fff}
 .util{background:var(--ink);color:var(--cream)}
 .util .wrap{display:flex;justify-content:space-between;font-size:.72rem;letter-spacing:.12em;padding:9px 32px;text-transform:uppercase}
+/* --brass, not --brass-tx: .util sits on --ink. The darkened variant is for
+   the light bands only -- on this ground it drops to 3.60:1, while the
+   original brass is 5.07:1. Two grounds, two values, same split the main
+   design system makes with --accent-lt and --accent-dk. */
 .util a{color:var(--brass)}
 header{position:sticky;top:0;z-index:40;background:rgba(251,249,244,.9);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule)}
 .nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:20px 32px}
@@ -155,12 +164,17 @@ header{position:sticky;top:0;z-index:40;background:rgba(251,249,244,.9);backdrop
 .ni:hover .drop{opacity:1;visibility:visible;transform:translateY(0)}
 .drop a{display:block;padding:9px 22px;font-size:.85rem;color:var(--ink);letter-spacing:.02em}
 .drop a::after{display:none}
-.drop a:hover{background:var(--cream);color:var(--brass)}
-.drop a:first-child{color:var(--brass);font-weight:600;letter-spacing:.18em;text-transform:uppercase;font-size:.68rem;border-bottom:1px solid var(--rule);margin-bottom:6px;padding-bottom:11px}
+.drop a:hover{background:var(--cream);color:var(--brass-tx)}
+.drop a:first-child{color:var(--brass-tx);font-weight:600;letter-spacing:.18em;text-transform:uppercase;font-size:.68rem;border-bottom:1px solid var(--rule);margin-bottom:6px;padding-bottom:11px}
 .brand{font-size:1.5rem;font-weight:900;text-align:center;line-height:1}
-.brand small{display:block;font-family:Inter;font-size:.56rem;letter-spacing:.34em;font-weight:600;color:var(--brass);margin-top:5px;text-transform:uppercase}
+.brand small{display:block;font-family:Inter;font-size:.56rem;letter-spacing:.34em;font-weight:600;color:var(--brass-tx);margin-top:5px;text-transform:uppercase}
 .burger,.mnav{display:none}
-.hero{position:relative;min-height:82vh;display:flex;align-items:flex-end;color:var(--cream);overflow:hidden}
+/* The ground here is the <img> child plus the ::after scrim -- there was no
+   background-color at all, so until that photo paints, cream text sat on the
+   body's white at 1.12:1. Invisible, on every first load, and permanently if
+   the image ever 404s. The colour matches the foot of the scrim. */
+.hero{position:relative;min-height:82vh;display:flex;align-items:flex-end;
+  color:var(--cream);overflow:hidden;background-color:#14120f}
 .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(.2) brightness(.6)}
 .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,18,15,.15),rgba(20,18,15,.78))}
 .hero__in{position:relative;z-index:2;padding:0 32px 78px;max-width:1180px;margin:0 auto;width:100%}
@@ -170,14 +184,14 @@ header{position:sticky;top:0;z-index:40;background:rgba(251,249,244,.9);backdrop
 .hero__cta{display:flex;gap:28px;align-items:center;flex-wrap:wrap}.hero__cta .ulink{color:var(--cream)}
 .manifesto{padding:110px 0;text-align:center}
 .manifesto p{font-family:"Playfair Display",serif;font-size:clamp(1.5rem,3.2vw,2.4rem);line-height:1.4;max-width:22ch;margin:20px auto 0}
-.manifesto .em{font-style:italic;color:var(--brass)}
+.manifesto .em{font-style:italic;color:var(--brass-tx)}
 .svc{border-top:1px solid var(--rule)}
 .svc__row{display:grid;grid-template-columns:110px 1fr auto;gap:28px;align-items:baseline;padding:34px 0;border-bottom:1px solid var(--rule);transition:padding-left .4s}
 .svc__row:hover{padding-left:12px}
-.svc__no{font-family:"Playfair Display",serif;font-size:1.3rem;color:var(--brass)}
+.svc__no{font-family:"Playfair Display",serif;font-size:1.3rem;color:var(--brass-tx)}
 .svc__t{font-family:"Playfair Display",serif;font-size:clamp(1.6rem,3.2vw,2.4rem);font-weight:700}
 .svc__d{max-width:38ch;color:var(--muted)}
-.svc__row:hover .svc__t{color:var(--brass)}
+.svc__row:hover .svc__t{color:var(--brass-tx)}
 .break{position:relative;min-height:52vh;display:flex;align-items:center;justify-content:center;color:var(--cream);text-align:center}
 .break img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5)}
 .break blockquote{position:relative;z-index:2;font-family:"Playfair Display",serif;font-style:italic;font-size:clamp(1.5rem,3.4vw,2.5rem);max-width:20ch;line-height:1.3;padding:0 24px}
@@ -191,19 +205,19 @@ header{position:sticky;top:0;z-index:40;background:rgba(251,249,244,.9);backdrop
 .tl h3{font-size:1rem;margin:14px 0 8px}.tl p{font-size:.9rem;color:var(--muted)}
 .quotes{background:var(--cream)}.quotes__grid{display:grid;grid-template-columns:1fr 1fr;gap:60px}
 .q blockquote{font-family:"Playfair Display",serif;font-size:1.45rem;line-height:1.45;font-style:italic}
-.q cite{display:block;font-style:normal;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--brass);margin-top:18px}
-.q .stars{color:var(--brass);letter-spacing:3px;margin-bottom:16px}
+.q cite{display:block;font-style:normal;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--brass-tx);margin-top:18px}
+.q .stars{color:var(--brass-tx);letter-spacing:3px;margin-bottom:16px}
 .est__grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:64px;align-items:center}
 .est h2{font-family:"Playfair Display",serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;margin-bottom:18px}
 .est p{color:var(--muted);max-width:42ch;margin-bottom:28px}
 .rate{border-top:1px solid var(--ink)}
 .rate__row{display:flex;justify-content:space-between;align-items:baseline;padding:20px 4px;border-bottom:1px solid var(--rule)}
 .rate__row span:first-child{font-family:"Playfair Display",serif;font-size:1.2rem}
-.rate__row span:last-child{color:var(--brass);font-weight:600}
+.rate__row span:last-child{color:var(--brass-tx);font-weight:600}
 /* inner pages */
 .phero{background:var(--cream);border-bottom:1px solid var(--rule);padding:64px 0 54px}
 .crumb{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
-.crumb a{color:var(--brass)}
+.crumb a{color:var(--brass-tx)}
 .phero h1{font-family:"Playfair Display",serif;font-size:clamp(2.1rem,5vw,3.6rem);font-weight:900;max-width:20ch}
 .article{display:grid;grid-template-columns:1fr 300px;gap:64px;padding:80px 0}
 .article .body{max-width:64ch}
@@ -222,7 +236,7 @@ header{position:sticky;top:0;z-index:40;background:rgba(251,249,244,.9);backdrop
 .localcopy ul{padding-left:1.1em}
 .aside h3{font-family:"Playfair Display",serif;font-size:1.4rem;margin-bottom:8px}
 .aside p{color:var(--muted);font-size:.92rem;margin-bottom:18px}
-.aside .tel{display:block;font-family:"Playfair Display",serif;font-size:1.6rem;color:var(--brass);margin-bottom:16px}
+.aside .tel{display:block;font-family:"Playfair Display",serif;font-size:1.6rem;color:var(--brass-tx);margin-bottom:16px}
 .idx{padding:16px 0 90px}
 footer{background:var(--ink);color:var(--cream);padding:88px 0 38px}
 .f-word{font-family:"Playfair Display",serif;font-size:clamp(3rem,11vw,9rem);font-weight:900;line-height:.9;border-bottom:1px solid #3a352d;padding-bottom:36px;margin-bottom:44px}
@@ -269,7 +283,7 @@ def _iron_footer(t, pages):
     slinks = "".join(f'<a href="{p["url"]}">{e(H.area_label(p))}</a>' for p in svc) or '<a href="/services/">Services</a>'
     return (f'</main><footer><div class="wrap"><div class="f-word serif">{e(t["brand"].split(" ")[0])}.</div>'
             f'<div class="f-cols">'
-            f'<div><h4>The Studio</h4><p>A {e(t["city"])} garage door atelier working by appointment across the metro. Small on purpose.</p><p style="color:var(--brass);margin-top:10px">{e(t["phone"])}</p></div>'
+            f'<div><h4>The Studio</h4><p>A {e(t["city"])} garage door atelier working by appointment across the metro. Small on purpose.</p><p style="color:var(--brass-tx);margin-top:10px">{e(t["phone"])}</p></div>'
             f'<div><h4>Work</h4>{slinks}<a href="/services/">All work</a></div>'
             f'<div><h4>Studio</h4><a href="/about/">About</a><a href="/guides/">Guides</a><a href="/request-a-quote/">Book a visit</a><a href="/contact/">Contact</a></div>'
             f'<div><h4>Visit</h4><p>{e(t["city"])}, {e(t["st"])}</p><p>Mon–Fri, by appt.</p></div></div>'
@@ -359,7 +373,10 @@ def iron_trust(t, pages, url, h1, blocks, is_quote=False):
 # ================================================================ VOLT
 VOLT_FONTS = "family=Archivo+Black&family=Space+Mono:wght@400;700&family=Inter:wght@400;600;800"
 VOLT_CSS = r"""
-:root{--bg:#0e0e12;--card:#17171d;--lime:#c8ff3d;--blue:#3d6bff;--line:#2b2b34;--txt:#e9e9ee;--dim:#9a9aa6}
+/* --dim was #6a6a76 where it lands on the near-black footer: 3.71:1.
+   Lifted to clear AA; it is still clearly secondary against --txt. */
+:root{--bg:#0e0e12;--card:#17171d;--lime:#c8ff3d;--blue:#3d6bff;
+  --line:#2b2b34;--txt:#e9e9ee;--dim:#9a9aa6;--dim-lo:#7b7b86}
 *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--txt);font-family:Inter,sans-serif;line-height:1.55}
 .disp{font-family:"Archivo Black",sans-serif;text-transform:uppercase}.mono{font-family:"Space Mono",monospace}
@@ -527,7 +544,7 @@ def volt_home(t, pages):
               f'<div class="tcard"><div class="stars">★★★★★</div><p>"Opener died on a Sunday. Someone out in an hour. No weekend surcharge nonsense."</p><cite>// {e(t["city"])} resident</cite></div>'
               f'<div class="tcard"><div class="stars">★★★★★</div><p>"Flat pricing is the whole reason. No hourly meter, no found-another-problem upsell."</p><cite>// repeat customer</cite></div></div></section>'
             + _local_copy(t, pages)
-            + f'<section class="sec wrap" style="padding-top:10px"><div class="sec__h"><h2>Straight <span style="color:var(--blue)">answers</span></h2></div><div class="faq">{faq}</div></section>'
+            + f'<section class="sec wrap" style="padding-top:10px"><div class="sec__h"><h2>Straight <span style="color:var(--blue-tx)">answers</span></h2></div><div class="faq">{faq}</div></section>'
             + f'<section class="cta"><h2>Stop wrestling that door.</h2><a class="btn" href="{_call_target(t)[0]}">⚡ {_call_target(t)[1]}</a></section>'
             + _volt_footer(t, pages) + "</body></html>")
 
@@ -575,18 +592,24 @@ def volt_trust(t, pages, url, h1, blocks, is_quote=False):
 # ================================================================ NIMBUS
 NIM_FONTS = "family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700"
 NIM_CSS = r"""
-:root{--ink:#2c3a49;--soft:#5b6b7b;--blue:#4c8dff;--sky:#e9f3ff;--mint:#e4f7ee;--peach:#ffeede;--lilac:#efe9ff;--r:26px}
+/* --blue stays the brand fill; --blue-tx carries text. #4c8dff gave 3.14:1
+   on the page ground and only 3.20:1 under a white button label, so both
+   the label and every blue caption failed. --amber-tx replaces #ffb020,
+   which was 1.83:1 on white -- the star row was very nearly invisible. */
+:root{--ink:#2c3a49;--soft:#5b6b7b;--blue:#4c8dff;--blue-tx:#3868bc;
+  --amber-tx:#9a6a13;--green-tx:#197e4f;
+  --sky:#e9f3ff;--mint:#e4f7ee;--peach:#ffeede;--lilac:#efe9ff;--r:26px}
 *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
 body{font-family:Nunito,sans-serif;color:var(--ink);background:#fbfdff;line-height:1.65}
 h1,h2,h3{font-family:"Baloo 2",cursive;line-height:1.15;font-weight:800}
 .wrap{max-width:1140px;margin:0 auto;padding:0 26px}a{color:inherit;text-decoration:none}img{display:block;max-width:100%}
-.eyebrow{font-family:"Baloo 2";font-weight:700;color:var(--blue);font-size:.95rem}
+.eyebrow{font-family:"Baloo 2";font-weight:700;color:var(--blue-tx);font-size:.95rem}
 .btn{display:inline-flex;align-items:center;gap:9px;font-family:"Baloo 2";font-weight:700;border-radius:999px;padding:13px 28px;font-size:1rem;cursor:pointer;border:0;transition:transform .18s,box-shadow .18s}
-.btn--blue{background:var(--blue);color:#fff;box-shadow:0 10px 22px rgba(76,141,255,.35)}
+.btn--blue{background:var(--blue-tx);color:#fff;box-shadow:0 10px 22px rgba(76,141,255,.35)}
 .btn--soft{background:#fff;color:var(--ink);box-shadow:0 6px 18px rgba(44,58,73,.10)}
 .btn:hover{transform:translateY(-3px) scale(1.02)}
 .navwrap{position:sticky;top:16px;z-index:50;padding:0 16px}
-.skiplink{position:absolute;left:-9999px;top:0;z-index:100;background:var(--blue);color:#fff;padding:12px 18px;font-weight:700;text-decoration:none}
+.skiplink{position:absolute;left:-9999px;top:0;z-index:100;background:var(--blue-tx);color:#fff;padding:12px 18px;font-weight:700;text-decoration:none}
 .skiplink:focus{left:0}
 .localcopy{max-width:780px;margin:0 auto;background:#fff;border-radius:var(--r);padding:34px 32px;box-shadow:0 10px 30px rgba(44,58,73,.07)}
 .localcopy h2{font-family:"Baloo 2";font-weight:700;margin-top:1.5em;font-size:clamp(1.25rem,2.3vw,1.65rem)}
@@ -599,13 +622,13 @@ h1,h2,h3{font-family:"Baloo 2",cursive;line-height:1.15;font-weight:800}
 .logo__img{width:38px;height:38px;object-fit:contain;border-radius:10px;flex:0 0 auto}
 .nav__links{display:flex;gap:6px;font-family:"Baloo 2";font-weight:600}.nav__links a{padding:8px 14px;border-radius:999px;transition:.2s}.nav__links a:hover{background:var(--sky)}
 .nav__links .ni{position:relative}
-.nav__links .ni>a::after{content:" ˅";color:var(--blue)}
+.nav__links .ni>a::after{content:" ˅";color:var(--blue-tx)}
 .nav__links .drop{position:absolute;top:calc(100% + 14px);left:50%;transform:translateX(-50%) translateY(8px);min-width:220px;background:#fff;border:1px solid #e7eef7;border-radius:18px;box-shadow:0 18px 38px rgba(44,58,73,.16);padding:10px;opacity:0;visibility:hidden;transition:.2s;z-index:70}
 .nav__links .drop::before{content:"";position:absolute;top:-16px;left:0;right:0;height:16px}
 .nav__links .ni:hover .drop{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
 .nav__links .drop a{display:block;padding:9px 14px;border-radius:12px;font-size:.92rem;color:var(--ink)}
-.nav__links .drop a:hover{background:var(--sky);color:var(--blue)}
-.nav__links .drop a:first-child{color:var(--blue);font-size:.78rem;text-transform:uppercase;letter-spacing:.04em}
+.nav__links .drop a:hover{background:var(--sky);color:var(--blue-tx)}
+.nav__links .drop a:first-child{color:var(--blue-tx);font-size:.78rem;text-transform:uppercase;letter-spacing:.04em}
 .nav .btn{padding:10px 20px;font-size:.95rem}
 .navtoggle{display:none;background:var(--sky);border:0;border-radius:50%;width:42px;height:42px;font-size:1.2rem;cursor:pointer}.mmenu{display:none}
 .hero{position:relative;text-align:center;padding:76px 26px 92px;overflow:hidden}
@@ -613,7 +636,7 @@ h1,h2,h3{font-family:"Baloo 2",cursive;line-height:1.15;font-weight:800}
 .b1{width:280px;height:280px;background:var(--peach);top:-40px;left:-60px}.b2{width:340px;height:340px;background:var(--mint);bottom:-80px;right:-70px}.b3{width:200px;height:200px;background:var(--lilac);top:120px;right:12%}
 .hero__in{position:relative;z-index:2;max-width:760px;margin:0 auto}
 .chip{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid #e7eef7;border-radius:999px;padding:7px 16px;font-weight:700;font-size:.9rem;box-shadow:0 6px 16px rgba(44,58,73,.08)}
-.hero h1{font-size:clamp(2.4rem,6vw,4.2rem);margin:22px 0 16px}.hero h1 .hl{color:var(--blue)}
+.hero h1{font-size:clamp(2.4rem,6vw,4.2rem);margin:22px 0 16px}.hero h1 .hl{color:var(--blue-tx)}
 .hero__lead{font-size:1.2rem;color:var(--soft);max-width:52ch;margin:0 auto 30px}
 .hero__btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
 .trust{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:32px;color:var(--soft);font-weight:700}
@@ -625,42 +648,42 @@ h1,h2,h3{font-family:"Baloo 2",cursive;line-height:1.15;font-weight:800}
 .tile{border-radius:var(--r);padding:30px;transition:.2s;display:block}.tile:hover{transform:translateY(-6px)}
 .tile:nth-child(3n+1){background:var(--sky)}.tile:nth-child(3n+2){background:var(--mint)}.tile:nth-child(3n){background:var(--peach)}
 .tile__ic{width:56px;height:56px;border-radius:18px;background:#fff;display:grid;place-items:center;font-size:1.6rem;box-shadow:0 8px 16px rgba(44,58,73,.08);margin-bottom:16px}
-.tile h3{font-size:1.35rem;margin-bottom:8px}.tile p{color:var(--soft)}.tile .more{display:inline-block;margin-top:14px;font-family:"Baloo 2";font-weight:700;color:var(--blue)}
+.tile h3{font-size:1.35rem;margin-bottom:8px}.tile p{color:var(--soft)}.tile .more{display:inline-block;margin-top:14px;font-family:"Baloo 2";font-weight:700;color:var(--blue-tx)}
 .steps{background:linear-gradient(180deg,#fff,var(--sky));border-radius:40px;margin:0 26px}.steps .inner{max-width:1000px;margin:0 auto;padding:66px 26px}
 .stepgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;position:relative}
 .stepgrid::before{content:"";position:absolute;top:30px;left:16%;right:16%;border-top:3px dashed #bcd6f6;z-index:0}
 .step{position:relative;z-index:1;text-align:center}
-.step__n{width:62px;height:62px;border-radius:50%;background:var(--blue);color:#fff;font-family:"Baloo 2";font-weight:800;font-size:1.5rem;display:grid;place-items:center;margin:0 auto 18px;box-shadow:0 10px 20px rgba(76,141,255,.35);border:5px solid #fff}
+.step__n{width:62px;height:62px;border-radius:50%;background:var(--blue-tx);color:#fff;font-family:"Baloo 2";font-weight:800;font-size:1.5rem;display:grid;place-items:center;margin:0 auto 18px;box-shadow:0 10px 20px rgba(76,141,255,.35);border:5px solid #fff}
 .step h3{font-size:1.25rem;margin-bottom:6px}.step p{color:var(--soft)}
 .why{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
 .why__img{border-radius:34px;overflow:hidden;box-shadow:0 24px 50px rgba(44,58,73,.16);position:relative}.why__img img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/3}
 .why__badge{position:absolute;left:20px;bottom:20px;background:#fff;border-radius:20px;padding:12px 18px;font-family:"Baloo 2";font-weight:700;box-shadow:0 10px 22px rgba(44,58,73,.16)}
 .why h2{font-size:clamp(1.9rem,4vw,2.8rem);margin-bottom:16px}
 .checks{list-style:none;display:grid;gap:14px;margin-top:20px}.checks li{display:flex;gap:12px;align-items:center;font-weight:700}
-.checks .c{width:30px;height:30px;border-radius:50%;background:var(--mint);color:#1f9d63;display:grid;place-items:center;flex:0 0 auto}
+.checks .c{width:30px;height:30px;border-radius:50%;background:var(--mint);color:var(--green-tx);display:grid;place-items:center;flex:0 0 auto}
 .bubbles{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
 .bubble{background:#fff;border-radius:24px;padding:26px;box-shadow:0 12px 30px rgba(44,58,73,.08);position:relative}
 .bubble::after{content:"";position:absolute;left:34px;bottom:-14px;border:14px solid transparent;border-top-color:#fff;border-bottom:0}
 .bubble .who{display:flex;align-items:center;gap:12px;margin-top:30px}.bubble .av{width:44px;height:44px;border-radius:50%;background:var(--peach)}
 .bubble:nth-child(2) .av{background:var(--lilac)}.bubble:nth-child(3) .av{background:var(--sky)}
 .bubble .who b{font-family:"Baloo 2"}.bubble .who span{display:block;color:var(--soft);font-size:.86rem}
-.stars{color:#ffb020;letter-spacing:2px;margin-bottom:10px}
+.stars{color:var(--amber-tx);letter-spacing:2px;margin-bottom:10px}
 .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
-.plan{background:#fff;border:2px solid #eef3f9;border-radius:28px;padding:30px;text-align:center;transition:.2s}.plan:hover{transform:translateY(-6px);border-color:var(--blue)}
-.plan .ptag{display:inline-block;background:var(--sky);color:var(--blue);border-radius:999px;padding:5px 14px;font-family:"Baloo 2";font-weight:700;font-size:.85rem}
+.plan{background:#fff;border:2px solid #eef3f9;border-radius:28px;padding:30px;text-align:center;transition:.2s}.plan:hover{transform:translateY(-6px);border-color:var(--blue-tx)}
+.plan .ptag{display:inline-block;background:var(--sky);color:var(--blue-tx);border-radius:999px;padding:5px 14px;font-family:"Baloo 2";font-weight:700;font-size:.85rem}
 .plan .price{font-family:"Baloo 2";font-weight:800;font-size:2.6rem;margin:14px 0 4px}.plan .price small{font-size:.9rem;color:var(--soft)}
 .plan p{color:var(--soft);margin-bottom:20px}.plan .btn{width:100%;justify-content:center}
 .faqs{max-width:760px;margin:0 auto;display:grid;gap:14px}
 .fq{background:#fff;border-radius:20px;box-shadow:0 8px 20px rgba(44,58,73,.06);overflow:hidden}
 .fq summary{list-style:none;cursor:pointer;padding:20px 24px;font-family:"Baloo 2";font-weight:700;font-size:1.08rem;display:flex;justify-content:space-between;align-items:center}
-.fq summary::-webkit-details-marker{display:none}.fq summary::after{content:"˅";color:var(--blue)}.fq[open] summary::after{content:"˄"}
+.fq summary::-webkit-details-marker{display:none}.fq summary::after{content:"˅";color:var(--blue-tx)}.fq[open] summary::after{content:"˄"}
 .fq p{padding:0 24px 22px;color:var(--soft)}
 .ctawrap{padding:0 26px 90px}
 .cta{max-width:1000px;margin:0 auto;background:linear-gradient(135deg,#4c8dff,#7db3ff);border-radius:40px;text-align:center;color:#fff;padding:66px 30px;box-shadow:0 30px 60px rgba(76,141,255,.35)}
-.cta h2{font-size:clamp(2rem,5vw,3.2rem);margin-bottom:10px}.cta p{opacity:.92;font-size:1.15rem;margin-bottom:26px}.cta .btn{background:#fff;color:var(--blue)}
+.cta h2{font-size:clamp(2rem,5vw,3.2rem);margin-bottom:10px}.cta p{opacity:.92;font-size:1.15rem;margin-bottom:26px}.cta .btn{background:#fff;color:var(--blue-tx)}
 /* inner */
 .phero{text-align:center;padding:70px 26px 30px;position:relative}
-.crumb{font-family:"Baloo 2";font-weight:600;color:var(--soft);margin-bottom:12px}.crumb a{color:var(--blue)}
+.crumb{font-family:"Baloo 2";font-weight:600;color:var(--soft);margin-bottom:12px}.crumb a{color:var(--blue-tx)}
 .phero h1{font-size:clamp(2rem,5vw,3.2rem);max-width:20ch;margin:0 auto}
 .article{max-width:820px;margin:0 auto;padding:30px 0 20px}
 .article .body{background:#fff;border-radius:28px;box-shadow:0 12px 30px rgba(44,58,73,.07);padding:38px}
@@ -672,10 +695,10 @@ h1,h2,h3{font-family:"Baloo 2",cursive;line-height:1.15;font-weight:800}
 footer{background:#eef4fb;border-radius:44px 44px 0 0;padding:60px 0 30px;margin-top:20px}
 .f-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.2fr;gap:32px;padding-bottom:40px;border-bottom:2px solid #dde8f4}
 .f-top h4{font-family:"Baloo 2";font-weight:700;margin-bottom:14px;font-size:1.05rem}
-.f-top a:not(.btn),.f-top p{display:block;color:var(--soft);padding:5px 0;font-weight:600}.f-top a:not(.btn):hover{color:var(--blue)}
+.f-top a:not(.btn),.f-top p{display:block;color:var(--soft);padding:5px 0;font-weight:600}.f-top a:not(.btn):hover{color:var(--blue-tx)}
 .f-card{background:#fff;border-radius:24px;padding:26px;box-shadow:0 12px 26px rgba(44,58,73,.08)}
 .f-card .btn{display:flex;width:100%;box-sizing:border-box;justify-content:center;text-align:center;padding:14px 18px;margin-top:16px}
-.f-social{display:flex;gap:10px;margin-top:16px}.f-social a{width:40px;height:40px;border-radius:50%;background:var(--sky);display:grid;place-items:center;font-family:"Baloo 2";font-weight:700;color:var(--blue)}.f-social a:hover{background:var(--blue);color:#fff}
+.f-social{display:flex;gap:10px;margin-top:16px}.f-social a{width:40px;height:40px;border-radius:50%;background:var(--sky);display:grid;place-items:center;font-family:"Baloo 2";font-weight:700;color:var(--blue-tx)}.f-social a:hover{background:var(--blue-tx);color:#fff}
 .f-bot{text-align:center;padding-top:26px;color:var(--soft);font-weight:600}
 @media(max-width:900px){.nav__links{display:none}.navtoggle{display:grid;place-items:center}
  .mmenu{flex-direction:column;gap:4px;max-width:1000px;margin:10px auto 0;background:#fff;border-radius:24px;padding:14px;box-shadow:0 12px 30px rgba(44,58,73,.12)}.mmenu.open{display:flex}

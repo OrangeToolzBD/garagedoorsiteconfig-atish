@@ -56,6 +56,7 @@ TARGETS = {
     "cta_contrast_failures": ("==", 0),
     "footer_contrast_failures": ("==", 0),
     "aside_contrast_failures": ("==", 0),
+    "template_contrast_failures": ("==", 0),
     "pruned_away_live_css": ("==", 0),
     "pages_missing_main": ("==", 0),
     "pages_missing_skiplink": ("==", 0),
@@ -242,6 +243,61 @@ def aside_contrast_failures():
         if B._cratio(fg, g) < 4.5:
             bad.setdefault(f"white@{alpha:g} on --pd", []).append(s["theme"])
     return sum(len(v) for v in bad.values()), bad
+
+
+def template_contrast_failures():
+    """Colour pairs in the alternate templates that fail AA.
+
+    The four checks above all read themes.json and the garage design system, so
+    they cover the 998 sites on the default template and none of the three on
+    ironclad, volt or nimbus. Those carry their own hardcoded palettes and had
+    never been checked at all. What was in them when this was added:
+
+        nimbus   star row      #ffb020 on white          1.83:1
+        nimbus   button label  white on #4c8dff          3.20:1
+        nimbus   eyebrows      #4c8dff on #fbfdff        3.14:1
+        ironclad body text     #a9803f on #fbf9f4        3.41:1
+        volt     footer legal  #6a6a76 on #0a0a0d        3.71:1
+
+    The pairs are listed here rather than discovered, because these templates
+    hardcode their colours: there is no generator to derive them from, and a
+    check that guessed at the pairings would be a check that missed the next
+    one. Add a pair when you add a colour."""
+    import build_site as B
+    src = open(os.path.join(ROOT, "templates.py"), encoding="utf-8").read()
+
+    def tok(name, default=None):
+        m = re.search(rf"{re.escape(name)}:\s*(#[0-9a-fA-F]{{3,8}})", src)
+        return m.group(1) if m else default
+
+    # (label, foreground, background, minimum) -- foregrounds read from the
+    # stylesheet so editing a token moves the check with it
+    pairs = [
+        ("ironclad text on paper", tok("--brass-tx"), tok("--paper"), 4.5),
+        ("ironclad text on cream", tok("--brass-tx"), tok("--cream"), 4.5),
+        # the same colour also lands on --ink in the utility bar and the
+        # footer, where the DARKENED variant is the one that fails
+        ("ironclad brass on ink", tok("--brass"), tok("--ink"), 4.5),
+        ("ironclad cream on ink", tok("--cream"), tok("--ink"), 4.5),
+        ("nimbus text on page", tok("--blue-tx"), "#fbfdff", 4.5),
+        ("nimbus text on sky", tok("--blue-tx"), tok("--sky"), 4.5),
+        ("nimbus text on mint", tok("--blue-tx"), tok("--mint"), 4.5),
+        ("nimbus text on peach", tok("--blue-tx"), tok("--peach"), 4.5),
+        ("nimbus white on button", "#ffffff", tok("--blue-tx"), 4.5),
+        ("nimbus stars on white", tok("--amber-tx"), "#ffffff", 4.5),
+        ("nimbus tick on mint", tok("--green-tx"), tok("--mint"), 4.5),
+        ("volt legal on ground", tok("--dim-lo"), tok("--bg"), 4.5),
+        ("volt body on ground", tok("--txt"), tok("--bg"), 4.5),
+    ]
+    bad = {}
+    for label, fg, bg, need in pairs:
+        if not fg or not bg:
+            bad[label] = ["token missing from templates.py"]
+            continue
+        r = B._cratio(B._rgb(fg), B._rgb(bg))
+        if r < need:
+            bad[label] = [f"{fg} on {bg} = {r:.2f}:1, needs {need}"]
+    return len(bad), bad
 
 
 def pruned_away_live_css():
@@ -558,6 +614,7 @@ def main():
     ctafails, ctadetail = cta_contrast_failures()
     ftfails, ftdetail = footer_contrast_failures()
     asfails, asdetail = aside_contrast_failures()
+    tplfails, tpldetail = template_contrast_failures()
     prunefails, prunedetail = pruned_away_live_css()
     ess = missing_essentials()
     npages, no_main, no_skip, calling_nobody = page_checks()
@@ -565,6 +622,7 @@ def main():
                 "cta_contrast_failures": ctafails,
                 "footer_contrast_failures": ftfails,
                 "aside_contrast_failures": asfails,
+                "template_contrast_failures": tplfails,
                 "pruned_away_live_css": prunefails, "pages_missing_main": no_main,
                 "pages_missing_skiplink": no_skip, "pages_calling_nobody": calling_nobody,
                 "sites_missing_essentials": len(ess)})
@@ -612,6 +670,8 @@ def main():
     print(f"  contrast (WCAG AA) over {ntheme} in-use themes: {cfails} failures")
     print(f"  CTA-band text on its own gradient: {ctafails} failures  {ctadetail if ctafails else ''}")
     print(f"  Footer ramp on its own ground: {ftfails} failures  {ftdetail if ftfails else ''}")
+    print(f"  Alt templates (ironclad/volt/nimbus): {tplfails} failures  "
+          f"{tpldetail if tplfails else ''}")
     print(f"  Dark sidebar card on its own ground: {asfails} failures  "
           f"{asdetail if asfails else ''}")
     print(f"  variant CSS pruned away while still rendered: {prunefails} "

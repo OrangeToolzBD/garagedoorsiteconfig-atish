@@ -201,6 +201,32 @@ in-use themes (plus the CTA gradient and the footer ramp separately), `<main>`,
 skip links, phone-less "Call" prose, **missing essential sections**, and
 **variant CSS pruned away while still rendered**.
 
+### The alt templates carry their own colours, and their own gate
+
+ironclad, volt and nimbus hardcode their palettes in `templates.py`. The four
+accent/footer/CTA/sidebar contrast checks all read themes.json and the garage
+design system, so those three were **outside every check from the day they were
+added**. What was in them when `template_contrast_failures` was written:
+
+| | | |
+|---|---|---|
+| nimbus star row | `#ffb020` on white | **1.83:1** |
+| nimbus button label | white on `#4c8dff` | 3.20:1 |
+| ironclad body text | `#a9803f` on `#fbf9f4` | 3.41:1 |
+| volt footer legal | `#6a6a76` on `#0a0a0d` | 3.71:1 |
+
+Each now splits fill from text the way `--accent` / `--accent-lt` already does:
+`--brass` fills and `--brass-tx` carries text, `--blue` fills and `--blue-tx`
+carries text.
+
+**A colour used on two grounds needs two values.** Darkening brass for the light
+bands pushed it to 3.60:1 on the near-black utility bar and footer, where the
+original was already 5.07:1. Both directions are in the gate now.
+
+`template_contrast_failures` lists its pairs rather than discovering them --
+there is no generator to derive them from, and a check that guessed would miss
+the next one. **Add a pair when you add a colour.**
+
 ### The accent is chosen per domain, not taken from the theme
 
 themes.json still supplies `p` and `pd`. The `accent` field is **overwritten in
