@@ -152,8 +152,39 @@ def main(dest):
     open(os.path.join(dest, "sidebars.html"), "w", encoding="utf-8",
          newline="\n").write(shell(css, "".join(out), ".aside{position:static}"))
 
+    # ---- service areas: every variant, sparse and dense ---------------------
+    # 3 places is what almost every site has today; 26 is what the one site
+    # with real neighbourhood data has. A design that only ever sees 3 hides
+    # the case that matters, and the long name is the one that breaks columns.
+    sparse = [("Kessler", 2, "/service-areas/kessler/"),
+              ("Lakewood", 4, "/service-areas/lakewood/"),
+              ("DeSoto", 15, None)]
+    dense = [(n, m, None if n == "Ferris" else f"/service-areas/{n.lower()}/")
+             for n, m in [("Old East Dallas", 1), ("South Dallas", 3), ("Kessler", 2),
+                          ("Lakewood", 4), ("Lower Greenville", 3), ("Northeast Dallas", 6),
+                          ("Cedar Crest", 5), ("Buckner Terrace / Everglade Park", 7),
+                          ("Downtown Historic District", 1), ("Balch Springs", 14),
+                          ("DeSoto", 15), ("Ferris", 20), ("Kessler Park", 2),
+                          ("Oak Cliff", 5), ("Preston Hollow", 9), ("Uptown", 2),
+                          ("Lake Highlands", 8), ("Deep Ellum", 2), ("Knox-Henderson", 3),
+                          ("Bishop Arts", 4), ("Trinity Groves", 3), ("Casa Linda", 7),
+                          ("Wilshire Heads", 6), ("Munger Place", 2),
+                          ("Junius Heights", 3), ("Swiss Avenue", 2)]]
+    orig = B.AREAS_VARIANTS
+    out = []
+    for v in orig:
+        B.AREAS_VARIANTS = [v]
+        for label, items in (("3 places", sparse), ("26 places", dense)):
+            out.append(f'<p class="lbl">{v} &mdash; {label}</p>'
+                       f'<section class="sec"><div class="wrap">'
+                       + B.areas_list(t, items) + "</div></section>")
+    B.AREAS_VARIANTS = orig
+    open(os.path.join(dest, "areas.html"), "w", encoding="utf-8",
+         newline="\n").write(shell(css, "".join(out)))
+
     open(os.path.join(dest, "audit.html"), "w", encoding="utf-8",
-         newline="\n").write(AUDIT)
+         newline="\n").write(AUDIT.replace("'/sidebars.html'",
+                                           "'/sidebars.html', '/areas.html'"))
     print(f"wrote heroes.html, sidebars.html and audit.html to {dest}")
     print(f"  python3 -m http.server 8890 --directory {dest}")
     print("  then open http://127.0.0.1:8890/audit.html")

@@ -1441,6 +1441,83 @@ GD_CSS = """
 }
 
 /* shaped local-content components -- see shape_section() */
+/* ---- service-area variants ---------------------------------------------
+   Long names are the whole difficulty here. "Buckner Terrace / Everglade
+   Park" is 33 characters against "Kessler" at 7, and the source designs
+   answered that with an ellipsis. Truncating a place name is worse than
+   wrapping it -- the reader cannot tell which place it was -- so every
+   variant wraps instead, and the mile badge is what gets pinned. */
+
+/* -- flow: one continuous wrapped run, dots between. The only variant with
+      no box around each name, and the one that survives 26 in least height. */
+.areaflow{list-style:none;margin:0 0 18px;padding:0;
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 0}
+.areaflow li{display:flex;align-items:baseline}
+.areaflow li+li::before{content:"";width:3px;height:3px;border-radius:50%;
+  background:var(--line);margin:0 12px;align-self:center;flex:0 0 3px}
+.areaflow a,.areaflow .nolink{color:var(--ink);text-decoration:none;
+  font-size:1rem;line-height:1.5}
+.areaflow a:hover{color:var(--p);text-decoration:underline}
+.areaflow .nolink{color:var(--muted)}
+.areaflow .ad{color:var(--muted);font-size:.82rem;margin-left:7px}
+
+/* -- columns: balanced columns, the badge pinned right. minmax(0,1fr) so a
+      long name wraps inside its column instead of widening the track. */
+.areacols{list-style:none;margin:0 0 18px;padding:0;display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));gap:2px 26px}
+.areacols li{min-width:0}
+.areacols a,.areacols .nolink{display:flex;align-items:baseline;gap:12px;
+  justify-content:space-between;padding:9px 0;color:var(--ink);
+  text-decoration:none;border-bottom:1px solid var(--line);font-size:.97rem;
+  line-height:1.35}
+.areacols a:hover{color:var(--p)}
+.areacols .nolink{color:var(--muted)}
+.areacols .ad{color:var(--muted);font-size:.8rem;flex:0 0 auto;white-space:nowrap}
+
+/* -- editorial: one place per line at display size. Falls back to columns
+      past _AREAS_EDITORIAL_MAX rather than truncating the list. */
+.arearows{list-style:none;margin:0 0 18px;padding:0}
+.arearows a,.arearows .nolink{display:flex;align-items:baseline;gap:16px;
+  justify-content:space-between;padding:13px 0;
+  border-bottom:1px solid var(--line);color:var(--ink);text-decoration:none;
+  font-family:var(--disp);font-size:1.32rem;font-weight:700;line-height:1.25}
+.arearows a:hover{color:var(--p)}
+.arearows .nolink{color:var(--muted)}
+.arearows .ad{font-family:var(--body);font-weight:400;font-size:.84rem;
+  color:var(--muted);flex:0 0 auto;white-space:nowrap}
+
+/* -- dark: a panel, not a band. band() owns the <section> colour, so this
+      cannot reach it -- see the note above AREAS_VARIANTS. */
+.areas--dark{background:var(--pd);border-radius:var(--radius);padding:26px 28px}
+.areas--dark .areacols a,.areas--dark .areacols .nolink{color:#fff;
+  border-bottom-color:rgba(255,255,255,.16)}
+.areas--dark .areacols a:hover{color:var(--accent-dk)}
+.areas--dark .areacols .nolink{color:rgba(255,255,255,.72)}
+.areas--dark .areacols .ad{color:rgba(255,255,255,.72)}
+.areas--dark .areas__all{color:#fff}
+
+@media(max-width:900px){
+  .areacols{grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 20px}
+  .arearows a,.arearows .nolink{font-size:1.14rem;padding:11px 0}
+}
+@media(max-width:560px){
+  /* two columns still beats one 26-row stack on a phone; the tap target is
+     the whole row, which stays over 44px with this padding */
+  .areacols a,.areacols .nolink{padding:12px 0;font-size:.92rem}
+  .areacols .ad{font-size:.74rem}
+  .areas--dark{padding:20px 18px}
+  /* flow stays an inline run on a phone. Boxing each name into a 44px pill
+     was tried and took it from 562px to 938px at 26 places -- taller than
+     every other variant and visually the same as chips, which is the one
+     thing it exists not to be. 36px rows instead: half again the WCAG 2.2 AA
+     minimum of 24x24, and it stays the compact option, which is the whole
+     reason to have it. */
+  .areaflow a,.areaflow .nolink{display:inline-flex;align-items:center;
+    min-height:36px;font-size:.94rem}
+  .areaflow li+li::before{margin:0 9px}
+  /* the view-all link was the one target under 44px in every variant */
+  .areas__all{display:inline-flex;align-items:center;min-height:44px}
+}
 .areagrid{list-style:none;padding:0;margin:0;display:grid;
   grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px 14px}
 .areagrid li{display:flex}
@@ -2839,16 +2916,83 @@ def contact_band(t):
                if t.get("phone") else "")
             + '</div></div></section>')
 
+# ---- SERVICE AREAS -------------------------------------------------------
+# Two renderers produced this section and both shipped one design: areas_band()
+# for sites whose copy does not cover areas, and _areas_block() for those whose
+# copy does. They differ only in where the names come from -- the shape is the
+# same eyebrow / heading / lead / list of places -- so they now share one list
+# renderer and both get the variants.
+#
+# The variant class goes on an inner wrapper, never on the <section>. band()
+# rewrites the exact string '<section class="sec sec--soft"' to apply the tinted
+# rhythm positionally, and an extra class there stops that replace matching, so
+# the section would keep a hardcoded tint and break the alternation.
+#
+# APPEND-ONLY: selection is digest % len, so inserting re-rolls every domain.
+AREAS_VARIANTS = ["chips", "flow", "columns", "editorial", "dark"]
+
+# editorial sets each place on its own line at display size. That reads well for
+# a handful and becomes a 1,300px wall at Dallas's 26, and the list cannot just
+# be truncated -- dropping a name quietly retracts a coverage claim the business
+# makes, which is why _areas_block keeps even the unlinked ones.
+_AREAS_EDITORIAL_MAX = 12
+
+
+def areas_list(t, items, view_all="/service-areas/"):
+    """The places themselves. `items` is [(name, miles|None, url|None)].
+
+    A name with no url renders as plain text rather than a link: some places the
+    copy claims are covered have no page yet, and pointing at a 404 is worse
+    than not pointing."""
+    if not items:
+        return ""
+    v = AREAS_VARIANTS[_hash_idx(f'{t["domain"]}|areas', len(AREAS_VARIANTS))]
+    if v == "editorial" and len(items) > _AREAS_EDITORIAL_MAX:
+        v = "columns"
+    all_link = (f'<a class="areas__all" href="{view_all}">View all areas '
+                f'{icon("arrow")}</a>') if view_all else ""
+
+    def cell(name, mi, url, mi_cls="ad"):
+        inner = esc(name) + (f'<span class="{mi_cls}">{mi} mi</span>'
+                             if mi is not None else "")
+        return (f'<a href="{url}">{inner}</a>' if url
+                else f'<span class="nolink">{inner}</span>')
+
+    if v == "flow":
+        # one continuous wrapped run, separated by dots rather than boxes
+        body = "".join(f'<li>{cell(n, m, u)}</li>' for n, m, u in items)
+        return (f'<div class="areas-b areas--flow"><ul class="areaflow">{body}</ul>'
+                f"{all_link}</div>")
+    if v == "columns":
+        body = "".join(f'<li>{cell(n, m, u)}</li>' for n, m, u in items)
+        return (f'<div class="areas-b areas--columns"><ul class="areacols">{body}</ul>'
+                f"{all_link}</div>")
+    if v == "editorial":
+        body = "".join(f'<li>{cell(n, m, u)}</li>' for n, m, u in items)
+        return (f'<div class="areas-b areas--editorial"><ul class="arearows">{body}</ul>'
+                f"{all_link}</div>")
+    if v == "dark":
+        # a dark panel inside the band, not a dark band: the section element is
+        # band()'s to colour, so this cannot reach it
+        body = "".join(f'<li>{cell(n, m, u)}</li>' for n, m, u in items)
+        return (f'<div class="areas-b areas--dark"><ul class="areacols">{body}</ul>'
+                f"{all_link}</div>")
+    chips = "".join(cell(n, None, u) for n, _m, u in items)
+    return f'<div class="areas-b areas--chips"><div class="areas">{chips}{all_link}</div></div>'
+
+
 def areas_band(t, pages):
     areas = [p for u, p in pages.items() if p["cat"] == "area"]
     if not areas:
         return ""
-    chips = "".join(f'<a href="{p["url"]}">{esc(area_label(p))}</a>' for p in areas[:16])
+    # no distances on this path -- the copy that carries them is exactly the
+    # copy whose presence sends the page down the _areas_block route instead
+    items = [(area_label(p), None, p["url"]) for p in areas[:16]]
     eyebrow, h2, blurb = copy_deck(t, "areas_head")
     return (f'<section class="sec"><div class="wrap"><div class="sec-head">'
             f'<p class="eyebrow">{_city(eyebrow, t)}</p><h2>{_city(h2, t)}</h2>'
             f'<p>{_city(blurb, t)}</p></div>'
-            f'<div class="areas">{chips}<a class="areas__all" href="/service-areas/">View all areas {icon("arrow")}</a></div></div></section>')
+            f'{areas_list(t, items)}</div></section>')
 
 # ---- CTA BAND: the closing strip, on 100% of inner pages -------------------
 # Adapted from the client's CTA concept set. This was the single most repeated
@@ -3056,18 +3200,13 @@ def _areas_block(t, h2, raw, pages=None):
     lead = (f'<p class="areagrid__lead">{esc(clean_text(intro))}.</p>'
             if 4 < len(intro.split()) < 40 else "")
     tail = _AREA_RE.sub("", raw).split("\n\n")[-1].strip(" .,-")
-    def _cell(n, m, url):
-        inner = (f'<span class="an">{esc(n)}</span>'
-                 + (f'<span class="ad">{m} mi</span>' if m is not None else ""))
-        # no page yet -> a plain span, never a link to a 404
-        body = f'<a href="{url}">{inner}</a>' if url else f'<span class="nolink">{inner}</span>'
-        return f"<li>{body}</li>"
-    cells = "".join(_cell(n, m, url) for n, m, url in found)
     note = f'<p class="areagrid__note">{esc(clean_text(tail))}.</p>' if len(tail.split()) > 6 else ""
+    # this path already lists every area page, so there is nothing left to
+    # "view all" of -- the link would point back at a subset of what is shown
     return (f'<section class="sec sec--soft"><div class="wrap">'
             f'<div class="sec-head"><p class="eyebrow">{_city("Around {city}", t)}</p>'
             f'<h2 id="{slugify(h2)}">{esc(h2)}</h2>{lead}</div>'
-            f'<ul class="areagrid">{cells}</ul>{note}</div></section>')
+            f'{areas_list(t, found, view_all="")}{note}</div></section>')
 
 def _figures_block(t, h2, raw):
     """Pull the hard numbers out of the paragraph and lead with them."""
@@ -3915,7 +4054,7 @@ def strip_css_comments(css):
 # is the selector prefix that identifies a rule as belonging to a single
 # variant; anything not matching a prefix is shared and never pruned.
 _PRUNE_FAMILIES = (".hero--", ".svcx--", ".svcx-sec--", ".ctab--", ".faq--",
-                   ".gf--", ".pf-", ".ph--", ".as--")
+                   ".gf--", ".pf-", ".ph--", ".as--", ".areas--")
 
 
 def _css_rules(css):

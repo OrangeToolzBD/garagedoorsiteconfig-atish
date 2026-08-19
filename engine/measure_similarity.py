@@ -75,7 +75,12 @@ def missing_essentials():
     # pf-seq as well as the original .shots strip. pf-seq renders the steps
     # deck, so it satisfies "process" too -- and the site that shows it
     # deliberately suppresses how_it_works() rather than saying it twice.
-    need = {"coverage": ('class="areagrid"', 'class="areas"'),
+    # The coverage block used to be exactly two shapes. Both renderers now share
+    # one list, whose variant class sits on an inner wrapper -- the <section>
+    # cannot carry it, because band() rewrites that element's class string to
+    # apply the tinted rhythm. Match the wrapper, and keep the two originals so
+    # this still passes on output built before the change.
+    need = {"coverage": ("areas-b", 'class="areagrid"', 'class="areas"'),
             "process":  ('class="steps', "pf-seq"),
             "visual":   ('class="shots"', "splitfeat", "pf-detail", "pf-tech",
                          "pf-cine", "pf-seq", "pf-mos", "pf-stk", "pf-sel"),
