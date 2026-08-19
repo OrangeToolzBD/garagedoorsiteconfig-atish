@@ -1762,16 +1762,31 @@ NAVJS = """(function(){
    var OPTS={h12:{hour:'numeric',minute:'2-digit',hour12:true},
              h24:{hour:'2-digit',minute:'2-digit',hour12:false},
              h12day:{weekday:'short',hour:'numeric',minute:'2-digit',hour12:true}};
-   function tick(){
-     var now=new Date();
+   var timer;
+   function paint(now){
      for(var i=0;i<els.length;i++){
        var o=OPTS[els[i].getAttribute('data-clock')]||OPTS.h12;
        try{els[i].textContent=new Intl.DateTimeFormat(undefined,o).format(now);}
        catch(e){els[i].textContent='';}
      }
-     setTimeout(tick,(60-now.getSeconds())*1000+50);
+   }
+   function tick(){
+     var now=new Date();
+     paint(now);
+     clearTimeout(timer);
+     timer=setTimeout(tick,(60-now.getSeconds())*1000+50);
    }
    tick();
+   /* A timer is not a clock. Browsers throttle setTimeout in a background tab,
+      and it does not fire at all while the machine is asleep, so the pending
+      tick can land minutes late and the strip would sit on a stale minute
+      until it did. Re-read the time whenever the page comes back into view --
+      visibilitychange for tab switches and wake, pageshow for a back-button
+      restore out of the bfcache, where the DOM is resurrected exactly as it
+      was left, stale text and all. */
+   function resync(){if(!document.hidden)tick();}
+   document.addEventListener('visibilitychange',resync);
+   addEventListener('pageshow',resync);
  })();
 
  /* --hd-h, measured rather than declared.
