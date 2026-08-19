@@ -614,6 +614,10 @@ img{max-width:100%;display:block}
 .top a svg{width:12px;height:12px;fill:var(--accent-dk);vertical-align:-1px;margin-right:4px}
 .top .dot{opacity:.4}
 .top .tsp{flex:1}
+/* Empty until script fills it. The reserved width stops the strip jumping when
+   it does, and tabular figures stop it twitching as the digits change. */
+.top__t{min-width:9ch;text-align:right;font-variant-numeric:tabular-nums;
+  color:rgba(255,255,255,.82);white-space:nowrap}
 .nav-cta-m{display:none}
 .nav-quote{display:none}
 header.site{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
@@ -1585,6 +1589,9 @@ footer.site a.btn--ghost,footer.site a.btn--ghost:hover{color:#fff}
 }
 @media(max-width:560px){:root{--hd-h:45px}}
 @media(max-width:720px){
+  /* the strip centres and tightens here; a clock on the end pushes the
+     two lines it exists to carry off the edge */
+  .top__t{display:none}
   .top .wrap{gap:10px;font-size:.8rem;justify-content:center}
   .top span,.top .dot{display:none}
   .top a:not([href^="tel"]){display:none}
@@ -1736,6 +1743,35 @@ NAVJS = """(function(){
    els.forEach(function(el){io.observe(el)});
    // safety net: never leave content hidden if the observer never fires
    setTimeout(showAll,2600);
+ })();
+
+ /* Announcement-strip clock: the READER'S local time, from their own browser.
+    Intl does the formatting, so it follows their locale's conventions rather
+    than an assumption about how a time should look.
+
+    It ticks on the minute rather than every second -- a seconds display is a
+    repaint a second, for a header ornament, on every page of every site.
+    The first tick is aligned to the next minute boundary so it does not sit a
+    stale minute behind for up to 59 seconds after load.
+
+    The element is empty in the HTML and CSS reserves its width, so this cannot
+    shift the strip when it fills. No script, no clock, no gap. */
+ (function(){
+   var els=document.querySelectorAll('[data-clock]');
+   if(!els.length)return;
+   var OPTS={h12:{hour:'numeric',minute:'2-digit',hour12:true},
+             h24:{hour:'2-digit',minute:'2-digit',hour12:false},
+             h12day:{weekday:'short',hour:'numeric',minute:'2-digit',hour12:true}};
+   function tick(){
+     var now=new Date();
+     for(var i=0;i<els.length;i++){
+       var o=OPTS[els[i].getAttribute('data-clock')]||OPTS.h12;
+       try{els[i].textContent=new Intl.DateTimeFormat(undefined,o).format(now);}
+       catch(e){els[i].textContent='';}
+     }
+     setTimeout(tick,(60-now.getSeconds())*1000+50);
+   }
+   tick();
  })();
 
  /* --hd-h, measured rather than declared.

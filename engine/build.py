@@ -1899,6 +1899,20 @@ def font_pack(domain):
 # real height moves with the variant, the breakpoint AND the font pack, so
 # NAVJS measures the header and corrects the token. These are the measured
 # desktop values, which is what the token should be worth before script runs.
+# Clock formats for the announcement strip. The value is a per-site choice so
+# the strip is not word-for-word identical everywhere, which is the whole
+# problem the header work exists to solve.
+#
+# This is the READER'S OWN time, not the shop's. For a local trade site the two
+# are usually the same metro, but not always, so the strip labels it as local
+# rather than implying anyone is at a desk. It deliberately says nothing about
+# being open: 1 site of 1001 has real opening hours, and an "Open now" badge
+# built on the other 1000 would be an invented claim.
+#
+# APPEND-ONLY: selection is digest % len.
+CLOCK_FORMATS = ["h12", "h24", "h12day", "none"]
+
+
 HEADER_VARIANTS = [("classic", "79px"), ("rail", "79px"), ("center", "79px"),
                    ("stack", "120px"), ("split", "79px"), ("breakout", "68px"),
                    ("dark", "79px")]
@@ -2236,10 +2250,15 @@ def header(t, pages):
     v = header_variant(t["domain"])[0]
     tel = (f'<a href="tel:{t["tel"]}">{icon("phone")}{esc(t["phone"])}</a>'
            if t.get("phone") else "")
+    # The clock is filled by script and is empty until then, so it reserves its
+    # own width rather than shifting the strip when it appears.
+    fmt = CLOCK_FORMATS[_hash_idx(f'{t["domain"]}|clock', len(CLOCK_FORMATS))]
+    clock = ("" if fmt == "none" else
+             f'<span class="top__t" data-clock="{fmt}"></span>')
     strip = (f'<div class="top"><div class="wrap">'
              f'<span>Serving {esc(t["city"])} &amp; the surrounding metro</span>'
              f'<span class="dot">&bull;</span><span>Same-day service available</span>'
-             f'<span class="tsp"></span>{tel}</div></div>')
+             f'<span class="tsp"></span>{clock}{tel}</div></div>')
     burger = ('<button class="burger" aria-label="Menu" aria-expanded="false" '
               'aria-controls="mainnav"><span></span><span></span><span></span></button>')
     quote = '<a class="btn btn--primary" href="/request-a-quote/">Free Quote</a>'
