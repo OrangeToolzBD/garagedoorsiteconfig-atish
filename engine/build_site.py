@@ -745,7 +745,11 @@ nav.main>a:hover,.nav-item>button:hover{background:var(--soft);text-decoration:n
 .burger span{display:block;width:24px;height:2.5px;background:var(--ink);border-radius:2px;margin:5px 0}
 /* hero (variant-aware) */
 .hero{position:relative;background:linear-gradient(155deg,var(--pd),var(--p));color:#fff;overflow:hidden}
-.hero::after{content:"";position:absolute;right:-140px;top:-140px;width:420px;height:420px;border-radius:50%;background:var(--accent);opacity:.14}
+/* The 420px accent circle that used to sit here is gone. It rode on ten of
+   the twelve hero variants -- banner and overlap already cancelled it --
+   and it is one of the three recorded reasons the Austin hero was
+   rejected. A decoration that every site carries and two variants have to
+   switch off is not carrying its weight. */
 .hero h1{color:#fff}
 .hero .eyebrow{color:var(--accent-dk)}
 .hero .lead{font-size:1.18rem;color:rgba(255,255,255,.9);max-width:42ch;margin:0 0 26px}
@@ -890,18 +894,22 @@ nav.main>a:hover,.nav-item>button:hover{background:var(--soft);text-decoration:n
 /* -- center: big centered copy on gradient + faint photo, no side image -- */
 .hero--center{background:linear-gradient(155deg,color-mix(in srgb,var(--pd) 90%,transparent),color-mix(in srgb,var(--p) 84%,transparent)),var(--hero-bg) center/cover no-repeat}
 .hero--center .wrap{position:relative;text-align:center;padding:96px 24px 104px;max-width:840px}
-.hero--center h1{font-size:clamp(2.4rem,5vw,3.9rem)}
+/* Was clamp(2.4rem,5vw,3.9rem) -- 62px against 53px on the base h1 and
+   58px on masthead, the next largest. A centred hero wants a big title,
+   but 18% over everything else read as a different design system. Now
+   matched to masthead, which is the largest legitimate hero size. */
+.hero--center h1{font-size:clamp(2.1rem,4.4vw,3.6rem)}
 .hero--center .lead{margin:0 auto 26px}
 .hero--center .cta,.hero--center .chips{justify-content:center}
 /* -- banner: full-bleed photo + dark overlay, centered copy -- */
 .hero--banner{background:linear-gradient(rgba(11,18,28,.74),rgba(11,18,28,.66)),var(--hero-bg) center/cover no-repeat}
-.hero--banner::after{display:none}
+
 .hero--banner .wrap{position:relative;padding:106px 24px;max-width:840px;text-align:center}
 .hero--banner .cta,.hero--banner .chips{justify-content:center}
 .hero--banner .lead{margin:0 auto 26px}
 /* -- overlap: image band with a floating copy card -- */
 .hero--overlap{background:none;color:#fff;overflow:visible}
-.hero--overlap::after{display:none}
+
 .hero__bgimg{height:clamp(300px,40vw,480px)}
 .hero__bgimg img{width:100%;height:100%;object-fit:cover;display:block}
 .hero--overlap .wrap{position:relative;margin-top:clamp(-170px,-14vw,-130px);padding-bottom:44px}

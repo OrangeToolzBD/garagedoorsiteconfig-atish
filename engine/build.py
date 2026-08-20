@@ -3228,18 +3228,25 @@ def _svg_pin():
 
 def contact_band(t):
     """Homepage 'Book Your Service Today' block: call / hours / email / service area."""
-    hours = t.get("hours") or "Mon-Sat, 7am-7pm"
+    # No fallback. 1 site of 1001 supplies hours; the rest were being given
+    # "Mon-Sat, 7am-7pm" as fact. The row is dropped where they are unknown,
+    # the same rule the phone, email and booking form already follow.
+    hours = t.get("hours")
     phone_cell = (f'<a href="tel:{t["tel"]}">{esc(t["phone"])}</a>' if t.get("phone")
                   else '<a href="/request-a-quote/">Request a callback</a>')
     email_cell = (f'<div class="contact__c"><span class="lbl">{_svg_mail()}Email</span>'
                   f'<a href="mailto:{esc(t["email"])}">{esc(t["email"])}</a></div>') if t.get("email") else ""
     return (f'<section class="sec sec--contact"><div class="wrap"><div class="sec-head">'
             f'<p class="eyebrow">Get In Touch</p><h2>Book your service today</h2>'
-            f'<p>Call, email, or request a callback — a real person in {esc(t["city"])} answers.</p></div>'
-            f'<div class="contact">'
+            + (f'<p>Call, email, or request a callback — a real person in '
+               f'{esc(t["city"])} answers.</p></div>' if t.get("phone") and t.get("email")
+               else f'<p>Tell us what the door is doing and a real person in '
+                    f'{esc(t["city"])} comes back to you.</p></div>')
+            + f'<div class="contact">'
             f'<div class="contact__c"><span class="lbl">{icon("phone")}Call us</span>{phone_cell}</div>'
-            f'<div class="contact__c"><span class="lbl">{icon("clock")}Hours</span><span class="v">{esc(hours)}</span></div>'
-            f'{email_cell}'
+            + (f'<div class="contact__c"><span class="lbl">{icon("clock")}Hours</span>'
+               f'<span class="v">{esc(hours)}</span></div>' if hours else "")
+            + f'{email_cell}'
             f'<div class="contact__c"><span class="lbl">{_svg_pin()}Service area</span>'
             f'<span class="v">{esc(t["city"])}, {esc(t["st"])} &amp; nearby</span></div></div>'
             f'<div class="contact__cta"><a class="btn btn--primary" href="/request-a-quote/">Get a Free Quote</a>'
