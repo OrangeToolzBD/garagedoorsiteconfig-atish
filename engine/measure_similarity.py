@@ -13,10 +13,17 @@ average.
 Similarity is measured after normalising away the tokens that are *supposed* to
 differ -- brand, city, state, phone, zip, domain -- so a high score means the
 pages really are the same page, not just two cities with the same name length.
+
+Homepages are scored on text AND DOM. Inner pages are scored on DOM only, and
+compared like with like -- a service page against another site's service page.
+Inner-page prose is the content pack, and 8 of the 9 packs are 99.4-100%
+identical after the city swap, so gating their text would be permanently red
+for a reason no renderer change can fix. The DOM is the renderer's own surface.
 """
 import difflib
 import glob
 import html as _html
+import collections
 import json
 import os
 import re
@@ -33,11 +40,25 @@ TARGETS = {
     "text_median": ("<=", 0.65),
     "text_max": ("<", 0.85),
     "dom_median": ("<=", 0.75),
+    # A RATCHET, not an ambition: it holds the figure actually achieved so
+    # nothing regresses, and is tightened each time a section-variant library
+    # lands. Do not loosen it to make a change pass.
+    #   88.6%  when the check was added -- every inner-page section had one design
+    #   84.0%  after the CTA band (8 variants) and the FAQ (5)
+    #   75.0%  after the footer (10 variants), which is ~48% of an inner page
+    # Held at 78% rather than 75% only to absorb the swing that comes from
+    # re-rolling digests when a variant is added or removed.
+    "inner_dom_median": ("<=", 0.75),
     "pairs_ge_95_text": ("==", 0),
     "single_value_strings": ("==", 0),
     "dead_axis_values": ("==", 0),
     "discarded_home_words": ("==", 0),
     "contrast_failures": ("==", 0),
+    "cta_contrast_failures": ("==", 0),
+    "footer_contrast_failures": ("==", 0),
+    "aside_contrast_failures": ("==", 0),
+    "template_contrast_failures": ("==", 0),
+    "pruned_away_live_css": ("==", 0),
     "pages_missing_main": ("==", 0),
     "pages_missing_skiplink": ("==", 0),
     "pages_calling_nobody": ("==", 0),
@@ -56,11 +77,20 @@ def missing_essentials():
     # pf-seq as well as the original .shots strip. pf-seq renders the steps
     # deck, so it satisfies "process" too -- and the site that shows it
     # deliberately suppresses how_it_works() rather than saying it twice.
-    need = {"coverage": ('class="areagrid"', 'class="areas"'),
+    # The coverage block used to be exactly two shapes. Both renderers now share
+    # one list, whose variant class sits on an inner wrapper -- the <section>
+    # cannot carry it, because band() rewrites that element's class string to
+    # apply the tinted rhythm. Match the wrapper, and keep the two originals so
+    # this still passes on output built before the change.
+    need = {"coverage": ("areas-b", 'class="areagrid"', 'class="areas"'),
             "process":  ('class="steps', "pf-seq"),
             "visual":   ('class="shots"', "splitfeat", "pf-detail", "pf-tech",
-                         "pf-cine", "pf-seq"),
-            "faq":      ('class="faq"',),
+                         "pf-cine", "pf-seq", "pf-mos", "pf-stk", "pf-sel"),
+            # `class="faq` without the closing quote: the block now carries a
+            # variant modifier (class="faq faq--list"), which the old exact
+            # needle would have missed on every site, reporting the FAQ as
+            # absent from pages that plainly have one.
+            "faq":      ('class="faq',),
             "cta":      ("cta-band",)}
     sites = {s["domain"]: s for s in
              json.load(open(os.path.join(CONFIG, "sites.json"), encoding="utf-8"))["sites"]}
@@ -84,14 +114,20 @@ def contrast_failures():
       * accent text on the light bands             (was 410 / 437 / 455)
       * accent text on the dark hero grounds       (was 982, fixed earlier)
     Kept as a gate because every one of these was introduced by a theme
-    generator that believed it was already contrast-checking."""
+    generator that believed it was already contrast-checking.
+
+    Read through load_config(), not out of themes.json. The accent is chosen per
+    domain now and no longer matches the theme's own field on any of the 1001
+    sites, so reading the file would check a colour that is not on any page --
+    the check would pass on evidence it had invented."""
     import build_site as B
-    themes = json.load(open(os.path.join(CONFIG, "themes.json"), encoding="utf-8"))
+    import build as BLD
+    cfg = BLD.load_config()
     sites = json.load(open(os.path.join(CONFIG, "sites.json"), encoding="utf-8"))["sites"]
     surfaces = {"#ffffff": (255, 255, 255), "--soft": (245, 247, 249), "--soft2": (238, 242, 246)}
     fails = {}
     for s in sites:
-        t = themes[s["theme"]]
+        t = cfg[s["domain"]]
         fill, label = B.accent_button(t["accent"])
         if B._cratio(B._rgb(label), B._rgb(fill)) < 4.5:
             fails.setdefault("button label on fill", []).append(s["theme"])
@@ -104,6 +140,219 @@ def contrast_failures():
                B._cratio(B._rgb(dk), B.BANNER_OVERLAY)) < 4.5:
             fails.setdefault("accent text on hero", []).append(s["theme"])
     return sum(len(v) for v in fails.values()), fails, len(sites)
+
+
+def cta_contrast_failures():
+    """Themes where the CTA band's own text fails AA on its own ground.
+
+    contrast_failures() above checks the accent-derived colours only, so the
+    filled CTA band -- white type on the --p/--pd gradient -- was never scored.
+    It should have been: `.cta-band p` shipped as rgba(255,255,255,.9), which
+    lands at 4.32:1 on the lightest primaries in themes.json.
+
+    Pure white on that same ground is 4.99:1. It passes, but the margin is thin
+    enough that fading this text again would reintroduce the failure.
+
+    So this reads the ALPHA ACTUALLY SHIPPED in the built stylesheet rather than
+    assuming white: a check that only proved "white would be fine" would have
+    stayed green through the very regression it exists to catch."""
+    import build_site as B
+    themes = json.load(open(os.path.join(CONFIG, "themes.json"), encoding="utf-8"))
+    sites = json.load(open(os.path.join(CONFIG, "sites.json"), encoding="utf-8"))["sites"]
+
+    # every white the CTA band paints text with, as an alpha in 0..1
+    alphas = {1.0}
+    for css in glob.glob(os.path.join(DIST, "*", "assets", "site.css"))[:1]:
+        sheet = open(css, encoding="utf-8").read()
+        for rule in re.finditer(r"\.(?:cta-band|ctab__[a-z]+)[^{}]*\{([^}]*)\}", sheet):
+            body = rule.group(1)
+            for m in re.finditer(r"color:\s*rgba\(255,\s*255,\s*255,\s*([\d.]+)\)", body):
+                alphas.add(float(m.group(1)))
+            if re.search(r"(?<!-)color:\s*#fff\b", body):
+                alphas.add(1.0)
+    worst = min(alphas)
+
+    def blend(a, ground):
+        return tuple(round(a * 255 + (1 - a) * c) for c in ground)
+
+    bad = {}
+    for s in sites:
+        t = themes[s["theme"]]
+        for key in ("p", "pd"):          # the gradient runs between the two
+            g = B._rgb(t[key])
+            if B._cratio(blend(worst, g), g) < 4.5:
+                bad.setdefault(f"white@{worst:g} on --{key}", []).append(s["theme"])
+    return sum(len(v) for v in bad.values()), bad
+
+
+def footer_contrast_failures():
+    """Themes whose derived footer ramp fails AA on its own ground.
+
+    The footer used to be a fixed #0e141b with a fixed grey scale over it, so
+    contrast was a constant and nobody had to check it. It is now derived per
+    theme by footer_ramp(), which means 1001 separate grounds and 1001 separate
+    ramps -- exactly the situation that produced the 410-theme button-label
+    failure and the 154-theme CTA-paragraph failure before it.
+
+    Each step is measured against the ground it is actually painted on, not
+    against white or a nominal background."""
+    import build_site as B
+    themes = json.load(open(os.path.join(CONFIG, "themes.json"), encoding="utf-8"))
+    sites = json.load(open(os.path.join(CONFIG, "sites.json"), encoding="utf-8"))["sites"]
+    bad = {}
+    for s in sites:
+        ramp = B.footer_ramp(themes[s["theme"]]["pd"])
+        ground = B._rgb(ramp["bg"])
+        # headings and the logo stay solid white on this ground
+        checks = [("--ft-tx", B._rgb(ramp["tx"])), ("--ft-dim", B._rgb(ramp["dim"])),
+                  ("--ft-faint", B._rgb(ramp["faint"])), ("white", (255, 255, 255))]
+        for name, col in checks:
+            if B._cratio(col, ground) < 4.5:
+                bad.setdefault(f"{name} on --ft-bg", []).append(s["theme"])
+    return sum(len(v) for v in bad.values()), bad
+
+
+def aside_contrast_failures():
+    """Themes where the dark sidebar card's text fails AA on its own ground.
+
+    Third check of this shape, because this is the shape that keeps shipping
+    broken: white-at-an-alpha over a per-theme colour. Button labels failed on
+    410 themes, the CTA paragraph on 154, and both looked fine on the handful
+    of sites anyone opened.
+
+    The alpha is read from the built stylesheet rather than hardcoded here, so
+    editing the CSS moves the check with it instead of leaving it asserting a
+    value the sites no longer use."""
+    import build_site as B
+    css = ""
+    for f in glob.glob(os.path.join(DIST, "*", "assets", "site.css")):
+        c = open(f, encoding="utf-8").read()
+        if ".qcard--dark" in c:
+            css = c
+            break
+    if not css:
+        return 0, {}
+    m = re.search(r"\.qcard--dark p\{color:rgba\(255,255,255,([.\d]+)\)", css)
+    alpha = float(m.group(1)) if m else 1.0
+    themes = json.load(open(os.path.join(CONFIG, "themes.json"), encoding="utf-8"))
+    sites = json.load(open(os.path.join(CONFIG, "sites.json"), encoding="utf-8"))["sites"]
+    bad = {}
+    for s in sites:
+        # the card is solid --pd, not the p->pd gradient the CTA band uses
+        g = B._rgb(themes[s["theme"]]["pd"])
+        fg = tuple(round(alpha * 255 + (1 - alpha) * c) for c in g)
+        if B._cratio(fg, g) < 4.5:
+            bad.setdefault(f"white@{alpha:g} on --pd", []).append(s["theme"])
+    return sum(len(v) for v in bad.values()), bad
+
+
+def template_contrast_failures():
+    """Colour pairs in the alternate templates that fail AA.
+
+    The four checks above all read themes.json and the garage design system, so
+    they cover the 998 sites on the default template and none of the three on
+    ironclad, volt or nimbus. Those carry their own hardcoded palettes and had
+    never been checked at all. What was in them when this was added:
+
+        nimbus   star row      #ffb020 on white          1.83:1
+        nimbus   button label  white on #4c8dff          3.20:1
+        nimbus   eyebrows      #4c8dff on #fbfdff        3.14:1
+        ironclad body text     #a9803f on #fbf9f4        3.41:1
+        volt     footer legal  #6a6a76 on #0a0a0d        3.71:1
+
+    The pairs are listed here rather than discovered, because these templates
+    hardcode their colours: there is no generator to derive them from, and a
+    check that guessed at the pairings would be a check that missed the next
+    one. Add a pair when you add a colour."""
+    import build_site as B
+    src = open(os.path.join(ROOT, "templates.py"), encoding="utf-8").read()
+
+    def tok(name, default=None):
+        m = re.search(rf"{re.escape(name)}:\s*(#[0-9a-fA-F]{{3,8}})", src)
+        return m.group(1) if m else default
+
+    # (label, foreground, background, minimum) -- foregrounds read from the
+    # stylesheet so editing a token moves the check with it
+    pairs = [
+        ("ironclad text on paper", tok("--brass-tx"), tok("--paper"), 4.5),
+        ("ironclad text on cream", tok("--brass-tx"), tok("--cream"), 4.5),
+        # the same colour also lands on --ink in the utility bar and the
+        # footer, where the DARKENED variant is the one that fails
+        ("ironclad brass on ink", tok("--brass"), tok("--ink"), 4.5),
+        ("ironclad cream on ink", tok("--cream"), tok("--ink"), 4.5),
+        ("nimbus text on page", tok("--blue-tx"), "#fbfdff", 4.5),
+        ("nimbus text on sky", tok("--blue-tx"), tok("--sky"), 4.5),
+        ("nimbus text on mint", tok("--blue-tx"), tok("--mint"), 4.5),
+        ("nimbus text on peach", tok("--blue-tx"), tok("--peach"), 4.5),
+        ("nimbus white on button", "#ffffff", tok("--blue-tx"), 4.5),
+        ("nimbus stars on white", tok("--amber-tx"), "#ffffff", 4.5),
+        ("nimbus tick on mint", tok("--green-tx"), tok("--mint"), 4.5),
+        ("volt legal on ground", tok("--dim-lo"), tok("--bg"), 4.5),
+        ("volt body on ground", tok("--txt"), tok("--bg"), 4.5),
+    ]
+    bad = {}
+    for label, fg, bg, need in pairs:
+        if not fg or not bg:
+            bad[label] = ["token missing from templates.py"]
+            continue
+        r = B._cratio(B._rgb(fg), B._rgb(bg))
+        if r < need:
+            bad[label] = [f"{fg} on {bg} = {r:.2f}:1, needs {need}"]
+    return len(bad), bad
+
+
+def sites_with_no_contact_route():
+    """Sites a visitor cannot actually contact.
+
+    Every call to action points at /request-a-quote/. That page can only do
+    something if the site carries a form id, a phone or an email; with none of
+    them it is a page telling the reader to get in touch with no way to do it.
+
+    Reported rather than enforced, because it is a data gap, not a rendering
+    fault -- the renderer already degrades honestly. It is here so the size of
+    the gap stays visible instead of being invisible in the output."""
+    import build as BLD
+    cfg = BLD.load_config()
+    counts = {}
+    for domain, t in cfg.items():
+        counts[domain] = BLD.contact_routes(t)
+    none = [d for d, r in counts.items() if not r]
+    have = collections.Counter(
+        ",".join(r) or "none" for r in counts.values())
+    return len(none), dict(have)
+
+
+def pruned_away_live_css():
+    """Variant classes a page renders that its own stylesheet no longer styles.
+
+    Each site now ships only the variant CSS it uses -- one hero out of twelve,
+    one footer out of ten -- which took site.css from 98K to ~70K. The failure
+    mode of that pass is silent: the page still renders, just unstyled in one
+    band, and nothing else in the build notices.
+
+    Checked against the shipped files rather than by re-deriving which variant
+    each site should have had, because a second prediction of the renderer's
+    choice is a second place to be wrong.
+
+    svcx-sec--* is excluded: it is a positional hook on the section element and
+    has never had rules of its own, so its absence is not evidence of anything.
+    """
+    fam = (".hero--", ".svcx--", ".ctab--", ".faq--", ".gf--", ".pf-", ".ph--")
+    bad = {}
+    for d in sorted(os.listdir(DIST)) if os.path.isdir(DIST) else []:
+        css_p = os.path.join(DIST, d, "assets", "site.css")
+        if not os.path.isfile(css_p):
+            continue
+        css = open(css_p, encoding="utf-8").read()
+        used = set()
+        for page in glob.glob(os.path.join(DIST, d, "**", "index.html"), recursive=True):
+            for m in re.finditer(r'class="([^"]*)"', open(page, encoding="utf-8").read()):
+                used.update(m.group(1).split())
+        for c in sorted(used):
+            tok = "." + c
+            if tok.startswith(fam) and not tok.startswith(".svcx-sec--") and tok not in css:
+                bad.setdefault(d, []).append(c)
+    return sum(len(v) for v in bad.values()), bad
 
 
 def page_checks():
@@ -148,8 +397,14 @@ def below_hero(htmlstr):
 
     Walks <section>/</section> with a depth counter -- the hero contains nested
     sections in some layout variants, so a regex for the next </section> finds
-    the wrong tag."""
-    m = re.search(r'<section class="hero', htmlstr)
+    the wrong tag.
+
+    Inner pages open with `page-hero` rather than `hero`; both are matched so
+    the same "everything below the masthead" region is compared on every page
+    type. Without the `page-` alternative this returned the whole inner page,
+    header and nav included, which are identical everywhere and would flatter
+    every score."""
+    m = re.search(r'<section class="(?:page-)?hero', htmlstr)
     if not m:
         return htmlstr
     i, depth = m.start(), 0
@@ -207,6 +462,62 @@ def pairwise(domains, get):
             vals.append(r)
             pairs.append((r, domains[i], domains[j]))
     return vals, sorted(pairs, reverse=True)
+
+
+# Inner page types, by URL segment. Compared like with like: a service page is
+# only ever scored against another site's service page.
+INNER_TYPES = ("services", "service-areas", "guides")
+
+
+def inner_pages(domain):
+    """One representative detail page per type, plus that type's index.
+
+    One per type, not all of them: every service page on a site shares a
+    renderer, so scoring all of them against all of them measures the content
+    pack over and over and drowns the structural signal we are after."""
+    out = {}
+    for kind in INNER_TYPES:
+        base = os.path.join(DIST, domain, kind)
+        if not os.path.isdir(base):
+            continue
+        idx = os.path.join(base, "index.html")
+        if os.path.isfile(idx):
+            out[f"{kind}/"] = idx
+        detail = sorted(p for p in glob.glob(os.path.join(base, "*", "index.html")))
+        if detail:
+            out[f"{kind}/*"] = detail[0]
+    return out
+
+
+def inner_dom_similarity(domains, sites):
+    """DOM similarity of inner pages, like-with-like across sites.
+
+    DOM only, deliberately. 8 of the 9 content packs are 99.4-100% identical
+    after the city swap, so inner-page *prose* similarity is a content fact no
+    renderer change can move -- gating it would be a permanently-red check that
+    everyone learns to bypass, which is the same reason text_max excludes pairs
+    sharing a pack. The DOM is the renderer's own surface, and it is what a
+    section-variant library actually moves.
+
+    Returns (per_type, all_values) where per_type maps a page type to its
+    pairwise ratios, so a regression can be traced to the page type that caused
+    it rather than just to "inner pages"."""
+    per_type, every = {}, []
+    have = {d: inner_pages(d) for d in domains}
+    kinds = sorted({k for v in have.values() for k in v})
+    for kind in kinds:
+        present = [d for d in domains if kind in have[d]]
+        if len(present) < 2:
+            continue
+        regions = {}
+        for d in present:
+            h = open(have[d][kind], encoding="utf-8").read()
+            regions[d] = dom_tokens(below_hero(h))
+        vals, _ = pairwise(present, lambda d: regions[d])
+        if vals:
+            per_type[kind] = vals
+            every += vals
+    return per_type, every
 
 
 def count_single_value_strings(domains, texts):
@@ -318,10 +629,24 @@ def main():
         "dead_axis_values": len(dead),
         "discarded_home_words": disc_words,
     }
+    inner_per_type, inner_all = inner_dom_similarity(domains, sites)
+    if inner_all:
+        res["inner_dom_median"] = statistics.median(inner_all)
     cfails, cdetail, ntheme = contrast_failures()
+    ctafails, ctadetail = cta_contrast_failures()
+    ftfails, ftdetail = footer_contrast_failures()
+    asfails, asdetail = aside_contrast_failures()
+    tplfails, tpldetail = template_contrast_failures()
+    noroute, routemix = sites_with_no_contact_route()
+    prunefails, prunedetail = pruned_away_live_css()
     ess = missing_essentials()
     npages, no_main, no_skip, calling_nobody = page_checks()
-    res.update({"contrast_failures": cfails, "pages_missing_main": no_main,
+    res.update({"contrast_failures": cfails,
+                "cta_contrast_failures": ctafails,
+                "footer_contrast_failures": ftfails,
+                "aside_contrast_failures": asfails,
+                "template_contrast_failures": tplfails,
+                "pruned_away_live_css": prunefails, "pages_missing_main": no_main,
                 "pages_missing_skiplink": no_skip, "pages_calling_nobody": calling_nobody,
                 "sites_missing_essentials": len(ess)})
 
@@ -336,6 +661,14 @@ def main():
     print(f"  DOM   similarity  min {min(dvals):.1%}  median {res['dom_median']:.1%}  max {max(dvals):.1%}")
     print(f"  pairs >=95% text  {res['pairs_ge_95_text']} / {len(tvals)}")
     print()
+    if inner_all:
+        print(f"  INNER-PAGE DOM similarity  median {statistics.median(inner_all):.1%}"
+              f"  ({len(inner_all)} pairs over {len(inner_per_type)} page types)")
+        for kind in sorted(inner_per_type):
+            v = inner_per_type[kind]
+            print(f"    {kind:<16} median {statistics.median(v):.1%}"
+                  f"  min {min(v):.1%}  max {max(v):.1%}")
+        print()
     print("  most-alike pairs (text):")
     for r, a, b in tpairs[:5]:
         same = sites[a].get("content") == sites[b].get("content")
@@ -358,6 +691,19 @@ def main():
     print(f"  homepage words discarded by the renderer: {disc_words}  {disc_per}")
     print()
     print(f"  contrast (WCAG AA) over {ntheme} in-use themes: {cfails} failures")
+    print(f"  CTA-band text on its own gradient: {ctafails} failures  {ctadetail if ctafails else ''}")
+    print(f"  Footer ramp on its own ground: {ftfails} failures  {ftdetail if ftfails else ''}")
+    print(f"  Sites a visitor cannot contact: {noroute} of {sum(routemix.values())}"
+          f"   routes in use: {routemix}")
+    if noroute:
+        print("    ^ a data gap, not a rendering fault -- the pages degrade "
+              "honestly. Set ghl_form_id, phone or email in sites.json.")
+    print(f"  Alt templates (ironclad/volt/nimbus): {tplfails} failures  "
+          f"{tpldetail if tplfails else ''}")
+    print(f"  Dark sidebar card on its own ground: {asfails} failures  "
+          f"{asdetail if asfails else ''}")
+    print(f"  variant CSS pruned away while still rendered: {prunefails} "
+          f"{prunedetail if prunefails else ''}")
     for k, v in sorted(cdetail.items()):
         print(f"    {k}: {len(v)}")
     print(f"  landmarks: {npages - no_main}/{npages} have <main>, "

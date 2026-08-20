@@ -12,7 +12,7 @@ Page types (by filename): <city>-home / -svc- / -nb- / -sub- / -top-.
   sub  -> /service-areas/<slug>/   (suburbs)
   top  -> /guides/<slug>/          (topic guides)
 """
-import os, re, sys, json, html, shutil, hashlib
+import os, re, sys, json, html, shutil, hashlib, colorsys
 from datetime import date
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -437,7 +437,7 @@ GD_CSS = """
 .areas__all:hover svg{transform:translateX(3px);transition:transform .2s}
 
 /* Footer — CTA strip + columns + trust row + legal */
-.gfooter{background:#0e141b;color:#aeb9c5;margin-top:0}
+.gfooter{background:var(--ft-bg);color:var(--ft-tx);margin-top:0}
 .gf-cta{background:linear-gradient(135deg,var(--p),var(--pd))}
 .gf-cta__in{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:34px 0}
 .gf-cta h3{color:#fff;margin:0;font-size:clamp(1.3rem,2.5vw,1.75rem);font-family:var(--disp)}
@@ -448,19 +448,19 @@ GD_CSS = """
 .gf-main{padding:56px 0 24px}
 .gf-cols{display:grid;grid-template-columns:1.7fr 1fr 1fr 1.25fr;gap:34px;padding-bottom:32px;border-bottom:1px solid rgba(255,255,255,.1)}
 .gf-cols h4{color:#fff;font-size:.82rem;letter-spacing:.09em;text-transform:uppercase;margin:0 0 14px}
-.gf-cols a{color:#b9c3ce;display:block;padding:5px 0;font-size:.94rem;text-decoration:none}
+.gf-cols a{color:var(--ft-tx);display:block;padding:5px 0;font-size:.94rem;text-decoration:none}
 .gf-cols a:hover{color:#fff}
-.gf-logo{display:flex;align-items:center;gap:11px;color:#fff;font-family:var(--disp);font-weight:800;font-size:1.2rem;margin-bottom:14px;text-decoration:none}
+.gf-logo{display:flex;align-items:center;gap:11px;color:#fff;font-family:var(--disp);font-weight:var(--disp-hi);font-size:1.2rem;margin-bottom:14px;text-decoration:none}
 .gf-mark{width:42px;height:42px;border-radius:11px;background:#fff;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
 .gf-logo-img{height:128px;width:auto;max-width:320px;display:block}
-.gf-brand p{font-size:.95rem;max-width:34ch;line-height:1.6;color:#9aa6b2;margin:0}
-.gf-addr{font-style:normal;line-height:1.7;font-size:.94rem;margin-top:12px;color:#9aa6b2}
+.gf-brand p{font-size:.95rem;max-width:34ch;line-height:1.6;color:var(--ft-dim);margin:0}
+.gf-addr{font-style:normal;line-height:1.7;font-size:.94rem;margin-top:12px;color:var(--ft-dim)}
 .gf-addr a{color:#fff;font-weight:700;text-decoration:none}
 .gf-trust{display:flex;flex-wrap:wrap;gap:14px 30px;padding:22px 0;border-bottom:1px solid rgba(255,255,255,.1)}
-.gf-trust div{display:flex;align-items:center;gap:10px;font-size:.9rem;color:#c9d2dc}
+.gf-trust div{display:flex;align-items:center;gap:10px;font-size:.9rem;color:var(--ft-dim)}
 .gf-trust svg{width:20px;height:20px;color:var(--accent-dk);flex:0 0 auto}
-.gf-legal{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;padding-top:20px;font-size:.85rem;color:#7d8894}
-.gf-legal a{color:#aeb9c5;text-decoration:none}
+.gf-legal{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;padding-top:20px;font-size:.85rem;color:var(--ft-faint)}
+.gf-legal a{color:var(--ft-tx);text-decoration:none}
 
 /* ---- footer variants -------------------------------------------------------
    config/layouts.json has assigned every one of the 1001 sites one of six
@@ -482,7 +482,7 @@ GD_CSS = """
 .gfooter.gf--light .gf-addr a{color:var(--p)}
 .gfooter.gf--light .gf-mark{background:var(--p)}
 .gfooter.gf--light .gf-cols,.gfooter.gf--light .gf-trust{border-bottom-color:var(--line)}
-.gfooter.gf--light .gf-legal{color:#6b7682}
+.gfooter.gf--light .gf-legal{color:var(--muted)}
 .gfooter.gf--light .gf-legal a{color:var(--p)}
 /* center: no columns at all -- the link lists flatten into one inline row */
 .gfooter.gf--center{text-align:center;border-top:4px solid var(--accent)}
@@ -502,6 +502,72 @@ GD_CSS = """
   width:30%;min-width:145px;margin-right:2.5%}
 /* cta: the gradient strip above the columns */
 .gfooter.gf--cta .gf-main{padding-top:38px}
+/* ---- rail -- the three link groups lead, the brand block sits to their right
+   behind a vertical rule. An inversion of the base, which puts brand first. */
+.gfooter.gf--rail .gf-cols{grid-template-columns:1fr 1fr 1.15fr 1.6fr}
+.gfooter.gf--rail .gf-brand{padding-left:34px;border-left:1px solid rgba(255,255,255,.14)}
+.gfooter.gf--rail .gf-trust{justify-content:flex-start}
+
+/* ---- promo -- the closing strip leads, then brand and trust share one row,
+   then the links. gf--cta only adds padding above the same body; this one
+   restructures it, which is what makes the two worth having separately. */
+.gfooter.gf--promo .gf-top{display:grid;grid-template-columns:1.3fr 1fr;gap:34px;
+  align-items:start;padding-bottom:28px;border-bottom:1px solid rgba(255,255,255,.1)}
+.gfooter.gf--promo .gf-top .gf-trust{border-bottom:0;padding:0;
+  display:grid;grid-template-columns:1fr 1fr;gap:14px 22px}
+.gfooter.gf--promo .gf-cols--3{grid-template-columns:repeat(3,1fr);padding-top:28px}
+.gfooter.gf--promo .gf-main{padding-top:34px}
+
+/* ---- grid -- hairline cells, and the link groups are disclosures.
+   Rendered CLOSED so a phone gets three tappable headings rather than a
+   17-link wall; desktop forces the bodies open again below. */
+.gfooter.gf--grid .gf-cols{grid-template-columns:1.15fr 2fr;gap:0;
+  border-top:1px solid rgba(255,255,255,.12);border-bottom:0;padding-bottom:0}
+.gfooter.gf--grid .gf-brand{padding:26px 30px 26px 0;
+  border-right:1px solid rgba(255,255,255,.12)}
+.gf-grps{display:grid;grid-template-columns:repeat(3,1fr)}
+.gf-grp{border-left:1px solid rgba(255,255,255,.12);padding:26px 22px}
+.gf-grp__t{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.gf-grp__h{color:#fff;font-size:.82rem;letter-spacing:.09em;text-transform:uppercase;
+  margin:0 0 14px;display:flex;justify-content:space-between;align-items:center;
+  min-height:24px;cursor:pointer}
+.gf-grp__h::after{content:"";width:7px;height:7px;flex:0 0 7px;
+  border-right:2px solid var(--ft-dim);border-bottom:2px solid var(--ft-dim);
+  transform:rotate(45deg);transition:transform .2s}
+.gf-grp__t:checked ~ .gf-grp__h::after{transform:rotate(225deg)}
+.gf-grp__t:focus-visible ~ .gf-grp__h{outline:2px solid var(--accent-dk);
+  outline-offset:3px;border-radius:3px}
+.gf-grp__b a{color:var(--ft-tx);display:block;padding:5px 0;font-size:.94rem;
+  text-decoration:none}
+.gf-grp__b a:hover{color:#fff}
+/* desktop: the groups are always open and the summary is not a control */
+/* desktop: always open, and the heading stops being a control */
+@media(min-width:821px){
+  .gf-grp__b{display:block}
+  .gf-grp__h{cursor:default;pointer-events:none}
+  .gf-grp__h::after{display:none}
+}
+/* phone/tablet: collapsed until tapped */
+@media(max-width:820px){
+  .gf-grp__b{display:none}
+  .gf-grp__t:checked ~ .gf-grp__b{display:block}
+}
+
+/* ---- editorial -- the blurb leads at size, the columns are demoted beneath.
+   The group headings are links to their index pages, which is what lets the
+   deep links drop on a phone without the group becoming a dead label. */
+.gfooter.gf--editorial .gf-brand{max-width:none;padding-bottom:30px;
+  border-bottom:1px solid rgba(255,255,255,.12)}
+.gfooter.gf--editorial .gf-brand p{max-width:46ch;font-size:1.18rem;
+  line-height:1.5;color:var(--ft-tx)}
+.gfooter.gf--editorial .gf-cols--3{grid-template-columns:repeat(3,1fr);
+  padding:28px 0 24px;border-bottom:0}
+.gfooter.gf--editorial .gf-cols h4 a{color:#fff;text-decoration:none}
+.gfooter.gf--editorial .gf-foot{display:flex;justify-content:space-between;
+  gap:20px 34px;flex-wrap:wrap;align-items:center;padding-top:20px;
+  border-top:1px solid rgba(255,255,255,.12)}
+.gfooter.gf--editorial .gf-foot .gf-trust{border-bottom:0;padding:0}
+.gfooter.gf--editorial .gf-foot .gf-legal{padding-top:0}
 
 /* Footer links were ~32px tall with no mobile override anywhere in the sheet,
    and each footer carries 13-17 of them stacked with no gutter. */
@@ -512,6 +578,28 @@ GD_CSS = """
 }
 @media(max-width:820px){.gf-cols{grid-template-columns:1fr 1fr}.gf-brand{grid-column:1/-1}
   .gfooter.gf--split .gf-cols{grid-template-columns:1fr}}
+@media(max-width:820px){
+  .gfooter.gf--rail .gf-cols{grid-template-columns:1fr 1fr}
+  .gfooter.gf--rail .gf-brand{grid-column:1/-1;padding-left:0;border-left:0;
+    border-top:1px solid rgba(255,255,255,.14);padding-top:24px;margin-top:8px}
+  .gfooter.gf--promo .gf-top{grid-template-columns:1fr}
+  .gfooter.gf--promo .gf-cols--3,
+  .gfooter.gf--editorial .gf-cols--3{grid-template-columns:1fr 1fr}
+  /* the disclosures collapse and the cells lose their rules: at this
+     width three 1px-separated columns read as a table, not a group */
+  .gfooter.gf--grid .gf-cols{grid-template-columns:1fr}
+  .gfooter.gf--grid .gf-brand{border-right:0;padding:24px 0}
+  .gf-grps{grid-template-columns:1fr}
+  .gf-grp{border-left:0;border-top:1px solid rgba(255,255,255,.12);padding:4px 0}
+  .gf-grp__h{min-height:44px;margin:0}
+  .gf-grp__b{padding-bottom:10px}
+  /* deep links drop; the heading link to each index carries the group */
+  .gfooter.gf--editorial .gf-cols--3>div>a{display:none}
+  .gfooter.gf--editorial .gf-cols h4{margin:0}
+  .gfooter.gf--editorial .gf-cols h4 a{display:block;min-height:44px;
+    display:flex;align-items:center}
+  .gfooter.gf--editorial .gf-brand p{font-size:1.02rem}
+}
 @media(max-width:520px){.gf-cols{grid-template-columns:1fr}.gf-cta__in{flex-direction:column;align-items:flex-start}
   .gfooter.gf--split .gf-cols>div:not(.gf-brand),
   .gfooter.gf--center .gf-cols>div:not(.gf-brand){display:block;width:auto;margin-right:0}}
@@ -605,7 +693,7 @@ GD_CSS = """
 .svcx-vis--tall{aspect-ratio:4/5}
 .svcx-vis--pano{aspect-ratio:2/1}
 .svcx-vis--fill{position:absolute;inset:0;border-radius:0;box-shadow:none}
-.svcx-vis--sticky{position:sticky;top:100px}
+.svcx-vis--sticky{position:sticky;top:calc(var(--hd-h) + 21px)}
 
 /* ruled service rail -- rows, not boxes. A stack of bordered white rectangles
    is what makes a services section read as a database dump. */
@@ -631,7 +719,7 @@ GD_CSS = """
   max-width:52ch;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;
   -webkit-box-orient:vertical}
 .svcx-rail a:hover b,.svcx-rail a:focus-visible b{color:var(--p)}
-.svcx-num{font-family:var(--disp);font-weight:800;font-size:.86rem;
+.svcx-num{font-family:var(--disp);font-weight:var(--disp-hi);font-size:.86rem;
   color:var(--accent-lt);letter-spacing:.06em;padding-top:.35em}
 .svcx-rail .svcx-go svg{width:19px;height:19px;color:var(--p);
   opacity:.35;transition:opacity .2s,transform .2s}
@@ -733,10 +821,6 @@ GD_CSS = """
 
 @media(prefers-reduced-motion:reduce){
   .svcx-vis--swap img,.svcx-cs>li{transition:opacity .001s;transform:none!important}
-  /* `.svcx *` matches elements only -- a pseudo-element's transition is not
-     inherited and was still animating under reduce */
-  .svcx-word::after{transition:none!important}
-  .svcx-word__t{transform:none!important}
 }
 
 
@@ -834,7 +918,7 @@ GD_CSS = """
 /* 07 ACCORDION -- one open at a time, the open panel carries the visual */
 .svcx--accordion{display:grid;grid-template-columns:.72fr 1.28fr;gap:52px;
   align-items:start}
-.svcx--accordion .svcx-hd{position:sticky;top:104px}
+.svcx--accordion .svcx-hd{position:sticky;top:calc(var(--hd-h) + 25px)}
 .svcx-accs{border-top:1px solid var(--line);min-width:0}
 .svcx-acc{border-bottom:1px solid var(--line)}
 .svcx-acc summary{display:grid;grid-template-columns:auto 1fr 24px;align-items:center;
@@ -876,7 +960,7 @@ GD_CSS = """
 .svcx-step__n{position:absolute;top:-14px;left:0;width:28px;height:28px;
   border-radius:50%;background:var(--soft);border:2px solid var(--line);
   color:var(--muted);display:grid;place-items:center;
-  font-family:var(--disp);font-weight:800;font-size:.68rem;transition:.3s}
+  font-family:var(--disp);font-weight:var(--disp-hi);font-size:.68rem;transition:.3s}
 .svcx-step+.svcx-step .svcx-step__n{left:26px}
 .svcx-step__t{display:block;font-family:var(--disp);font-weight:700;
   font-size:clamp(1.02rem,1.6vw,1.24rem);line-height:1.2;color:var(--ink);
@@ -896,75 +980,6 @@ GD_CSS = """
 .svcx-step:has(.svcx-r:checked) .svcx-nav{opacity:1}
 .svcx-step:has(.svcx-r:focus-visible){outline:3px solid var(--accent);
   outline-offset:5px;border-radius:4px}
-
-/* 12 TYPO -- the service names are the artwork.
-   The plate OVERLAPS the list rather than sitting beside it. Each rule runs the
-   full section width and terminates underneath the photograph, so there is no
-   dead tail to leave the rows looking unfinished -- that overlap is the
-   composition, not decoration. Row padding-right keeps the type clear of it. */
-.svcx--typo{--plate:clamp(300px,40%,470px);--gut:44px;--rowpad:30px;
-  display:grid;grid-template-columns:minmax(0,1fr) var(--plate);
-  grid-template-rows:auto auto auto;gap:0}
-/* five names would make the plate tall and narrow; tighten the rows instead */
-.svcx--typo:has(.svcx-word:nth-child(5)){--rowpad:22px}
-.svcx-kick{grid-column:1/-1;grid-row:1;display:grid;grid-template-columns:1fr auto;
-  gap:14px 40px;align-items:end;padding-bottom:26px;
-  border-bottom:1px solid var(--line)}
-.svcx-kick h2{margin:6px 0 0;font-size:clamp(1.05rem,1.3vw,1.18rem);
-  line-height:1.35;letter-spacing:0;max-width:34ch}
-.svcx-kick__p{margin:0;color:var(--muted);font-size:.97rem;max-width:34ch;
-  text-align:right}
-.svcx-words{grid-column:1/-1;grid-row:2;list-style:none;margin:0;padding:0;
-  min-width:0}
-/* no border-top on the first row: the kicker's rule already opens the list, and
-   two hairlines a row-padding apart read as a table header */
-.svcx-word{position:relative;display:grid;grid-template-columns:44px minmax(0,1fr);
-  align-items:baseline;gap:0 8px;padding:var(--rowpad) 0;
-  padding-right:calc(var(--plate) + var(--gut));
-  border-bottom:1px solid var(--line)}
-.svcx-word__i{display:flex;align-items:center;justify-content:flex-start;
-  min-width:44px;min-height:44px;cursor:pointer;font-family:var(--disp);
-  font-weight:800;font-size:.8rem;letter-spacing:.08em;
-  color:color-mix(in srgb,var(--ink) 42%,transparent);transition:color .25s}
-/* justify-self:start is load-bearing. As a grid item the anchor stretched to
-   fill its cell, so hundreds of px of blank space per row was still a link --
-   it navigated on click and it made the rules run into nothing. */
-.svcx-word__t{display:inline-block;justify-self:start;font-family:var(--disp);
-  font-weight:800;font-size:clamp(1.65rem,2.9vw + .45rem,2.85rem);line-height:1.1;
-  letter-spacing:-.02em;color:var(--ink);overflow-wrap:break-word;padding:8px 0;
-  transition:color .3s ease,transform .35s cubic-bezier(.2,.7,.3,1)}
-/* transient tier = preview: colour and a small shift, never geometry */
-.svcx-word:hover .svcx-word__t,.svcx-word:focus-within .svcx-word__t{
-  color:var(--p);transform:translateX(9px)}
-.svcx-word:hover .svcx-word__i,.svcx-word:focus-within .svcx-word__i{color:var(--p)}
-/* committed tier = the rule itself draws. Hover must NOT draw it, or four bars
-   animate as the cursor travels and the section reads as a menu. */
-.svcx-word::after{content:"";position:absolute;left:0;bottom:-1px;height:2px;
-  width:0;background:var(--accent);transition:width .55s cubic-bezier(.2,.7,.3,1)}
-.svcx-word:has(.svcx-r:checked)::after{width:100%}
-.svcx-word:has(.svcx-r:checked) .svcx-word__t{color:var(--p)}
-.svcx-word:has(.svcx-r:checked) .svcx-word__i{color:var(--accent-lt)}
-.svcx-word:has(.svcx-r:focus-visible){outline:3px solid var(--accent);
-  outline-offset:4px;border-radius:4px}
-/* the plate: column 2, spanning the list and the all-services row, painted over
-   the rules. z-index 3 clears .svcx-pick (1) and .svcx-nav (2). */
-.svcx-reveal{grid-column:2;grid-row:2/4;position:relative;z-index:3;
-  align-self:stretch}
-.svcx-vis--reveal{aspect-ratio:auto;height:100%;min-height:400px}
-/* the copy is a caption ON the plate, not a paragraph parked under it */
-/* the scrim is load-bearing, not decoration: measured at 1.74:1 with a
-   lighter ramp, because the caption can land on a bright part of an
-   unknown photograph. Hold it near-opaque wherever type actually sits. */
-.svcx-reveal .svcx-cs{position:absolute;left:0;right:0;bottom:0;z-index:1;
-  padding:44px 28px 24px;border-radius:0 0 calc(var(--radius) + 6px)
-  calc(var(--radius) + 6px);
-  background:linear-gradient(to top,rgba(8,12,18,.96) 0%,rgba(8,12,18,.94) 64%,
-  rgba(8,12,18,.84) 86%,rgba(8,12,18,.38) 100%)}
-.svcx-reveal .svcx-cs>li h3{display:none}
-.svcx-reveal .svcx-cs>li p{margin:0 0 12px;max-width:38ch;font-size:.98rem;
-  color:rgba(255,255,255,.9)}
-.svcx-reveal .svcx-cs>li .svcx-nav,.svcx-reveal .svcx-cs>li .svcx-go{color:#fff}
-.svcx--typo .svcx-all{grid-column:1;grid-row:3;justify-self:start}
 
 /* 13 ORBIT -- services placed around the work itself.
    Positioned with cos()/sin() on an ellipse that is deliberately wider than it
@@ -988,7 +1003,7 @@ GD_CSS = """
 .svcx-node__n{display:grid;place-items:center;width:44px;height:44px;
   margin:0 auto 8px;border-radius:50%;border:1px solid var(--line);
   background:var(--card);cursor:pointer;font-family:var(--disp);
-  font-weight:800;font-size:.7rem;letter-spacing:.04em;color:var(--muted);
+  font-weight:var(--disp-hi);font-size:.7rem;letter-spacing:.04em;color:var(--muted);
   transition:.25s}
 .svcx-node__n:hover{border-color:var(--p);color:var(--p)}
 .svcx-node__t{display:inline-flex;align-items:center;min-height:44px;
@@ -1045,7 +1060,7 @@ GD_CSS = """
 /* the panel heading is the section's display type, but the page h1 is 53px --
    keep it at section-h2 scale so the Services list never outranks the hero */
 .svcx-panel__t .svcx-cs>li h3{margin:0 0 14px;
-  font-size:clamp(1.5rem,2.4vw,2.25rem);line-height:1.14;letter-spacing:-.02em}
+  font-size:clamp(1.5rem,2.4vw,2.25rem);line-height:1.14;letter-spacing:var(--disp-track)}
 .svcx-panel__t .svcx-cs>li p{margin:0 0 26px;color:var(--muted);
   font-size:1.04rem;line-height:1.6;max-width:46ch}
 /* their "Secondary (Outline)" button; .btn--outline already exists */
@@ -1108,33 +1123,6 @@ GD_CSS = """
   .svcx-step:has(.svcx-r:checked){border-top-color:var(--line);
     border-left-color:var(--accent)}
   .svcx-step .svcx-nav{opacity:1}
-
-  /* TYPO -> not the desktop grid stacked. The name moves ONTO the photograph
-     as its caption and the list demotes to a compact ruled index, so the type
-     stays the artwork without needing a width the phone does not have. */
-  .svcx--typo{--plate:0px;--gut:0px;--rowpad:0px;
-    grid-template-columns:1fr;grid-template-rows:none;gap:22px}
-  .svcx-kick,.svcx-words,.svcx-reveal,.svcx--typo .svcx-all{
-    grid-column:1;grid-row:auto}
-  .svcx-kick{order:1;grid-template-columns:1fr;align-items:start;gap:10px;
-    padding-bottom:18px}
-  .svcx-kick__p{text-align:left;max-width:none}
-  .svcx-reveal{order:2;align-self:auto}
-  .svcx-words{order:3}
-  .svcx--typo .svcx-all{order:4}
-  .svcx-vis--reveal{height:auto;min-height:0;aspect-ratio:4/3}
-  .svcx-reveal .svcx-cs{padding:22px 20px 18px}
-  .svcx-reveal .svcx-cs>li h3{display:block;margin:0 0 10px;color:#fff;
-    font-size:clamp(1.5rem,6.4vw,2.1rem);line-height:1.08;letter-spacing:-.02em}
-  .svcx-reveal .svcx-cs>li p{display:none}
-  .svcx-word{grid-template-columns:minmax(0,1fr) 56px;align-items:center;
-    padding:0;gap:0}
-  .svcx-word__t{grid-column:1;grid-row:1;display:flex;align-items:center;
-    min-height:48px;
-    padding:12px 0;font-size:clamp(1.05rem,4.4vw,1.32rem);letter-spacing:-.01em}
-  .svcx-word:hover .svcx-word__t,.svcx-word:focus-within .svcx-word__t{transform:none}
-  .svcx-word__i{grid-column:2;grid-row:1;justify-content:flex-end;min-width:56px;
-    font-size:.72rem}
 
   /* TABS -> head, then the tab bar as a scroll-snap chip row, then image,
      then the active service's copy. The bar scrolls rather than wrapping: a
@@ -1267,7 +1255,7 @@ GD_CSS = """
 .pf-step:last-child::before{display:none}
 .pf-step__n{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;
   background:var(--card);border:1px solid var(--line);color:var(--ink);
-  font-family:var(--disp);font-weight:800;font-size:.78rem;margin-bottom:22px;
+  font-family:var(--disp);font-weight:var(--disp-hi);font-size:.78rem;margin-bottom:22px;
   position:relative;z-index:1;transition:.25s}
 .pf-step:hover .pf-step__n{background:var(--p);border-color:var(--p);
   color:var(--on-accent)}
@@ -1280,7 +1268,71 @@ GD_CSS = """
 .pf-step h3{margin:0 0 8px;font-size:clamp(1.05rem,1.5vw,1.24rem)}
 .pf-step p{margin:0;color:var(--muted);font-size:.96rem;line-height:1.55}
 
+/* 06 MOSAIC -- tall plate left, copy right, two tiles beneath the copy.
+   Ratios are deliberately not the reference's: it drew the plate at 0.59, which
+   against a 16:9 library shows a third of the frame. 5/6 keeps the asymmetry
+   the composition depends on while leaving the subject legible. */
+.pf-mos{display:grid;grid-template-columns:repeat(12,1fr);gap:0 48px;align-items:start}
+.pf-mos__plate{grid-column:1/6;overflow:hidden;border:1px solid var(--line);
+  border-radius:var(--radius)}
+.pf-mos__plate img{display:block;width:100%;aspect-ratio:5/6;object-fit:cover;
+  transition:transform .7s cubic-bezier(.2,.7,.3,1)}
+.pf-mos__plate:hover img{transform:scale(1.03)}
+.pf-mos__b{grid-column:6/13}
+.pf-mos__b h2{margin:0 0 14px;font-size:clamp(1.5rem,2.4vw,2.15rem);line-height:1.14}
+.pf-mos__sub{margin:0 0 26px;color:var(--muted);font-size:1.04rem;max-width:46ch}
+.pf-mos__tiles{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:0 0 8px}
+.pf-mos__tiles figure{margin:0;overflow:hidden;border:1px solid var(--line);
+  border-radius:var(--radius)}
+.pf-mos__tiles img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;
+  transition:transform .6s cubic-bezier(.2,.7,.3,1)}
+.pf-mos__tiles figure:hover img{transform:scale(1.04)}
+.pf-mos__where{display:flex;align-items:center;gap:8px;margin:20px 0 0;
+  color:var(--muted);font-size:.92rem}
+.pf-mos__where svg{width:16px;height:16px;color:var(--accent-lt)}
+
+/* 07 STACK -- three plates overlapped, the centre raised and in colour.
+   Elevation is used here where the rest of the set stays flat: the whole point
+   of the composition is which plate is in front.
+
+   All three keep the same 4/3 crop. An earlier pass gave the outer plates a
+   portrait ratio and the centre a landscape one, on the theory that the
+   occluded plates could afford the harder crop -- but equal columns made the
+   portrait plates 428px tall against the centre's 254px, so the plate meant to
+   dominate became the smallest thing in the row. Depth comes from scale,
+   stacking order and colour instead, which costs no legibility. */
+.pf-stk{position:relative;display:grid;grid-template-columns:repeat(3,1fr);
+  align-items:center;max-width:960px;margin:0 auto}
+.pf-stk__p{position:relative;margin:0;overflow:hidden;border:1px solid var(--line);
+  border-radius:var(--radius);background:var(--card)}
+.pf-stk__p img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;
+  transition:filter .55s ease,transform .7s cubic-bezier(.2,.7,.3,1)}
+.pf-stk__p--l,.pf-stk__p--r{z-index:1}
+.pf-stk__p--l img,.pf-stk__p--r img{filter:grayscale(.55)}
+.pf-stk__p--l{margin-right:-10%}
+.pf-stk__p--r{margin-left:-10%}
+.pf-stk__p--c{z-index:2;transform:scale(1.12);box-shadow:var(--shadow-lg)}
+.pf-stk__p:hover img{filter:grayscale(0)}
+.pf-stk__p figcaption{position:absolute;left:12px;bottom:12px;background:var(--card);
+  border:1px solid var(--line);border-radius:var(--btn-r);padding:6px 12px;
+  font-family:var(--disp);font-weight:700;font-size:.74rem;letter-spacing:.05em;
+  text-transform:uppercase;color:var(--ink)}
+
 @media(max-width:900px){
+  /* the overlap unwinds rather than squeezing: at this width the plates would
+     cover each other's subject entirely */
+  .pf-mos{grid-template-columns:1fr;gap:26px}
+  .pf-mos__plate,.pf-mos__b{grid-column:1}
+  .pf-mos__plate img{aspect-ratio:16/10}
+  .pf-stk{grid-template-columns:1fr;gap:14px;max-width:440px}
+  .pf-stk__p--l{margin-right:0}
+  .pf-stk__p--r{margin-left:0}
+  .pf-stk__p--c{transform:none;box-shadow:none}
+  /* the outer plates must match `.pf-stk__p--l img` for specificity, not just
+     `.pf-stk__p img` -- otherwise two of the three stay desaturated here, with
+     no overlap to justify it and no hover to undo it */
+  .pf-stk__p img,.pf-stk__p--l img,.pf-stk__p--r img{aspect-ratio:16/10;
+    filter:none}
   .pf-detail,.pf-cine{grid-template-columns:1fr;gap:26px}
   .pf-detail__img img{aspect-ratio:16/10}
   .pf-cine__img,.pf-points--rail,.pf-cine__hd{grid-column:1}
@@ -1303,10 +1355,58 @@ GD_CSS = """
   .pf-step h3{grid-column:2}
   .pf-step p{grid-column:2}
 }
+/* 08 SELECTOR -- a category rail that swaps the plate beside it.
+   The swap itself is the services block's machinery: the wrapper carries
+   `svcx`, so the committed-radio / pointer / :focus-visible tiers already
+   defined up there drive this too. Nothing new is declared for the mechanism,
+   only for the rail's own look. */
+.pf-sel{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);
+  gap:0 52px;align-items:center}
+.pf-sel__vis{aspect-ratio:4/3}
+.pf-sel__b h2{margin:0 0 12px;font-size:clamp(1.45rem,2.3vw,2.05rem);
+  line-height:1.14}
+.pf-sel__b>p{margin:0 0 24px;color:var(--muted);font-size:1.03rem;max-width:42ch}
+.pf-sel__rail{list-style:none;margin:0;padding:0}
+.pf-sel__rail li{position:relative;border-top:1px solid var(--line)}
+.pf-sel__rail li:last-child{border-bottom:1px solid var(--line)}
+.pf-sel__opt{display:flex;align-items:center;min-height:56px;padding:6px 2px;
+  cursor:pointer;font-family:var(--disp);font-weight:700;
+  font-size:clamp(1.02rem,1.5vw,1.22rem);color:var(--muted);
+  transition:color .25s,padding-left .25s}
+.pf-sel__opt::before{content:"";position:absolute;left:0;bottom:-1px;height:2px;
+  width:0;background:var(--accent);transition:width .5s cubic-bezier(.2,.7,.3,1)}
+.pf-sel__rail li:hover .pf-sel__opt,
+.pf-sel__rail li:focus-within .pf-sel__opt{color:var(--ink);padding-left:10px}
+/* committed tier draws the rule; hover must not, or every row animates as the
+   pointer travels and the rail reads as a menu */
+.pf-sel__rail li:has(.svcx-r:checked) .pf-sel__opt{color:var(--p)}
+.pf-sel__rail li:has(.svcx-r:checked) .pf-sel__opt::before{width:100%}
+.pf-sel__rail li:has(.svcx-r:focus-visible){outline:3px solid var(--accent);
+  outline-offset:3px;border-radius:4px}
+/* This block has to sit AFTER the base rules above, not up in the shared
+   max-width:900px block earlier in the sheet: a media query does not raise
+   specificity, so a base `.pf-sel` declared later simply wins and the desktop
+   grid survives to 360px. That is exactly what happened first time round --
+   plate and rail were still side by side at 156px and 116px wide. */
+@media(max-width:900px){
+  /* plate above the rail rather than beside it; the rail keeps its 56px rows,
+     which is what makes it selectable by thumb */
+  .pf-sel{grid-template-columns:1fr;gap:24px}
+  .pf-sel__vis{aspect-ratio:16/10}
+}
+
+/* two tiles side by side leave 153px each on a 360px screen -- too small to
+   show what the photograph is of, which is the only job they have */
+@media(max-width:560px){.pf-mos__tiles{grid-template-columns:1fr;gap:12px}}
+
 @media(prefers-reduced-motion:reduce){
   .pf-detail__img img,.pf-tech__img img,.pf-cine__img img,.pf-step__im img,
-  .pf-ic,.pf-step__n,.pf-go svg{transition:none!important;transform:none!important}
+  .pf-ic,.pf-step__n,.pf-go svg,.pf-mos__plate img,.pf-mos__tiles img,
+  .pf-stk__p img{transition:none!important;transform:none!important}
   .pf-step__im img{filter:none!important}
+  /* the centre plate's scale is layout, not motion, so it is restored after
+     the blanket transform reset above */
+  .pf-stk__p--c{transform:scale(1.12)!important}
 }
 .splitfeat{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:center}
 .splitfeat--flip .splitfeat__img{order:2}
@@ -1341,6 +1441,95 @@ GD_CSS = """
 }
 
 /* shaped local-content components -- see shape_section() */
+/* ---- service-area variants ---------------------------------------------
+   Long names are the whole difficulty here. "Buckner Terrace / Everglade
+   Park" is 33 characters against "Kessler" at 7, and the source designs
+   answered that with an ellipsis. Truncating a place name is worse than
+   wrapping it -- the reader cannot tell which place it was -- so every
+   variant wraps instead, and the mile badge is what gets pinned. */
+
+/* -- flow: one continuous wrapped run, dots between. The only variant with
+      no box around each name, and the one that survives 26 in least height. */
+.areaflow{list-style:none;margin:0 0 18px;padding:0;
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 0}
+.areaflow li{display:flex;align-items:baseline}
+.areaflow li+li::before{content:"";width:3px;height:3px;border-radius:50%;
+  background:var(--line);margin:0 12px;align-self:center;flex:0 0 3px}
+.areaflow a,.areaflow .nolink{color:var(--ink);text-decoration:none;
+  font-size:1rem;line-height:1.5}
+.areaflow a:hover{color:var(--p);text-decoration:underline}
+.areaflow .nolink{color:var(--muted)}
+.areaflow .ad{color:var(--muted);font-size:.82rem;margin-left:7px}
+
+/* -- columns: balanced columns, the badge pinned right. minmax(0,1fr) so a
+      long name wraps inside its column instead of widening the track. */
+.areacols{list-style:none;margin:0 0 18px;padding:0;display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));gap:2px 26px}
+.areacols li{min-width:0}
+.areacols a,.areacols .nolink{display:flex;align-items:baseline;gap:12px;
+  justify-content:space-between;padding:9px 0;color:var(--ink);
+  text-decoration:none;border-bottom:1px solid var(--line);font-size:.97rem;
+  line-height:1.35}
+.areacols a:hover{color:var(--p)}
+.areacols .nolink{color:var(--muted)}
+.areacols .ad{color:var(--muted);font-size:.8rem;flex:0 0 auto;white-space:nowrap}
+
+/* -- editorial: one place per line at display size. Falls back to columns
+      past _AREAS_EDITORIAL_MAX rather than truncating the list. */
+.arearows{list-style:none;margin:0 0 18px;padding:0}
+.arearows a,.arearows .nolink{display:flex;align-items:baseline;gap:16px;
+  justify-content:space-between;padding:13px 0;
+  border-bottom:1px solid var(--line);color:var(--ink);text-decoration:none;
+  font-family:var(--disp);font-size:1.32rem;font-weight:700;line-height:1.25}
+.arearows a:hover{color:var(--p)}
+.arearows .nolink{color:var(--muted)}
+.arearows .ad{font-family:var(--body);font-weight:400;font-size:.84rem;
+  color:var(--muted);flex:0 0 auto;white-space:nowrap}
+
+/* -- dark: a panel, not a band. band() owns the <section> colour, so this
+      cannot reach it -- see the note above AREAS_VARIANTS. */
+.areas--dark{background:var(--pd);border-radius:var(--radius);padding:26px 28px}
+.areas--dark .areacols a,.areas--dark .areacols .nolink{color:#fff;
+  border-bottom-color:rgba(255,255,255,.16)}
+.areas--dark .areacols a:hover{color:var(--accent-dk)}
+.areas--dark .areacols .nolink{color:rgba(255,255,255,.72)}
+.areas--dark .areacols .ad{color:rgba(255,255,255,.72)}
+.areas--dark .areas__all{color:#fff}
+
+@media(max-width:900px){
+  .areacols{grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 20px}
+  .arearows a,.arearows .nolink{font-size:1.14rem;padding:11px 0}
+}
+@media(max-width:560px){
+  /* two columns still beats one 26-row stack on a phone; the tap target is
+     the whole row, which stays over 44px with this padding */
+  .areacols a,.areacols .nolink{padding:12px 0;font-size:.92rem}
+  .areacols .ad{font-size:.74rem}
+  .areas--dark{padding:20px 18px}
+  /* flow stays an inline run on a phone. Boxing each name into a 44px pill
+     was tried and took it from 562px to 938px at 26 places -- taller than
+     every other variant and visually the same as chips, which is the one
+     thing it exists not to be. 36px rows instead: half again the WCAG 2.2 AA
+     minimum of 24x24, and it stays the compact option, which is the whole
+     reason to have it. */
+  .areaflow a,.areaflow .nolink{display:inline-flex;align-items:center;
+    min-height:36px;font-size:.94rem}
+  .areaflow li+li::before{margin:0 9px}
+  /* the view-all link was the one target under 44px in every variant */
+  .areas__all{display:inline-flex;align-items:center;min-height:44px}
+}
+/* The contact routes on the quote page. Rendered only where the config
+   supplies one, so this block is simply absent on a site that has none --
+   which is better than a button that reloads the page. */
+.qroutes{display:flex;flex-wrap:wrap;gap:12px;max-width:var(--maxw);
+  margin:0 auto;padding:22px 24px 0}
+.qroutes .btn{flex:0 1 auto}
+.qroutes--card{flex-direction:column;padding:0;margin:0}
+.qroutes--card .btn{width:100%;justify-content:center;margin-bottom:10px}
+@media(max-width:560px){
+  .qroutes{padding:16px 18px 0}
+  .qroutes .btn{width:100%;justify-content:center}
+}
 .areagrid{list-style:none;padding:0;margin:0;display:grid;
   grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px 14px}
 .areagrid li{display:flex}
@@ -1363,7 +1552,7 @@ GD_CSS = """
   gap:16px;margin-bottom:34px}
 .lstat{text-align:center;padding:22px 16px;background:var(--card);
   border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
-.lstat b{display:block;font-family:var(--disp);font-weight:800;line-height:1.05;
+.lstat b{display:block;font-family:var(--disp);font-weight:var(--disp-hi);line-height:1.05;
   font-size:clamp(1.5rem,3.1vw,2.1rem);color:var(--p);margin-bottom:6px}
 .lstat span{font-size:.86rem;color:var(--muted);letter-spacing:.01em}
 .lead-para{font-size:1.15rem;line-height:1.62;color:var(--ink);margin-bottom:1.1rem}
@@ -1373,7 +1562,7 @@ GD_CSS = """
   align-items:center;gap:18px;padding:22px 6px;border-bottom:1px solid var(--line);
   text-decoration:none;transition:.16s}
 .srow:hover{background:var(--soft);padding-left:14px;text-decoration:none}
-.srow__n{font-family:var(--disp);font-weight:800;font-size:1.15rem;color:var(--accent-lt)}
+.srow__n{font-family:var(--disp);font-weight:var(--disp-hi);font-size:1.15rem;color:var(--accent-lt)}
 .srow__t{font-family:var(--disp);font-weight:700;font-size:1.12rem;color:var(--ink)}
 .srow__d{color:var(--muted);font-size:.96rem}
 .srow__a svg{width:19px;height:19px;color:var(--p)}
@@ -1386,7 +1575,7 @@ GD_CSS = """
 .splitcopy{display:grid;grid-template-columns:260px 1fr;gap:44px;align-items:start;
   max-width:1000px;margin:0 auto}
 .splitcopy .localcopy{max-width:none;margin:0}
-.ranklist{list-style:none;padding:0;margin:0;position:sticky;top:96px}
+.ranklist{list-style:none;padding:0;margin:0;position:sticky;top:calc(var(--hd-h) + 17px)}
 .ranklist li{display:flex;align-items:center;gap:11px;padding:11px 0;
   border-bottom:1px solid var(--line);font-family:var(--disp);font-weight:700;
   font-size:.99rem;color:var(--ink)}
@@ -1613,18 +1802,249 @@ def btn_css(t):
 }}
 """
 
+# ---- TYPOGRAPHY ----------------------------------------------------------
+# Every one of the 1001 sites in use shipped Urbanist + Open Sans. themes.json
+# holds 47 display faces and 24 body faces, but all of that variety sits in the
+# 95 themes nobody uses -- 89 of them inherited from the porta-potty generator.
+# Type is the strongest visual signal after colour, so one pairing across the
+# estate was the single largest piece of sameness left.
+#
+# Curated pairings rather than anything computed: this is how every site builder
+# does it, because pairing faces is a judgement, not a formula.
+#
+# The weight lists are checked against the css2 API family by family, not
+# assumed. Two things that catches:
+#   * Archivo Narrow, Oswald, Space Grotesk and Zilla Slab have no 800 at all.
+#     h1 and .brand ask for 800, so the browser would fake it -- hence `hi`.
+#   * Lato serves only 400. It is the classic partner for Playfair Display and
+#     is unusable here, because the CSS wants 500 and 600 from the body face.
+#
+# Do NOT switch these to the range form (wght@600..800). It works only for
+# variable families; for a static one Google answers 200 and silently omits the
+# family, so the page renders in system-ui and nothing in the build notices.
+#
+# `track` is the heading letter-spacing. -.02em suits a geometric sans and
+# looks cramped on a serif or a slab, and worse on a condensed face.
+#
+# APPEND-ONLY: selection is digest % len, so inserting re-rolls every domain.
+_FW = {
+    "Archivo": "400;500;600;700;800", "Archivo Narrow": "600;700",
+    "Barlow": "400;500;600", "Barlow Condensed": "600;700;800",
+    "Bitter": "600;700;800", "DM Sans": "400;500;600",
+    "Figtree": "400;500;600;700;800", "Fraunces": "600;700;800",
+    "IBM Plex Sans": "400;500;600", "Inter": "400;500;600;700;800",
+    "Karla": "400;500;600", "Lexend": "400;500;600;700;800",
+    "Manrope": "400;500;600;700;800", "Nunito Sans": "400;500;600;700;800",
+    "Open Sans": "400;500;600", "Oswald": "600;700",
+    "Outfit": "600;700;800", "Playfair Display": "600;700;800",
+    "Poppins": "600;700;800", "Roboto": "400;500;600",
+    "Roboto Slab": "600;700;800", "Rubik": "600;700;800",
+    "Sora": "600;700;800", "Source Sans 3": "400;500;600",
+    "Source Serif 4": "600;700;800", "Space Grotesk": "600;700",
+    "Urbanist": "600;700;800", "Zilla Slab": "600;700",
+}
+
+# (display, body, heaviest display weight, heading letter-spacing)
+FONT_PACKS = [
+    # geometric sans -- the register the estate is in today
+    ("Urbanist", "Open Sans", 800, "-.02em"),
+    ("Poppins", "Inter", 800, "-.02em"),
+    ("Outfit", "DM Sans", 800, "-.02em"),
+    ("Figtree", "Figtree", 800, "-.02em"),
+    # grotesk -- neutral, a touch more corporate
+    ("Inter", "Inter", 800, "-.022em"),
+    ("Archivo", "Roboto", 800, "-.02em"),
+    ("Manrope", "Manrope", 800, "-.02em"),
+    ("Sora", "Inter", 800, "-.022em"),
+    ("Space Grotesk", "Inter", 700, "-.02em"),
+    # humanist -- warmer
+    ("Nunito Sans", "Nunito Sans", 800, "-.015em"),
+    ("Rubik", "Karla", 800, "-.015em"),
+    ("Lexend", "Lexend", 800, "-.02em"),
+    # slab -- reads as a trade shop
+    ("Roboto Slab", "Roboto", 800, "-.01em"),
+    ("Bitter", "Source Sans 3", 800, "-.01em"),
+    ("Zilla Slab", "Karla", 700, "-.01em"),
+    # serif -- more premium
+    ("Playfair Display", "Source Sans 3", 800, "-.005em"),
+    ("Fraunces", "Nunito Sans", 800, "-.005em"),
+    ("Source Serif 4", "IBM Plex Sans", 800, "-.005em"),
+    # condensed -- long headlines fit on one line
+    ("Barlow Condensed", "Barlow", 800, "0"),
+    ("Archivo Narrow", "Archivo", 700, "0"),
+    ("Oswald", "Roboto", 700, "0"),
+]
+
+
+def font_pack(domain):
+    """The pairing this site uses, and the Google Fonts query for it."""
+    disp, body, hi, track = FONT_PACKS[_hash_idx(f"{domain}|fontpack", len(FONT_PACKS))]
+    q = (f"{disp.replace(' ', '+')}:wght@{_FW[disp]}"
+         f"&family={body.replace(' ', '+')}:wght@{_FW[body]}")
+    return {"display": disp, "body": body, "fonts": q,
+            "disp_hi": str(hi), "disp_track": track}
+
+
+# ---- HEADER --------------------------------------------------------------
+# 21% of every page's elements, and byte-identical on all 998 sites using this
+# template. The `nav` axis in layouts.json looks like variety and is not: it
+# only sets a class on <body>, so the markup never changed.
+#
+# The announcement strip stays in every variant -- that is a content decision,
+# not a design one.
+#
+# Anything here must keep the hooks NAVJS binds to: `.burger`, `nav.main`,
+# `.nav-item > button` and the `.nav-item.open` class it toggles. A variant
+# that needs its own JavaScript does not belong in this list.
+#
+# Height is the other contract. Five rules sit at calc(var(--hd-h) + Npx); a
+# variant that changes the bar's height must move --hd-h with it or anchors
+# land behind the header and the sticky panels overlap it.
+#
+# APPEND-ONLY: selection is digest % len, so inserting re-rolls every domain.
+# (name, height of the sticky bar at desktop). The height is measured, not
+# guessed, and it feeds --hd-h -- the five rules that sit under the header read
+# it, so a variant that is 8px shorter and does not say so leaves anchors
+# landing 8px into the page and the sticky sidebar 8px lower than it needs.
+# Below 1120 both variants collapse to the same bar, so only this tier varies.
+# (name, the value --hd-h starts at). This is the pre-JS fallback only: the
+# real height moves with the variant, the breakpoint AND the font pack, so
+# NAVJS measures the header and corrects the token. These are the measured
+# desktop values, which is what the token should be worth before script runs.
+# Clock formats for the announcement strip. The value is a per-site choice so
+# the strip is not word-for-word identical everywhere, which is the whole
+# problem the header work exists to solve.
+#
+# This is the READER'S OWN time, not the shop's. For a local trade site the two
+# are usually the same metro, but not always, so the strip labels it as local
+# rather than implying anyone is at a desk. It deliberately says nothing about
+# being open: 1 site of 1001 has real opening hours, and an "Open now" badge
+# built on the other 1000 would be an invented claim.
+#
+# APPEND-ONLY: selection is digest % len.
+CLOCK_FORMATS = ["h12", "h24", "h12day", "none"]
+
+
+HEADER_VARIANTS = [("classic", "79px"), ("rail", "79px"), ("center", "79px"),
+                   ("stack", "120px"), ("split", "79px"), ("breakout", "68px"),
+                   ("dark", "79px")]
+
+
+def header_variant(domain):
+    return HEADER_VARIANTS[_hash_idx(f"{domain}|header", len(HEADER_VARIANTS))]
+
+
+# ---- ACCENT COLOUR --------------------------------------------------------
+# themes.json pairs one accent with one primary, permanently. 101 primaries are
+# in use, so the estate held 101 palettes for 1001 sites -- ten sites to a
+# palette, fifteen in the worst case -- while the file itself carries 193
+# distinct accents that never meet any primary but their own.
+#
+# Nothing here invents a colour. The accent is simply chosen per domain from the
+# accents already in the file, which is the same unwelding the hero, footer,
+# feats and steps axes each went through.
+#
+# Two rules decide which accents a primary may take:
+#
+#   * Hue within 45 degrees of the primary, AND far enough away to still read
+#     as a second colour. Analogous pairing keeps the result deliberate rather
+#     than two colours that merely happen to be legible together; nothing
+#     measures harmony, so the constraint has to be geometric.
+#
+#     The second half of that is not fussiness. A hue limit alone put #9a3412
+#     next to #9e330f and #4c1d95 next to #49119e -- 152 sites whose accent was
+#     invisible against their own primary, so buttons and highlights stopped
+#     reading as accents at all. An accent may share the primary's hue only if
+#     its lightness differs by 18 points or more, which is what makes a tint a
+#     legitimate accent rather than an accident.
+#   * Every accent-derived surface clears AA. This one currently rejects
+#     nothing -- all 193 accents in the pool pass it -- and it is worth being
+#     precise about why, because it is easy to mistake for the thing keeping
+#     the estate readable. It is not. accent_button(), accent_on_light() and
+#     accent_on_dark() each iterate until they clear 4.5:1, so ANY accent comes
+#     out compliant; removing this filter entirely still leaves the contrast
+#     gate at zero failures, which I confirmed by deleting it and re-running.
+#     What it guards is a future accent added to themes.json that would only
+#     reach AA after a large correction -- the shipped colour would then be a
+#     long way from the chosen one. Today the fill moves a median of 0.
+#
+# The primary is left as the theme assigns it. It is the constrained colour --
+# it has to work as white-on-colour AND as coloured-text-on-white -- and it is
+# already spread ~10 sites apiece, so re-rolling it buys nothing.
+_ACCENT_CACHE = {}
+
+
+def _hue(hexv):
+    r, g, b = (int(hexv.lstrip("#")[i:i + 2], 16) / 255 for i in (0, 2, 4))
+    return colorsys.rgb_to_hls(r, g, b)[0] * 360
+
+
+def _light(hexv):
+    r, g, b = (int(hexv.lstrip("#")[i:i + 2], 16) / 255 for i in (0, 2, 4))
+    return colorsys.rgb_to_hls(r, g, b)[1] * 100
+
+
+def _hue_gap(a, b):
+    d = abs(a - b) % 360
+    return min(d, 360 - d)
+
+
+def accents_for(p, pd, pool):
+    """Accents this primary may wear, nearest hue first."""
+    key = (p, pd)
+    if key not in _ACCENT_CACHE:
+        import build_site as B
+        hp, lp, out = _hue(p), _light(p), []
+        for a in pool:
+            d, dl = _hue_gap(hp, _hue(a)), abs(lp - _light(a))
+            if d > 45 or (d < 15 and dl < 18):
+                continue
+            fill, label = B.accent_button(a)
+            if B._cratio(B._rgb(label), B._rgb(fill)) < 4.5:
+                continue
+            lt = B.accent_on_light(a)
+            if any(B._cratio(B._rgb(lt), bg) < 4.5
+                   for bg in ((255, 255, 255), (245, 247, 249), (238, 242, 246))):
+                continue
+            if B._cratio(B._rgb(B.accent_on_dark(a, pd)), B._rgb(pd)) < 4.5:
+                continue
+            out.append(a)
+        # sorted by hue distance so the list is stable and the closest pairings
+        # sit at the front; the digest still picks anywhere in it
+        _ACCENT_CACHE[key] = sorted(out, key=lambda a: (_hue_gap(hp, _hue(a)), a))
+        # (order is stable and arbitrary; the digest picks anywhere in it)
+    return _ACCENT_CACHE[key]
+
+
+def accent_for(domain, p, pd, pool, fallback):
+    opts = accents_for(p, pd, pool)
+    if not opts:
+        return fallback          # never seen; keep whatever the theme said
+    return opts[_hash_idx(f"{domain}|accent", len(opts))]
+
+
 # ---------------------------------------------------------------- config
 def load_config():
     themes = json.load(open(os.path.join(CONFIG, "themes.json"), encoding="utf-8"))
     sdata = json.load(open(os.path.join(CONFIG, "sites.json"), encoding="utf-8"))
     lpath = os.path.join(CONFIG, "layouts.json")
     layouts = json.load(open(lpath, encoding="utf-8")) if os.path.exists(lpath) else {}
+    # every accent in the file, not only the ones a theme currently uses -- 193
+    # against 98, and the unused ones are as valid as any other
+    accent_pool = sorted({v["accent"] for v in themes.values()
+                          if isinstance(v, dict) and v.get("accent")})
     sites = {}
     for s in sdata["sites"]:
         th = themes[s["theme"]]
         t = {k: v for k, v in th.items() if not k.startswith("_")}
         lay = layouts.get(s.get("layout", ""), {})
         t["layout"] = {**DEFAULT_LAYOUT, **{k: v for k, v in lay.items() if not k.startswith("_")}}
+        # themes.json keeps the colours; the pairing comes from the digest, so
+        # type varies independently of palette instead of being welded to it
+        t.update(font_pack(s["domain"]))
+        t["hd_h"] = header_variant(s["domain"])[1]
+        t["accent"] = accent_for(s["domain"], t["p"], t["pd"],
+                                 accent_pool, t["accent"])
         phone = s.get("phone", "")
         t.update({
             "domain": s["domain"], "city": s["city"], "st": s["st"],
@@ -1719,11 +2139,42 @@ def render_body(text):
             out.append(f"<p>{esc(' '.join(lines))}</p>")
     return "".join(out)
 
-def faq_accordion(faqs):
-    return "".join(
-        f'<details{" open" if i == 0 else ""}><summary>{esc(q)}</summary>'
-        f'<div class="a"><p>{esc(a)}</p></div></details>'
-        for i, (q, a) in enumerate(faqs))
+# ---- FAQ: five treatments, one library for both places it appears ----------
+# Adapted from the client's FAQ concept sets. The FAQ renders twice: as its own
+# section on the homepage, and embedded in the article column on service, area
+# and guide pages -- 108 of 150 inner pages carry one. Those look like two
+# different components, but `.faq` is capped at 820px and the article body runs
+# 764-820px, so they are the same width and need one library, not two.
+#
+# `grid` and `plain` drop <details> and answer in the open. That is a different
+# element sequence, not a restyled one: the gate scores DOM as a tag.class run,
+# so variants differing only by a wrapper class would move similarity by a
+# single token and buy nothing.
+#
+# Append-only: selection is digest % len().
+FAQ_VARIANTS = ["cards", "list", "pullout", "grid", "plain"]
+_FAQ_OPEN = {"grid", "plain"}      # answered in the open, no disclosure
+
+
+def faq_block(t, faqs):
+    """The FAQ pairs as one of five treatments, chosen per domain.
+
+    Every answer is in the markup either way. The page publishes FAQPage
+    JSON-LD built from these pairs, so an answer that only existed once
+    expanded would describe content the crawler cannot see -- a collapsed
+    <details> keeps its content in the DOM, and the open variants have nothing
+    to collapse."""
+    v = FAQ_VARIANTS[_hash_idx(f'{t["domain"]}|faq', len(FAQ_VARIANTS))]
+    if v in _FAQ_OPEN:
+        items = "".join(
+            f'<div class="faq-qa"><h3>{esc(q)}</h3>'
+            f'<div class="a"><p>{esc(a)}</p></div></div>' for q, a in faqs)
+    else:
+        items = "".join(
+            f'<details{" open" if i == 0 else ""}><summary>{esc(q)}</summary>'
+            f'<div class="a"><p>{esc(a)}</p></div></details>'
+            for i, (q, a) in enumerate(faqs))
+    return f'<div class="faq faq--{v}">{items}</div>'
 
 def seo_title(raw):
     """Trim to <=60 chars, dropping the " | Brand" suffix first.
@@ -1783,6 +2234,11 @@ def load_content(t):
             url = "/"
             cat = "home"
         else:
+            # Was a bare `continue`. A file whose second name token is not one
+            # of the five known types -- a typo, a plural, a type nobody taught
+            # this loader -- vanished without a word, and so did its page.
+            print(f"  ! {t['content']}/{fn}: filename type '{ptype}' unknown, "
+                  f"page dropped (expected home/svc/nb/sub/top)")
             continue
         faqs = [(f.get("q", ""), f.get("a", "")) for f in data.get("faq", []) if f.get("q")]
         pages[url] = {
@@ -1824,9 +2280,17 @@ def breadcrumb_schema(t, trail):
         for i, (n, u) in enumerate(trail)]}
 
 def faq_schema(faqs):
+    """FAQPage schema, normalised the same way the visible answer is.
+
+    clean_text() sweeps em dashes and curly quotes out of the assembled page,
+    but it runs over the raw HTML, where the JSON-LD has already encoded them
+    as \\u2014 escapes -- so the sweep fixed the visible answer and left the
+    schema saying something subtly different. FAQPage rich results require the
+    two to match, so the pairs are cleaned here, before serialisation."""
     return {"@type": "FAQPage", "mainEntity": [
-        {"@type": "Question", "name": q,
-         "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faqs]}
+        {"@type": "Question", "name": clean_text(q),
+         "acceptedAnswer": {"@type": "Answer", "text": clean_text(a)}}
+        for q, a in faqs]}
 
 def head_html(t, title, desc, url, schemas, og_image=HERO_IMG):
     lay = t["layout"]
@@ -1895,13 +2359,77 @@ def header(t, pages):
     nav += '<a href="/about/">About</a><a href="/contact/">Contact</a>'
     nav += '<a class="nav-quote" href="/request-a-quote/">Request a Quote</a>'
 
-    return f"""<div class="top"><div class="wrap"><span>Serving {esc(t['city'])} &amp; the surrounding metro</span><span class="dot">&bull;</span><span>Same-day service available</span><span class="tsp"></span>{f'<a href="tel:{t["tel"]}">{icon("phone")}{esc(t["phone"])}</a>' if t.get('phone') else ''}</div></div>
-<header class="site"><div class="wrap hd">
-<a class="brand" href="/"><span class="brand__chip">{brand_chip(t, 40)}</span><span>{esc(t['brand'])}<small>{esc(t['tagline'])}</small></span></a>
-<button class="burger" aria-label="Menu" aria-expanded="false" aria-controls="mainnav"><span></span><span></span><span></span></button>
-<nav class="main" id="mainnav">{nav}</nav>
-<a class="btn btn--primary" href="/request-a-quote/">Free Quote</a>
-</div></header><main id="main">"""
+    v = header_variant(t["domain"])[0]
+    tel = (f'<a href="tel:{t["tel"]}">{icon("phone")}{esc(t["phone"])}</a>'
+           if t.get("phone") else "")
+    # The clock is filled by script and is empty until then, so it reserves its
+    # own width rather than shifting the strip when it appears.
+    fmt = CLOCK_FORMATS[_hash_idx(f'{t["domain"]}|clock', len(CLOCK_FORMATS))]
+    clock = ("" if fmt == "none" else
+             f'<span class="top__t" data-clock="{fmt}"></span>')
+    strip = (f'<div class="top"><div class="wrap">'
+             f'<span>Serving {esc(t["city"])} &amp; the surrounding metro</span>'
+             f'<span class="dot">&bull;</span><span>Same-day service available</span>'
+             f'<span class="tsp"></span>{clock}{tel}</div></div>')
+    burger = ('<button class="burger" aria-label="Menu" aria-expanded="false" '
+              'aria-controls="mainnav"><span></span><span></span><span></span></button>')
+    quote = '<a class="btn btn--primary" href="/request-a-quote/">Free Quote</a>'
+    brand_full = (f'<a class="brand" href="/">'
+                  f'<span class="brand__chip">{brand_chip(t, 40)}</span>'
+                  f'<span>{esc(t["brand"])}<small>{esc(t["tagline"])}</small></span></a>')
+    # no tagline, smaller chip: used where the lockup has to share the row
+    brand_tight = (f'<a class="brand brand--tight" href="/">'
+                   f'<span class="brand__chip">{brand_chip(t, 34)}</span>'
+                   f'<span>{esc(t["brand"])}</span></a>')
+
+    if v == "center":
+        # nav in its own centring cell rather than a sibling pushed along the
+        # row, so the arrangement survives a long company name
+        return (f'{strip}<header class="site hd--center"><div class="wrap hd">'
+                f'{brand_full}{burger}<div class="hd__mid">'
+                f'<nav class="main" id="mainnav">{nav}</nav></div>{quote}'
+                f'</div></header><main id="main">')
+    if v == "stack":
+        # the nav gets a full-width row of its own under the lockup. The only
+        # variant where the bar is two rows, so it is also the only one where
+        # the nav is not competing with the brand for horizontal space.
+        return (f'{strip}<header class="site hd--stack">'
+                f'<div class="wrap hd">{brand_full}{burger}{quote}</div>'
+                f'<div class="hd__row"><div class="wrap">'
+                f'<nav class="main" id="mainnav">{nav}</nav></div></div>'
+                f'</header><main id="main">')
+    if v == "split":
+        # two zones divided by a rule: the lockup on one ground, the nav and
+        # the button on another
+        return (f'{strip}<header class="site hd--split"><div class="wrap hd">'
+                f'<div class="hd__z1">{brand_full}</div>{burger}'
+                f'<div class="hd__z2"><nav class="main" id="mainnav">{nav}</nav>'
+                f'{quote}</div></div></header><main id="main">')
+    if v == "breakout":
+        # the lockup sits in a filled block that hangs below the bar's own
+        # height instead of sitting inside it
+        return (f'{strip}<header class="site hd--breakout"><div class="wrap hd">'
+                f'<div class="hd__block">{brand_tight}</div>{burger}'
+                f'<nav class="main" id="mainnav">{nav}</nav>{quote}'
+                f'</div></header><main id="main">')
+    if v == "dark":
+        # dark ground, centred nav, and the tagline drops -- at this weight it
+        # competes with the nav rather than supporting the name
+        return (f'{strip}<header class="site hd--dark"><div class="wrap hd">'
+                f'{brand_tight}{burger}<div class="hd__mid">'
+                f'<nav class="main" id="mainnav">{nav}</nav></div>{quote}'
+                f'</div></header><main id="main">')
+    if v == "rail":
+        # the nav sits directly beside the lockup as one group, rather than out
+        # at the far end as a third sibling
+        return (f'{strip}<header class="site hd--rail"><div class="wrap hd">'
+                f'<div class="hd__lead">{brand_tight}'
+                f'<nav class="main" id="mainnav">{nav}</nav></div>'
+                f'{burger}{quote}</div></header><main id="main">')
+
+    return (f'{strip}<header class="site hd--classic"><div class="wrap hd">'
+            f'{brand_full}{burger}<nav class="main" id="mainnav">{nav}</nav>{quote}'
+            f'</div></header><main id="main">')
 
 # ---- phone CTAs -------------------------------------------------------------
 # 998 of 1001 registered sites have no phone on file. Every call-to-action below
@@ -1913,7 +2441,11 @@ def call_btn(t, cls="btn btn--primary", fallback_label="Get a Free Quote"):
     if t.get("phone"):
         return (f'<a class="{cls}" href="tel:{t["tel"]}">{icon("phone")}'
                 f'Call {esc(t["phone"])}</a>')
-    return f'<a class="{cls}" href="/request-a-quote/">{icon("phone")}{fallback_label}</a>'
+    # 998 of 1001 sites have no number, and this branch was still drawing the
+    # phone glyph -- a handset on a button that opens a quote form, promising a
+    # call that cannot happen. Same defect class as the "Call" prose the gate
+    # already checks for, one layer down in the iconography.
+    return f'<a class="{cls}" href="/request-a-quote/">{icon("arrow")}{fallback_label}</a>'
 
 def reach_phrase(t):
     """"one call away" only if there is actually a number to call."""
@@ -1957,6 +2489,20 @@ def call_bar(t, is_quote=False):
     return (f'<div class="callbar callbar--{variant}" role="region" '
             f'aria-label="Contact {esc(t["brand"])}">{call}{second}</div>')
 
+# The footer axis in layouts.json mapped 1:1 onto the six layout families, so
+# the footer never varied independently of hero/nav/cards and ~167 sites shared
+# each one. It now has its own per-domain digest, matching every other section.
+#
+# The layouts.json `footer` field is left in place: it feeds nothing now, but
+# removing it would renumber the other axes in that file. Note the field itself
+# was dead for far longer -- build.py never read it at all until recently, so
+# all 1000 sites shipped the same dark footer.
+#
+# Append-only: selection is digest % len().
+FOOTER_VARIANTS = ["dark", "light", "brand", "center", "split", "cta",
+                   "rail", "promo", "grid", "editorial"]
+
+
 def footer(t, pages, is_quote=False):
     svc = [p for u, p in pages.items() if p["cat"] == "service"][:5]
     areas = [p for u, p in pages.items() if p["cat"] == "area"][:8]
@@ -1979,6 +2525,31 @@ def footer(t, pages, is_quote=False):
                    f'<address class="gf-addr">{addr}{addr_tel}</address></div>')
     cols = (f'<div><h4>Services</h4>{services}</div><div><h4>Company</h4>{company}</div>'
             f'<div><h4>Service Areas</h4>{area_links}</div>')
+    # gf--grid collapses each group behind a disclosure on a phone. Rendered
+    # CLOSED, with desktop CSS forcing the body visible again: <details> cannot
+    # be opened by CSS, so shipping them open would leave the phone with the
+    # same 17-link wall this exists to avoid.
+    groups = [("Services", services, "/services/"),
+              ("Company", company, "/about/"),
+              ("Service Areas", area_links, "/service-areas/")]
+    # A checkbox, not <details>. A closed <details> hides its content through a
+    # UA shadow slot that `display` cannot reach, so the desktop rule meant to
+    # force the groups open had no effect and desktop showed three bare
+    # headings. Measured: closed 481px vs open 610px at 1280, when the two
+    # should have been identical. A checkbox puts the state fully in CSS, which
+    # is the same reason the services selector uses radios.
+    gid = f'gfg-{slugify(t["domain"])}'
+    discl = "".join(
+        f'<div class="gf-grp">'
+        f'<input class="gf-grp__t" type="checkbox" id="{gid}-{i}">'
+        f'<label class="gf-grp__h" for="{gid}-{i}">{h}</label>'
+        f'<div class="gf-grp__b">{links}</div></div>'
+        for i, (h, links, _) in enumerate(groups))
+    # gf--editorial keeps the headings as links to each index and drops the deep
+    # links on a phone, so the group still leads somewhere when its list is gone.
+    idx_cols = "".join(
+        f'<div><h4><a href="{url}">{h}</a></h4>{links}</div>'
+        for h, links, url in groups)
     # The footer used to repeat the trust bar's four claims verbatim, so every
     # page said the same thing twice. Show the *other* deck variant here instead.
     decks = COPY["trust"]
@@ -1990,15 +2561,30 @@ def footer(t, pages, is_quote=False):
     legal = (f'<div class="gf-legal"><span>&copy; {date.today().year} {esc(t["brand"])}. All rights reserved.</span>'
              f'<span>{addr}{legal_tel}</span></div>')
     js = '<script src="/assets/nav.js" defer></script>'
-    # layout.footer has been assigned per site in layouts.json all along and was
-    # simply never read here
-    variant = t.get("layout", {}).get("footer", "dark")
+    variant = FOOTER_VARIANTS[_hash_idx(f'{t["domain"]}|footer', len(FOOTER_VARIANTS))]
     strip = footer_cta(t) if variant == "cta" else ""
     # </main> closes here rather than in each of the four page renderers -- they
     # all compose as header(...) + body + footer(...), so opening the landmark in
     # header() and closing it here covers every page from one place.
+    if variant == "rail":
+        # links lead, the brand block sits to their right behind a rule
+        body = (f'<div class="gf-cols">{cols}{brand_block}</div>{trust}{legal}')
+    elif variant == "promo":
+        # the closing strip leads, then brand and trust share a row, then links
+        strip = footer_cta(t)
+        body = (f'<div class="gf-top">{brand_block}{trust}</div>'
+                f'<div class="gf-cols gf-cols--3">{cols}</div>{legal}')
+    elif variant == "grid":
+        body = (f'<div class="gf-cols">{brand_block}<div class="gf-grps">{discl}</div></div>'
+                f'{trust}{legal}')
+    elif variant == "editorial":
+        # the blurb leads at size; the columns are demoted beneath it
+        body = (f'{brand_block}<div class="gf-cols gf-cols--3">{idx_cols}</div>'
+                f'<div class="gf-foot">{legal}{trust}</div>')
+    else:
+        body = f'<div class="gf-cols">{brand_block}{cols}</div>{trust}{legal}'
     return (f'</main><footer class="gfooter gf--{variant}">{strip}<div class="gf-main"><div class="wrap">'
-            f'<div class="gf-cols">{brand_block}{cols}</div>{trust}{legal}</div></div></footer>'
+            f'{body}</div></div></footer>'
             f'{call_bar(t, is_quote)}{js}')
 
 def footer_cta(t):
@@ -2026,11 +2612,23 @@ def area_label(p):
     return h1 or p["slug"].replace("-", " ").title()
 
 # ---------------------------------------------------------------- sections
+# The hero axis in layouts.json mapped 1:1 onto the six layout families, so the
+# hero never varied independently of nav/cards/footer and ~167 sites shared each
+# one. Selection is now its own per-domain digest, matching every other section,
+# which also lets variants be added without touching layout families.
+#
+# The layouts.json `hero` field is deliberately left in place: it feeds nothing
+# now, but removing it would renumber the other axes in that file.
+#
+# Append-only -- selection is digest % len().
+HERO_VARIANTS = ["banner", "center", "overlap", "split-left", "split-right",
+                 "stacked", "overhang", "twotone", "inset",
+                 "masthead", "plate", "wide"]
+
+
 def hero(t, h1, lead, img=HERO_IMG):
-    """Distinct hero markup per site layout (split-right/left, stacked, center, banner,
-    overlap) -- the shared design system (build_site.py's css()) already ships CSS for
-    every one of these variants; this was previously hardcoded to "banner" always."""
-    variant = t.get("layout", {}).get("hero", "banner")
+    """One of nine hero compositions, chosen per domain."""
+    variant = HERO_VARIANTS[_hash_idx(f'{t["domain"]}|hero', len(HERO_VARIANTS))]
     call = call_btn(t, "btn btn--primary", "Get a Free Quote")
     # when there is no phone the primary already points at the quote page, so the
     # ghost button would be a duplicate link -- send it to services instead
@@ -2060,6 +2658,55 @@ def hero(t, h1, lead, img=HERO_IMG):
                 f'<div class="wrap"><div class="hero__card">{copy}</div></div></section>')
     if variant == "split-right":
         return f'<section class="hero hero--split hero--right"><div class="wrap">{copy}{media}</div></section>'
+    if variant == "overhang":
+        # photo bleeds off the right edge, the copy card overhangs it. The card
+        # is opaque, so the text never sits on the photograph -- which matters
+        # when the photograph is ordinary stock and sometimes bright.
+        return (f'<section class="hero hero--overhang">'
+                f'<div class="hero__bleed"><img src="{src}" alt="{alt}" fetchpriority="high"></div>'
+                f'<div class="wrap"><div class="hero__card">{copy}</div></div></section>')
+    if variant == "twotone":
+        # a solid colour field carries the copy, the photo takes the other half,
+        # and the chips ride a bar across the seam
+        return (f'<section class="hero hero--twotone"><div class="wrap">'
+                f'<div class="hero__field">{eyebrow}<h1>{esc(h1)}</h1>{leadh}'
+                f'<div class="cta">{call}{quote}</div></div>'
+                f'<div class="hero__shot"><img src="{src}" alt="{alt}" fetchpriority="high"></div>'
+                f'{chips}</div></section>')
+    if variant == "wide":
+        # Uneven split: the photograph takes two thirds, the copy one third.
+        # Every other split in the set is 50/50. The copy never sits on the
+        # photograph, which is what makes this safe with ordinary stock imagery.
+        return (f'<section class="hero hero--wide"><div class="wrap">'
+                f'<div class="hero__pane"><img src="{src}" alt="{alt}" '
+                f'fetchpriority="high"></div>'
+                f'<div class="hero__side">{eyebrow}<h1>{esc(h1)}</h1>{leadh}'
+                f'<div class="cta">{call}{quote}</div>{chips}</div>'
+                f'</div></section>')
+    if variant == "masthead":
+        # No photograph at all. Every other hero leads with the image, and the
+        # imagery is ordinary stock that differs on all 1001 sites -- these two
+        # are the only compositions that do not bet the first impression on it.
+        return (f'<section class="hero hero--masthead"><div class="wrap">'
+                f'<div class="hero__mast">{eyebrow}<h1>{esc(h1)}</h1>{leadh}'
+                f'<div class="cta">{call}{quote}</div></div>'
+                f'<div class="hero__band">{chips}</div></div></section>')
+    if variant == "plate":
+        # No photograph. The eyebrow rides the top rule of the frame and the
+        # chips ride the bottom one.
+        return (f'<section class="hero hero--plate"><div class="wrap">'
+                f'<div class="hero__plate">{eyebrow}<h1>{esc(h1)}</h1>{leadh}'
+                f'<div class="cta">{call}{quote}</div>{chips}</div>'
+                f'</div></section>')
+    if variant == "inset":
+        # everything inside one ruled frame: label and lead above a photo band,
+        # the h1 and actions below it
+        return (f'<section class="hero hero--inset"><div class="wrap">'
+                f'<div class="hero__frame"><div class="hero__top">{eyebrow}{leadh}</div>'
+                f'<div class="hero__strip"><img src="{src}" alt="{alt}" fetchpriority="high"></div>'
+                f'<div class="hero__foot"><h1>{esc(h1)}</h1>'
+                f'<div class="cta">{call}{quote}</div></div>{chips}</div>'
+                f'</div></section>')
     return f'<section class="hero hero--banner" style="--hero-bg:url({src})"><div class="wrap">{copy}</div></section>'
 
 def trust_bar(t):
@@ -2163,11 +2810,6 @@ def services_archetype(t, pages, tiles):
     eligible = ["featured", "editorial", "spotlight", "accordion"]   # n >= 3
     if n >= 3:
         eligible.append("tabs")
-    if n >= 3:
-        # the giant-type treatment needs names short enough to set large; one
-        # long service name wrecks the whole composition, so measure first
-        if max(len(_plain(x[1])) for x in tiles) <= 22:
-            eligible.append("typo")
     if n >= 4:
         eligible += ["floating", "bento", "overlay", "timeline"]
     if n >= 4:
@@ -2183,7 +2825,7 @@ def services_archetype(t, pages, tiles):
     # "quiet" = type leads and the photograph is held in a contained panel;
     # these follow a photo-dominant hero. The rest let the image carry the
     # section and follow a type-led hero.
-    quiet = {"editorial", "accordion", "bento", "problem", "typo", "timeline",
+    quiet = {"editorial", "accordion", "bento", "problem", "timeline",
              "tabs"}
     preferred = [a for a in eligible if (a in quiet) == photo_hero]
     pool = preferred or eligible
@@ -2191,13 +2833,13 @@ def services_archetype(t, pages, tiles):
 
 SERVICE_ARCHETYPES = ["featured", "editorial", "spotlight", "floating",
                       "bento", "overlay", "accordion", "problem",
-                      "timeline", "typo", "orbit", "tabs"]
+                      "timeline", "orbit", "tabs"]
 
 # Archetypes that compose the section heading INTO their own layout rather than
 # taking the centred stack above. A centred eyebrow/h2/blurb on top of every
 # composition is the strongest "template" tell there is.
 _SVCX_OWN_HEAD = {"featured", "editorial", "spotlight", "floating", "overlay",
-                  "accordion", "timeline", "typo", "orbit", "tabs"}
+                  "accordion", "timeline", "orbit", "tabs"}
 
 def services_grid(t, pages):
     """The Services section: one of eight art-directed compositions.
@@ -2211,9 +2853,9 @@ def services_grid(t, pages):
     arch = services_archetype(t, pages, tiles)
     cap = {"featured": 4, "editorial": 5, "spotlight": 5, "floating": 4,
            "bento": 5, "overlay": 6, "accordion": 5, "problem": 5,
-           # the ring holds 6 comfortably; the journey and the giant words
-           # lose their point past 5 -- a 6-step route is a list again
-           "timeline": 5, "typo": 5, "orbit": 6,
+           # the ring holds 6 comfortably; the journey loses its point past
+           # 5 -- a 6-step route is a list again
+           "timeline": 5, "orbit": 6,
            # a six-tab bar stops reading as tabs and starts reading as nav
            "tabs": 5}[arch]
     items, overflow = _svc_items(t, pages, tiles, cap)
@@ -2267,11 +2909,6 @@ def _svcx_visual(t, img, mod="", label=None):
     what = label or "Garage door service"
     return (f'<div class="svcx-vis {mod}"><img src="/assets/photos/{img}" loading="lazy" '
             f'alt="{what} in {esc(t["city"])}, {esc(t["st"])}"></div>')
-
-def _plain(t):
-    """Visible length of a pre-escaped title: "Openers &amp; Remotes" is 17
-    characters on screen, not 21."""
-    return html.unescape(t or "")
 
 def _svcx_group(t):
     """Radio-group name. Unique per site so two sections never share state."""
@@ -2454,36 +3091,6 @@ def _svcx_timeline(t, items, overflow):
             f'<ol class="svcx-steps">{steps}</ol>'
             f'{_svcx_more(t, items, overflow)}</div>')
 
-def _svcx_typo(t, items, overflow):
-    """12. The service names ARE the artwork. Type carries the section and the
-    photograph reveals behind the engaged word.
-
-    The names are the headline, so the section heading is demoted to a kicker
-    bar -- a 40px h2 above a 56px list of the same words is two headlines
-    fighting, which is what made the first cut of this read badly. The index is
-    set to the LEFT as part of the type, not as a floating circle to the right.
-
-    Editorial rather than four large buttons: the words are unboxed, ruled only
-    by hairlines, and the active one is the only thing that gains weight."""
-    group = _svcx_group(t)
-    eyebrow, h2, blurb = copy_deck(t, "services_head")
-    head = (f'<div class="svcx-kick"><div><p class="eyebrow">{_city(eyebrow, t)}</p>'
-            f'<h2>{_city(h2, t)}</h2></div>'
-            f'<p class="svcx-kick__p">{_city(blurb, t)}</p></div>')
-    words = "".join(
-        f'<li class="svcx-word">{_svcx_radio(group, i + 1, i == 0)}'
-        f'{_svcx_pick(group, i + 1, it["title"])}'
-        f'{_svcx_dot(group, i + 1, it["title"], "svcx-word__i")}'
-        f'<a class="svcx-nav svcx-sel svcx-sel--{i + 1} svcx-word__t" '
-        f'href="{it["url"]}">{it["title"]}</a></li>'
-        for i, it in enumerate(items))
-    return (f'<div class="svcx svcx--typo">{head}'
-            f'<ul class="svcx-words">{words}</ul>'
-            f'<div class="svcx-reveal">'
-            f'{_svcx_stack(t, items, "svcx-vis--reveal")}'
-            f'{_svcx_copystack(t, items)}</div>'
-            f'{_svcx_more(t, items, overflow)}</div>')
-
 def _svcx_orbit(t, items, overflow):
     """13. Services arranged around the work itself. Art-directed, not a
     compass rose: the nodes sit on an ellipse that is deliberately off-centre,
@@ -2550,10 +3157,34 @@ def why_us(t):
     eyebrow, h2 = copy_deck(t, "why_head")
     return (f'<section class="sec"><div class="wrap"><div class="sec-head">'
             f'<p class="eyebrow">{_city(eyebrow, t)}</p><h2>{_city(h2, t)}</h2></div>'
-            f'<div class="grid g3 feats feats--{t["layout"]["feats"]}">{cells}</div></div></section>')
+            f'<div class="grid g3 feats feats--{feats_style(t)}">{cells}</div></div></section>')
+
+# ---- FEATURE CARDS and HOW-IT-WORKS ---------------------------------------
+# Both already had these designs; both read them from layouts.json, which maps
+# every site onto one of six families. So a third of the estate -- 335 sites --
+# shared each value, and worse, shared it *together*: same family meant the same
+# cards AND the same steps AND the same everything else on that axis. Decoupling
+# is what stops the design choices arriving as a set.
+#
+# The `feats` and `steps` fields are left in layouts.json. Removing them would
+# re-roll nothing, since nothing reads them now, but they document what the
+# families used to mean. Same treatment as the hero and footer axes before them.
+#
+# APPEND-ONLY: selection is digest % len, so inserting re-rolls every domain.
+FEATS_VARIANTS = ["bar", "list", "minimal", "tiles"]
+STEPS_VARIANTS = ["bignum", "cards", "timeline"]
+
+
+def feats_style(t):
+    return FEATS_VARIANTS[_hash_idx(f'{t["domain"]}|feats', len(FEATS_VARIANTS))]
+
+
+def steps_style(t):
+    return STEPS_VARIANTS[_hash_idx(f'{t["domain"]}|steps', len(STEPS_VARIANTS))]
+
 
 def how_it_works(t):
-    style = t["layout"]["steps"]
+    style = steps_style(t)
     eyebrow, h2 = copy_deck(t, "steps_head")
     steps = "".join(f'<div class="step"><div class="step__b"><h3>{_city(h, t)}</h3>'
                     f'<p>{_city(p, t)}</p></div></div>' for h, p in copy_deck(t, "steps"))
@@ -2602,18 +3233,25 @@ def _svg_pin():
 
 def contact_band(t):
     """Homepage 'Book Your Service Today' block: call / hours / email / service area."""
-    hours = t.get("hours") or "Mon-Sat, 7am-7pm"
+    # No fallback. 1 site of 1001 supplies hours; the rest were being given
+    # "Mon-Sat, 7am-7pm" as fact. The row is dropped where they are unknown,
+    # the same rule the phone, email and booking form already follow.
+    hours = t.get("hours")
     phone_cell = (f'<a href="tel:{t["tel"]}">{esc(t["phone"])}</a>' if t.get("phone")
                   else '<a href="/request-a-quote/">Request a callback</a>')
     email_cell = (f'<div class="contact__c"><span class="lbl">{_svg_mail()}Email</span>'
                   f'<a href="mailto:{esc(t["email"])}">{esc(t["email"])}</a></div>') if t.get("email") else ""
     return (f'<section class="sec sec--contact"><div class="wrap"><div class="sec-head">'
             f'<p class="eyebrow">Get In Touch</p><h2>Book your service today</h2>'
-            f'<p>Call, email, or request a callback — a real person in {esc(t["city"])} answers.</p></div>'
-            f'<div class="contact">'
+            + (f'<p>Call, email, or request a callback — a real person in '
+               f'{esc(t["city"])} answers.</p></div>' if t.get("phone") and t.get("email")
+               else f'<p>Tell us what the door is doing and a real person in '
+                    f'{esc(t["city"])} comes back to you.</p></div>')
+            + f'<div class="contact">'
             f'<div class="contact__c"><span class="lbl">{icon("phone")}Call us</span>{phone_cell}</div>'
-            f'<div class="contact__c"><span class="lbl">{icon("clock")}Hours</span><span class="v">{esc(hours)}</span></div>'
-            f'{email_cell}'
+            + (f'<div class="contact__c"><span class="lbl">{icon("clock")}Hours</span>'
+               f'<span class="v">{esc(hours)}</span></div>' if hours else "")
+            + f'{email_cell}'
             f'<div class="contact__c"><span class="lbl">{_svg_pin()}Service area</span>'
             f'<span class="v">{esc(t["city"])}, {esc(t["st"])} &amp; nearby</span></div></div>'
             f'<div class="contact__cta"><a class="btn btn--primary" href="/request-a-quote/">Get a Free Quote</a>'
@@ -2621,16 +3259,105 @@ def contact_band(t):
                if t.get("phone") else "")
             + '</div></div></section>')
 
+# ---- SERVICE AREAS -------------------------------------------------------
+# Two renderers produced this section and both shipped one design: areas_band()
+# for sites whose copy does not cover areas, and _areas_block() for those whose
+# copy does. They differ only in where the names come from -- the shape is the
+# same eyebrow / heading / lead / list of places -- so they now share one list
+# renderer and both get the variants.
+#
+# The variant class goes on an inner wrapper, never on the <section>. band()
+# rewrites the exact string '<section class="sec sec--soft"' to apply the tinted
+# rhythm positionally, and an extra class there stops that replace matching, so
+# the section would keep a hardcoded tint and break the alternation.
+#
+# APPEND-ONLY: selection is digest % len, so inserting re-rolls every domain.
+AREAS_VARIANTS = ["chips", "flow", "columns", "editorial", "dark"]
+
+# editorial sets each place on its own line at display size. That reads well for
+# a handful and becomes a 1,300px wall at Dallas's 26, and the list cannot just
+# be truncated -- dropping a name quietly retracts a coverage claim the business
+# makes, which is why _areas_block keeps even the unlinked ones.
+_AREAS_EDITORIAL_MAX = 12
+
+
+def areas_list(t, items, view_all="/service-areas/"):
+    """The places themselves. `items` is [(name, miles|None, url|None)].
+
+    A name with no url renders as plain text rather than a link: some places the
+    copy claims are covered have no page yet, and pointing at a 404 is worse
+    than not pointing."""
+    if not items:
+        return ""
+    v = AREAS_VARIANTS[_hash_idx(f'{t["domain"]}|areas', len(AREAS_VARIANTS))]
+    if v == "editorial" and len(items) > _AREAS_EDITORIAL_MAX:
+        v = "columns"
+    all_link = (f'<a class="areas__all" href="{view_all}">View all areas '
+                f'{icon("arrow")}</a>') if view_all else ""
+
+    def cell(name, mi, url, mi_cls="ad"):
+        inner = esc(name) + (f'<span class="{mi_cls}">{mi} mi</span>'
+                             if mi is not None else "")
+        return (f'<a href="{url}">{inner}</a>' if url
+                else f'<span class="nolink">{inner}</span>')
+
+    if v == "flow":
+        # one continuous wrapped run, separated by dots rather than boxes
+        body = "".join(f'<li>{cell(n, m, u)}</li>' for n, m, u in items)
+        return (f'<div class="areas-b areas--flow"><ul class="areaflow">{body}</ul>'
+                f"{all_link}</div>")
+    if v == "columns":
+        body = "".join(f'<li>{cell(n, m, u)}</li>' for n, m, u in items)
+        return (f'<div class="areas-b areas--columns"><ul class="areacols">{body}</ul>'
+                f"{all_link}</div>")
+    if v == "editorial":
+        body = "".join(f'<li>{cell(n, m, u)}</li>' for n, m, u in items)
+        return (f'<div class="areas-b areas--editorial"><ul class="arearows">{body}</ul>'
+                f"{all_link}</div>")
+    if v == "dark":
+        # a dark panel inside the band, not a dark band: the section element is
+        # band()'s to colour, so this cannot reach it
+        body = "".join(f'<li>{cell(n, m, u)}</li>' for n, m, u in items)
+        return (f'<div class="areas-b areas--dark"><ul class="areacols">{body}</ul>'
+                f"{all_link}</div>")
+    chips = "".join(cell(n, None, u) for n, _m, u in items)
+    return f'<div class="areas-b areas--chips"><div class="areas">{chips}{all_link}</div></div>'
+
+
 def areas_band(t, pages):
     areas = [p for u, p in pages.items() if p["cat"] == "area"]
     if not areas:
         return ""
-    chips = "".join(f'<a href="{p["url"]}">{esc(area_label(p))}</a>' for p in areas[:16])
+    # no distances on this path -- the copy that carries them is exactly the
+    # copy whose presence sends the page down the _areas_block route instead
+    items = [(area_label(p), None, p["url"]) for p in areas[:16]]
     eyebrow, h2, blurb = copy_deck(t, "areas_head")
     return (f'<section class="sec"><div class="wrap"><div class="sec-head">'
             f'<p class="eyebrow">{_city(eyebrow, t)}</p><h2>{_city(h2, t)}</h2>'
             f'<p>{_city(blurb, t)}</p></div>'
-            f'<div class="areas">{chips}<a class="areas__all" href="/service-areas/">View all areas {icon("arrow")}</a></div></div></section>')
+            f'{areas_list(t, items)}</div></section>')
+
+# ---- CTA BAND: the closing strip, on 100% of inner pages -------------------
+# Adapted from the client's CTA concept set. This was the single most repeated
+# block in the output: one structure on every page of every site, ~9% of an
+# inner page's DOM.
+#
+# The variants differ in ELEMENT STRUCTURE, not just a modifier class. The gate
+# scores DOM as a tag.class sequence, so five layouts sharing one skeleton and
+# differing by a wrapper class would move similarity by a single token and buy
+# nothing -- the whole point of the exercise.
+#
+# Append-only, like BUTTON_STYLES: selection is digest % len(), so inserting or
+# reordering re-rolls nearly every domain.
+CTA_VARIANTS = ["panel", "bar", "card", "editorial",
+                "offset", "frame", "grid", "rail"]
+
+
+def _where(t):
+    """City and state as a short label. Four CTA variants show it; it is the
+    only per-site string the band carries besides the decked copy."""
+    return f'{esc(t["city"])}, {esc(t["st"])}'
+
 
 def cta_band(t, heading=None):
     ch, with_phone, without_phone = copy_deck(t, "cta")
@@ -2641,10 +3368,41 @@ def cta_band(t, heading=None):
     second = ('<a class="btn btn--ghost" href="/request-a-quote/">Request a Quote</a>'
               if t.get("phone") else
               '<a class="btn btn--ghost" href="/services/">See Our Services</a>')
-    return (f'<section class="sec"><div class="wrap"><div class="cta-band"><h2>{esc(heading)}</h2>'
-            f'<p>{lead}</p>'
-            f'<div class="cta">{call_btn(t, "btn btn--primary", "Request a Quote")}'
-            f'{second}</div></div></div></section>')
+    cta = (f'<div class="cta">{call_btn(t, "btn btn--primary", "Request a Quote")}'
+           f'{second}</div>')
+    h2, p = f'<h2>{esc(heading)}</h2>', f'<p>{lead}</p>'
+    v = CTA_VARIANTS[_hash_idx(f'{t["domain"]}|ctaband', len(CTA_VARIANTS))]
+
+    if v == "bar":                      # copy left, actions right, one baseline
+        inner = f'<div class="ctab__b">{h2}{p}</div>{cta}'
+    elif v == "card":                   # quiet card, kicker above the heading
+        inner = (f'<p class="ctab__k">{_city("Next step", t)}</p>{h2}{p}{cta}')
+    elif v == "editorial":              # heading leads, lead demoted under a rule
+        inner = (f'{h2}{cta}<p class="ctab__lead">'
+                 f'<span class="ctab__rule"></span>{lead}</p>')
+    elif v == "offset":                 # card lifted off an accent block behind it
+        inner = (f'<div class="ctab__slab"></div>'
+                 f'<div class="ctab__panel"><p class="ctab__k">{_where(t)}</p>'
+                 f'<div class="ctab__b">{h2}{p}</div>{cta}</div>')
+    elif v == "frame":                  # heading breaks the top edge of the frame
+        inner = (f'<h2 class="ctab__over">{esc(heading)}</h2>'
+                 f'<div class="ctab__box"><p class="ctab__k">{_where(t)}</p>'
+                 f'{p}{cta}</div>')
+    elif v == "grid":                   # three columns: heading | lead | actions
+        inner = (f'<div class="ctab__c1"><p class="ctab__k">{_where(t)}</p>{h2}</div>'
+                 f'<div class="ctab__c2">{p}</div>{cta}')
+    elif v == "rail":                   # heavy accent bar down the left edge
+        inner = (f'<span class="ctab__bar"></span>'
+                 f'<div class="ctab__b"><p class="ctab__k">{_where(t)}</p>{h2}{p}</div>'
+                 f'{cta}')
+    else:                               # panel -- the original filled card
+        inner = f'{h2}{p}{cta}'
+
+    mod = "" if v == "panel" else f" ctab--{v}"
+    # `cta-band` stays on every variant: the gate looks for it to prove the
+    # section exists at all, and build_site.py's mobile rules key off it.
+    return (f'<section class="sec"><div class="wrap">'
+            f'<div class="cta-band{mod}">{inner}</div></div></section>')
 
 def home_faqs(t):
     """Fallback FAQ when the content pack supplies none.
@@ -2785,18 +3543,13 @@ def _areas_block(t, h2, raw, pages=None):
     lead = (f'<p class="areagrid__lead">{esc(clean_text(intro))}.</p>'
             if 4 < len(intro.split()) < 40 else "")
     tail = _AREA_RE.sub("", raw).split("\n\n")[-1].strip(" .,-")
-    def _cell(n, m, url):
-        inner = (f'<span class="an">{esc(n)}</span>'
-                 + (f'<span class="ad">{m} mi</span>' if m is not None else ""))
-        # no page yet -> a plain span, never a link to a 404
-        body = f'<a href="{url}">{inner}</a>' if url else f'<span class="nolink">{inner}</span>'
-        return f"<li>{body}</li>"
-    cells = "".join(_cell(n, m, url) for n, m, url in found)
     note = f'<p class="areagrid__note">{esc(clean_text(tail))}.</p>' if len(tail.split()) > 6 else ""
+    # this path already lists every area page, so there is nothing left to
+    # "view all" of -- the link would point back at a subset of what is shown
     return (f'<section class="sec sec--soft"><div class="wrap">'
             f'<div class="sec-head"><p class="eyebrow">{_city("Around {city}", t)}</p>'
             f'<h2 id="{slugify(h2)}">{esc(h2)}</h2>{lead}</div>'
-            f'<ul class="areagrid">{cells}</ul>{note}</div></section>')
+            f'{areas_list(t, found, view_all="")}{note}</div></section>')
 
 def _figures_block(t, h2, raw):
     """Pull the hard numbers out of the paragraph and lead with them."""
@@ -2820,7 +3573,7 @@ def _process_block(t, h2, raw):
     paras = [p.strip() for p in re.split(r"\n\s*\n", raw) if p.strip()]
     if not (2 < len(paras) <= 5):
         return None
-    style = t["layout"]["steps"]
+    style = steps_style(t)
     lead = ["What you tell us", "What we check on site", "What happens next",
             "If a part has to come in", "Before we leave"]
     steps = "".join(f'<div class="step"><div class="step__b"><h3>{esc(lead[i])}</h3>'
@@ -2905,9 +3658,15 @@ def photo_band(t):
 # three-up photo strip. Each variant declares which downstream copy deck it
 # consumes so the page never makes the same claim twice.
 
-PROOF_VARIANTS = ["photoband", "detail", "technician", "cinematic", "sequence"]
+PROOF_VARIANTS = ["photoband", "detail", "technician", "cinematic", "sequence",
+                  "mosaic", "stack", "selector"]
 # variant -> the slot it eats further down the page
-_PROOF_EATS = {"technician": "split", "cinematic": "split", "sequence": "process"}
+_PROOF_EATS = {"technician": "split", "cinematic": "split", "sequence": "process",
+               "mosaic": "split"}
+# variants whose composition falls apart with fewer than three photographs.
+# Each renderer also returns "" defensively, but gating here keeps a site that
+# cannot show one from losing the slot to it.
+_PROOF_NEEDS_3 = {"photoband", "mosaic", "stack", "selector"}
 
 def _gal(t, n=1):
     """(filename, truthful category label) pairs from the gallery pool."""
@@ -2998,6 +3757,100 @@ def _pf_sequence(t):
         f'<h2>{_city(h2, t)}</h2></div>'
         f'<ol class="pf-seq" style="--pf-n:{len(steps)}">{cells}</ol>')
 
+def _pf_mosaic(t):
+    """06. Asymmetric mosaic: a tall plate beside the copy, two tiles under it.
+
+    The reference drew the tall plate at a 0.59 box ratio. Every photograph in
+    the library is 16:9, and object-fit:cover at 0.59 shows only 33% of the
+    frame -- a garage door is a wide subject, so a centre third of it is rarely
+    still a door. Relaxed to 5/6, and the tiles to the 4/3 the rest of the
+    engine already uses."""
+    shots = _gal(t, 3)
+    if len(shots) < 3:
+        return ""
+    head, sub, points = copy_deck(t, "split_feature")
+    (g0, l0), rest = shots[0], shots[1:]
+    tiles = "".join(
+        f'<figure><img src="/assets/photos/{g}" loading="lazy" '
+        f'alt="{_pf_alt(t, lab)}"></figure>' for g, lab in rest)
+    return _pf_shell(
+        f'<div class="pf-mos__plate"><img src="/assets/photos/{g0}" loading="lazy" '
+        f'alt="{_pf_alt(t, l0)}"></div>'
+        f'<div class="pf-mos__b"><p class="eyebrow">{_city("On the tools", t)}</p>'
+        f'<h2>{_city(head, t)}</h2>'
+        f'<p class="pf-mos__sub">{_city(sub, t)}</p>'
+        f'<div class="pf-mos__tiles">{tiles}</div>'
+        f'<ul class="pf-points">{_pf_points(t, points)}</ul>'
+        f'<p class="pf-mos__where">{icon("pin")}'
+        f'{esc(t["city"])}, {esc(t["st"])}</p></div>', "pf-mos")
+
+def _pf_stack(t):
+    """07. Three plates overlapped, the centre one raised and in colour.
+
+    The reference closed with a "Certified Technicians / Lifetime Warranty /
+    Same Day Response" row. The first two are dropped rather than filled -- no
+    site supplies a certification or a warranty -- and with only one truthful
+    item left the row stops being a row, so it goes entirely.
+
+    Its eyebrow read "Our Portfolio", which claims these are the company's own
+    completed jobs; the photographs are category stock, so the standard eyebrow
+    is used instead. The side plates sit ~14% behind the centre, so they can
+    carry the tighter crop the composition wants while the centre stays 4/3."""
+    shots = _gal(t, 3)
+    if len(shots) < 3:
+        return ""
+    head, sub = copy_deck(t, "photo_band")
+    pos = ["l", "c", "r"]
+    plates = "".join(
+        f'<figure class="pf-stk__p pf-stk__p--{pos[i]}">'
+        f'<img src="/assets/photos/{g}" loading="lazy" alt="{_pf_alt(t, lab)}">'
+        f'<figcaption>{esc(lab)}</figcaption></figure>'
+        for i, (g, lab) in enumerate(shots))
+    return _pf_shell(
+        f'<div class="sec-head"><p class="eyebrow">{_city("On the tools", t)}</p>'
+        f'<h2>{_city(head, t)}</h2><p>{_city(sub, t)}</p></div>'
+        f'<div class="pf-stk">{plates}</div>')
+
+def _pf_selector(t):
+    """08. A category rail that swaps the photograph beside it.
+
+    The reference did this with `#rail:has(#btn:hover) ~ .imgs #img` and nothing
+    else -- hover only, no committed state, so on a touch tablet at desktop
+    width the picture could never be changed. It also switched to a five-photo
+    snap carousel on mobile, against a library that tops out at four.
+
+    Both are dropped in favour of the selector this engine already ships: the
+    wrapper carries `svcx`, so the committed-radio / pointer / :focus-visible
+    tiers in the services block drive this too. No new CSS mechanism, and the
+    touch case works because the radio stays checked.
+
+    The reference's closing three-up -- "Certified Experts", "rigorous
+    architectural and mechanical training", "Premium Materials / high-gauge
+    steel", "Precision Timing" -- is dropped entirely rather than reworded. All
+    four are claims no site can back.
+
+    The rail labels are the gallery categories, which are the only truthful
+    per-photo signal that exists."""
+    shots = _gal(t, 4)
+    if len(shots) < 3:
+        return ""
+    head, sub = copy_deck(t, "photo_band")
+    group = _svcx_group(t) + "-pf"
+    plane = "".join(
+        f'<img src="/assets/photos/{g}" loading="lazy" alt="{_pf_alt(t, lab)}">'
+        for g, lab in shots)
+    rail = "".join(
+        f'<li>{_svcx_radio(group, i + 1, i == 0)}'
+        f'<label class="svcx-sel svcx-sel--{i + 1} pf-sel__opt" '
+        f'for="{group}-{i + 1}">{esc(lab)}</label></li>'
+        for i, (g, lab) in enumerate(shots))
+    return _pf_shell(
+        f'<div class="pf-sel__vis svcx-vis svcx-vis--swap">{plane}</div>'
+        f'<div class="pf-sel__b"><p class="eyebrow">{_city("On the tools", t)}</p>'
+        f'<h2>{_city(head, t)}</h2><p>{_city(sub, t)}</p>'
+        f'<ul class="pf-sel__rail">{rail}</ul></div>', "pf-sel svcx")
+
+
 def proof_section(t):
     """Pick the visual-proof variant. Returns (html, decks_consumed).
 
@@ -3011,7 +3864,7 @@ def proof_section(t):
         arch = pinned
     else:
         ok = [v for v in PROOF_VARIANTS
-              if not (v == "photoband" and len(gal) < 3)
+              if not (v in _PROOF_NEEDS_3 and len(gal) < 3)
               and not (v == "sequence" and len(gal) < len(copy_deck(t, "steps")))]
         arch = ok[_hash_idx(f'{t["domain"]}|proof', len(ok))] if ok else "detail"
     html = globals()[f"_pf_{arch}"](t)
@@ -3125,7 +3978,7 @@ def home_page(t, pages):
     faq_eyebrow, faq_h2 = copy_deck(t, "faq_head")
     faq_html = (f'<section class="sec sec--soft"><div class="wrap"><div class="sec-head">'
                 f'<p class="eyebrow">{_city(faq_eyebrow, t)}</p><h2>{_city(faq_h2, t)}</h2></div>'
-                f'<div class="faq">{faq_accordion(faqs)}</div></div></section>')
+                f'{faq_block(t, faqs)}</div></section>')
     title = seo_title((home["title"] if home else "") or f"Garage Door Repair in {t['city']}, {t['st']} | {t['brand']}")
     desc = (home["meta"] if home else "") or lead
     schemas = [org_schema(t), faq_schema(faqs)]
@@ -3236,17 +4089,184 @@ def article_layout(t):
     """Prose/sidebar arrangement for inner and trust pages."""
     return ARTICLE_LAYOUTS[_hash_idx(f'{t["domain"]}|article', len(ARTICLE_LAYOUTS))]
 
-def quote_card(t):
-    """Sidebar quote card, shared by inner and trust pages.
+# The sidebar was one centred card on every interior page of all 1001 sites.
+# APPEND-ONLY: selection is digest % len, so inserting re-rolls every domain.
+ASIDE_VARIANTS = ["card", "dark", "toc", "reasons", "stack"]
 
-    Was two near-identical hardcoded blocks, so every inner page on every site
-    carried the same three lines."""
+# article--wide has no sidebar column: the aside stacks BELOW the prose. The
+# claims block and the area links still read fine there, but a table of
+# contents does not -- it landed 50px past the end of the article it indexes,
+# on 75 sites. Those re-pick from the variants that survive the stack.
+_ASIDE_NEEDS_COLUMN = {"toc"}
+_ASIDE_STACKABLE = ["card", "dark", "reasons", "stack"]
+
+
+def quote_card(t, pages=None, headings=None, is_quote=False):
+    """The interior-page sidebar column.
+
+    Every variant keeps the quote card. Two of the source designs dropped it
+    for a single other module, but it is the sidebar's only conversion path on
+    a lead-generation site, and removing it from a fifth of the estate is not a
+    rendering decision. The variants add a module around it instead.
+
+    `toc` needs at least three article headings and `stack` at least three area
+    pages; both fall back to the plain card rather than rendering a stub."""
     head, sub, second_label, second_href = copy_deck(t, "qcard")
-    return (f'<aside class="aside"><div class="qcard">{icon("phone")}<h3>{_city(head, t)}</h3>'
-            f'<p>{_city(sub, t)}</p>'
-            f'{tel_link(t, "tel")}'
-            f'<a class="btn btn--primary" href="/request-a-quote/">Request a Quote</a>'
-            f'<a class="btn btn--outline" href="{second_href}">{second_label}</a></div></aside>')
+    v = ASIDE_VARIANTS[_hash_idx(f'{t["domain"]}|aside', len(ASIDE_VARIANTS))]
+
+    # five, not six. The column is sticky: taller than the viewport and it
+    # pins with its lower half below the fold, where the quote button then
+    # stays for the whole scroll. toc puts the list above the card, so the
+    # list is what has to give.
+    if v in _ASIDE_NEEDS_COLUMN and article_layout(t) == "article--wide":
+        v = _ASIDE_STACKABLE[_hash_idx(f'{t["domain"]}|asidestack',
+                                       len(_ASIDE_STACKABLE))]
+
+    heads = [h for h in (headings or []) if h[0] and h[1]][:5]
+    areas = [a for a in (areas_for(pages) if pages else [])][:6]
+    if v == "toc" and len(heads) < 3:
+        v = "card"
+    if v == "stack" and len(areas) < 3:
+        v = "card"
+
+    tel = tel_link(t, "tel")
+    # On the quote page itself this button pointed at the page the reader was
+    # already on. There it becomes the real route, or nothing.
+    if is_quote:
+        cta = contact_block(t).replace('class="qroutes"', 'class="qroutes qroutes--card"')
+    else:
+        cta = ('<a class="btn btn--primary" href="/request-a-quote/">Request a Quote</a>'
+           f'<a class="btn btn--outline" href="{second_href}">{second_label}</a>')
+
+    if v == "dark":
+        # icon and heading share a row, so the card reads as a banner rather
+        # than the centred stack every other site shows
+        card = (f'<div class="qcard qcard--dark"><div class="qc__top">{icon("phone")}'
+                f'<h3>{_city(head, t)}</h3></div><p>{_city(sub, t)}</p>{tel}{cta}</div>')
+    else:
+        card = (f'<div class="qcard">{icon("phone")}<h3>{_city(head, t)}</h3>'
+                f'<p>{_city(sub, t)}</p>{tel}{cta}</div>')
+
+    extra = ""
+    if v == "toc":
+        items = "".join(f'<li><a href="#{hid}">{esc(txt)}</a></li>' for hid, txt in heads)
+        extra = (f'<nav class="as-toc" aria-label="On this page">'
+                 f'<p class="as-toc__h">On this page</p><ol>{items}</ol></nav>')
+    elif v == "reasons":
+        # the third deck variant: the trust bar takes the first and the footer
+        # the second, so a page never states the same four claims twice
+        decks = COPY["trust"]
+        alt = decks[(_hash_idx(f'{t["domain"]}|copy|trust', len(decks)) + 2) % len(decks)]
+        cells = "".join(f'<div class="as-why__c">{icon(ic)}<span>{_city(txt, t)}</span></div>'
+                        for ic, txt in alt)
+        extra = (f'<div class="as-why"><p class="as-why__h">Why choose us</p>'
+                 f'<div class="as-why__g">{cells}</div></div>')
+    elif v == "stack":
+        pills = "".join(f'<a href="{u}">{esc(lbl)}</a>' for lbl, u in areas)
+        extra = (f'<div class="as-areas"><p class="as-areas__h">Service Areas</p>'
+                 f'<div class="as-areas__p">{pills}</div></div>')
+
+    body = extra + card if v == "toc" else card + extra
+    return f'<aside class="aside as--{v}">{body}</aside>'
+
+
+def areas_for(pages):
+    """(label, url) for this site's area pages, in a stable order."""
+    out = [(area_label(p), p["url"]) for p in pages.values() if p["cat"] == "area"]
+    return sorted(out)
+
+
+def article_headings(parts):
+    """(id, text) for every h2 in the assembled article, for the `toc` sidebar."""
+    out = []
+    for m in re.finditer(r'<h2 id="([^"]+)">(.*?)</h2>', "".join(parts), re.S):
+        txt = re.sub(r"<[^>]+>", "", m.group(2)).strip()
+        if txt:
+            out.append((m.group(1), txt))
+    return out
+
+# Inner pages carry ~200 URLs per site against the homepage's one, and every
+# one of them opened with the same gradient band holding a crumb and an h1.
+# APPEND-ONLY: selection is digest % len, so inserting re-rolls every domain.
+PAGE_HERO_VARIANTS = ["band", "photo", "center", "utility", "strip", "cta", "grid"]
+
+_PH_WANTS_DESC  = {"band", "photo", "utility", "cta"}
+_PH_WANTS_PHOTO = {"photo", "strip", "grid"}
+
+
+def crumb_trail(links, tail):
+    """A breadcrumb whose separators are marked up rather than bare text.
+
+    ph--grid stacks the trail into a column, where a chevron floating between
+    two rows reads as a bullet; it needs to hide the separators, which it can
+    only do if they are elements."""
+    out = ['<div class="crumb">']
+    for i, (label, href) in enumerate(links):
+        if i:
+            out.append('<span class="sep"> \u203a </span>')
+        out.append(f'<a href="{href}">{esc(label)}</a>')
+    if tail:
+        out.append('<span class="sep"> \u203a </span>'
+                   f'<span class="crumb__c">{esc(tail)}</span>')
+    out.append("</div>")
+    return "".join(out)
+
+
+def page_hero(t, links, tail, h1, desc="", img=None, allow_cta=True):
+    """The band at the top of an interior page.
+
+    `desc` is the page's own description sentence. It is authored on service,
+    area, guide and index pages and worth showing; on about/contact/quote it is
+    assembled from the h1 and the brand, so those pass "" and the variants that
+    would show it simply render without it.
+
+    `allow_cta` is False on the quote page itself, where a "Request a Quote"
+    button in the header would point at the page the reader is already on."""
+    v = PAGE_HERO_VARIANTS[_hash_idx(f'{t["domain"]}|pagehero', len(PAGE_HERO_VARIANTS))]
+    if v == "cta" and not allow_cta:
+        v = "band"
+    if v in _PH_WANTS_PHOTO and not img:
+        v = "band"
+    crumb = crumb_trail(links, tail)
+    loc = f'<span class="ph__loc">{esc(t["city"])}, {esc(t["st"])}</span>'
+    d = f'<p class="ph__d">{esc(desc)}</p>' if (desc and v in _PH_WANTS_DESC) else ""
+    # alt="" on purpose: the band's photograph is decorative and sits beside the
+    # h1 it would otherwise repeat, so a screen reader would read the page title
+    # twice in a row
+    shot = (f'<div class="ph__ph"><img src="/assets/photos/{img}" alt="" '
+            f'loading="eager" fetchpriority="high" decoding="async"></div>') if img else ""
+    head = f"<h1>{esc(h1)}</h1>"
+    open_ = f'<section class="page-hero ph--{v}">'
+
+    if v == "photo":
+        return (f'{open_}<div class="wrap"><div class="ph__split">'
+                f'<div class="ph__tx">{crumb}{head}{d}</div>{shot}'
+                f"</div></div></section>")
+    if v == "center":
+        return (f'{open_}<div class="wrap"><div class="ph__mid">'
+                f"{crumb}{head}{loc}</div></div></section>")
+    if v == "utility":
+        return (f'{open_}<div class="ph__bar"><div class="wrap">{crumb}{loc}</div></div>'
+                f'<div class="wrap ph__body">{head}{d}</div></section>')
+    if v == "strip":
+        return (f'{open_}<div class="ph__band">'
+                f'<img src="/assets/photos/{img}" alt="" loading="eager" '
+                f'fetchpriority="high" decoding="async"></div>'
+                f'<div class="wrap ph__body">{crumb}{head}</div></section>')
+    if v == "cta":
+        return (f'{open_}<div class="wrap"><div class="ph__row">'
+                f'<div class="ph__tx">{crumb}{head}{d}</div>'
+                f'<div class="ph__act"><a class="btn btn--primary" '
+                f'href="/request-a-quote/">Request a Quote</a></div>'
+                f"</div></div></section>")
+    if v == "grid":
+        return (f'{open_}<div class="wrap"><div class="ph__g">'
+                f'<div class="ph__rail">{crumb}{loc}</div>'
+                f'<div class="ph__mid">{head}</div>{shot}'
+                f"</div></div></section>")
+    return (f'{open_}<div class="wrap"><div class="ph__top">{crumb}{loc}</div>'
+            f"{head}{d}</div></section>")
+
 
 def inner_page(t, p, pages):
     h1 = p["h1"] or area_label(p)
@@ -3263,15 +4283,15 @@ def inner_page(t, p, pages):
         parts.append(f'<img src="/assets/photos/{img}" alt="{esc(h1)}" loading="lazy">')
     if p["faq"]:
         _, faq_h2 = copy_deck(t, "faq_head")
-        parts.append(f'<h2 id="faq">{_city(faq_h2, t)}</h2><div class="faq">{faq_accordion(p["faq"])}</div>')
+        parts.append(f'<h2 id="faq">{_city(faq_h2, t)}</h2>{faq_block(t, p["faq"])}')
 
     label = {"service": "Services", "area": "Service Areas", "guide": "Guides"}.get(p["cat"], "")
     parent = {"service": "/services/", "area": "/service-areas/", "guide": "/guides/"}.get(p["cat"], "/")
-    crumb = f'<div class="crumb"><a href="/">Home</a> › <a href="{parent}">{label}</a> › {esc(h1)}</div>'
-    aside = quote_card(t)
+    aside = quote_card(t, pages, article_headings(parts))
     art = article_layout(t)
-    body = (f'<section class="page-hero"><div class="wrap">{crumb}<h1>{esc(h1)}</h1></div></section>'
-            f'<div class="wrap"><div class="article {art}"><div class="body">{"".join(parts)}</div>{aside}</div></div>'
+    links = [("Home", "/")] + ([(label, parent)] if label else [])
+    body = (page_hero(t, links, h1, h1, desc=p["meta"] or "", img=img)
+            + f'<div class="wrap"><div class="article {art}"><div class="body">{"".join(parts)}</div>{aside}</div></div>'
             + cta_band(t, f"Book garage door service in {t['city']}"))
     title = seo_title(p["title"] or f"{h1} | {t['brand']}")
     trail = [("Home", "/"), (label, parent), (h1, p["url"])]
@@ -3290,27 +4310,82 @@ def index_page(t, pages, cat, url, title_h1, eyebrow, blurb):
         desc = (p["meta"] or "").split(".")[0]
         cards += (f'<a class="feat" href="{p["url"]}"><div class="ic">{icon("arrow")}</div>'
                   f'<div class="feat__b"><h3>{esc(area_label(p))}</h3><p>{esc(desc)}</p></div></a>')
-    crumb = f'<div class="crumb"><a href="/">Home</a> › {esc(title_h1)}</div>'
-    body = (f'<section class="page-hero"><div class="wrap">{crumb}<h1>{esc(title_h1)}</h1></div></section>'
-            f'<section class="sec"><div class="wrap"><div class="sec-head"><p class="eyebrow">{eyebrow}</p>'
+    body = (page_hero(t, [("Home", "/")], title_h1, title_h1, desc=blurb,
+                      img=INNER_IMGS[_stable_idx(url, len(INNER_IMGS))])
+            + f'<section class="sec"><div class="wrap"><div class="sec-head"><p class="eyebrow">{eyebrow}</p>'
             f'<h2>{esc(title_h1)}</h2><p>{esc(blurb)}</p></div>'
-            f'<div class="grid g3 feats feats--{t["layout"]["feats"]}">{cards}</div></div></section>'
+            f'<div class="grid g3 feats feats--{feats_style(t)}">{cards}</div></div></section>'
             + cta_band(t))
     schemas = [org_schema(t), breadcrumb_schema(t, [("Home", "/"), (title_h1, url)])]
     return (head_html(t, seo_title(f"{title_h1} | {t['brand']}"), blurb, url, schemas, og_image=t.get("hero_img") or HERO_IMG)
             + header(t, pages) + body + footer(t, pages) + "</body></html>")
 
+# ---- CONTACT ROUTES -------------------------------------------------------
+# Everything that says "Request a Quote" points at /request-a-quote/. That page
+# instructed the reader to get in touch and then offered five buttons that
+# linked back to itself -- a loop, on 998 of 1001 sites, because none of them
+# carry a form, a phone or an email.
+#
+# Nothing here invents a route. Each is rendered only where the config supplies
+# it, and the page states what it can actually do:
+#
+#   ghl_form_id -> the booking form is embedded
+#   phone       -> a tel: link, and the call bar
+#   email       -> a mailto: link
+#   none of them-> the page stops asking. No instruction to send anything, and
+#                  no button pointing back at the page the reader is already on.
+#
+# `contact_routes` is what the gate counts, so a site with no way to reach
+# anyone is visible rather than silently shipped.
+
+
+def contact_routes(t):
+    """Which contact routes this site actually has, in order of directness."""
+    out = []
+    if t.get("ghl_form_id"):
+        out.append("form")
+    if t.get("phone"):
+        out.append("phone")
+    if t.get("email"):
+        out.append("email")
+    return out
+
+
+def contact_block(t):
+    """The routes themselves, rendered only where they exist."""
+    routes = contact_routes(t)
+    if not routes:
+        return ""
+    rows = []
+    if "phone" in routes:
+        rows.append(f'<a class="btn btn--primary" href="tel:{t["tel"]}">'
+                    f'{icon("phone")}Call {esc(t["phone"])}</a>')
+    if "email" in routes:
+        cls = "btn btn--outline" if "phone" in routes else "btn btn--primary"
+        rows.append(f'<a class="{cls}" href="mailto:{esc(t["email"])}">'
+                    f'{esc(t["email"])}</a>')
+    return (f'<div class="qroutes">{"".join(rows)}</div>') if rows else ""
+
+
 def trust_page(t, pages, url, h1, blocks, is_quote=False):
-    parts = "".join(f'<h2>{esc(h)}</h2><p>{esc(b)}</p>' for h, b in blocks)
+    # ids so the `toc` sidebar has something to link to; these pages had none
+    parts = "".join(f'<h2 id="{slugify(h)}">{esc(h)}</h2><p>{esc(b)}</p>' for h, b in blocks)
     embed = ""
-    if is_quote and t.get("ghl_form_id"):
-        from build_site import quote_embed
-        embed = quote_embed(t["ghl_form_id"])
-    crumb = f'<div class="crumb"><a href="/">Home</a> › {esc(h1)}</div>'
-    aside = quote_card(t)
-    body = (f'<section class="page-hero"><div class="wrap">{crumb}<h1>{esc(h1)}</h1></div></section>{embed}'
-            f'<div class="wrap"><div class="article {article_layout(t)}"><div class="body">{parts}</div>{aside}</div></div>'
-            + cta_band(t))
+    if is_quote:
+        if t.get("ghl_form_id"):
+            from build_site import quote_embed
+            embed = quote_embed(t["ghl_form_id"])
+        # the phone and email, up front, where someone who wants to book is
+        embed += contact_block(t)
+    aside = quote_card(t, pages, article_headings([parts]), is_quote=is_quote)
+    # no desc: on these pages it is built from the h1 and the brand, so showing
+    # it would print the title back to the reader a second time
+    body = (page_hero(t, [("Home", "/")], h1, h1, desc="",
+                      img=INNER_IMGS[_stable_idx(url, len(INNER_IMGS))],
+                      allow_cta=not is_quote)
+            + embed
+            + f'<div class="wrap"><div class="article {article_layout(t)}"><div class="body">{parts}</div>{aside}</div></div>'
+            + ("" if is_quote else cta_band(t)))
     schemas = [org_schema(t), breadcrumb_schema(t, [("Home", "/"), (h1, url)])]
     return (head_html(t, seo_title(f"{h1} | {t['brand']}"), f"{h1} — {t['brand']}, {t['city']}, {t['st']}.", url, schemas,
                        og_image=t.get("hero_img") or HERO_IMG)
@@ -3343,6 +4418,141 @@ def write(out, url, htmlstr):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     open(path, "w", encoding="utf-8").write(htmlstr)
 
+def strip_css_comments(css):
+    """Drop comments from the SHIPPED stylesheet only.
+
+    The source comments are load-bearing -- most record why a rule exists and
+    which bug it fixed -- so they stay in build_site.py and are removed here,
+    on the way out. They were 22KB of the 108KB served to every page.
+
+    String-aware: a comment opener inside a quoted value (content:"a/*b") is
+    not a comment. Nothing in the sheet does that today, but a stripper that
+    silently eats half a rule the first time someone writes it is not worth
+    the bytes it saves. `/*!` is kept, by convention for licence banners.
+    """
+    out, i, n = [], 0, len(css)
+    while i < n:
+        c = css[i]
+        if c == '"' or c == "'":            # copy the quoted run verbatim
+            j = i + 1
+            while j < n and css[j] != c:
+                j += 2 if css[j] == "\\" else 1
+            out.append(css[i:j + 1])
+            i = j + 1
+        elif css.startswith("/*", i) and not css.startswith("/*!", i):
+            j = css.find("*/", i + 2)
+            i = n if j < 0 else j + 2
+        else:
+            out.append(c)
+            i += 1
+    return re.sub(r"\n[ \t]*(?:\n[ \t]*)+", "\n", "".join(out))
+
+
+# Variant families whose CSS is written once but used one-at-a-time. The value
+# is the selector prefix that identifies a rule as belonging to a single
+# variant; anything not matching a prefix is shared and never pruned.
+_PRUNE_FAMILIES = (".hero--", ".svcx--", ".svcx-sec--", ".ctab--", ".faq--",
+                   ".gf--", ".pf-", ".ph--", ".as--", ".areas--", ".hd--")
+
+
+def _css_rules(css):
+    """Split a stylesheet into (context, selector, whole_rule).
+
+    Context is the enclosing at-rule prelude, or "" at top level. String-aware
+    for the same reason strip_css_comments is: a brace inside content:"{" is
+    not a block boundary."""
+    out, buf, i, n = [], [], 0, len(css)
+    while i < n:
+        c = css[i]
+        if c in "\"'":
+            j = i + 1
+            while j < n and css[j] != c:
+                j += 2 if css[j] == "\\" else 1
+            buf.append(css[i:j + 1]); i = j + 1; continue
+        if c == "{":
+            prelude = "".join(buf).strip(); buf = []
+            depth, j = 1, i + 1
+            while j < n and depth:
+                if css[j] == "{": depth += 1
+                elif css[j] == "}": depth -= 1
+                j += 1
+            inner = css[i + 1:j - 1]
+            if prelude.startswith("@") and re.match(r"@(media|supports|container)", prelude):
+                for _, sel, raw in _css_rules(inner):
+                    out.append((prelude, sel, raw))
+            else:
+                out.append(("", prelude, prelude + "{" + inner + "}"))
+            i = j; continue
+        buf.append(c); i += 1
+    return out
+
+
+def prune_site_css(site_dir):
+    """Drop variant CSS this site cannot use.
+
+    Every site ships the whole library -- 12 heroes, 10 footers, 8 proof
+    variants, 8 CTA bands, 5 FAQs -- and renders exactly one of each. The
+    unused rules were ~15% of a 100KB stylesheet on every page of all 1001
+    sites, and the cost grows with every variant added.
+
+    Pruning works from the HTML actually written, not from re-running the
+    selectors: a second prediction of what the renderer chose is a second place
+    to be wrong, and the pages are already on disk by the time this runs.
+
+    A rule is dropped only when EVERY selector in it names a variant this site
+    does not use. Rules mixing a used and an unused selector stay, as do all
+    shared primitives -- .svcx-sel drives the services selector for several
+    archetypes, .pf-points is shared by three proof variants."""
+    css_path = os.path.join(site_dir, "assets", "site.css")
+    if not os.path.isfile(css_path):
+        return 0, 0
+    markup = []
+    for root, _dirs, files in os.walk(site_dir):
+        for fn in files:
+            if fn.endswith(".html"):
+                markup.append(open(os.path.join(root, fn), encoding="utf-8").read())
+    if not markup:
+        return 0, 0
+    classes = set()
+    for h in markup:
+        for m in re.finditer(r'class="([^"]*)"', h):
+            classes.update(m.group(1).split())
+
+    def unused(sel):
+        """True if this selector names a variant class the site never renders."""
+        hit = False
+        for tok in re.findall(r"\.[-A-Za-z0-9_]+", sel):
+            name = tok[1:]
+            if any(tok.startswith(f) for f in _PRUNE_FAMILIES):
+                if name in classes:
+                    return False          # a used variant -- keep the rule
+                hit = True
+        return hit
+
+    before = os.path.getsize(css_path)
+    css = open(css_path, encoding="utf-8").read()
+    kept = [(ctx, raw) for ctx, sel, raw in _css_rules(css)
+            if not (lambda parts: parts and all(unused(p) for p in parts))(
+                [p.strip() for p in sel.split(",") if p.strip()])]
+    # Re-emit in SOURCE ORDER, grouping only CONSECUTIVE rules that share a
+    # context. Collecting every rule under its @media prelude instead would
+    # merge the six separate max-width:560px blocks into the position of the
+    # first one, hoisting later rules above the base rules they override --
+    # media queries carry no extra specificity, so order is all they have. That
+    # silently rebuilt the mobile trust bar as two columns.
+    out, i = [], 0
+    while i < len(kept):
+        ctx = kept[i][0]
+        j = i
+        while j < len(kept) and kept[j][0] == ctx:
+            j += 1
+        run = "".join(r for _c, r in kept[i:j])
+        out.append(run if not ctx else ctx + "{" + run + "}")
+        i = j
+    open(css_path, "w", encoding="utf-8", newline="\n").write("".join(out))
+    return before, os.path.getsize(css_path)
+
+
 def build(only=None):
     """Render every registered domain that has content.
 
@@ -3358,15 +4568,19 @@ def build(only=None):
             shutil.rmtree(os.path.join(DIST, d), ignore_errors=True)
     elif os.path.exists(DIST):
         shutil.rmtree(DIST)
+    # 991 of 1001 sites have no pack. One line each buries everything else the
+    # build says, so they are counted and reported once at the end instead.
+    skipped = []
     for domain, t in targets.items():
         if not os.path.isdir(os.path.join(CONTENT, t["content"])):
-            print(f"  skip {domain}: content/{t['content']}/ not found (add content, then rebuild)")
+            skipped.append((domain, t["content"]))
             continue
         R = get_renderer(t)
         out = os.path.join(DIST, domain)
         assets = os.path.join(out, "assets")
         os.makedirs(assets, exist_ok=True)
-        open(os.path.join(assets, "site.css"), "w", encoding="utf-8").write(R["css"](t))
+        open(os.path.join(assets, "site.css"), "w", encoding="utf-8").write(
+            strip_css_comments(R["css"](t)))
         if R.get("navjs"):
             open(os.path.join(assets, "nav.js"), "w", encoding="utf-8").write(R["navjs"])
         open(os.path.join(assets, "favicon.svg"), "w", encoding="utf-8").write(
@@ -3458,9 +4672,15 @@ def build(only=None):
             # No site has a form (`ghl_form_id` is unset on all 1001), so the copy
             # must not promise one, and with no phone on file it must not render
             # "Call  or use the form." with an empty gap where the number should be.
-            ("Tell us what the door is doing",
+            # The instruction only appears when there is something to act on.
+            # With no form, no phone and no email this page used to say "send a
+            # quote request" and then offer five buttons back to itself.
+            ("Tell us what the door is doing" if contact_routes(t)
+             else "What we need to know",
              "Describe the problem — noise, off-track, a broken spring, or a door you want replaced — and we'll give you a written price."
-             + (f" Call {t['phone']} to get started." if t.get("phone") else "")),
+             + (f" Call {t['phone']} to get started." if t.get("phone")
+                else " Use the form above and we'll come back with a number."
+                if t.get("ghl_form_id") else "")),
             ("Fast, no-pressure quotes", "You get a real number, not a range, once we've seen the door. Same-day service is available on most repairs.")], True))
 
         # sitemap / robots
@@ -3471,7 +4691,19 @@ def build(only=None):
             f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{sm}</urlset>')
         open(os.path.join(out, "robots.txt"), "w", encoding="utf-8").write(
             f"User-agent: *\nAllow: /\nSitemap: https://{domain}/sitemap.xml\n")
-        print(f"  {domain}: {len(urls)} pages ({t['city']}, {t['st']})")
+        was, now = prune_site_css(out)
+        saved = f"  css {was // 1024}K->{now // 1024}K" if was else ""
+        print(f"  {domain}: {len(urls)} pages ({t['city']}, {t['st']}){saved}")
+    if skipped:
+        packs = sorted({c for _d, c in skipped})
+        print("")
+        print(f"  {len(skipped)} site(s) skipped: no content pack. "
+              f"{len(packs)} pack(s) missing.")
+        for d, c in skipped[:5]:
+            print(f"    {d} wants content/{c}/")
+        if len(skipped) > 5:
+            print(f"    ... and {len(skipped) - 5} more "
+                  f"(devtools/check_content.py --sites lists them)")
     print("Done ->", DIST)
 
 if __name__ == "__main__":

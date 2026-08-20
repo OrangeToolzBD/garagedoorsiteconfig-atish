@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Visual Proof Section</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@600;700;800&amp;family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-fixed": "#d8e2ff",
+                      "on-secondary-fixed-variant": "#004395",
+                      "tertiary-container": "#191c1e",
+                      "on-primary": "#ffffff",
+                      "surface-dim": "#cbdbf5",
+                      "on-primary-fixed-variant": "#3f465c",
+                      "outline": "#76777d",
+                      "on-error": "#ffffff",
+                      "on-surface": "#0b1c30",
+                      "on-primary-container": "#7c839b",
+                      "tertiary": "#000000",
+                      "secondary": "#0058be",
+                      "on-primary-fixed": "#131b2e",
+                      "surface": "#f8f9ff",
+                      "on-secondary": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "surface-container-low": "#eff4ff",
+                      "on-tertiary-fixed-variant": "#444749",
+                      "error": "#ba1a1a",
+                      "on-tertiary-fixed": "#191c1e",
+                      "on-secondary-container": "#fefcff",
+                      "primary-fixed": "#dae2fd",
+                      "tertiary-fixed": "#e0e3e5",
+                      "on-tertiary-container": "#818486",
+                      "secondary-fixed-dim": "#adc6ff",
+                      "on-tertiary": "#ffffff",
+                      "tertiary-fixed-dim": "#c4c7c9",
+                      "surface-container": "#e5eeff",
+                      "surface-tint": "#565e74",
+                      "secondary-container": "#2170e4",
+                      "primary-fixed-dim": "#bec6e0",
+                      "error-container": "#ffdad6",
+                      "surface-variant": "#d3e4fe",
+                      "inverse-on-surface": "#eaf1ff",
+                      "surface-bright": "#f8f9ff",
+                      "on-secondary-fixed": "#001a42",
+                      "surface-container-high": "#dce9ff",
+                      "background": "#f8f9ff",
+                      "surface-container-highest": "#d3e4fe",
+                      "surface-container-lowest": "#ffffff",
+                      "on-surface-variant": "#45464d",
+                      "primary": "#000000",
+                      "inverse-surface": "#213145",
+                      "on-background": "#0b1c30",
+                      "outline-variant": "#c6c6cd",
+                      "primary-container": "#131b2e",
+                      "inverse-primary": "#bec6e0"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "unit": "8px",
+                      "margin-desktop": "48px",
+                      "margin-mobile": "16px",
+                      "section-padding": "120px",
+                      "gutter": "24px",
+                      "stack-lg": "32px",
+                      "container-max": "1280px",
+                      "stack-sm": "8px",
+                      "stack-md": "16px"
+              },
+              "fontFamily": {
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "display-lg": [
+                              "Epilogue"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Epilogue"
+                      ],
+                      "headline-md": [
+                              "Epilogue"
+                      ],
+                      "headline-lg-mobile": [
+                              "Epilogue"
+                      ]
+              },
+              "fontSize": {
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg": [
+                              "72px",
+                              {
+                                      "lineHeight": "80px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "800"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "30px",
+                              {
+                                      "lineHeight": "38px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* CSS Image Swapper Logic */
+        .image-swapper-container {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .swapper-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
+            z-index: 1;
+        }
+        
+        .swapper-img.default-active {
+            opacity: 1;
+            z-index: 2;
+        }
+
+        /* Hover interactions driven by the parent rail */
+        #selector-rail:has(#btn-repair:hover) ~ .image-swapper-container #img-repair {
+            opacity: 1;
+            z-index: 3;
+        }
+        #selector-rail:has(#btn-install:hover) ~ .image-swapper-container #img-install {
+            opacity: 1;
+            z-index: 3;
+        }
+        #selector-rail:has(#btn-maint:hover) ~ .image-swapper-container #img-maint {
+            opacity: 1;
+            z-index: 3;
+        }
+        
+        /* Hide default when others are hovered */
+        #selector-rail:hover ~ .image-swapper-container .default-active {
+            opacity: 0;
+        }
+
+        .selector-btn {
+            transition: all 0.2s ease;
+        }
+        .selector-btn:hover {
+            background-color: var(--color-surface-container-low, #eff4ff);
+            border-left-color: var(--color-primary, #000000);
+            color: var(--color-primary, #000000);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md antialiased selection:bg-secondary-fixed selection:text-on-secondary-fixed-variant">
+<section class="w-full py-section-padding px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="flex flex-col gap-stack-lg">
+<!-- Main Content Area: Left Image, Right Selectors -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter relative">
+<!-- Left: Primary Image Container -->
+<div class="col-span-1 md:col-span-7 aspect-[4/3] md:aspect-auto md:h-[600px] relative rounded bg-surface-container-low overflow-hidden border border-outline-variant image-swapper-container order-2 md:order-1">
+<img class="swapper-img default-active" data-alt="A highly detailed, professional photograph of a skilled technician repairing a modern, dark grey metallic garage door. The lighting is bright and clear, emphasizing the clean lines of the door and the precision of the repair work. The setting is a pristine, high-end residential driveway during daytime. The overall aesthetic is clean, modern corporate minimalism, conveying reliability and premium service quality." id="img-repair" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCA0sj7HjHptDFgd2gSWWyG00ixyqsDVkP6L9ZE8kPE-JZ_sRTTmWBXeyylwEQjVhJoLbBU3WRTbsb_pECWWrwBVZTU2qtBjz1-XNtzwhPCJ5ZsplgWRBrOGMkg4lZCSnz9MGDm5GoDSnqlq35tBoy_oETdgx69t0ZfHVzjHeyeZ9uLG4R0b9Ka5tK4c5dMaCeyzJR62MYE84q5TNlUXTjYq0oBH_XK4cfbRZLCjnM9xuhEk7pDc5jSbw"/>
+<img class="swapper-img" data-alt="A striking architectural photograph of a newly installed, premium contemporary garage door with frosted glass panels and black anodized aluminum framing. The lighting is early evening 'blue hour', casting soft, sophisticated shadows. The surrounding home exterior features clean lines and neutral tones, fitting a high-end editorial magazine spread. The mood is quiet luxury and structural integrity." id="img-install" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-WqmQSBpOksflgGroqf7NbzWLD2dS52TxfRcyV3OAg-L_IIpiB31ZyTr56ZoZ0T8GhjkuYDhyPsIaQFaGX8E5XjG-OAiVTPpb71lcuNDTp1Fyj3AXPCPe6_xYyBdudZoqWtT6orVkmEQsiOmFf27azEwguIFwAsFnkGMlleyK3qL8wv3Bweyu6t8D-t9ZjDYcoh4IQkIvHkf7y_shzJ43hc6pJUeNOCRb-JhDGMKCrPpCrh9S2TEjmw"/>
+<img class="swapper-img" data-alt="A close-up, highly detailed shot of a garage door track and roller mechanism being professionally lubricated. The focus is incredibly sharp on the clean, metallic hardware, set against a softly blurred background of the garage interior. The lighting is crisp white, highlighting the smooth, well-maintained surfaces. The style is industrial yet polished and premium, emphasizing meticulous attention to detail." id="img-maint" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeGORswYEc69skt_0CE5Gx8v4LRmOJBKmIHdYWfxcvX5Bh0T7vQqExSPcX1fW3tKQ0bH8u76Qxrpf9gvu29LExh5WHG7BzeR7jddQgt767sBTU7sI-Q9J1-7fzwiKTqB_eg9c6rCUQENCS_yfOZopbKQbnKgLvXaeLa0TUqcnaePkgABuI55oVXvbT-lBb5zwVQMU1vA9oPEAOrC3Oorvb758EAb-MW_UvzqyGeZEwQzrVIYrSjN4Nxg"/>
+</div>
+<!-- Right: Header & Rail -->
+<div class="col-span-1 md:col-span-5 flex flex-col justify-center gap-stack-lg order-1 md:order-2 pl-0 md:pl-gutter">
+<div class="flex flex-col gap-stack-sm">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-background">Proof of Precision</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-md">
+                            We bring editorial-quality standards to every project. Hover to see our commitment to structural integrity across all services.
+                        </p>
+</div>
+<!-- The Selector Rail -->
+<div class="flex flex-col border-l border-outline-variant ml-2 mt-stack-md" id="selector-rail">
+<button class="selector-btn text-left py-4 px-6 border-l-2 border-transparent text-on-surface-variant font-label-md text-label-md flex items-center justify-between group" id="btn-repair">
+<span class="font-headline-md text-headline-md font-semibold tracking-tight">Repair</span>
+<span class="material-symbols-outlined opacity-0 group-hover:opacity-100 transition-opacity">arrow_forward</span>
+</button>
+<button class="selector-btn text-left py-4 px-6 border-l-2 border-transparent text-on-surface-variant font-label-md text-label-md flex items-center justify-between group" id="btn-install">
+<span class="font-headline-md text-headline-md font-semibold tracking-tight">Installation</span>
+<span class="material-symbols-outlined opacity-0 group-hover:opacity-100 transition-opacity">arrow_forward</span>
+</button>
+<button class="selector-btn text-left py-4 px-6 border-l-2 border-transparent text-on-surface-variant font-label-md text-label-md flex items-center justify-between group" id="btn-maint">
+<span class="font-headline-md text-headline-md font-semibold tracking-tight">Maintenance</span>
+<span class="material-symbols-outlined opacity-0 group-hover:opacity-100 transition-opacity">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Claim Lines Below -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter mt-stack-lg pt-stack-lg border-t border-outline-variant">
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">verified</span>
+<h3 class="font-label-md text-label-md uppercase tracking-wider">Certified Experts</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Every technician undergoes rigorous architectural and mechanical training.</p>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">architecture</span>
+<h3 class="font-label-md text-label-md uppercase tracking-wider">Premium Materials</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Sourcing only high-gauge steel and architectural-grade composites.</p>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">schedule</span>
+<h3 class="font-label-md text-label-md uppercase tracking-wider">Precision Timing</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Scheduled windows respected. Efficient execution without compromising quality.</p>
+</div>
+</div>
+</div>
+</section>
+</body></html>

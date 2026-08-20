@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CTA Band Concepts</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@600;700;800&amp;family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#131b2e",
+                        "on-error": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "surface-container-low": "#eff4ff",
+                        "on-secondary-fixed-variant": "#004395",
+                        "outline-variant": "#c6c6cd",
+                        "surface-dim": "#cbdbf5",
+                        "secondary-fixed-dim": "#adc6ff",
+                        "on-primary-fixed": "#131b2e",
+                        "on-surface": "#0b1c30",
+                        "secondary-fixed": "#d8e2ff",
+                        "on-tertiary-container": "#818486",
+                        "on-error-container": "#93000a",
+                        "on-secondary-container": "#fefcff",
+                        "primary-fixed": "#dae2fd",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "primary": "#000000",
+                        "on-secondary-fixed": "#001a42",
+                        "tertiary-fixed-dim": "#c4c7c9",
+                        "error-container": "#ffdad6",
+                        "surface-tint": "#565e74",
+                        "primary-fixed-dim": "#bec6e0",
+                        "inverse-surface": "#213145",
+                        "on-primary-container": "#7c839b",
+                        "surface-variant": "#d3e4fe",
+                        "on-tertiary-fixed": "#191c1e",
+                        "on-secondary": "#ffffff",
+                        "on-background": "#0b1c30",
+                        "tertiary-fixed": "#e0e3e5",
+                        "surface-container-highest": "#d3e4fe",
+                        "inverse-primary": "#bec6e0",
+                        "tertiary-container": "#191c1e",
+                        "inverse-on-surface": "#eaf1ff",
+                        "surface-bright": "#f8f9ff",
+                        "surface-container": "#e5eeff",
+                        "background": "#f8f9ff",
+                        "secondary-container": "#2170e4",
+                        "outline": "#76777d",
+                        "on-surface-variant": "#45464d",
+                        "tertiary": "#000000",
+                        "surface-container-high": "#dce9ff",
+                        "error": "#ba1a1a",
+                        "on-tertiary": "#ffffff",
+                        "surface": "#f8f9ff",
+                        "secondary": "#0058be"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "container-max": "1180px",
+                        "gutter": "24px",
+                        "stack-lg": "32px",
+                        "stack-md": "16px",
+                        "unit": "8px",
+                        "margin-desktop": "48px",
+                        "section-padding": "120px",
+                        "stack-sm": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Epilogue"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Epilogue"],
+                        "label-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Epilogue"],
+                        "display-lg": ["Epilogue"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["30px", { "lineHeight": "38px", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "display-lg": ["72px", { "lineHeight": "80px", "letterSpacing": "-0.02em", "fontWeight": "800" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- Top Navigation (Shared Component) -->
+<nav class="fixed top-0 w-full z-50 bg-surface dark:bg-on-background border-b border-outline-variant dark:border-on-tertiary-fixed-variant">
+<div class="max-w-container-max mx-auto px-margin-desktop md:px-margin-desktop flex justify-between items-center h-20">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed cursor-pointer active:opacity-70 transition-colors duration-300">menu</span>
+<span class="font-headline-md text-headline-md font-bold text-on-surface dark:text-surface-bright">ServicePro</span>
+</div>
+<div class="hidden md:flex gap-8">
+<!-- Inactive Nav Items -->
+<span class="text-on-surface-variant dark:text-on-surface-variant hover:text-secondary dark:hover:text-secondary-fixed transition-colors duration-300 cursor-pointer font-label-md text-label-md">Overview</span>
+<!-- Active Nav Item based on generic intent -->
+<span class="text-secondary dark:text-secondary-fixed font-bold hover:text-secondary dark:hover:text-secondary-fixed transition-colors duration-300 cursor-pointer font-label-md text-label-md">CTA Concepts</span>
+<span class="text-on-surface-variant dark:text-on-surface-variant hover:text-secondary dark:hover:text-secondary-fixed transition-colors duration-300 cursor-pointer font-label-md text-label-md">Approach</span>
+</div>
+<div>
+<button class="bg-primary text-on-primary px-6 py-3 rounded hover:opacity-90 font-label-md text-label-md transition-opacity">Book Now</button>
+</div>
+</div>
+</nav>
+<main class="pt-24 pb-section-padding">
+<header class="max-w-container-max mx-auto px-margin-desktop mb-16 text-center">
+<h1 class="font-headline-lg text-headline-lg md:font-display-lg md:text-display-lg mb-4 text-primary">CTA Band Concepts</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">Exploring structural variations for the final conversion section, designed within the constraints of our modern corporate aesthetic.</p>
+</header>
+<div class="space-y-section-padding">
+<!-- Concept 1: Inline Split (Grey Background) -->
+<section class="w-full bg-surface-container py-16">
+<div class="max-w-container-max mx-auto px-margin-desktop flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+<div class="max-w-xl">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-secondary text-sm">location_on</span>
+<span class="font-label-md text-label-md text-secondary uppercase tracking-wider">Austin, Texas</span>
+</div>
+<h2 class="font-headline-md text-headline-md mb-2 text-on-background">Get your garage door working again</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Tell us what the door is doing and we will tell you what it needs.</p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4 shrink-0">
+<button class="bg-primary text-on-primary px-6 py-3 rounded font-label-md text-label-md hover:bg-opacity-90 transition-opacity whitespace-nowrap">Book a Repair</button>
+<button class="border border-primary text-primary px-6 py-3 rounded font-label-md text-label-md hover:bg-surface-dim transition-colors whitespace-nowrap">View Pricing</button>
+</div>
+</div>
+</section>
+<div class="max-w-container-max mx-auto px-margin-desktop"><hr class="border-outline-variant"/></div>
+<!-- Concept 2: Filled Accent Panel -->
+<section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="bg-primary-container rounded-xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
+<div class="max-w-2xl">
+<div class="flex items-center justify-center md:justify-start gap-2 mb-4">
+<span class="material-symbols-outlined text-secondary-fixed-dim text-sm">location_on</span>
+<span class="font-label-md text-label-md text-secondary-fixed-dim uppercase tracking-wider">Austin, Texas</span>
+</div>
+<h2 class="font-headline-md text-headline-md mb-4 text-on-primary">Get your garage door working again</h2>
+<p class="font-body-lg text-body-lg text-on-primary-container">Tell us what the door is doing and we will tell you what it needs.</p>
+</div>
+<div class="flex flex-col gap-4 w-full sm:w-auto shrink-0">
+<button class="bg-secondary text-on-primary px-8 py-4 rounded font-label-md text-label-md hover:opacity-90 transition-opacity w-full sm:w-auto">Book a Repair</button>
+<button class="border border-on-primary-container text-on-primary px-8 py-4 rounded font-label-md text-label-md hover:bg-on-primary hover:text-primary transition-colors w-full sm:w-auto">View Pricing</button>
+</div>
+</div>
+</section>
+<div class="max-w-container-max mx-auto px-margin-desktop"><hr class="border-outline-variant"/></div>
+<!-- Concept 3: The Floating Card (White background area) -->
+<section class="w-full bg-surface-bright py-24 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-1/2 h-full bg-surface-container-highest -skew-x-12 translate-x-1/4 opacity-20"></div>
+<div class="max-w-container-max mx-auto px-margin-desktop relative z-10">
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-10 md:p-16 flex flex-col items-center text-center shadow-sm">
+<div class="inline-flex items-center gap-2 mb-6 px-4 py-2 bg-surface-variant rounded-full">
+<span class="material-symbols-outlined text-secondary text-sm">location_on</span>
+<span class="font-label-md text-label-md text-secondary uppercase tracking-wider">Austin, Texas</span>
+</div>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg mb-4 text-on-background max-w-3xl">Get your garage door working again</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-10 max-w-2xl">Tell us what the door is doing and we will tell you what it needs.</p>
+<div class="flex flex-col sm:flex-row gap-6 justify-center w-full">
+<button class="bg-primary text-on-primary px-8 py-4 rounded font-label-md text-label-md hover:opacity-90 transition-opacity sm:w-auto w-full">Book a Repair</button>
+<button class="flex items-center justify-center gap-2 text-primary font-label-md text-label-md hover:text-secondary transition-colors group">
+                                View Pricing
+                                <span class="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<div class="max-w-container-max mx-auto px-margin-desktop"><hr class="border-outline-variant"/></div>
+<!-- Concept 4: Asymmetric Split -->
+<section class="w-full bg-surface py-20">
+<div class="max-w-container-max mx-auto px-margin-desktop grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+<div class="md:col-span-7">
+<h2 class="font-display-lg text-display-lg leading-tight text-primary mb-6">Get your garage door working again.</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg border-l-2 border-secondary pl-6">
+                            Tell us what the door is doing and we will tell you what it needs. Serving the greater <span class="font-semibold text-on-background">Austin, Texas</span> area.
+                        </p>
+</div>
+<div class="md:col-span-5 flex flex-col gap-6 md:pl-12">
+<button class="bg-primary text-on-primary px-6 py-5 rounded font-label-md text-label-md text-center hover:opacity-90 transition-opacity w-full flex justify-between items-center group">
+<span>Book a Repair</span>
+<span class="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_right_alt</span>
+</button>
+<button class="border border-primary text-primary px-6 py-5 rounded font-label-md text-label-md text-center hover:bg-surface-dim transition-colors w-full">View Pricing</button>
+</div>
+</div>
+</section>
+<div class="max-w-container-max mx-auto px-margin-desktop"><hr class="border-outline-variant"/></div>
+<!-- Concept 5: Compact Bar -->
+<section class="w-full bg-secondary text-on-primary py-6">
+<div class="max-w-container-max mx-auto px-margin-desktop flex flex-col lg:flex-row items-center justify-between gap-6">
+<div class="flex items-center gap-6">
+<div class="hidden sm:flex items-center gap-2 border-r border-on-secondary-fixed-variant pr-6">
+<span class="material-symbols-outlined text-secondary-fixed text-sm">location_on</span>
+<span class="font-label-md text-label-md text-secondary-fixed uppercase tracking-wider whitespace-nowrap">Austin, Texas</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-[24px] leading-none m-0 whitespace-nowrap overflow-hidden text-ellipsis">Get your garage door working again.</h2>
+<p class="font-body-md text-body-md text-secondary-fixed hidden xl:block whitespace-nowrap">Tell us what the door is doing and we will tell you what it needs.</p>
+</div>
+<div class="flex flex-row gap-3 w-full lg:w-auto shrink-0">
+<button class="bg-on-primary text-secondary px-5 py-2.5 rounded font-label-md text-label-md hover:bg-surface-container-low transition-colors flex-1 lg:flex-none whitespace-nowrap">Book Repair</button>
+<button class="border border-on-primary text-on-primary px-5 py-2.5 rounded font-label-md text-label-md hover:bg-on-secondary-fixed-variant transition-colors flex-1 lg:flex-none whitespace-nowrap">Pricing</button>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer (Shared Component) -->
+<footer class="w-full bg-surface-container-lowest dark:bg-tertiary-container border-t border-outline-variant dark:border-on-tertiary-fixed-variant">
+<div class="max-w-container-max mx-auto px-margin-desktop py-section-padding flex flex-col md:flex-row justify-between items-center gap-stack-md">
+<div>
+<span class="font-headline-md text-headline-md text-on-background dark:text-surface-bright">ServicePro</span>
+<p class="font-body-md text-body-md text-on-surface dark:text-on-tertiary-fixed mt-2">© 2024 ServicePro Architecture. All rights reserved.</p>
+</div>
+<div class="flex gap-6 flex-wrap justify-center">
+<a class="text-on-surface-variant dark:text-on-tertiary-container hover:text-primary dark:hover:text-primary-fixed transition-all font-body-md text-body-md" href="#">Services</a>
+<a class="text-on-surface-variant dark:text-on-tertiary-container hover:text-primary dark:hover:text-primary-fixed transition-all font-body-md text-body-md" href="#">Portfolio</a>
+<a class="text-on-surface-variant dark:text-on-tertiary-container hover:text-primary dark:hover:text-primary-fixed transition-all font-body-md text-body-md" href="#">Process</a>
+<a class="text-on-surface-variant dark:text-on-tertiary-container hover:text-primary dark:hover:text-primary-fixed transition-all font-body-md text-body-md" href="#">Contact</a>
+<a class="text-on-surface-variant dark:text-on-tertiary-container hover:text-primary dark:hover:text-primary-fixed transition-all font-body-md text-body-md" href="#">Privacy</a>
+</div>
+</div>
+</footer>
+</body></html>

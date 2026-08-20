@@ -447,6 +447,40 @@ def best_label(accent):
     w, k = _cratio((255, 255, 255), _rgb(accent)), _cratio(_rgb(INK), _rgb(accent))
     return ("#ffffff", w) if w >= k else (INK, k)
 
+FOOTER_FLOOR = (14, 20, 27)          # #0e141b -- the old fixed footer ground
+
+
+def footer_ramp(pd):
+    """Per-theme footer ground and text ramp.
+
+    The footer shipped one hardcoded scale -- a #0e141b ground with #aeb9c5,
+    #b9c3ce, #9aa6b2, #c9d2dc and #7d8894 over it -- so all 1001 sites rendered
+    an identical near-black footer whatever their palette was. It is a third of
+    every inner page, which made it the single largest piece of sameness in the
+    output.
+
+    The ground is now the theme's own dark tone mixed halfway to that old
+    near-black. Mixing rather than using --pd raw keeps two properties: the
+    result is never lighter than the lighter of the two inputs, so a pale
+    primary cannot produce a washed-out footer, and it still carries the site's
+    hue, so two themes are visibly different.
+
+    The ramp is then lightened OUT of that ground, so every step keeps the hue
+    and each one is measured against its own ground rather than assumed."""
+    g = tuple(round(0.45 * a + 0.55 * b) for a, b in zip(_rgb(pd), FOOTER_FLOOR))
+
+    def step(target):
+        c = list(g)
+        for _ in range(40):
+            q = tuple(max(0, min(255, int(round(v)))) for v in c)
+            if _cratio(q, g) >= target:
+                return _hex(q)
+            c = [v + (255 - v) * .06 for v in c]
+        return _hex(c)
+
+    return {"bg": _hex(g), "tx": step(8.0), "dim": step(5.5), "faint": step(4.5)}
+
+
 def accent_button(accent):
     """(fill, label) for a filled accent button whose label clears WCAG AA.
 
@@ -493,11 +527,17 @@ def css(t):
     btnr = {"pill": "999px", "round": "12px", "sharp": "3px"}.get(shape, "999px")
     cardr = {"pill": "16px", "round": "14px", "sharp": "4px"}.get(shape, "16px")
     fill, label = accent_button(t["accent"])
+    ft = footer_ramp(t["pd"])
     return CSS_TMPL.replace("__P__", t["p"]).replace("__PD__", t["pd"]) \
+        .replace("__FTBG__", ft["bg"]).replace("__FTTX__", ft["tx"]) \
+        .replace("__FTDIM__", ft["dim"]).replace("__FTFAINT__", ft["faint"]) \
         .replace("__ACCENT__", fill).replace("__ONACCENT__", label) \
         .replace("__ACCENTLT__", accent_on_light(t["accent"])) \
         .replace("__ACCENTDK__", accent_on_dark(t["accent"], t["pd"])) \
         .replace("__DISPLAY__", t["display"]).replace("__BODY__", t["body"]) \
+        .replace("__HDH__", t.get("hd_h", "79px")) \
+        .replace("__DISPHI__", str(t.get("disp_hi", "800"))) \
+        .replace("__DISPTRACK__", t.get("disp_track", "-.02em")) \
         .replace("__BTNR__", btnr).replace("__CARDR__", cardr)
 
 CSS_TMPL = """
@@ -509,9 +549,24 @@ CSS_TMPL = """
   --accent-dk:__ACCENTDK__;--accent-lt:__ACCENTLT__;
   --ink:#182029;--muted:#5c6773;--bg:#ffffff;--soft:#f5f7f9;--soft2:#eef2f6;
   --line:#e3e8ee;--card:#ffffff;--radius:__CARDR__;--btn-r:__BTNR__;--maxw:1180px;
+  /* footer ramp, derived per theme from --pd -- see footer_ramp() */
+  --ft-bg:__FTBG__;--ft-tx:__FTTX__;--ft-dim:__FTDIM__;--ft-faint:__FTFAINT__;
+  /* Height of the sticky header. Five other rules position themselves under
+     it -- anchor scroll-margin, the sticky sidebar, the ranked list and two
+     sticky Services panels -- and every one of them had the number written
+     in by hand. A header variant of a different height would have moved the
+     bar without moving anything that sits below it, so anchors would land
+     behind it and the sticky panels would overlap, with nothing reporting a
+     fault. Measured 79 / 69 / 45 across the two existing breakpoints. */
+  --hd-h:__HDH__;
   --shadow:0 1px 2px rgba(16,32,48,.05),0 8px 24px rgba(16,32,48,.06);
   --shadow-lg:0 12px 40px rgba(16,32,48,.14);
   --disp:'__DISPLAY__',system-ui,sans-serif;--body:'__BODY__',system-ui,sans-serif;
+  /* The heaviest weight the display face actually serves, and the heading
+     tracking that suits it. Four of the pairings use faces with no 800 -- ask
+     for it anyway and the browser draws a fake bold. -.02em suits a geometric
+     sans and cramps a serif. Both come from FONT_PACKS in build.py. */
+  --disp-hi:__DISPHI__;--disp-track:__DISPTRACK__;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -524,10 +579,10 @@ html,body{overflow-x:clip;max-width:100%}
   border-radius:0 0 8px 0}
 .skiplink:focus{left:0}
 /* the sticky header would otherwise cover an in-page anchor target */
-#main,[id]{scroll-margin-top:88px}
+#main,[id]{scroll-margin-top:calc(var(--hd-h) + 9px)}
 body{margin:0;font-family:var(--body);color:var(--ink);background:var(--bg);line-height:1.65;font-size:17px}
-h1,h2,h3,h4{font-family:var(--disp);line-height:1.12;letter-spacing:-.02em;margin:0 0 .5em;font-weight:700}
-h1{font-size:clamp(2.1rem,4.2vw,3.3rem);font-weight:800}
+h1,h2,h3,h4{font-family:var(--disp);line-height:1.12;letter-spacing:var(--disp-track);margin:0 0 .5em;font-weight:700}
+h1{font-size:clamp(2.1rem,4.2vw,3.3rem);font-weight:var(--disp-hi)}
 h2{font-size:clamp(1.6rem,3vw,2.3rem)}
 h3{font-size:1.25rem}
 p{margin:0 0 1rem}
@@ -559,11 +614,92 @@ img{max-width:100%;display:block}
 .top a svg{width:12px;height:12px;fill:var(--accent-dk);vertical-align:-1px;margin-right:4px}
 .top .dot{opacity:.4}
 .top .tsp{flex:1}
+/* Empty until script fills it. The reserved width stops the strip jumping when
+   it does, and tabular figures stop it twitching as the digits change. */
+.top__t{min-width:9ch;text-align:right;font-variant-numeric:tabular-nums;
+  color:rgba(255,255,255,.82);white-space:nowrap}
 .nav-cta-m{display:none}
 .nav-quote{display:none}
 header.site{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .hd{display:flex;align-items:center;gap:12px;padding:12px 0}
-.brand{display:flex;align-items:center;gap:10px;font-family:var(--disp);font-weight:800;font-size:.9rem;color:var(--ink);flex:0 0 auto}
+/* ---- header variants ---------------------------------------------------
+   The announcement strip stays in both -- content decision, not a design one.
+   Both keep .burger, nav.main and .nav-item>button, which is what NAVJS binds
+   to, and both leave the bar's height alone so --hd-h stays true. */
+/* -- center: the nav gets its own centring cell, so a long company name
+      pushes the cell rather than shoving the nav off its axis. */
+.hd--center .hd__mid{flex:1;display:flex;justify-content:center;min-width:0}
+.hd--center .brand{flex:0 0 auto}
+
+/* -- stack: the nav on a full-width row of its own. The only two-row bar, and
+      the only one where the nav is not competing with the brand for space --
+      which is why its dropdowns can afford to be wide. */
+/* The mega is centred on its trigger, which is right until the trigger sits at
+   the left edge of the page. In stack and rail the nav starts hard left, so
+   Services opened to x=-27 and Service Areas to x=-51 -- off the screen, in the
+   real open state, on 306 sites. Anchor those two to the left of their item
+   instead. Everything else keeps the centred behaviour. */
+.hd--stack nav.main .mega,.hd--rail nav.main .mega{left:0;transform:translateY(6px)}
+.hd--stack .nav-item.open .mega,.hd--stack .nav-item:hover .mega,
+.hd--rail .nav-item.open .mega,.hd--rail .nav-item:hover .mega{
+  left:0;transform:translateY(0)}
+.hd--stack .hd{padding:10px 0}
+.hd--stack .hd__row{border-top:1px solid var(--line);background:var(--soft)}
+.hd--stack .hd__row nav.main{display:flex;gap:4px;padding:2px 0}
+.hd--stack nav.main{margin-left:0}
+.hd--stack .brand{margin-right:auto}
+
+/* -- split: two zones, divided by a rule. The lockup keeps the page ground,
+      the nav and the button sit on a tint. */
+.hd--split .hd{padding:0;gap:0}
+.hd--split .hd__z1{display:flex;align-items:center;padding:12px 26px 12px 0;flex:0 0 auto}
+.hd--split .hd__z2{display:flex;align-items:center;gap:14px;flex:1;min-width:0;
+  justify-content:space-between;padding:12px 0 12px 26px;background:var(--soft);
+  border-left:1px solid var(--line)}
+.hd--split .hd__z2 nav.main{margin-left:0}
+
+/* -- breakout: the lockup sits in a filled block that hangs past the bar's own
+      height. The block is what makes this one recognisable, so it keeps its
+      ground on every width. */
+.hd--breakout .hd{padding:0;align-items:stretch;gap:16px}
+.hd--breakout .hd__block{background:var(--pd);padding:14px 20px 20px;
+  margin-bottom:-9px;display:flex;align-items:center;flex:0 0 auto;
+  border-radius:0 0 var(--radius) var(--radius);position:relative;z-index:1}
+.hd--breakout .hd__block .brand{color:#fff}
+.hd--breakout .hd__block .brand span{color:#fff}
+.hd--breakout nav.main{margin-left:auto}
+.hd--breakout .btn{align-self:center}
+
+/* -- dark: dark ground, nav centred, tagline dropped. White on --pd is the
+      pairing the CTA band and the sidebar card already use, so the contrast is
+      the one this codebase has checked most. */
+.hd--dark{background:var(--pd);border-bottom-color:rgba(255,255,255,.14)}
+.hd--dark .hd__mid{flex:1;display:flex;justify-content:center;min-width:0}
+.hd--dark .brand,.hd--dark .brand span{color:#fff}
+.hd--dark nav.main>a,.hd--dark .nav-item>button{color:#fff}
+.hd--dark nav.main>a:hover,.hd--dark .nav-item>button:hover{background:rgba(255,255,255,.12)}
+.hd--dark .burger span{background:#fff}
+
+.hd--rail .hd__lead{display:flex;align-items:center;gap:26px;min-width:0;flex:1}
+.hd--rail .brand--tight{gap:10px}
+.hd--rail .brand--tight span:last-child{white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;font-size:1.02rem}
+.hd--rail nav.main{margin-left:0}
+@media(max-width:1120px){
+  /* Below the drawer breakpoint every variant is the same bar: lockup, burger,
+     button. The arrangements above all assume a nav on the row, and the nav is
+     not on the row here. Keeping them would leave empty cells holding space. */
+  .hd--rail .hd__lead{flex:1;gap:0}
+  .hd--center .hd__mid,.hd--dark .hd__mid{flex:0;display:contents}
+  .hd--stack .hd__row{border-top:0;background:none}
+  .hd--split .hd{padding:12px 0}
+  .hd--split .hd__z1{padding:0;flex:1;min-width:0}
+  .hd--split .hd__z2{flex:0 0 auto;background:none;border-left:0;padding:0}
+  .hd--breakout .hd{padding:12px 0;align-items:center}
+  .hd--breakout .hd__block{margin-bottom:0;padding:8px 12px;border-radius:var(--radius)}
+  .hd--breakout nav.main{margin-left:0}
+}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--disp);font-weight:var(--disp-hi);font-size:.9rem;color:var(--ink);flex:0 0 auto}
 .brand:hover{text-decoration:none}
 .brand>span{white-space:nowrap;line-height:1.08}
 .brand__chip{width:42px;height:42px;border-radius:11px;flex:0 0 auto;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;padding:5px}
@@ -578,14 +714,29 @@ nav.main{margin-left:auto;display:flex;align-items:center;gap:2px;flex:0 1 auto}
 nav.main>a,.nav-item>button{font-family:var(--disp);font-weight:600;font-size:.88rem;color:var(--ink);background:none;border:0;padding:8px 9px;border-radius:10px;cursor:pointer;white-space:nowrap}
 nav.main>a:hover,.nav-item>button:hover{background:var(--soft);text-decoration:none}
 .nav-item{position:relative}
-.nav-item>button::after{content:"";display:inline-block;width:7px;height:7px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);margin-left:7px;vertical-align:2px}
+.nav-item>button::after{content:"";display:inline-block;width:7px;height:7px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);margin-left:7px;vertical-align:2px;transition:transform .2s}
+/* the chevron never moved: it was drawn at rotate(45deg) with no open-state
+   rule, so on every site it pointed down whether the panel was open or shut.
+   225deg points it back up; the 3px nudge keeps the glyph optically centred
+   once its heavy corner is at the top. */
+.nav-item.open>button::after{transform:rotate(225deg);vertical-align:-3px}
 .mega{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%) translateY(6px);
   background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-lg);
   padding:14px;min-width:280px;opacity:0;visibility:hidden;transition:.16s;z-index:70}
 .nav-item:hover .mega{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
 .mega a{display:block;padding:9px 12px;border-radius:9px;color:var(--ink);font-size:.94rem;font-weight:500}
 .mega a:hover{background:var(--soft);color:var(--p);text-decoration:none}
-.mega--areas{min-width:380px;display:grid;grid-template-columns:1fr 1fr;gap:2px 8px}
+/* Three columns, not two. 19 area links in two columns made a 533px panel --
+   on a 768px-tall laptop that is most of the screen, and the count only grows.
+   Three brings it to roughly 370px. minmax(0,1fr) so "Dallas Downtown Historic
+   District" wraps inside its column instead of widening the track; the names
+   must wrap rather than truncate, because a cut-off place name cannot be
+   identified at all. Back to two columns where three would not fit. */
+.mega--areas{min-width:560px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:2px 8px}
+@media(max-width:1240px){
+  .mega--areas{min-width:380px;grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 .mega--areas .mega-all{grid-column:1/-1;font-weight:700;color:var(--p);border-bottom:1px solid var(--line);border-radius:0;margin-bottom:6px}
 .hd .tel{margin-left:4px;display:inline-flex;align-items:center;gap:7px;font-family:var(--disp);font-weight:700;color:var(--p);white-space:nowrap;flex:0 0 auto;font-size:.95rem}
 .hd .tel svg{fill:var(--accent);flex:0 0 auto}
@@ -594,7 +745,11 @@ nav.main>a:hover,.nav-item>button:hover{background:var(--soft);text-decoration:n
 .burger span{display:block;width:24px;height:2.5px;background:var(--ink);border-radius:2px;margin:5px 0}
 /* hero (variant-aware) */
 .hero{position:relative;background:linear-gradient(155deg,var(--pd),var(--p));color:#fff;overflow:hidden}
-.hero::after{content:"";position:absolute;right:-140px;top:-140px;width:420px;height:420px;border-radius:50%;background:var(--accent);opacity:.14}
+/* The 420px accent circle that used to sit here is gone. It rode on ten of
+   the twelve hero variants -- banner and overlap already cancelled it --
+   and it is one of the three recorded reasons the Austin hero was
+   rejected. A decoration that every site carries and two variants have to
+   switch off is not carrying its weight. */
 .hero h1{color:#fff}
 .hero .eyebrow{color:var(--accent-dk)}
 .hero .lead{font-size:1.18rem;color:rgba(255,255,255,.9);max-width:42ch;margin:0 0 26px}
@@ -611,6 +766,125 @@ nav.main>a:hover,.nav-item>button:hover{background:var(--soft);text-decoration:n
 .hero--split .wrap{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:52px;align-items:center;padding:76px 24px 82px}
 .hero--left .wrap{grid-template-columns:.95fr 1.05fr}
 /* -- stacked: centered copy, wide image below -- */
+/* ---- overhang (08) -- photo bleeds off the right edge, copy card overhangs it.
+   The card is opaque on purpose: the photography is ordinary stock and often
+   bright, so text is never placed directly on it. */
+.hero--overhang{position:relative;background:var(--soft);min-height:0;padding:0}
+.hero--overhang .hero__bleed{position:absolute;top:0;right:0;width:58%;height:74%;
+  overflow:hidden;border-bottom-left-radius:calc(var(--radius) + 10px)}
+.hero--overhang .hero__bleed img{width:100%;height:100%;object-fit:cover;display:block}
+.hero--overhang .wrap{position:relative;z-index:1;padding:56px 24px 60px}
+.hero--overhang .hero__card{max-width:600px;background:var(--card);
+  border:1px solid var(--line);border-radius:calc(var(--radius) + 6px);
+  padding:38px 40px;box-shadow:var(--shadow-lg)}
+.hero--overhang h1{color:var(--ink)}
+.hero--overhang .eyebrow{color:var(--accent-lt)}
+.hero--overhang .lead{color:var(--muted)}
+.hero--overhang .chips{grid-template-columns:1fr 1fr}
+.hero--overhang .chips li{color:var(--ink)}
+
+/* ---- twotone (16) -- a solid field carries the copy, the photo takes the rest,
+   and the chip bar rides the seam between them */
+.hero--twotone{background:none;padding:0;min-height:0}
+.hero--twotone .wrap{position:relative;display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;padding:0;
+  align-items:stretch}
+.hero--twotone .hero__field{background:var(--soft);padding:64px 46px 92px;
+  display:flex;flex-direction:column;justify-content:center}
+.hero--twotone .hero__shot{overflow:hidden}
+.hero--twotone .hero__shot img{width:100%;height:100%;min-height:420px;
+  object-fit:cover;display:block}
+.hero--twotone h1{color:var(--ink);margin:0 0 14px}
+.hero--twotone .eyebrow{color:var(--accent-lt)}
+.hero--twotone .lead{color:var(--muted)}
+.hero--twotone .chips{position:absolute;left:34px;right:34px;bottom:26px;
+  background:var(--card);border:1px solid var(--line);
+  border-radius:var(--btn-r);padding:12px 18px;
+  display:flex;flex-wrap:wrap;gap:10px 26px;justify-content:center;
+  box-shadow:var(--shadow);margin:0}
+.hero--twotone .chips li{color:var(--ink)}
+
+/* ---- inset (17) -- one ruled frame holds label and lead, then a photo band,
+   then the h1 and the actions */
+.hero--inset{background:var(--soft);padding:26px 0 30px;min-height:0}
+.hero--inset .hero__frame{border:1px solid var(--line);
+  border-radius:calc(var(--radius) + 8px);background:var(--card);padding:22px}
+.hero--inset .hero__top{display:grid;gap:4px;margin:0 0 14px;max-width:62ch}
+.hero--inset .hero__strip{overflow:hidden;border-radius:var(--radius)}
+/* 21/9 across a 1130px frame is a 484px photograph, which made this the tallest
+   of the nine heroes at 894px -- taller than the two that were already pushing
+   the fold down. Capped so the actions stay reachable. */
+.hero--inset .hero__strip img{width:100%;aspect-ratio:21/9;max-height:270px;
+  object-fit:cover;display:block}
+.hero--inset .hero__foot{display:grid;grid-template-columns:minmax(0,1fr) auto;
+  gap:14px 40px;align-items:center;margin:18px 0 14px}
+.hero--inset h1{color:var(--ink);margin:0;grid-column:1}
+.hero--inset .hero__foot .cta{grid-column:2;margin:0}
+.hero--inset .eyebrow{color:var(--accent-lt)}
+.hero--inset .lead{color:var(--muted);margin:0}
+.hero--inset .chips{margin:0}
+.hero--inset .chips li{color:var(--ink)}
+/* ---- masthead (09) -- no photograph. Oversized h1 on the site's dark brand
+   ground, chips on a ruled band beneath. --pd rather than a literal, so it
+   takes each site's own dark tone; white on --pd is already gate-checked by
+   cta_contrast_failures. */
+.hero--masthead{background:var(--pd);padding:0;min-height:0}
+.hero--masthead .wrap{padding:58px 34px 30px}
+.hero--masthead .hero__mast{max-width:58ch}
+.hero--masthead h1{color:#fff;margin:0 0 18px;
+  font-size:clamp(2rem,4.4vw,3.6rem);line-height:1.05;letter-spacing:var(--disp-track)}
+.hero--masthead .eyebrow{color:var(--accent-dk)}
+.hero--masthead .lead{color:rgba(255,255,255,.86);max-width:52ch;margin:0 0 28px}
+.hero--masthead .hero__band{margin-top:32px;padding-top:20px;
+  border-top:1px solid rgba(255,255,255,.22)}
+.hero--masthead .chips{display:flex;flex-wrap:wrap;gap:12px 34px;margin:0}
+.hero--masthead .chips li{color:rgba(255,255,255,.9);font-size:.82rem;
+  letter-spacing:.06em;text-transform:uppercase}
+.hero--masthead .chips svg{color:var(--accent-dk)}
+
+/* ---- plate (10) -- no photograph. A hairline frame with the eyebrow riding
+   its top rule and the chips riding the bottom one.
+   Both need a background that matches the ground to punch the rule, and both
+   need scoping: `.hero .eyebrow` already exists at (0,2,0), so an unscoped
+   `.hero__plate .eyebrow` would not reliably win. */
+.hero--plate{background:var(--bg);padding:40px 0 44px;min-height:0}
+.hero--plate .wrap{padding:0 24px}
+.hero--plate .hero__plate{position:relative;border:2px solid var(--ink);
+  border-radius:calc(var(--radius) + 4px);padding:52px 40px 46px;
+  text-align:center;display:grid;justify-items:center}
+.hero--plate .hero__plate .eyebrow{position:absolute;top:0;left:50%;
+  transform:translate(-50%,-50%);margin:0;padding:0 16px;background:var(--bg);
+  color:var(--muted);white-space:nowrap}
+.hero--plate h1{color:var(--ink);margin:0 0 16px;max-width:20ch;
+  font-size:clamp(1.7rem,3.4vw,2.8rem);line-height:1.1}
+.hero--plate .lead{color:var(--muted);max-width:56ch;margin:0 0 28px}
+.hero--plate .cta{justify-content:center;margin:0}
+.hero--plate .chips{position:absolute;bottom:0;left:50%;
+  transform:translate(-50%,50%);background:var(--bg);padding:0 18px;margin:0;
+  display:flex;flex-wrap:nowrap;gap:0 26px;white-space:nowrap}
+.hero--plate .chips li{color:var(--muted);font-size:.78rem;letter-spacing:.06em;
+  text-transform:uppercase}
+/* ---- wide (18) -- uneven split, photograph two thirds, copy one third.
+   Every other split in the set is 50/50. The copy column is narrow, so the
+   heading clamps smaller than elsewhere and the chips run as a single stacked
+   list rather than the usual two-up grid. The reference render overflowed its
+   own right edge here; minmax(0,..) on both tracks is what prevents that -- a
+   plain 2fr 1fr lets the copy push the grid wider than the wrap. */
+.hero--wide{background:var(--soft);padding:0;min-height:0}
+.hero--wide .wrap{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);
+  gap:0;padding:0;align-items:stretch}
+.hero--wide .hero__pane{overflow:hidden}
+.hero--wide .hero__pane img{width:100%;height:100%;min-height:440px;
+  object-fit:cover;display:block}
+.hero--wide .hero__side{background:var(--card);border-left:1px solid var(--line);
+  padding:44px 34px;display:flex;flex-direction:column;justify-content:center}
+.hero--wide h1{color:var(--ink);margin:0 0 12px;
+  font-size:clamp(1.4rem,2.1vw,2.05rem);line-height:1.14}
+.hero--wide .eyebrow{color:var(--accent-lt)}
+.hero--wide .lead{color:var(--muted);font-size:1rem;margin:0 0 22px;max-width:none}
+.hero--wide .cta{margin:0 0 22px;flex-direction:column;align-items:stretch}
+.hero--wide .chips{grid-template-columns:1fr;gap:9px;margin:0}
+.hero--wide .chips li{color:var(--ink);font-size:.9rem}
 .hero--stacked .wrap{position:relative;padding:66px 24px 0;text-align:center}
 .hero--stacked .hero__copy{max-width:760px;margin:0 auto}
 .hero--stacked .lead{margin:0 auto 26px}
@@ -620,18 +894,22 @@ nav.main>a:hover,.nav-item>button:hover{background:var(--soft);text-decoration:n
 /* -- center: big centered copy on gradient + faint photo, no side image -- */
 .hero--center{background:linear-gradient(155deg,color-mix(in srgb,var(--pd) 90%,transparent),color-mix(in srgb,var(--p) 84%,transparent)),var(--hero-bg) center/cover no-repeat}
 .hero--center .wrap{position:relative;text-align:center;padding:96px 24px 104px;max-width:840px}
-.hero--center h1{font-size:clamp(2.4rem,5vw,3.9rem)}
+/* Was clamp(2.4rem,5vw,3.9rem) -- 62px against 53px on the base h1 and
+   58px on masthead, the next largest. A centred hero wants a big title,
+   but 18% over everything else read as a different design system. Now
+   matched to masthead, which is the largest legitimate hero size. */
+.hero--center h1{font-size:clamp(2.1rem,4.4vw,3.6rem)}
 .hero--center .lead{margin:0 auto 26px}
 .hero--center .cta,.hero--center .chips{justify-content:center}
 /* -- banner: full-bleed photo + dark overlay, centered copy -- */
 .hero--banner{background:linear-gradient(rgba(11,18,28,.74),rgba(11,18,28,.66)),var(--hero-bg) center/cover no-repeat}
-.hero--banner::after{display:none}
+
 .hero--banner .wrap{position:relative;padding:106px 24px;max-width:840px;text-align:center}
 .hero--banner .cta,.hero--banner .chips{justify-content:center}
 .hero--banner .lead{margin:0 auto 26px}
 /* -- overlap: image band with a floating copy card -- */
 .hero--overlap{background:none;color:#fff;overflow:visible}
-.hero--overlap::after{display:none}
+
 .hero__bgimg{height:clamp(300px,40vw,480px)}
 .hero__bgimg img{width:100%;height:100%;object-fit:cover;display:block}
 .hero--overlap .wrap{position:relative;margin-top:clamp(-170px,-14vw,-130px);padding-bottom:44px}
@@ -725,7 +1003,7 @@ nav.main>a:hover,.nav-item>button:hover{background:var(--soft);text-decoration:n
 /* steps */
 .steps{counter-reset:s;display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
 .step{position:relative;padding:28px 24px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
-.step::before{counter-increment:s;content:counter(s);position:absolute;top:-18px;left:24px;width:44px;height:44px;border-radius:12px;background:var(--p);color:#fff;font-family:var(--disp);font-weight:800;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.step::before{counter-increment:s;content:counter(s);position:absolute;top:-18px;left:24px;width:44px;height:44px;border-radius:12px;background:var(--p);color:#fff;font-family:var(--disp);font-weight:var(--disp-hi);display:flex;align-items:center;justify-content:center;font-size:1.2rem}
 .step h3{margin:14px 0 6px}
 .step p{color:var(--muted);margin:0;font-size:.95rem}
 .step__b{min-width:0}
@@ -783,11 +1061,166 @@ table{width:100%;border-collapse:collapse}
 .faq details[open] summary::after{transform:rotate(45deg)}
 .faq .a{padding:0 22px 20px;color:var(--muted)}
 .faq .a p{margin:0 0 .7rem}
+/* ---- FAQ variants ---------------------------------------------------------
+   One library serves both places the FAQ renders: its own section on the
+   homepage, and embedded in the article column on inner pages. `.faq` is
+   capped at 820px above and the article body runs 764-820px, so both are the
+   same width. `cards` is the base rule above; everything here is a modifier.
+   The in-article context is why nothing below sets a heading larger than the
+   article's own h2 (~37px) or paints a full-bleed ground. */
+
+/* list -- hairline rows, no card. The quietest of the five: inside an article
+   it should read as part of the prose, not as a widget dropped into it. */
+.faq--list{gap:0}
+.faq--list details{background:none;border:0;border-bottom:1px solid var(--line);
+  border-radius:0;box-shadow:none}
+.faq--list details:first-child{border-top:1px solid var(--line)}
+.faq--list summary{padding:18px 2px;font-size:1.02rem}
+.faq--list summary::after{content:"";width:9px;height:9px;flex:0 0 9px;
+  border-right:2px solid var(--accent);border-bottom:2px solid var(--accent);
+  transform:rotate(45deg);margin-right:6px;transition:transform .2s}
+.faq--list details[open] summary::after{transform:rotate(225deg);margin-top:5px}
+.faq--list .a{padding:0 2px 20px}
+
+/* pullout -- marked out from the prose by a tinted ground and an accent edge,
+   without becoming a band */
+.faq--pullout{gap:0;background:var(--soft);border-left:3px solid var(--accent);
+  border-radius:0 var(--radius) var(--radius) 0;padding:8px 24px}
+.faq--pullout details{background:none;border:0;border-radius:0;box-shadow:none;
+  border-bottom:1px solid var(--line)}
+.faq--pullout details:last-child{border-bottom:0}
+.faq--pullout summary{padding:16px 0;font-size:1rem}
+.faq--pullout .a{padding:0 0 16px}
+
+/* grid + plain -- answered in the open, so no <details> and no marker at all.
+   Safest of the five for the FAQPage JSON-LD: there is no collapsed state to
+   reason about. */
+.faq-qa h3{margin:0 0 6px;font-family:var(--disp);font-weight:700;
+  font-size:1rem;line-height:1.35;color:var(--ink)}
+.faq-qa .a{padding:0;color:var(--muted)}
+.faq-qa .a p{margin:0;font-size:.97rem;line-height:1.6}
+
+.faq--grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.faq--grid .faq-qa{border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--card);padding:20px}
+/* 40 of the pages carrying an FAQ carry exactly ONE pair. Left alone, the two
+   columns stand and the lone card fills half the row with 374px of dead space
+   beside it, which reads as a broken layout rather than a short one. */
+.faq--grid .faq-qa:only-child{grid-column:1/-1}
+
+/* plain -- type weight and whitespace only, no borders anywhere */
+.faq--plain{gap:26px}
+.faq--plain .faq-qa{padding-left:18px;border-left:2px solid var(--line)}
+.faq--plain .faq-qa h3{font-size:1.04rem}
 /* cta band */
 .cta-band{background:linear-gradient(135deg,var(--p),var(--pd));color:#fff;border-radius:24px;padding:52px;text-align:center;box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
 .cta-band h2{color:#fff;margin:0 0 10px}
-.cta-band p{color:rgba(255,255,255,.9);max-width:52ch;margin:0 auto 26px}
+/* solid white, not rgba(...,.9): the band's ground is the --p/--pd gradient,
+   and on the lightest primaries in themes.json a 90% white lands at 4.32:1 --
+   below AA. Pure white is 4.99:1 on that same ground, which passes but leaves
+   little headroom, so nothing here should be faded again without re-running
+   the cta_contrast_failures check. */
+.cta-band p{color:#fff;max-width:52ch;margin:0 auto 26px}
 .cta-band .cta{display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
+/* ---- CTA band variants ----------------------------------------------------
+   The base above is the filled gradient card ("panel") and is left alone: the
+   porta-potty templates in this file render it directly. Everything below is a
+   modifier. Variants that drop the fill must also drop the white text the base
+   sets, or they paint white on white. */
+.ctab--bar,.ctab--card,.ctab--editorial{background:none;box-shadow:none;
+  color:var(--ink);text-align:left;padding:0}
+.ctab--bar h2,.ctab--card h2,.ctab--editorial h2{color:var(--ink)}
+.ctab--bar p,.ctab--card p,.ctab--editorial p{color:var(--muted)}
+.ctab--bar .cta,.ctab--editorial .cta{justify-content:flex-start}
+
+/* bar -- copy and actions on one baseline, hairline top and bottom */
+.ctab--bar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:22px 40px;
+  align-items:center;border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);padding:30px 0}
+.ctab__b h2{margin:0 0 6px;font-size:clamp(1.25rem,2vw,1.6rem);line-height:1.2}
+.ctab__b p{margin:0;max-width:56ch}
+
+/* card -- a quiet bordered card rather than a filled one */
+.ctab--card{border:1px solid var(--line);background:var(--card);
+  border-radius:var(--radius);padding:40px;text-align:center}
+.ctab--card .cta{justify-content:center}
+.ctab--card h2{margin:0 0 10px;font-size:clamp(1.3rem,2.2vw,1.75rem)}
+.ctab--card p{margin:0 auto 24px;max-width:52ch}
+.ctab__k{margin:0 0 12px;font-family:var(--disp);font-weight:700;font-size:.76rem;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--accent-lt)}
+
+/* editorial -- heading leads, the lead line demoted beneath a rule */
+.ctab--editorial{display:grid;grid-template-columns:minmax(0,1fr) auto;
+  gap:20px 48px;align-items:start}
+.ctab--editorial h2{grid-column:1;margin:0;
+  font-size:clamp(1.6rem,3.1vw,2.45rem);line-height:1.08;letter-spacing:var(--disp-track)}
+.ctab--editorial .cta{grid-column:2;grid-row:1/3;flex-direction:column;
+  align-items:stretch}
+.ctab__lead{grid-column:1;display:flex;gap:14px;margin:0;max-width:54ch}
+.ctab__rule{flex:0 0 3px;width:3px;background:var(--accent);border-radius:2px}
+/* offset (06) -- the card is lifted off an accent slab sitting behind it.
+   The slab is a real element, not a ::before: it has to sit UNDER the panel in
+   the stacking order while both are in normal flow, and a pseudo-element on a
+   grid parent cannot be placed in the same grid cell as its own children. */
+.ctab--offset{position:relative;background:none;box-shadow:none;padding:0;
+  text-align:left;color:var(--ink)}
+.ctab--offset h2{color:var(--ink)}
+.ctab--offset p{color:var(--muted)}
+.ctab__slab{position:absolute;left:24px;right:24px;top:26px;bottom:-14px;
+  background:var(--soft2);border-radius:var(--radius)}
+.ctab__panel{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;
+  gap:18px 40px;align-items:center;background:var(--card);
+  border:1px solid var(--line);border-radius:var(--radius);padding:34px 36px}
+.ctab--offset .ctab__k{grid-column:1;margin:0}
+.ctab--offset .ctab__b{grid-column:1}
+.ctab--offset .cta{grid-column:2;grid-row:1/4;flex-direction:column;align-items:stretch}
+
+/* frame (08) -- the heading breaks the top edge of a hairline box.
+   Negative margin plus a background on the heading punches the rule; the
+   background must be a token, not #fff, or it shows as a white notch on a
+   tinted band. */
+.ctab--frame{background:none;box-shadow:none;padding:26px 0 0;text-align:left;
+  color:var(--ink)}
+/* display:block + width:fit-content, not inline-block: as an inline box the
+   heading still generates a line box, whose half-leading and descender sat
+   below the glyphs, so the negative margin was eaten and the heading floated
+   10px ABOVE the frame instead of breaking its edge. */
+.ctab--frame .ctab__over{margin:0 0 -20px 34px;position:relative;z-index:1;
+  display:block;width:fit-content;padding:0 14px;background:var(--bg);
+  color:var(--ink);font-size:clamp(1.3rem,2.3vw,1.9rem);line-height:1.1}
+.ctab__box{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px 40px;
+  align-items:center;border:1px solid var(--line);border-radius:var(--radius);
+  padding:34px 34px 28px}
+.ctab--frame .ctab__k{grid-column:1;margin:0}
+.ctab--frame p{grid-column:1;margin:0;color:var(--muted);max-width:52ch}
+.ctab--frame .cta{grid-column:2;grid-row:1/3}
+
+/* grid (11) -- heading, lead and actions as three columns, ruled between */
+.ctab--grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr) auto;
+  gap:0 34px;align-items:center;background:none;box-shadow:none;
+  padding:30px 0;text-align:left;color:var(--ink);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.ctab--grid h2{margin:0;color:var(--ink);font-size:clamp(1.2rem,1.9vw,1.55rem);
+  line-height:1.2}
+.ctab__c1 .ctab__k{margin:0 0 6px}
+.ctab__c2{border-left:1px solid var(--line);padding-left:34px}
+.ctab--grid p{margin:0;color:var(--muted);font-size:.98rem}
+.ctab--grid .cta{flex-direction:column;align-items:stretch}
+
+/* rail (12) -- a heavy accent bar down the left edge. The most confident of the
+   set on a plain ground, which is why it earns its place: the others all rely
+   on a border or a tint to be visible at all. */
+.ctab--rail{display:grid;grid-template-columns:auto minmax(0,1fr) auto;
+  gap:0 26px;align-items:center;background:none;box-shadow:none;
+  padding:6px 0;text-align:left;color:var(--ink)}
+.ctab__bar{align-self:stretch;width:6px;min-height:96px;border-radius:3px;
+  background:var(--accent)}
+.ctab--rail h2{margin:6px 0 8px;color:var(--ink);
+  font-size:clamp(1.35rem,2.4vw,2rem);line-height:1.14}
+.ctab--rail p{margin:0;color:var(--muted);max-width:56ch}
+.ctab--rail .ctab__k{margin:0}
+.ctab--rail .cta{flex-direction:column;align-items:stretch}
+
 /* footer */
 footer.site{background:#0f151b;color:#aeb9c5;padding:60px 0 26px;margin-top:0}
 footer.site .cols{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.3fr;gap:34px;padding-bottom:34px;border-bottom:1px solid rgba(255,255,255,.1)}
@@ -795,7 +1228,7 @@ footer.site h4{color:#fff;font-size:.95rem;margin:0 0 14px;letter-spacing:.04em;
 footer.site a{color:#c4cdd8;display:block;padding:5px 0;font-size:.95rem}
 footer.site a:hover{color:#fff}
 footer.site .fbrand p{font-size:.95rem;max-width:32ch}
-footer.site .flogo{display:flex;align-items:center;gap:10px;color:#fff;font-family:var(--disp);font-weight:800;font-size:1.15rem;margin-bottom:14px}
+footer.site .flogo{display:flex;align-items:center;gap:10px;color:#fff;font-family:var(--disp);font-weight:var(--disp-hi);font-size:1.15rem;margin-bottom:14px}
 footer.site .addr{font-style:normal;line-height:1.7;font-size:.95rem}
 footer.site .addr a{display:inline;padding:0;color:#fff;font-weight:700}
 .legal{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:22px;font-size:.86rem;color:#7d8894}
@@ -840,6 +1273,156 @@ footer.site a.btn--ghost,footer.site a.btn--ghost:hover{color:#fff}
 .page-hero .crumb{font-size:.85rem;color:rgba(255,255,255,.7);margin-bottom:10px}
 .page-hero .crumb a{color:rgba(255,255,255,.85)}
 .page-hero h1{color:#fff;margin:0}
+/* The crumb's last item is the current page, which is standard, but our inner
+   h1 runs to 75 characters -- so the tail is capped rather than dropped. The
+   full trail still ships in the BreadcrumbList schema either way. */
+.crumb__c{display:inline-block;max-width:34ch;overflow:hidden;text-overflow:ellipsis;
+  white-space:nowrap;vertical-align:bottom}
+.page-hero .ph__d{margin:12px 0 0;max-width:62ch;color:rgba(255,255,255,.92);
+  font-size:1.02rem;line-height:1.55}
+.page-hero .ph__loc{display:inline-block;font-size:.72rem;letter-spacing:.09em;
+  text-transform:uppercase;padding:4px 10px;border-radius:999px;
+  background:rgba(255,255,255,.16);color:#fff;white-space:nowrap}
+
+/* ---- page-hero variants ------------------------------------------------
+   Every inner page of every one of the 1001 sites opened with the same
+   gradient band: crumb, then h1, nothing else. Inner pages carry ~200 URLs
+   per site, so this was the single most-repeated block in the estate after
+   the footer. Four of the seven drop the gradient for a light ground, which
+   is a bigger visual break than any rearrangement of the same band.
+
+   The light ones are safe on contrast without a per-theme check: --ink,
+   --muted, --soft and --soft2 are fixed values, identical in all 1001
+   themes, so their ratios are constants rather than 1001 separate cases. */
+
+/* -- band: the original gradient, now with the location chip and the page's
+      own description sentence, which until now existed only in <meta>. */
+.page-hero.ph--band .ph__top{display:flex;align-items:center;gap:14px;
+  flex-wrap:wrap;margin-bottom:10px}
+.page-hero.ph--band .crumb{margin-bottom:0}
+
+/* -- photo: light ground, prose left, photograph right */
+.page-hero.ph--photo{background:var(--soft);color:var(--ink);padding:0;
+  border-bottom:1px solid var(--line)}
+.page-hero.ph--photo .ph__split{display:grid;grid-template-columns:1.25fr .95fr;
+  gap:40px;align-items:center}
+.page-hero.ph--photo .ph__tx{padding:44px 0}
+.page-hero.ph--photo h1{color:var(--ink)}
+.page-hero.ph--photo .crumb{color:var(--muted)}
+.page-hero.ph--photo .crumb a{color:var(--muted)}
+.page-hero.ph--photo .ph__d{color:var(--muted)}
+.page-hero.ph--photo .ph__loc{background:var(--soft2);color:var(--muted)}
+.page-hero.ph--photo .ph__ph{align-self:stretch;overflow:hidden}
+.page-hero.ph--photo .ph__ph img{width:100%;height:100%;object-fit:cover;
+  min-height:210px;max-height:280px;display:block}
+
+/* -- center: a solid deep ground rather than the gradient, stacked centred */
+.page-hero.ph--center{background:var(--pd);padding:56px 0 48px;text-align:center}
+.page-hero.ph--center .ph__mid{max-width:52rem;margin:0 auto}
+.page-hero.ph--center .crumb{justify-content:center;margin-bottom:14px}
+.page-hero.ph--center h1{margin:0 0 16px}
+
+/* -- utility: a thin bar carries the crumb and the location, the title sits
+      below a rule. The only variant where the crumb is not stacked above the
+      title in the same column. */
+.page-hero.ph--utility{background:var(--bg);color:var(--ink);padding:0;
+  border-bottom:1px solid var(--line)}
+.page-hero.ph--utility .ph__bar{background:var(--soft);
+  border-bottom:1px solid var(--line)}
+.page-hero.ph--utility .ph__bar .wrap{display:flex;align-items:center;
+  justify-content:space-between;gap:16px;padding-top:11px;padding-bottom:11px}
+.page-hero.ph--utility .ph__body{padding:34px 0 30px}
+.page-hero.ph--utility h1{color:var(--ink)}
+.page-hero.ph--utility .crumb{margin-bottom:0;color:var(--muted)}
+.page-hero.ph--utility .crumb a{color:var(--muted)}
+.page-hero.ph--utility .ph__d{color:var(--muted)}
+.page-hero.ph--utility .ph__loc{background:transparent;color:var(--muted);padding:0}
+
+/* -- strip: a full-bleed photograph above the title. The text sits below the
+      image, never on it -- text over an arbitrary photo is unprovable on
+      contrast, and a caption on a photo already measured 1.74:1 once. */
+.page-hero.ph--strip{background:var(--bg);color:var(--ink);padding:0;
+  border-bottom:1px solid var(--line)}
+.page-hero.ph--strip .ph__band{height:170px;overflow:hidden}
+.page-hero.ph--strip .ph__band img{width:100%;height:100%;object-fit:cover;display:block}
+.page-hero.ph--strip .ph__body{padding:26px 0 28px}
+.page-hero.ph--strip h1{color:var(--ink)}
+.page-hero.ph--strip .crumb{color:var(--muted)}
+.page-hero.ph--strip .crumb a{color:var(--muted)}
+
+/* -- cta: gradient, prose left, a single button held right */
+.page-hero.ph--cta .ph__row{display:flex;align-items:center;gap:32px;
+  justify-content:space-between}
+.page-hero.ph--cta .ph__tx{min-width:0}
+.page-hero.ph--cta .ph__act{flex:0 0 auto}
+
+/* -- grid: a left rail of stacked crumb items, the title in the middle, the
+      photograph on the right. The crumb reads as a column, not a trail. */
+.page-hero.ph--grid{background:var(--bg);color:var(--ink);padding:0;
+  border-bottom:1px solid var(--line)}
+.page-hero.ph--grid .ph__g{display:grid;grid-template-columns:190px minmax(0,1fr) 260px;
+  align-items:stretch;min-height:190px}
+.page-hero.ph--grid .ph__rail{padding:26px 22px 26px 0;
+  border-right:1px solid var(--line);display:flex;flex-direction:column;
+  gap:10px;justify-content:center}
+.page-hero.ph--grid .ph__rail .crumb{display:flex;flex-direction:column;
+  align-items:flex-start;gap:6px;margin:0;color:var(--muted);font-size:.8rem}
+.page-hero.ph--grid .ph__rail .crumb .sep{display:none}
+.page-hero.ph--grid .ph__rail .crumb a{color:var(--muted)}
+/* the 34ch cap on .crumb__c is wider than this 190px rail, and a nowrap flex
+   item does not shrink to its container -- so the tail ran 59px past the rail
+   and collided with the h1 beside it */
+.page-hero.ph--grid .ph__rail .crumb a,
+.page-hero.ph--grid .ph__rail .crumb__c{max-width:100%;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
+.page-hero.ph--grid .ph__mid{display:flex;align-items:center;padding:26px 30px}
+.page-hero.ph--grid h1{color:var(--ink);margin:0}
+.page-hero.ph--grid .ph__loc{background:var(--soft2);color:var(--muted)}
+.page-hero.ph--grid .ph__ph{overflow:hidden}
+.page-hero.ph--grid .ph__ph img{width:100%;height:100%;object-fit:cover;display:block}
+
+@media(max-width:900px){
+  .page-hero{padding:38px 0}
+  .page-hero .ph__d{font-size:.97rem;margin-top:10px}
+  .page-hero.ph--photo .ph__split{grid-template-columns:1fr;gap:0}
+  .page-hero.ph--photo .ph__tx{padding:22px 0 24px;order:2}
+  .page-hero.ph--photo .ph__ph{order:1}
+  .page-hero.ph--photo .ph__ph img{min-height:0;height:150px;max-height:150px}
+  .page-hero.ph--cta .ph__row{flex-direction:column;align-items:flex-start;gap:20px}
+  .page-hero.ph--cta .ph__act{width:100%}
+  .page-hero.ph--cta .ph__act .btn{width:100%;justify-content:center}
+  /* the rail becomes a normal trail again -- a 190px column of stacked
+     crumb items is most of a 390px screen */
+  .page-hero.ph--grid .ph__g{grid-template-columns:minmax(0,1fr);min-height:0}
+  .page-hero.ph--grid .ph__rail,.page-hero.ph--grid .ph__mid,
+  .page-hero.ph--grid .ph__ph{min-width:0}
+  .page-hero.ph--grid .ph__rail{border-right:0;padding:20px 0 0;
+    flex-direction:row;align-items:center;gap:12px;flex-wrap:wrap}
+  .page-hero.ph--grid .ph__rail .crumb{flex-direction:row;align-items:center;
+    gap:6px;flex-wrap:wrap;min-width:0}
+  .page-hero.ph--grid .ph__rail .crumb__c{min-width:0;flex:0 1 auto}
+  .page-hero.ph--grid .ph__rail .crumb .sep{display:inline}
+  .page-hero.ph--grid .ph__mid{padding:12px 0 16px}
+  .page-hero.ph--grid .ph__ph{height:140px}
+  .page-hero.ph--utility .ph__bar .wrap{gap:10px}
+  .page-hero.ph--strip .ph__band{height:130px}
+}
+@media(max-width:560px){
+  .crumb__c{max-width:20ch}
+  .page-hero{padding:28px 0}
+  /* the sentence stays, bounded -- four lines of it plus a three-line title
+     was over half a 812px screen before any content */
+  .page-hero .ph__d{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;
+    overflow:hidden}
+  .page-hero.ph--photo .ph__ph img{height:128px;max-height:128px}
+  .page-hero.ph--center{padding:32px 0 28px}
+  .page-hero.ph--utility .ph__body{padding:22px 0 20px}
+  .page-hero.ph--strip .ph__band{height:118px}
+  .page-hero.ph--strip .ph__body{padding:18px 0 20px}
+  .page-hero.ph--cta .ph__row{gap:16px}
+  .page-hero.ph--utility .ph__bar .wrap{flex-direction:column;
+    align-items:flex-start;gap:4px}
+}
 .article{display:grid;grid-template-columns:1fr 320px;gap:48px;padding:56px 0}
 /* inner-article layouts. Every inner page on every site used the same
    prose-left / sidebar-right grid, which left inner pages measurably MORE
@@ -869,12 +1452,68 @@ footer.site a.btn--ghost,footer.site a.btn--ghost:hover{color:#fff}
 .article .body ul,.article .body ol{padding-left:1.2em}
 .article .body li{margin:.35em 0}
 .article .tw{overflow-x:auto;margin:1.4em 0}
-.aside{position:sticky;top:96px;align-self:start}
+.aside{position:sticky;top:calc(var(--hd-h) + 17px);align-self:start}
 .qcard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px;text-align:center}
 .qcard h3{margin:0 0 8px}
 .qcard p{color:var(--muted);font-size:.94rem}
-.qcard .tel{font-family:var(--disp);font-weight:800;font-size:1.5rem;color:var(--p);display:block;margin:8px 0 16px}
+.qcard .tel{font-family:var(--disp);font-weight:var(--disp-hi);font-size:1.5rem;color:var(--p);display:block;margin:8px 0 16px}
 .qcard .btn{width:100%;justify-content:center;margin-bottom:10px}
+
+/* ---- sidebar variants --------------------------------------------------
+   Every interior page of all 1001 sites carried the same centred card. The
+   column is sticky, so each variant has to stay short enough to fit a
+   viewport beside the article -- roughly 520px -- or it stops sticking and
+   trails the prose down the page. */
+
+/* -- dark: icon and heading on one row, text ranged left. The card reads as
+      a banner rather than the centred stack everyone else shows. */
+.qcard--dark{background:var(--pd);border-color:transparent;text-align:left}
+.qcard--dark .qc__top{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.qcard--dark .qc__top svg{width:26px;height:26px;color:#fff;flex:0 0 auto}
+.qcard--dark h3{color:#fff;margin:0}
+.qcard--dark p{color:rgba(255,255,255,.86)}
+.qcard--dark .tel{color:#fff}
+.qcard--dark .btn--outline{border-color:rgba(255,255,255,.55);color:#fff}
+
+/* -- toc: the article's own headings, above the card. The only variant where
+      something precedes the card rather than following it. */
+.as-toc{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:14px 18px;margin-bottom:14px}
+.as-toc__h{margin:0 0 10px;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted)}
+.as-toc ol{list-style:none;margin:0;padding:0}
+.as-toc li{margin:0}
+.as-toc a{display:block;padding:6px 0 6px 12px;border-left:2px solid var(--line);
+  color:var(--ink);text-decoration:none;font-size:.94rem;line-height:1.35}
+.as-toc a:hover{border-left-color:var(--accent);color:var(--p)}
+
+/* -- reasons: the four claims as a two-by-two block under the card */
+.as-why{margin-top:14px}
+.as-why__h{margin:0 0 10px;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted)}
+.as-why__g{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.as-why__c{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:12px 10px;text-align:center;display:flex;flex-direction:column;
+  align-items:center;gap:6px;font-size:.8rem;line-height:1.3;color:var(--ink)}
+.as-why__c svg{width:20px;height:20px;color:var(--accent-lt)}
+.as-why__c b{font-weight:700}
+
+/* -- stack: area links as pills under the card. Pills wrap, so a label like
+      "Buckner Terrace / Everglade Park" lengthens one pill instead of
+      overflowing the 320px column. */
+.as-areas{margin-top:14px}
+.as-areas__h{margin:0 0 10px;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted)}
+.as-areas__p{display:flex;flex-wrap:wrap;gap:8px}
+.as-areas__p a{display:inline-block;padding:7px 12px;border:1px solid var(--line);
+  border-radius:999px;background:var(--card);color:var(--ink);text-decoration:none;
+  font-size:.85rem;line-height:1.2}
+.as-areas__p a:hover{border-color:var(--accent);color:var(--p)}
+
+/* .article--wide lays the card out as a horizontal bar with no column at all,
+   so the added modules have to drop back to a normal block there. */
+.article--wide .as-toc,.article--wide .as-why,.article--wide .as-areas{max-width:820px}
+@media(min-width:821px){.article--wide .as-why__g{grid-template-columns:repeat(4,1fr)}}
 .article .faq{margin:1.4em 0 0}
 /* GoHighLevel quote form embed (+ shimmer skeleton) */
 .quote-embed{padding:clamp(1.6rem,3.5vw,2.8rem) 0;background:var(--soft)}
@@ -915,8 +1554,31 @@ footer.site a.btn--ghost,footer.site a.btn--ghost:hover{color:#fff}
 @keyframes aDrop{from{transform:translateY(-14px);opacity:0}to{transform:none;opacity:1}}
 /* responsive */
 @media(max-width:1120px){
-  nav.main{display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;padding:12px;gap:2px;box-shadow:var(--shadow-lg);max-height:calc(100vh - 70px);overflow-y:auto}
+  :root{--hd-h:69px}
+  /* 45px below 560. Declared here, after the 69px, because a later rule
+     wins between two matching media queries -- both match at 390. */
+  nav.main{display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;padding:12px;gap:2px;box-shadow:var(--shadow-lg);max-height:calc(100vh - 70px);max-height:calc(100dvh - 70px - env(safe-area-inset-bottom,0px));padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+  /* The drawer used to cap at calc(100vh - 70px). On iOS Safari 100vh is the
+     LARGE viewport -- it excludes the dynamic toolbar and the home indicator --
+     so the bottom of an open menu sat under browser chrome and could not be
+     tapped at all. The menu looked fine and simply did not respond, which is
+     exactly how it was reported. 100dvh tracks the visible viewport and the
+     safe-area inset keeps the last row clear of the home indicator; the 100vh
+     line above stays as the fallback for engines without dvh.
+     overscroll-behavior:contain stops a scroll at the drawer's end from
+     chaining to the page behind it. */
   nav.main.open{display:flex}
+  /* Stuck :hover after a tap. iOS holds the hover state on the last tapped
+     element, so a nav row stayed highlighted after the menu closed and read as
+     still-selected. Neutralised by WIDTH, not @media(hover:none): some touch
+     devices report hover capability, so that gate silently never applies --
+     the reference fix in the porta-potty repo hit exactly that and had to be
+     rewritten. At <=1120px the nav is always the drawer and hover never opens
+     a panel, so hover should have no visual effect at all here. */
+  nav.main>a:hover,.nav-item>button:hover,
+  .lay-nav-pill nav.main>a:hover,.lay-nav-pill .nav-item>button:hover{
+    background:transparent}
+  .mega a:hover{background:transparent;color:var(--ink)}
   /* pill-nav variant: reset the desktop pill so the mobile panel isn't a giant ellipse */
   .lay-nav-pill nav.main{border-radius:0;padding:12px;gap:2px;background:#fff}
   .lay-nav-pill nav.main>a,.lay-nav-pill .nav-item>button{border-radius:10px;padding:12px 14px}
@@ -933,7 +1595,11 @@ footer.site a.btn--ghost,footer.site a.btn--ghost:hover{color:#fff}
   .hd .btn{display:none}
   .hd .tel{display:none}
 }
+@media(max-width:560px){:root{--hd-h:45px}}
 @media(max-width:720px){
+  /* the strip centres and tightens here; a clock on the end pushes the
+     two lines it exists to carry off the edge */
+  .top__t{display:none}
   .top .wrap{gap:10px;font-size:.8rem;justify-content:center}
   .top span,.top .dot{display:none}
   .top a:not([href^="tel"]){display:none}
@@ -942,6 +1608,36 @@ footer.site a.btn--ghost,footer.site a.btn--ghost:hover{color:#fff}
   .hero--split .wrap{grid-template-columns:1fr;gap:32px;padding:52px 24px}
   .hero--split .hero__media{order:-1}
   .hero--overlap .wrap{margin-top:-90px}
+  /* the three newer heroes are all side-by-side grids and had no mobile rules
+     at all: twotone ran to 951px on a 390px screen with its actions 703px
+     down, because a 1fr 1fr grid at that width just makes both columns tall. */
+  .hero--twotone .wrap{grid-template-columns:1fr}
+  .hero--twotone .hero__field{padding:40px 24px 30px;order:2}
+  .hero--twotone .hero__shot{order:1}
+  .hero--twotone .hero__shot img{min-height:0;aspect-ratio:16/9}
+  .hero--twotone .chips{position:static;order:3;margin:0 24px 24px;
+    justify-content:flex-start;box-shadow:none}
+  .hero--overhang .hero__bleed{position:relative;width:100%;height:auto}
+  .hero--overhang .hero__bleed img{aspect-ratio:16/9;height:auto}
+  .hero--overhang .wrap{padding:0 20px 36px;margin-top:-42px}
+  .hero--overhang .hero__card{max-width:none;padding:26px 22px}
+  .hero--inset .hero__foot{grid-template-columns:1fr;gap:14px}
+  .hero--inset .hero__foot .cta{grid-column:1}
+  .hero--inset .hero__strip img{aspect-ratio:16/9;max-height:none}
+  .hero--wide .wrap{grid-template-columns:1fr}
+  .hero--wide .hero__pane img{min-height:0;aspect-ratio:16/9}
+  .hero--wide .hero__side{border-left:0;border-top:1px solid var(--line);
+    padding:30px 22px}
+  .hero--wide .cta{flex-direction:column}
+  .hero--masthead .wrap{padding:40px 20px 26px}
+  .hero--masthead .chips{gap:10px 20px}
+  .hero--masthead .chips li{font-size:.76rem}
+  /* the chips ride the bottom rule on desktop; at 390px four uppercase labels
+     cannot sit on one line, so they come inside the plate and wrap normally */
+  .hero--plate .hero__plate{padding:44px 20px 30px}
+  .hero--plate .chips{position:static;transform:none;background:none;padding:0;
+    margin:26px 0 0;flex-wrap:wrap;white-space:normal;justify-content:center;
+    gap:8px 18px}
   .trust .wrap{grid-template-columns:repeat(2,1fr);gap:16px}
   .g4{grid-template-columns:repeat(2,1fr)}
   .g3,.steps{grid-template-columns:1fr}
@@ -959,8 +1655,32 @@ footer.site a.btn--ghost,footer.site a.btn--ghost:hover{color:#fff}
   .scards--side{grid-template-columns:1fr}
   .trust .wrap{grid-template-columns:1fr}
   .cta-band{padding:34px 20px}
+  /* two 370px cards become two ~150px ones inside the article column long
+     before the phone breakpoint, so the grid unwinds early */
+  .faq--grid{grid-template-columns:1fr}
+  .faq--pullout{padding:6px 18px}
   .hero h1{font-size:2rem}
   .hero .cta .btn,.cta-band .cta .btn{width:100%;justify-content:center}
+  /* every side-by-side CTA variant unwinds to one column here. .ctab--bar and
+     .ctab--editorial are two-column grids that would otherwise squeeze the
+     buttons into a sliver beside the copy. */
+  .ctab--bar,.ctab--editorial{grid-template-columns:1fr;gap:18px}
+  .ctab--editorial h2,.ctab--editorial .cta,.ctab__lead{grid-column:1}
+  .ctab--editorial .cta{grid-row:auto}
+  /* every new variant is a side-by-side grid on desktop and must unwind, or
+     the actions column collapses to a sliver beside the copy */
+  .ctab__panel,.ctab__box,.ctab--grid{grid-template-columns:1fr;gap:18px}
+  .ctab--offset .cta,.ctab--frame .cta{grid-column:1;grid-row:auto}
+  .ctab__slab{left:12px;right:12px;top:18px;bottom:-10px}
+  .ctab__panel{padding:26px 20px}
+  .ctab__box{padding:26px 20px 22px}
+  .ctab--frame .ctab__over{margin:0 0 -16px 18px;
+    font-size:clamp(1.15rem,5.2vw,1.5rem)}
+  .ctab__c2{border-left:0;padding-left:0}
+  .ctab--rail{grid-template-columns:auto minmax(0,1fr);gap:0 16px}
+  .ctab--rail .cta{grid-column:2;margin-top:16px}
+  .ctab__bar{min-height:0}
+  .ctab--card{padding:28px 20px}
   .brand small{display:none}
   footer.site .cols{grid-template-columns:1fr}
   footer.site.ft--split .ft-links{grid-template-columns:1fr}
@@ -984,6 +1704,20 @@ NAVJS = """(function(){
        var item=btn.parentNode, open=item.classList.toggle('open');
        btn.setAttribute('aria-expanded',open?'true':'false');
      }
+   });
+ });
+ // A tap outside the nav closes any open dropdown. Scoped to nav.main and the
+ // burger that drives it: a tap on a real link INSIDE the nav has to be left
+ // alone, because collapsing an open panel mid-tap shifts the layout and can
+ // swallow the navigation on touch. Mobile widths only -- above the breakpoint
+ // the dropdowns are hover-driven and carry no .open state to clear.
+ document.addEventListener('click',function(e){
+   if(!window.matchMedia('(max-width:1120px)').matches) return;
+   if(e.target.closest('nav.main')||e.target.closest('.burger')) return;
+   document.querySelectorAll('.nav-item.open').forEach(function(it){
+     it.classList.remove('open');
+     var ib=it.querySelector('button');
+     if(ib)ib.setAttribute('aria-expanded','false');
    });
  });
  // scroll-reveal entrance animations
@@ -1017,6 +1751,75 @@ NAVJS = """(function(){
    els.forEach(function(el){io.observe(el)});
    // safety net: never leave content hidden if the observer never fires
    setTimeout(showAll,2600);
+ })();
+
+ /* Announcement-strip clock: the READER'S local time, from their own browser.
+    Intl does the formatting, so it follows their locale's conventions rather
+    than an assumption about how a time should look.
+
+    It ticks on the minute rather than every second -- a seconds display is a
+    repaint a second, for a header ornament, on every page of every site.
+    The first tick is aligned to the next minute boundary so it does not sit a
+    stale minute behind for up to 59 seconds after load.
+
+    The element is empty in the HTML and CSS reserves its width, so this cannot
+    shift the strip when it fills. No script, no clock, no gap. */
+ (function(){
+   var els=document.querySelectorAll('[data-clock]');
+   if(!els.length)return;
+   var OPTS={h12:{hour:'numeric',minute:'2-digit',hour12:true},
+             h24:{hour:'2-digit',minute:'2-digit',hour12:false},
+             h12day:{weekday:'short',hour:'numeric',minute:'2-digit',hour12:true}};
+   var timer;
+   function paint(now){
+     for(var i=0;i<els.length;i++){
+       var o=OPTS[els[i].getAttribute('data-clock')]||OPTS.h12;
+       try{els[i].textContent=new Intl.DateTimeFormat(undefined,o).format(now);}
+       catch(e){els[i].textContent='';}
+     }
+   }
+   function tick(){
+     var now=new Date();
+     paint(now);
+     clearTimeout(timer);
+     timer=setTimeout(tick,(60-now.getSeconds())*1000+50);
+   }
+   tick();
+   /* A timer is not a clock. Browsers throttle setTimeout in a background tab,
+      and it does not fire at all while the machine is asleep, so the pending
+      tick can land minutes late and the strip would sit on a stale minute
+      until it did. Re-read the time whenever the page comes back into view --
+      visibilitychange for tab switches and wake, pageshow for a back-button
+      restore out of the bfcache, where the DOM is resurrected exactly as it
+      was left, stale text and all. */
+   function resync(){if(!document.hidden)tick();}
+   document.addEventListener('visibilitychange',resync);
+   addEventListener('pageshow',resync);
+ })();
+
+ /* --hd-h, measured rather than declared.
+    Five rules sit at calc(var(--hd-h) + Npx): anchor scroll-margin, the sticky
+    sidebar, the ranked list and two sticky Services panels. The stylesheet
+    carries a per-variant starting value, but the true height moves with three
+    things at once -- the variant (stack is two rows, breakout hangs past the
+    bar), the breakpoint, and the font pack, which changes the lockup's line
+    box. Measured across those, one variant ran 120px at desktop and 65px on a
+    phone; another went the other way, 68px then 83px. No single number is
+    right, so the page measures its own header. The CSS value is the pre-script
+    fallback, and fonts.ready re-runs it because a swapped face resizes the
+    lockup after first paint. */
+ (function(){
+   var hd=document.querySelector('header.site');
+   if(!hd)return;
+   var last=0;
+   function sync(){
+     var h=Math.round(hd.getBoundingClientRect().height);
+     if(h&&h!==last){last=h;document.documentElement.style.setProperty('--hd-h',h+'px');}
+   }
+   sync();
+   addEventListener('resize',function(){requestAnimationFrame(sync)},{passive:true});
+   addEventListener('load',sync);
+   if(document.fonts&&document.fonts.ready){document.fonts.ready.then(sync)}
  })();
 })();"""
 

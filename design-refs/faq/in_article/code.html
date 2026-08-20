@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FAQ Component Concepts</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#e5eeff",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#d3e4fe",
+                        "inverse-surface": "#213145",
+                        "surface-tint": "#565e74",
+                        "on-tertiary-container": "#818486",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed": "#dae2fd",
+                        "on-tertiary": "#ffffff",
+                        "on-background": "#0b1c30",
+                        "tertiary-fixed-dim": "#c4c7c9",
+                        "on-secondary-fixed": "#001a42",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "on-error": "#ffffff",
+                        "outline": "#76777d",
+                        "surface-dim": "#cbdbf5",
+                        "on-primary-fixed": "#131b2e",
+                        "surface-variant": "#d3e4fe",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed-dim": "#bec6e0",
+                        "on-tertiary-fixed": "#191c1e",
+                        "secondary": "#0058be",
+                        "background": "#f8f9ff",
+                        "on-surface": "#0b1c30",
+                        "on-surface-variant": "#45464d",
+                        "inverse-primary": "#bec6e0",
+                        "surface-bright": "#f8f9ff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "tertiary-container": "#191c1e",
+                        "secondary-fixed": "#d8e2ff",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "secondary-container": "#2170e4",
+                        "primary-container": "#131b2e",
+                        "secondary-fixed-dim": "#adc6ff",
+                        "on-primary-container": "#7c839b",
+                        "on-secondary-container": "#fefcff",
+                        "tertiary": "#000000",
+                        "primary": "#000000",
+                        "tertiary-fixed": "#e0e3e5",
+                        "surface-container-high": "#dce9ff",
+                        "surface": "#f8f9ff",
+                        "surface-container-low": "#eff4ff",
+                        "error": "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "outline-variant": "#c6c6cd",
+                        "on-secondary-fixed-variant": "#004395"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "stack-md": "16px",
+                        "stack-lg": "32px",
+                        "unit": "8px",
+                        "margin-desktop": "48px",
+                        "container-max": "1280px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "stack-sm": "8px",
+                        "section-padding": "120px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Epilogue"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg-mobile": ["Epilogue"],
+                        "display-lg": ["Epilogue"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Epilogue"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["30px", { "lineHeight": "38px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "display-lg": ["72px", { "lineHeight": "80px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.01em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@600;700;800&amp;family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        /* Details/Summary enhancements */
+        details > summary {
+            list-style: none;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+        details[open] summary ~ * {
+            animation: sweep .3s ease-in-out;
+        }
+        @keyframes sweep {
+            0%    {opacity: 0; transform: translateY(-5px)}
+            100%  {opacity: 1; transform: translateY(0)}
+        }
+        .chevron {
+            transition: transform 0.3s ease;
+        }
+        details[open] .chevron {
+            transform: rotate(180deg);
+        }
+        /* Prose simulation */
+        .prose-sim {
+            font-family: 'Inter', sans-serif;
+            font-size: 18px;
+            line-height: 1.6;
+            color: #45464d;
+            margin-bottom: 24px;
+        }
+        .prose-sim-h2 {
+            font-family: 'Epilogue', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: #0b1c30;
+            margin-top: 48px;
+            margin-bottom: 24px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background antialiased font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Top Navigation Placeholder (Hidden Navigation Shell due to task focus) -->
+<header class="fixed top-0 w-full z-50 bg-surface border-b border-outline-variant px-margin-desktop h-20 flex items-center justify-between shadow-sm hidden">
+<div class="font-headline-md font-bold text-on-surface">ServicePro</div>
+</header>
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-section-padding pt-32">
+<!-- Outer container simulating the article column (max 764px) -->
+<div class="max-w-[764px] mx-auto bg-surface-container-lowest p-6 md:p-12 shadow-sm rounded-lg border border-outline-variant">
+<h1 class="font-headline-lg-mobile md:font-headline-lg mb-8 text-on-surface">Austin, TX Garage Door Maintenance Guide</h1>
+<p class="prose-sim">Regular maintenance of your garage door system is crucial for longevity and safety in the Austin, TX climate. The fluctuating temperatures can cause metal components to expand and contract, leading to premature wear if not properly lubricated and adjusted.</p>
+<p class="prose-sim">One of the most critical components of your garage door system is the torsion spring. These springs bear the immense weight of the door, making it feel light enough to lift with one hand or a small electric motor.</p>
+<!-- CONCEPT 1: The Minimal Definition List -->
+<h2 class="prose-sim-h2">1. The Minimal Definition List</h2>
+<!-- Concept 1: 1-pair state -->
+<div class="my-stack-lg">
+<div class="mb-4">
+<span class="font-label-md text-on-surface-variant uppercase tracking-wider block mb-2">Before you call</span>
+<h3 class="text-[24px] font-headline-md font-semibold text-on-surface leading-tight">Questions we get a lot</h3>
+</div>
+<div class="border-t border-outline-variant">
+<details class="group py-4">
+<summary class="flex justify-between items-center cursor-pointer font-body-lg font-medium text-on-surface hover:text-secondary transition-colors">
+                        Is replacing a spring a DIY job?
+                        <span class="material-symbols-outlined chevron text-outline">expand_more</span>
+</summary>
+<div class="mt-3 pl-4 pr-8 text-on-surface-variant text-base leading-relaxed border-l-2 border-surface-dim">
+                        No. Garage door springs are under extreme tension. Attempting a DIY replacement without proper tools and training can lead to serious injury or damage.
+                    </div>
+</details>
+</div>
+</div>
+<!-- Concept 1: 4-pair state -->
+<div class="my-stack-lg">
+<div class="border-t border-outline-variant">
+<details class="group py-4 border-b border-outline-variant">
+<summary class="flex justify-between items-center cursor-pointer font-body-lg font-medium text-on-surface hover:text-secondary transition-colors">
+                        Is replacing a spring a DIY job?
+                        <span class="material-symbols-outlined chevron text-outline">expand_more</span>
+</summary>
+<div class="mt-3 pl-4 pr-8 text-on-surface-variant text-base leading-relaxed border-l-2 border-surface-dim">
+                        No. Garage door springs are under extreme tension. Attempting a DIY replacement without proper tools and training can lead to serious injury or damage.
+                    </div>
+</details>
+<details class="group py-4 border-b border-outline-variant">
+<summary class="flex justify-between items-center cursor-pointer font-body-lg font-medium text-on-surface hover:text-secondary transition-colors">
+                        How often should I lubricate the tracks?
+                        <span class="material-symbols-outlined chevron text-outline">expand_more</span>
+</summary>
+<div class="mt-3 pl-4 pr-8 text-on-surface-variant text-base leading-relaxed border-l-2 border-surface-dim">
+                        It's recommended to lubricate the tracks and rollers at least twice a year. Use a silicone-based lubricant, avoiding heavy greases that attract dirt.
+                    </div>
+</details>
+<details class="group py-4 border-b border-outline-variant">
+<summary class="flex justify-between items-center cursor-pointer font-body-lg font-medium text-on-surface hover:text-secondary transition-colors">
+                        Why is my garage door making a grinding noise?
+                        <span class="material-symbols-outlined chevron text-outline">expand_more</span>
+</summary>
+<div class="mt-3 pl-4 pr-8 text-on-surface-variant text-base leading-relaxed border-l-2 border-surface-dim">
+                        Grinding noises usually indicate worn rollers, a lack of lubrication, or hinges that are starting to fail. It's best to have a professional inspect it to prevent further damage.
+                    </div>
+</details>
+<details class="group py-4">
+<summary class="flex justify-between items-center cursor-pointer font-body-lg font-medium text-on-surface hover:text-secondary transition-colors">
+                        Can I paint my garage door myself?
+                        <span class="material-symbols-outlined chevron text-outline">expand_more</span>
+</summary>
+<div class="mt-3 pl-4 pr-8 text-on-surface-variant text-base leading-relaxed border-l-2 border-surface-dim">
+                        Yes, but proper preparation is key. Ensure the surface is clean, lightly sanded, and use a high-quality exterior latex paint suitable for the door's material (steel, wood, or aluminum).
+                    </div>
+</details>
+</div>
+</div>
+<p class="prose-sim">When these springs fail, it's often sudden and loud. Many homeowners mistake the sound for something falling in the garage or even a localized structural issue.</p>
+<!-- CONCEPT 2: The Editorial Pull-Out -->
+<h2 class="prose-sim-h2">2. The Editorial Pull-Out</h2>
+<!-- Concept 2: 1-pair state -->
+<div class="my-stack-lg bg-surface-container-low border-l-4 border-primary pl-6 py-6 pr-4 md:pr-8 rounded-r-lg">
+<div class="mb-4">
+<span class="font-label-md text-secondary uppercase tracking-wider block mb-1">Before you call</span>
+<h3 class="text-[24px] font-headline-md font-semibold text-on-surface leading-tight">Questions we get a lot</h3>
+</div>
+<div class="mt-6">
+<details class="group">
+<summary class="cursor-pointer font-body-lg font-bold text-on-surface hover:text-primary transition-colors flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-1 chevron shrink-0">arrow_drop_down</span>
+<span>Is replacing a spring a DIY job?</span>
+</summary>
+<div class="mt-2 pl-9 text-on-surface-variant text-base leading-relaxed">
+                        No. Garage door springs are under extreme tension. Attempting a DIY replacement without proper tools and training can lead to serious injury or damage.
+                    </div>
+</details>
+</div>
+</div>
+<!-- Concept 2: 4-pair state -->
+<div class="my-stack-lg bg-surface-container-low border-l-4 border-primary pl-6 py-6 pr-4 md:pr-8 rounded-r-lg">
+<div class="mb-6 border-b border-outline-variant pb-4">
+<span class="font-label-md text-secondary uppercase tracking-wider block mb-1">Before you call</span>
+<h3 class="text-[24px] font-headline-md font-semibold text-on-surface leading-tight">Questions we get a lot</h3>
+</div>
+<div class="space-y-4">
+<details class="group">
+<summary class="cursor-pointer font-body-lg font-bold text-on-surface hover:text-primary transition-colors flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-1 chevron shrink-0">arrow_drop_down</span>
+<span>Is replacing a spring a DIY job?</span>
+</summary>
+<div class="mt-2 pl-9 text-on-surface-variant text-base leading-relaxed">
+                        No. Garage door springs are under extreme tension. Attempting a DIY replacement without proper tools and training can lead to serious injury or damage.
+                    </div>
+</details>
+<details class="group">
+<summary class="cursor-pointer font-body-lg font-bold text-on-surface hover:text-primary transition-colors flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-1 chevron shrink-0">arrow_drop_down</span>
+<span>How often should I lubricate the tracks?</span>
+</summary>
+<div class="mt-2 pl-9 text-on-surface-variant text-base leading-relaxed">
+                        It's recommended to lubricate the tracks and rollers at least twice a year. Use a silicone-based lubricant, avoiding heavy greases that attract dirt.
+                    </div>
+</details>
+<details class="group">
+<summary class="cursor-pointer font-body-lg font-bold text-on-surface hover:text-primary transition-colors flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-1 chevron shrink-0">arrow_drop_down</span>
+<span>Why is my garage door making a grinding noise?</span>
+</summary>
+<div class="mt-2 pl-9 text-on-surface-variant text-base leading-relaxed">
+                        Grinding noises usually indicate worn rollers, a lack of lubrication, or hinges that are starting to fail. It's best to have a professional inspect it to prevent further damage.
+                    </div>
+</details>
+<details class="group">
+<summary class="cursor-pointer font-body-lg font-bold text-on-surface hover:text-primary transition-colors flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-1 chevron shrink-0">arrow_drop_down</span>
+<span>Can I paint my garage door myself?</span>
+</summary>
+<div class="mt-2 pl-9 text-on-surface-variant text-base leading-relaxed">
+                        Yes, but proper preparation is key. Ensure the surface is clean, lightly sanded, and use a high-quality exterior latex paint suitable for the door's material.
+                    </div>
+</details>
+</div>
+</div>
+<p class="prose-sim">If you suspect a spring issue, it is highly advised to avoid operating the door manually or via the opener, as this can exacerbate the problem and cause the cables to snap.</p>
+<!-- CONCEPT 3: The Compact Grid -->
+<h2 class="prose-sim-h2">3. The Compact Grid</h2>
+<!-- Concept 3: 1-pair state -->
+<div class="my-stack-lg">
+<div class="text-center mb-6">
+<span class="font-label-md text-on-surface-variant uppercase tracking-wider block mb-2">Before you call</span>
+<h3 class="text-[28px] font-headline-md font-semibold text-on-surface leading-tight">Questions we get a lot</h3>
+</div>
+<div class="border border-outline-variant rounded-lg p-6 bg-surface">
+<h4 class="font-body-lg font-bold text-on-surface mb-2">Is replacing a spring a DIY job?</h4>
+<p class="text-on-surface-variant text-base leading-relaxed">
+                    No. Garage door springs are under extreme tension. Attempting a DIY replacement without proper tools and training can lead to serious injury or damage.
+                </p>
+</div>
+</div>
+<!-- Concept 3: 4-pair state -->
+<div class="my-stack-lg">
+<div class="text-center mb-6">
+<span class="font-label-md text-on-surface-variant uppercase tracking-wider block mb-2">Before you call</span>
+<h3 class="text-[28px] font-headline-md font-semibold text-on-surface leading-tight">Questions we get a lot</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="border border-outline-variant rounded-lg p-6 bg-surface hover:shadow-sm transition-shadow">
+<h4 class="font-body-lg font-bold text-on-surface mb-2">Is replacing a spring a DIY job?</h4>
+<p class="text-on-surface-variant text-sm md:text-base leading-relaxed">
+                        No. Garage door springs are under extreme tension. Attempting a DIY replacement without proper tools and training can lead to serious injury or damage.
+                    </p>
+</div>
+<div class="border border-outline-variant rounded-lg p-6 bg-surface hover:shadow-sm transition-shadow">
+<h4 class="font-body-lg font-bold text-on-surface mb-2">How often should I lubricate the tracks?</h4>
+<p class="text-on-surface-variant text-sm md:text-base leading-relaxed">
+                        It's recommended to lubricate the tracks and rollers at least twice a year. Use a silicone-based lubricant, avoiding heavy greases that attract dirt.
+                    </p>
+</div>
+<div class="border border-outline-variant rounded-lg p-6 bg-surface hover:shadow-sm transition-shadow">
+<h4 class="font-body-lg font-bold text-on-surface mb-2">Why is my door making a grinding noise?</h4>
+<p class="text-on-surface-variant text-sm md:text-base leading-relaxed">
+                        Grinding noises usually indicate worn rollers, a lack of lubrication, or hinges that are starting to fail. It's best to have a professional inspect it.
+                    </p>
+</div>
+<div class="border border-outline-variant rounded-lg p-6 bg-surface hover:shadow-sm transition-shadow">
+<h4 class="font-body-lg font-bold text-on-surface mb-2">Can I paint my garage door myself?</h4>
+<p class="text-on-surface-variant text-sm md:text-base leading-relaxed">
+                        Yes, but proper preparation is key. Ensure the surface is clean, lightly sanded, and use a high-quality exterior latex paint suitable for the material.
+                    </p>
+</div>
+</div>
+</div>
+<p class="prose-sim">Understanding the basic mechanics can help you communicate better with service technicians when they arrive at your Austin home.</p>
+<!-- CONCEPT 4: The Text-Led Stack -->
+<h2 class="prose-sim-h2">4. The Text-Led Stack</h2>
+<!-- Concept 4: 1-pair state -->
+<div class="my-stack-lg py-8">
+<div class="mb-8">
+<span class="font-label-md text-on-surface-variant uppercase tracking-widest block mb-2">Before you call</span>
+<h3 class="text-[26px] font-headline-md font-bold text-on-surface leading-tight">Questions we get a lot</h3>
+</div>
+<div class="pl-4 md:pl-8">
+<h4 class="font-body-lg font-bold text-on-surface mb-3">Is replacing a spring a DIY job?</h4>
+<p class="text-on-surface-variant text-base leading-relaxed max-w-[90%]">
+                    No. Garage door springs are under extreme tension. Attempting a DIY replacement without proper tools and training can lead to serious injury or damage.
+                </p>
+</div>
+</div>
+<!-- Concept 4: 4-pair state -->
+<div class="my-stack-lg py-8">
+<div class="mb-10">
+<span class="font-label-md text-on-surface-variant uppercase tracking-widest block mb-2">Before you call</span>
+<h3 class="text-[26px] font-headline-md font-bold text-on-surface leading-tight">Questions we get a lot</h3>
+</div>
+<div class="space-y-8 pl-4 md:pl-8">
+<div>
+<h4 class="font-body-lg font-bold text-on-surface mb-3">Is replacing a spring a DIY job?</h4>
+<p class="text-on-surface-variant text-base leading-relaxed max-w-[90%]">
+                        No. Garage door springs are under extreme tension. Attempting a DIY replacement without proper tools and training can lead to serious injury or damage.
+                    </p>
+</div>
+<div>
+<h4 class="font-body-lg font-bold text-on-surface mb-3">How often should I lubricate the tracks?</h4>
+<p class="text-on-surface-variant text-base leading-relaxed max-w-[90%]">
+                        It's recommended to lubricate the tracks and rollers at least twice a year. Use a silicone-based lubricant, avoiding heavy greases that attract dirt.
+                    </p>
+</div>
+<div>
+<h4 class="font-body-lg font-bold text-on-surface mb-3">Why is my garage door making a grinding noise?</h4>
+<p class="text-on-surface-variant text-base leading-relaxed max-w-[90%]">
+                        Grinding noises usually indicate worn rollers, a lack of lubrication, or hinges that are starting to fail. It's best to have a professional inspect it to prevent further damage.
+                    </p>
+</div>
+<div>
+<h4 class="font-body-lg font-bold text-on-surface mb-3">Can I paint my garage door myself?</h4>
+<p class="text-on-surface-variant text-base leading-relaxed max-w-[90%]">
+                        Yes, but proper preparation is key. Ensure the surface is clean, lightly sanded, and use a high-quality exterior latex paint suitable for the door's material.
+                    </p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Placeholder -->
+<footer class="w-full bg-surface-container-lowest border-t border-outline-variant py-section-padding hidden">
+<div class="max-w-container-max mx-auto px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-stack-md">
+<div class="font-headline-md text-headline-md text-on-background">ServicePro</div>
+<div class="font-body-md text-body-md text-on-surface-variant">© 2024 ServicePro Architecture. All rights reserved.</div>
+</div>
+</footer>
+</body></html>

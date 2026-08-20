@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Visual Proof - Garage Door Repair</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@600;700;800&amp;family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-fixed": "#d8e2ff",
+                      "on-secondary-fixed-variant": "#004395",
+                      "tertiary-container": "#191c1e",
+                      "on-primary": "#ffffff",
+                      "surface-dim": "#cbdbf5",
+                      "on-primary-fixed-variant": "#3f465c",
+                      "outline": "#76777d",
+                      "on-error": "#ffffff",
+                      "on-surface": "#0b1c30",
+                      "on-primary-container": "#7c839b",
+                      "tertiary": "#000000",
+                      "secondary": "#0058be",
+                      "on-primary-fixed": "#131b2e",
+                      "surface": "#f8f9ff",
+                      "on-secondary": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "surface-container-low": "#eff4ff",
+                      "on-tertiary-fixed-variant": "#444749",
+                      "error": "#ba1a1a",
+                      "on-tertiary-fixed": "#191c1e",
+                      "on-secondary-container": "#fefcff",
+                      "primary-fixed": "#dae2fd",
+                      "tertiary-fixed": "#e0e3e5",
+                      "on-tertiary-container": "#818486",
+                      "secondary-fixed-dim": "#adc6ff",
+                      "on-tertiary": "#ffffff",
+                      "tertiary-fixed-dim": "#c4c7c9",
+                      "surface-container": "#e5eeff",
+                      "surface-tint": "#565e74",
+                      "secondary-container": "#2170e4",
+                      "primary-fixed-dim": "#bec6e0",
+                      "error-container": "#ffdad6",
+                      "surface-variant": "#d3e4fe",
+                      "inverse-on-surface": "#eaf1ff",
+                      "surface-bright": "#f8f9ff",
+                      "on-secondary-fixed": "#001a42",
+                      "surface-container-high": "#dce9ff",
+                      "background": "#f8f9ff",
+                      "surface-container-highest": "#d3e4fe",
+                      "surface-container-lowest": "#ffffff",
+                      "on-surface-variant": "#45464d",
+                      "primary": "#000000",
+                      "inverse-surface": "#213145",
+                      "on-background": "#0b1c30",
+                      "outline-variant": "#c6c6cd",
+                      "primary-container": "#131b2e",
+                      "inverse-primary": "#bec6e0"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "unit": "8px",
+                      "margin-desktop": "48px",
+                      "margin-mobile": "16px",
+                      "section-padding": "120px",
+                      "gutter": "24px",
+                      "stack-lg": "32px",
+                      "container-max": "1280px",
+                      "stack-sm": "8px",
+                      "stack-md": "16px"
+              },
+              "fontFamily": {
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "display-lg": [
+                              "Epilogue"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Epilogue"
+                      ],
+                      "headline-md": [
+                              "Epilogue"
+                      ],
+                      "headline-lg-mobile": [
+                              "Epilogue"
+                      ]
+              },
+              "fontSize": {
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg": [
+                              "72px",
+                              {
+                                      "lineHeight": "80px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "800"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "30px",
+                              {
+                                      "lineHeight": "38px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings:
+          'FILL' 1,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24
+        }
+      </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased min-h-screen">
+<section class="w-full py-section-padding px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto overflow-hidden">
+<!-- Text Group -->
+<div class="text-center max-w-3xl mx-auto mb-24">
+<span class="block font-label-md text-label-md text-secondary tracking-widest uppercase mb-stack-md">Our Portfolio</span>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-stack-md">Expertise You Can See</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
+                We bring precision and premium quality to every garage door project. See the difference our dedicated team makes in both function and aesthetic.
+            </p>
+</div>
+<!-- The Depth Stack Layout -->
+<div class="relative w-full max-w-5xl mx-auto h-[600px] mb-24 flex items-center justify-center">
+<!-- Left Image (Offset Back) -->
+<div class="absolute left-0 top-1/2 -translate-y-1/2 w-1/3 aspect-[3/4] z-10 transition-transform duration-500 hover:-translate-y-[55%] hover:-translate-x-2">
+<div class="w-full h-full border border-outline-variant rounded bg-surface relative overflow-hidden group">
+<img class="w-full h-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0" data-alt="A professional technician adjusting a high-end garage door track mechanism. The shot is close-up, focusing on the pristine metal tools and the clean lines of the modern garage interior. Bright, crisp daylight illuminates the scene, emphasizing the minimalist and precise corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLzy_2xWLfdvOLuDCUoR0watmrMOhiG8UTHOeQ3lLdniBguupLBqoJtzp4_5Fa8_pJ_CTIGcghJX7bOSpzTY-GdsSS90fS4Sb3YakXN_qR551kQceawsetzG9dRdK7ppoo-nUx2UDuMmmdaHnHtechLHjXDhhAi4AH9qH0T353yujgxRxWnx0xdDhoeQF9vcdugsijLWUU_V71Iymr3o97d43hvoFvwQ6KO8d-Li93GxGyzMn_wHY7NQ"/>
+<div class="absolute bottom-stack-md left-stack-md bg-surface px-4 py-2 border border-outline-variant text-on-surface font-label-md text-label-md rounded">Repair</div>
+</div>
+</div>
+<!-- Right Image (Offset Back) -->
+<div class="absolute right-0 top-1/2 -translate-y-1/2 w-1/3 aspect-[3/4] z-10 transition-transform duration-500 hover:-translate-y-[55%] hover:translate-x-2">
+<div class="w-full h-full border border-outline-variant rounded bg-surface relative overflow-hidden group">
+<img class="w-full h-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0" data-alt="A completed modern garage door installation. The door is a sleek, black flush-panel design set against a stark white architectural exterior. The lighting is high-key and serene, showcasing the premium, high-contrast aesthetic and clean geometric lines of the structure." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDx45kh8akwPhCBXFWSIPXVhi34CzNHQOdsAgjw0IJ5wEzpI7r_7viRS6_5hRNyVMK7fn4Qz-ISH8W0WEmVzUL6Unj6sSmVk1snsDTbXXLrOVqmUiKqVfmnrbK_iPR0ELiHK4W4MMG-Q_m1tFNoI3XOfJRRVNTUTOJ__kCeQ_4Y4rofG1GvHHK3mw8n4PP8vbMonY6ZY5Rgs6xLY3PjkQE7Uhbw09mnDsUqfWH40EEnyreoj1-iAvFR9A"/>
+<div class="absolute bottom-stack-md right-stack-md bg-surface px-4 py-2 border border-outline-variant text-on-surface font-label-md text-label-md rounded">Installation</div>
+</div>
+</div>
+<!-- Center Image (Front & Largest) -->
+<div class="absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 w-[45%] aspect-[4/5] z-20 transition-transform duration-500 hover:scale-[1.02]">
+<div class="w-full h-full border border-outline-variant rounded bg-surface-container-lowest relative overflow-hidden shadow-2xl shadow-primary/5">
+<img class="w-full h-full object-cover" data-alt="A wide, architectural shot of a stunning, newly installed premium garage door on a luxury minimalist home. The door features clean lines, matte finish, and perfectly aligned panels. The setting is bright and aspirational, conveying quiet confidence and authority in craftsmanship." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwBLM7ELlfekDeWKWJ_U1iIiJvh9cKYBz0qYduvivGYhm-LJEDvrqpY8NvdtyJJvOlhKoFqTvQY8AFIO_9gpcQ7oxt-lG1-HpjlForwfqKRvSuDJUpOi335P6pgjw50SnrxNz1QHY8tv77yoH0YjxtwfnTMyIV2tvH8g_VyvEdpKP9DtkrAsc53ZDsHqoSpWSYetpEfN14PXD05_tlyMl4jnlI84hsJ5ll7EHwOpF4Adkp8l9RAlDBvQ"/>
+<div class="absolute bottom-stack-md left-1/2 -translate-x-1/2 bg-primary px-6 py-3 text-on-primary font-label-md text-label-md rounded shadow-lg">Service</div>
+</div>
+</div>
+</div>
+<!-- Minimalist Claim Row -->
+<div class="max-w-4xl mx-auto border-t border-outline-variant pt-stack-lg">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter text-center">
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="verified" data-weight="fill">verified</span>
+<span class="font-label-md text-label-md text-on-surface">Certified Technicians</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="shield" data-weight="fill">shield</span>
+<span class="font-label-md text-label-md text-on-surface">Lifetime Warranty</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="bolt" data-weight="fill">bolt</span>
+<span class="font-label-md text-label-md text-on-surface">Same Day Response</span>
+</div>
+</div>
+</div>
+</section>
+</body></html>

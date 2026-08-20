@@ -100,12 +100,19 @@ gate.
 
 ## 4. What has been built
 
-### Services section — 12 archetypes, 11 reachable
+### Services section — 11 archetypes, 10 reachable
 
 `SERVICE_ARCHETYPES` in `build.py`. Chosen by `services_archetype()`.
 
 `featured · editorial · spotlight · floating · bento · overlay · accordion ·
-problem · timeline · typo · orbit · tabs`
+problem · timeline · orbit · tabs`
+
+**`typo` was removed** on client rejection (2026-08-17). It set the service
+names as giant type carrying the whole section, with the photograph revealing
+behind the engaged word. Deleted outright rather than disabled — renderer,
+~110 lines of CSS, its registration in every lookup, the `dallasdoorpros.com`
+pin, and the then-orphaned `_plain()` helper. It is recoverable from git if the
+decision is ever revisited.
 
 **`problem` never fires.** It requires ≥3 services whose copy carries genuine
 symptom language; the content yields 1. That is the no-inventing rule holding,
@@ -116,12 +123,11 @@ Selection narrows by real signals before the digest:
 | Signal | Effect |
 |---|---|
 | ≥3 services | `featured editorial spotlight accordion tabs` |
-| ≥3 services **and** longest title ≤22 visible chars | adds `typo` (long names wreck giant type) |
 | ≥4 services | adds `floating bento overlay timeline orbit` |
 | ≥3 symptom-bearing blurbs | adds `problem` (never met) |
 | **Hero contrast** | a photo-led hero is followed by a *quiet* archetype and vice versa, so the two read as different moments |
 
-`quiet = {editorial, accordion, bento, problem, typo, timeline, tabs}`.
+`quiet = {editorial, accordion, bento, problem, timeline, tabs}`.
 Everything else is image-led.
 
 **Every service carries its own photograph.** `select_photos()` already drew one
@@ -188,10 +194,270 @@ label that exists** — there are no captions, titles or dates anywhere.
 cd engine && python3 measure_similarity.py --gate
 ```
 
-12 checks, exits non-zero on regression: text/DOM similarity, pairs ≥95%,
+17 checks (the hero region excluded from all of them -- see above), exits
+non-zero on regression: text/DOM similarity, pairs ≥95%,
 single-value strings, dead layout axes, discarded prose, WCAG AA over all 1001
-in-use themes, `<main>`, skip links, phone-less "Call" prose, and **missing
-essential sections**.
+in-use themes (plus the CTA gradient and the footer ramp separately), `<main>`,
+skip links, phone-less "Call" prose, **missing essential sections**, and
+**variant CSS pruned away while still rendered**.
+
+### The content-pack contract
+
+A pack is `engine/content/<name>/`, pointed at by a site's `content` field. The
+**filename** decides what each JSON becomes:
+
+    <x>-home.json        ->  /
+    <x>-svc-<slug>.json  ->  /services/<slug>/     (a -<city>-<st> tail is stripped)
+    <x>-nb-<slug>.json   ->  /service-areas/<slug>/
+    <x>-sub-<slug>.json  ->  /service-areas/<slug>/
+    <x>-top-<slug>.json  ->  /guides/<slug>/
+
+Every file must be a JSON object with a **`sections`** key; without it the page
+is dropped and its title, meta and FAQ go with it. `h1`, `title`, `meta`,
+`faq[{q,a}]` and `schema_facts.areaServed` are optional.
+
+**The second name token is load-bearing.** Anything outside those five types
+used to be dropped in silence -- `-svcs-` instead of `-svc-` and the page simply
+never appeared. It now prints a warning.
+
+```bash
+cd engine && python3 devtools/check_content.py        # validate every pack
+python3 devtools/check_content.py --sites             # what is missing, and for whom
+```
+
+It exits non-zero on a fault, so a content pipeline can gate on it. The build
+reports missing packs once at the end rather than 991 times.
+
+### The booking page can only offer what the config gives it
+
+Every call to action points at `/request-a-quote/`. That page renders whichever
+of three routes the site actually has, and **nothing where it has none**:
+
+| config field | what appears |
+|---|---|
+| `ghl_form_id` | the booking form, embedded |
+| `phone` | a `tel:` link, and the call bar |
+| `email` | a `mailto:` link |
+| none of them | no instruction to get in touch, and no button |
+
+It used to instruct the reader to "send a quote request" and then offer **five
+buttons that linked back to the same page** -- on 998 of 1001 sites, because
+none of them carry any of the three. All four templates did some version of it.
+
+`contact_routes(t)` is the single source of truth, and the gate reports
+`sites a visitor cannot contact` so the gap stays visible. It is **reported,
+not enforced**: it is a data gap, not a rendering fault, and the pages already
+degrade honestly. Today it reads **998 of 1001**.
+
+### The alt templates carry their own colours, and their own gate
+
+ironclad, volt and nimbus hardcode their palettes in `templates.py`. The four
+accent/footer/CTA/sidebar contrast checks all read themes.json and the garage
+design system, so those three were **outside every check from the day they were
+added**. What was in them when `template_contrast_failures` was written:
+
+| | | |
+|---|---|---|
+| nimbus star row | `#ffb020` on white | **1.83:1** |
+| nimbus button label | white on `#4c8dff` | 3.20:1 |
+| ironclad body text | `#a9803f` on `#fbf9f4` | 3.41:1 |
+| volt footer legal | `#6a6a76` on `#0a0a0d` | 3.71:1 |
+
+Each now splits fill from text the way `--accent` / `--accent-lt` already does:
+`--brass` fills and `--brass-tx` carries text, `--blue` fills and `--blue-tx`
+carries text.
+
+**A colour used on two grounds needs two values.** Darkening brass for the light
+bands pushed it to 3.60:1 on the near-black utility bar and footer, where the
+original was already 5.07:1. Both directions are in the gate now.
+
+`template_contrast_failures` lists its pairs rather than discovering them --
+there is no generator to derive them from, and a check that guessed would miss
+the next one. **Add a pair when you add a colour.**
+
+### The accent is chosen per domain, not taken from the theme
+
+themes.json still supplies `p` and `pd`. The `accent` field is **overwritten in
+load_config()** and the `on_accent` field feeds nothing at all -- accent_button()
+computes the label. 101 primaries were welded to 101 accents, giving the estate
+101 palettes for 1001 sites; it now holds ~850, worst case 4 sites to a palette.
+
+Two rules pick it, and the second one matters more than it looks:
+
+- hue within 45 degrees of the primary, so the pairing reads as deliberate
+- **and far enough away to still be a second colour.** The hue limit alone put
+  `#9a3412` beside `#9e330f` -- 152 sites whose accent was invisible against
+  their own primary. An accent may share the hue only if its lightness differs
+  by 18 points or more.
+
+Anything reading a theme colour must go through `load_config()`, never
+themes.json. `contrast_failures` was reading the file and so was checking a
+colour that no longer shipped on **any** of the 1001 sites.
+
+And do not mistake the AA filter in `accents_for` for what keeps the estate
+readable. `accent_button`, `accent_on_light` and `accent_on_dark` each iterate
+until they clear 4.5:1, so any accent comes out compliant -- deleting the filter
+leaves the gate at zero failures, which I checked. It guards against a future
+accent that would only reach AA after a large correction.
+
+### Nothing reads layouts.json any more
+
+Every axis it defines -- hero, nav, footer, cards, feats, steps, shape, bands --
+is now picked per domain instead. `bands` and `shape` still feed a class on
+`<body>`; the rest feed nothing. The file is kept because it documents what the
+six families used to mean, and deleting it changes no output.
+
+The reason for moving the last two, `feats` and `steps`, was not the per-axis
+count -- that barely moved, and `steps` got a point worse. It was that the axes
+arrived **as a set**: one of six families decided the cards *and* the steps
+together, so the estate held **5 distinct (feats, steps) pairs across 1001
+sites**. On a per-domain digest it holds all **12**. That is the number to watch
+when decoupling an axis, not how many sites share one value.
+
+### Header variants: three contracts to keep
+
+`HEADER_VARIANTS` is `[(name, starting height)]`. Anything added to it must:
+
+1. **Keep the JS hooks.** NAVJS binds to `.burger`, `nav.main` and
+   `.nav-item > button`, and toggles `.nav-item.open`. A design needing its own
+   JavaScript does not belong here.
+2. **Keep the announcement strip.** Content decision, not a design one.
+3. **Check where its dropdowns land.** The mega is centred on its trigger,
+   which fails once the trigger sits at the left edge: `stack` and `rail` put
+   the nav hard left and opened Services at x=-27 and Service Areas at x=-51,
+   off screen, on 306 sites. Those two anchor their menus left instead.
+
+The height in the tuple is only the **pre-script fallback**. The real height
+moves with the variant, the breakpoint *and* the font pack -- `stack` measured
+120px at desktop and 65px on a phone, `breakout` went 68px then 83px, and
+`rail` was 71px in one font and 79px in another. No single number is right, so
+NAVJS measures the header and writes `--hd-h` itself, re-running on resize and
+on `fonts.ready`.
+
+`preview_variants.py` renders both with the dropdowns forced open, because a
+closed dropdown measures 0x0 and cannot overflow anything.
+
+### Five things position themselves under the header
+
+`--hd-h` is the sticky header's height: 79px, 69px below 1120, 45px below 560,
+each measured. Anchor `scroll-margin-top`, the sticky sidebar, the ranked list
+and two sticky Services panels all sit at `calc(var(--hd-h) + Npx)`.
+
+They used to carry the number by hand -- 88, 96, 96, 100, 104. A header variant
+of a different height would have moved the bar and left all five behind it:
+anchors landing under the header, sticky panels overlapping, and nothing in the
+gate able to see any of it. **Change the header's height and you change only
+`--hd-h`.**
+
+The narrower tier is declared *after* the wider one, in its own media query.
+Both match at 390px and media queries carry no extra specificity, so source
+order is the only thing that decides -- the same trap that rebuilt the mobile
+trust bar as two columns during the CSS pruning work.
+
+### Typography comes from FONT_PACKS, not from themes.json
+
+21 curated pairings in build.py, picked per domain like every other axis.
+`themes.json` still holds the colours; its `display`/`body`/`fonts` fields are
+overwritten in `load_config()` and feed nothing.
+
+Two rules, both learned by getting them wrong:
+
+- **List the weights, never a range.** `wght@600..800` works only for variable
+  families. For a static one -- Poppins, Barlow, Lato, Oswald and others --
+  Google answers HTTP 200 and silently omits the family, so the page renders
+  in system-ui and nothing in the build notices. `_FW` holds the weight list
+  each family actually serves, checked one by one against the API.
+- **Not every face has an 800.** Archivo Narrow, Oswald, Space Grotesk and
+  Zilla Slab stop at 700, and `h1`/`.brand` ask for 800, so the browser draws
+  a fake bold. `--disp-hi` carries the real ceiling; `--disp-track` carries the
+  heading letter-spacing, because -.02em suits a geometric sans and cramps a
+  serif.
+
+`devtools/preview_fonts.py` renders all 21 against real page copy.
+
+### The gate cannot see layout
+
+`measure_similarity.py` reads HTML and CSS as text. It cannot tell whether a
+box paints outside the box meant to contain it, so **a section can be visibly
+broken at 17/17 green**. Both page-hero grid bugs were of that kind: a 249px
+breadcrumb tail inside a 190px rail, then a 375px grid track inside a 354px
+container. Neither moved a single check.
+
+```bash
+cd engine && python3 devtools/preview_variants.py preview
+python3 -m http.server 8890 --directory preview   # then open /audit.html
+```
+
+That renders every page-hero and sidebar variant with both a 75-character and
+a short title, and reports any element painting outside its parent at 1280,
+900, 768, 390 and 360. **Run it whenever you add a variant.**
+
+Two habits it encodes, both learned by getting them wrong here:
+
+- Use `minmax(0,1fr)`, never bare `1fr`. A grid track's automatic minimum is
+  its item's min-content width, so one `white-space:nowrap` row can hold a
+  column wider than the container it sits in.
+- `max-width` on a nowrap flex item does not make it shrink to its parent.
+  Pair it with `min-width:0` on the item.
+
+### article--wide has no sidebar column
+
+`ARTICLE_LAYOUTS` is `["", "article--left", "article--wide"]`. The third has no
+column at all -- the aside stacks **below** the prose. Any sidebar module that
+depends on being read *before* the article is wrong there. The table of
+contents landed 50px past the end of the article it indexed, on 75 sites.
+
+`_ASIDE_NEEDS_COLUMN` lists the variants that cannot stack; they re-pick from
+`_ASIDE_STACKABLE`. Add to that set when a new module only makes sense in a
+column. `devtools/preview_variants.py` renders every variant in all three
+layouts for exactly this reason.
+
+### The sidebar column is sticky
+
+`.aside` is `position:sticky; top:96px`. Anything taller than the viewport
+pins with its lower half below the fold and *stays* there for the rest of the
+scroll -- so a tall variant can park its "Request a Quote" button permanently
+off-screen. Keep every sidebar variant under ~600px, and put the quote card
+first unless there is a reason not to.
+
+### The gate cannot see the hero
+
+`below_hero()` cuts the hero out before scoring, on purpose -- otherwise the
+header and nav, which are identical everywhere, would flatter every pair. The
+side effect is that **no hero work moves any gate number**. Twelve homepage
+heroes and seven page heroes are invisible to `dom_median` and
+`inner_dom_median` alike.
+
+Measure that region separately or you will conclude the work did nothing. The
+inner-page hero went from **100% identical markup on all 1001 sites** to a
+**57.1% median** across variants, and `inner_dom_median` did not move a tenth
+of a point either way.
+
+### CSS pruning
+
+Every site used to ship the whole variant library -- twelve heroes, ten footers,
+eight proof blocks, eight CTA bands, five FAQs -- and render one of each.
+`prune_site_css()` in `build.py` runs at the end of each site's build, reads the
+HTML just written, and drops any rule whose selectors *all* name variants that
+site does not use. **98K -> ~70K**, on every page of all 1001 sites.
+
+Three rules, learned the hard way:
+
+- **Re-emit in source order.** Grouping the kept rules under their `@media`
+  prelude looks tidier and is wrong: the sheet contains six separate
+  `max-width:560px` blocks, and merging them hoists later rules above the base
+  rules they override. Media queries add no specificity, so order is all they
+  have. This silently rebuilt the mobile trust bar as two columns.
+- **Never prune shared primitives.** `.svcx-sel`, `.svcx-vis`, `.pf-points`,
+  `.gf-cols` and `.gf-trust` are used by several variants each. A rule survives
+  if *any* of its comma-separated selectors is live.
+- **`.svcx-sec--*` has no CSS at all** and never has -- it is a positional hook
+  on the section element. Its absence from a stylesheet means nothing.
+
+Verified two ways, neither of which trusts the pruner's own logic: the pruned
+sheet is an exact **ordered subsequence** of the unpruned one (no rule moved or
+altered), and all 2,238 dropped selectors were run through the browser's CSS
+engine against all 202 built pages -- 40,029 tests, zero matches.
 
 Two things worth understanding:
 
@@ -234,9 +500,13 @@ the glyphs to sample the true ground), and check reduced motion on elements
 | 8203 | mesagaragedoorco.com | `orbit` | **pinned** |
 | 8204 | napervillegaragedoorpros.com | `floating` | auto |
 | 8207 | auroragaragedoorpros.com | `tabs` | **pinned** |
-| 8219 | dallasdoorpros.com | `typo` | **pinned** |
-| 8258 | austingaragedoorguys.com | `featured` | auto |
+| 8219 | dallasdoorpros.com | `bento` | proof **pinned** to `stack` |
+| 8258 | austingaragedoorguys.com | `featured` | proof `mosaic`, auto |
 | 8283 | puntagordagaragedoorpros.com | `editorial` | proof **pinned** to `cinematic` |
+
+Run them all with `python3 serve.py` from `engine/` — portal on `:8000`, each
+site on its config port, bound to `0.0.0.0` so a phone on the same Wi-Fi can
+reach them too.
 
 **⚠ Remove the review pins before production.** Five rows in `sites.json` carry
 `"services"` / `"proof"` keys that override automatic selection. They exist so a
