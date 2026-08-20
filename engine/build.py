@@ -2234,6 +2234,11 @@ def load_content(t):
             url = "/"
             cat = "home"
         else:
+            # Was a bare `continue`. A file whose second name token is not one
+            # of the five known types -- a typo, a plural, a type nobody taught
+            # this loader -- vanished without a word, and so did its page.
+            print(f"  ! {t['content']}/{fn}: filename type '{ptype}' unknown, "
+                  f"page dropped (expected home/svc/nb/sub/top)")
             continue
         faqs = [(f.get("q", ""), f.get("a", "")) for f in data.get("faq", []) if f.get("q")]
         pages[url] = {
@@ -4563,9 +4568,12 @@ def build(only=None):
             shutil.rmtree(os.path.join(DIST, d), ignore_errors=True)
     elif os.path.exists(DIST):
         shutil.rmtree(DIST)
+    # 991 of 1001 sites have no pack. One line each buries everything else the
+    # build says, so they are counted and reported once at the end instead.
+    skipped = []
     for domain, t in targets.items():
         if not os.path.isdir(os.path.join(CONTENT, t["content"])):
-            print(f"  skip {domain}: content/{t['content']}/ not found (add content, then rebuild)")
+            skipped.append((domain, t["content"]))
             continue
         R = get_renderer(t)
         out = os.path.join(DIST, domain)
@@ -4686,6 +4694,16 @@ def build(only=None):
         was, now = prune_site_css(out)
         saved = f"  css {was // 1024}K->{now // 1024}K" if was else ""
         print(f"  {domain}: {len(urls)} pages ({t['city']}, {t['st']}){saved}")
+    if skipped:
+        packs = sorted({c for _d, c in skipped})
+        print("")
+        print(f"  {len(skipped)} site(s) skipped: no content pack. "
+              f"{len(packs)} pack(s) missing.")
+        for d, c in skipped[:5]:
+            print(f"    {d} wants content/{c}/")
+        if len(skipped) > 5:
+            print(f"    ... and {len(skipped) - 5} more "
+                  f"(devtools/check_content.py --sites lists them)")
     print("Done ->", DIST)
 
 if __name__ == "__main__":

@@ -201,6 +201,33 @@ in-use themes (plus the CTA gradient and the footer ramp separately), `<main>`,
 skip links, phone-less "Call" prose, **missing essential sections**, and
 **variant CSS pruned away while still rendered**.
 
+### The content-pack contract
+
+A pack is `engine/content/<name>/`, pointed at by a site's `content` field. The
+**filename** decides what each JSON becomes:
+
+    <x>-home.json        ->  /
+    <x>-svc-<slug>.json  ->  /services/<slug>/     (a -<city>-<st> tail is stripped)
+    <x>-nb-<slug>.json   ->  /service-areas/<slug>/
+    <x>-sub-<slug>.json  ->  /service-areas/<slug>/
+    <x>-top-<slug>.json  ->  /guides/<slug>/
+
+Every file must be a JSON object with a **`sections`** key; without it the page
+is dropped and its title, meta and FAQ go with it. `h1`, `title`, `meta`,
+`faq[{q,a}]` and `schema_facts.areaServed` are optional.
+
+**The second name token is load-bearing.** Anything outside those five types
+used to be dropped in silence -- `-svcs-` instead of `-svc-` and the page simply
+never appeared. It now prints a warning.
+
+```bash
+cd engine && python3 devtools/check_content.py        # validate every pack
+python3 devtools/check_content.py --sites             # what is missing, and for whom
+```
+
+It exits non-zero on a fault, so a content pipeline can gate on it. The build
+reports missing packs once at the end rather than 991 times.
+
 ### The booking page can only offer what the config gives it
 
 Every call to action points at `/request-a-quote/`. That page renders whichever
